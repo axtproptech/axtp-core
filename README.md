@@ -1,2 +1,2 @@
-# rest
-The R.Est Project
+# signum-smart-contracts
+A repository for all Signum Smart Contracts
