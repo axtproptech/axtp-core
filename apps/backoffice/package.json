@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "pretty": "prettier --write .",
+    "prepare": "cd ../.. && husky install",
     "test": "jest --passWithNoTests"
   },
   "dependencies": {

@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+cd ./apps/backoffice
 pnpm --silent dlx lint-staged
