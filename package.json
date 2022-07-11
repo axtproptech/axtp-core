@@ -5,9 +5,14 @@
   "scripts": {
     "prepare": "husky install",
     "pretty": "prettier --write .",
-    "test": "jest --passWithNoTests"
+    "build": "turbo run build",
+    "test": "turbo run test"
   },
-  "keywords": ["signum", "blockchain", "web3"],
+  "keywords": [
+    "signum",
+    "blockchain",
+    "web3"
+  ],
   "author": "ohager",
   "license": "ISC",
   "devDependencies": {
@@ -20,6 +25,7 @@
     "lint-staged": "^13.0.3",
     "prettier": "2.7.1",
     "ts-jest": "^28.0.5",
+    "turbo": "^1.3.1",
     "typescript": "4.7.4"
   },
   "lint-staged": {
