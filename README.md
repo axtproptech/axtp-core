@@ -1,2 +1,3 @@
-# signum-smart-contracts
-A repository for all Signum Smart Contracts
+# R.Est Project
+
+A mono repository for all R.Est related development
