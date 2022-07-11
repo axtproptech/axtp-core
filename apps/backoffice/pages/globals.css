@@ -1,0 +1,101 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #4caf50;
+  --primary-light-color: #80e27e;
+  --primary-dark-color: #087f23;
+
+  --secondary-color: #0099ff;
+  --secondary-light-color: #69c9ff;
+  --secondary-dark-color: #006ccb;
+}
+
+/* Nprogress custom styling */
+#nprogress .bar {
+  background: var(--primary-color) !important;
+  height: 2px !important;
+  z-index: 2000 !important;
+}
+
+.descriptionText {
+  white-space: pre;
+  white-space: pre-wrap; /* css-3 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+.background {
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+/* React responsive carousel */
+.carousel-root {
+  width: 100% !important;
+}
+
+.carousel .control-dots .dot {
+  padding: 5px !important;
+}
+
+.carousel.carousel-slider .control-arrow {
+  top: 40% !important;
+  height: 25% !important;
+  padding: 10px !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.carousel.carousel-slider .control-arrow:hover,
+.carousel.carousel-slider .control-arrow:focus {
+  background: rgba(0, 0, 0, 0.75) !important;
+}
+
+.rec-swipable .rec-item-wrapper {
+  overflow: visible;
+  margin-top: 5px;
+}
+
+/* React carousel custom styling */
+/* square buttons */
+.rec.rec-arrow {
+  border-radius: 8px !important;
+  background: var(--primary-color) !important;
+  color: white;
+}
+
+.rec.rec-arrow:hover {
+  outline: none !important;
+  background: var(--primary-dark-color) !important;
+}
+
+.rec-dot_active {
+  background-color: var(--primary-color) !important;
+}
+
+.rec-dot:hover,
+.rec-dot_active {
+  box-shadow: 0 0 1px 3px var(--primary-dark-color) !important;
+}
+
+.rec.rec-arrow:disabled {
+  opacity: 0.5;
+  background: rgba(0, 0, 0, 0.7) !important;
+}
