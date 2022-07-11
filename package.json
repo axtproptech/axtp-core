@@ -1,0 +1,28 @@
+{
+  "name": "rest",
+  "version": "1.0.0",
+  "description": "This is the mono repo for the R.Est project",
+  "scripts": {
+    "prepare": "husky install",
+    "pretty": "prettier --write .",
+    "test": "jest --passWithNoTests"
+  },
+  "keywords": ["signum", "blockchain", "web3"],
+  "author": "ohager",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^28.1.4",
+    "@types/node": "18.0.3",
+    "eslint": "8.19.0",
+    "eslint-config-next": "12.2.0",
+    "husky": "^8.0.0",
+    "jest": "^28.1.2",
+    "lint-staged": "^13.0.3",
+    "prettier": "2.7.1",
+    "ts-jest": "^28.0.5",
+    "typescript": "4.7.4"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
+}
