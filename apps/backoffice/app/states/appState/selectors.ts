@@ -35,5 +35,5 @@ export const selectIsWalletConnected = (state: RootState): boolean =>
 export const selectNodeHost = (state: RootState): string =>
   state.appState.nodeHost;
 
-export const selectIsIpfsOnline = (state: RootState): boolean =>
-  state.appState.isIpfsOnline;
+export const selectIsLeftDrawerOpened = (state: RootState): boolean =>
+  state.appState.isLeftDrawerOpened;

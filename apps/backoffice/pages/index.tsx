@@ -1,10 +1,10 @@
 import { Layout } from "@/app/components/Layout";
-import Home from "@/features/dashboard";
+import { Dashboard } from "@/features/dashboard";
 
 export default function homePage() {
   return (
     <Layout>
-      <Home />
+      <Dashboard />
     </Layout>
   );
 }

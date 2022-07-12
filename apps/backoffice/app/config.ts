@@ -20,4 +20,7 @@ export const Config = {
     CanonicalUrl:
       process.env.NEXT_PUBLIC_PLATFORM_CANONICAL_URL || "https://signumswap.io",
   },
+  Layout: {
+    DrawerWidth: 260,
+  },
 };

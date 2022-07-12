@@ -5,6 +5,7 @@ import "nprogress/nprogress.css";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { SnackBar } from "./components/SnackBar";
 import { ChildrenProps } from "@/types/ChildrenProps";
+import { MainLayout } from "@/app/components/Layout/MainLayout";
 
 export const Layout: FC<ChildrenProps> = ({ children }) => {
   const router = useRouter();
@@ -30,9 +31,9 @@ export const Layout: FC<ChildrenProps> = ({ children }) => {
   }, [hideSnackbar, router.events]);
 
   return (
-    <Fragment>
+    <MainLayout>
       <SnackBar />
       {children}
-    </Fragment>
+    </MainLayout>
   );
 };

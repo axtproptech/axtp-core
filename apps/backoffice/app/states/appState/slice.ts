@@ -16,6 +16,7 @@ export interface AppState {
   snackBar: SnackBarState;
   nodeHost: string;
   isWalletConnected: boolean;
+  isLeftDrawerOpened: boolean;
 }
 
 const initialState: AppState = {
@@ -26,6 +27,7 @@ const initialState: AppState = {
   snackBar: { label: "", severity: "" },
   nodeHost: "",
   isWalletConnected: false,
+  isLeftDrawerOpened: false,
 };
 
 export const appSlice = createSlice({
@@ -52,6 +54,9 @@ export const appSlice = createSlice({
     },
     setIsWalletConnected: (state, action: PayloadAction<boolean>) => {
       state.isWalletConnected = action.payload;
+    },
+    setIsLeftDrawerOpened: (state, action: PayloadAction<boolean>) => {
+      state.isLeftDrawerOpened = action.payload;
     },
   },
 });
