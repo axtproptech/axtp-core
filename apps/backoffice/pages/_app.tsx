@@ -10,7 +10,7 @@ import { CssBaseline, StyledEngineProvider } from "@mui/material";
 import { theme } from "@/app/themes";
 import { NavigationScroll } from "@/app/components/Layout/NavigationScroll";
 
-function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
   return (
     <AppContextProvider>
       <ReduxProvider store={store}>
@@ -29,5 +29,3 @@ function App({ Component, pageProps }: AppProps) {
     </AppContextProvider>
   );
 }
-
-export default App;
