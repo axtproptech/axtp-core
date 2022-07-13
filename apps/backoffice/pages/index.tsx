@@ -1,10 +1,9 @@
-import { Dashboard } from "@/features/dashboard";
-import { Layout } from "@/app/components/Layout";
+import { MinimumLayout } from "@/app/components/Layout/minimumLayout";
 
 export default function homePage() {
   return (
-    <Layout>
-      <Dashboard />
-    </Layout>
+    <MinimumLayout>
+      <h1>Landing Page Here</h1>
+    </MinimumLayout>
   );
 }

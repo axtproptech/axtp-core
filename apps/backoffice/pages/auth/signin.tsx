@@ -1,26 +1,23 @@
-import { AuthLayout } from "@/app/components/Layout/AuthLayout";
 import { Login } from "@/features/auth/Login";
 import { getProviders } from "next-auth/react";
 import { unstable_getServerSession } from "next-auth";
 import { GetServerSidePropsContext } from "next";
 import { authOptions } from "../api/auth/[...nextauth]";
+import { MinimumLayout } from "@/app/components/Layout/minimumLayout";
 
 export async function getServerSideProps({
   req,
   res,
 }: GetServerSidePropsContext) {
   const session = await unstable_getServerSession(req, res, authOptions);
-  console.log("Check", session);
-
   if (session) {
     return {
       redirect: {
-        destination: "/",
+        destination: "/admin",
         permanent: false,
       },
     };
   }
-
   const providers = await getProviders();
   return {
     props: { providers },
@@ -29,8 +26,8 @@ export async function getServerSideProps({
 
 export default function homePage({ providers }: any) {
   return (
-    <AuthLayout>
+    <MinimumLayout>
       <Login providers={providers} />
-    </AuthLayout>
+    </MinimumLayout>
   );
 }

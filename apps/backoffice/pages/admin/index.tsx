@@ -1,5 +1,5 @@
-import { Layout } from "@/app/components/Layout";
 import { Dashboard } from "@/features/dashboard";
+import { Layout } from "@/app/components/Layout";
 
 export default function homePage() {
   return (

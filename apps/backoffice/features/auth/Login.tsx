@@ -1,9 +1,10 @@
-import { Box, Button, Container, Grid } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { signIn } from "next-auth/react";
 import { FC, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { MainCard } from "@/app/components/Cards/MainCard";
 import { Animate } from "@/app/components/Animation/Animate";
+import { useRouter } from "next/router";
 
 interface Props {
   providers?: any;
@@ -16,6 +17,9 @@ const AuthContainer = styled("div")(({ theme }) => ({
 
 export const Login: FC<Props> = () => {
   const [submitting, setSubmitting] = useState(false);
+  const router = useRouter();
+
+  const { error } = router.query;
 
   const handleSignIn = () => {
     setSubmitting(true);
@@ -51,7 +55,13 @@ export const Login: FC<Props> = () => {
               >
                 <Box sx={{ p: { xs: 2, sm: 3, xl: 5 } }}>
                   <h1>Some Logo here</h1>
-
+                  {error && (
+                    <Box sx={{ mt: 2, textAlign: "center" }}>
+                      <Typography variant="subtitle1" color="error">
+                        Authentication Failed
+                      </Typography>
+                    </Box>
+                  )}
                   <Box sx={{ mt: 2 }}>
                     <Animate>
                       <Button
