@@ -1,18 +1,8 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "./dashboard.module.css";
-import {
-  requestWalletConnection,
-  requestWalletDisconnection,
-} from "@/app/requestWalletConnection";
-import { useAppSelector } from "@/states/hooks";
-import { selectIsWalletConnected } from "@/app/states/appState";
-import { useSession } from "next-auth/react";
 
 export const Dashboard = () => {
-  const isWalletConnected = useAppSelector(selectIsWalletConnected);
-  const session = useSession();
-  console.log("Session", session);
   return (
     <div className={styles.container}>
       <Head>
@@ -22,26 +12,12 @@ export const Dashboard = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <h1 className={styles.title}>Welcome</h1>
 
         <p className={styles.description}>
           Get started by editing{" "}
           <code className={styles.code}>pages/index.tsx</code>
         </p>
-
-        <div className={styles.card}>
-          {!isWalletConnected ? (
-            <button onClick={requestWalletConnection}>Connect Wallet</button>
-          ) : (
-            <span>
-              <button onClick={requestWalletDisconnection}>
-                Disconnect Wallet
-              </button>
-            </span>
-          )}
-        </div>
 
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>

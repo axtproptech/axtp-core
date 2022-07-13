@@ -24,7 +24,7 @@ interface Props {
   secondary?: ReactElement;
   shadow?: string;
   sx?: any;
-  title?: ReactElement;
+  title?: ReactElement | string;
   elevation?: number;
 }
 
