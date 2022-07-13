@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "./Dashboard.module.css";
@@ -9,9 +8,12 @@ import {
 import { AccountAvatar } from "@/app/components/AccountAvatar/AccountAvatar";
 import { useAppSelector } from "@/states/hooks";
 import { selectIsWalletConnected } from "@/app/states/appState";
+import { useSession } from "next-auth/react";
 
 export const Dashboard = () => {
   const isWalletConnected = useAppSelector(selectIsWalletConnected);
+  const session = useSession();
+  console.log("Session", session);
   return (
     <div className={styles.container}>
       <Head>

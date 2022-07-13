@@ -26,7 +26,8 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { IconLogout, IconSearch, IconSettings, IconUser } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { MainCard } from "@/app/components/Cards/MainCard";
-import { Transitions } from "@/app/components/Transitions/Transitions";
+import { Transition } from "@/app/components/Animation/Transition";
+import { signOut } from "next-auth/react";
 
 const ProfileSection = () => {
   const theme = useTheme();
@@ -41,7 +42,7 @@ const ProfileSection = () => {
    * */
   const anchorRef = useRef<any>(null);
   const handleLogout = async () => {
-    console.log("Logout");
+    await signOut();
   };
 
   const handleClose = (event: any) => {
@@ -146,7 +147,7 @@ const ProfileSection = () => {
         }}
       >
         {({ TransitionProps }) => (
-          <Transitions in={open} {...TransitionProps}>
+          <Transition in={open} {...TransitionProps}>
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
                 <MainCard
@@ -358,7 +359,7 @@ const ProfileSection = () => {
                 </MainCard>
               </ClickAwayListener>
             </Paper>
-          </Transitions>
+          </Transition>
         )}
       </Popper>
     </>

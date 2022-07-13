@@ -15,7 +15,7 @@ interface Props {
   direction?: "up" | "down" | "left" | "right";
 }
 
-export const Transitions: FC<Props & ChildrenProps> = forwardRef(
+export const Transition: FC<Props & ChildrenProps> = forwardRef(
   (
     {
       children,

@@ -9,23 +9,26 @@ import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, StyledEngineProvider } from "@mui/material";
 import { theme } from "@/app/themes";
 import { NavigationScroll } from "@/app/components/Layout/NavigationScroll";
+import { SessionProvider } from "next-auth/react";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <AppContextProvider>
-      <ReduxProvider store={store}>
-        <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={theme()}>
-            <CssBaseline />
-            <AppInitializer />
-            <PersistGate loading={null} persistor={storePersistor}>
-              <NavigationScroll>
-                <Component {...pageProps} />
-              </NavigationScroll>
-            </PersistGate>
-          </ThemeProvider>
-        </StyledEngineProvider>
-      </ReduxProvider>
-    </AppContextProvider>
+    <SessionProvider session={pageProps.session}>
+      <AppContextProvider>
+        <ReduxProvider store={store}>
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme()}>
+              <CssBaseline />
+              <AppInitializer />
+              <PersistGate loading={null} persistor={storePersistor}>
+                <NavigationScroll>
+                  <Component {...pageProps} />
+                </NavigationScroll>
+              </PersistGate>
+            </ThemeProvider>
+          </StyledEngineProvider>
+        </ReduxProvider>
+      </AppContextProvider>
+    </SessionProvider>
   );
 }
