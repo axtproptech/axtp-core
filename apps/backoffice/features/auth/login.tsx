@@ -3,7 +3,7 @@ import { signIn } from "next-auth/react";
 import { FC, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { MainCard } from "@/app/components/Cards/MainCard";
-import { Animate } from "@/app/components/Animation/Animate";
+import { Animate } from "@/app/components/animation";
 import { useRouter } from "next/router";
 
 interface Props {

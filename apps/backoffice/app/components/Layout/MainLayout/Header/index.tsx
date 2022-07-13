@@ -2,7 +2,7 @@ import { useTheme } from "@mui/material/styles";
 import { Avatar, Box, ButtonBase } from "@mui/material";
 
 import LogoSection from "../LogoSection";
-import ProfileSection from "./ProfileSection";
+import { ProfileSection } from "./profileSection";
 import { IconMenu2 } from "@tabler/icons";
 import { FC, MouseEventHandler } from "react";
 

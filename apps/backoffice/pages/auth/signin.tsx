@@ -1,4 +1,4 @@
-import { Login } from "@/features/auth/Login";
+import { Login } from "@/features/auth/login";
 import { getProviders } from "next-auth/react";
 import { unstable_getServerSession } from "next-auth";
 import { GetServerSidePropsContext } from "next";
@@ -24,7 +24,7 @@ export async function getServerSideProps({
   };
 }
 
-export default function homePage({ providers }: any) {
+export default function Page({ providers }: any) {
   return (
     <MinimumLayout>
       <Login providers={providers} />

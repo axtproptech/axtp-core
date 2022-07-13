@@ -1,11 +1,10 @@
 import Head from "next/head";
 import Image from "next/image";
-import styles from "./Dashboard.module.css";
+import styles from "./dashboard.module.css";
 import {
   requestWalletConnection,
   requestWalletDisconnection,
 } from "@/app/requestWalletConnection";
-import { AccountAvatar } from "@/app/components/AccountAvatar/AccountAvatar";
 import { useAppSelector } from "@/states/hooks";
 import { selectIsWalletConnected } from "@/app/states/appState";
 import { useSession } from "next-auth/react";
@@ -37,7 +36,6 @@ export const Dashboard = () => {
             <button onClick={requestWalletConnection}>Connect Wallet</button>
           ) : (
             <span>
-              <AccountAvatar />
               <button onClick={requestWalletDisconnection}>
                 Disconnect Wallet
               </button>

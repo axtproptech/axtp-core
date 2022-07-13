@@ -10,6 +10,7 @@ export const Config = {
     IsTestnet: toBoolean(process.env.NEXT_PUBLIC_SIGNUM_IS_TESTNET || "false"),
     Explorer: process.env.NEXT_PUBLIC_SIGNUM_EXPLORER || "",
     Network: process.env.NEXT_PUBLIC_SIGNUM_NETWORK || "Signum-TESTNET",
+    AddressPrefix: process.env.NEXT_PUBLIC_SIGNUM_ADDRESS_PREFIX || "TS",
     PlatformAccounts: {},
   },
   Platform: {
