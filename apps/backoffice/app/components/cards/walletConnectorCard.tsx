@@ -14,6 +14,7 @@ import {
   requestWalletConnection,
   requestWalletDisconnection,
 } from "@/app/requestWalletConnection";
+import { ExternalLink } from "@/app/components/externalLink";
 
 const CardStyle = styled(Card)(({ theme, ...props }) => {
   // @ts-ignore
@@ -75,8 +76,14 @@ export const WalletConnectorCard = () => {
                 color="grey.900"
                 sx={{ opacity: 0.6 }}
               >
-                Get it from <a href="">Chrome Store!</a> or{" "}
-                <a href="">Mozilla Store</a>
+                Get it for{" "}
+                <ExternalLink href="https://chrome.google.com/webstore/detail/signum-xt-wallet/kdgponmicjmjiejhifbjgembdcaclcib">
+                  Google Chrome
+                </ExternalLink>{" "}
+                or{" "}
+                <ExternalLink href="https://addons.mozilla.org/en-US/firefox/addon/signum-xt-wallet">
+                  Mozilla Firefox
+                </ExternalLink>
               </Typography>
             ) : (
               <Typography

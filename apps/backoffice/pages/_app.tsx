@@ -4,7 +4,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { AppContextProvider } from "@/app/contexts/AppContext";
 import { store, storePersistor } from "@/states/store";
-import { AppInitializer } from "@/app/components/AppInitializer";
+import { AppInitializer } from "@/app/components/appInitializer";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, StyledEngineProvider } from "@mui/material";
 import { theme } from "@/app/themes";

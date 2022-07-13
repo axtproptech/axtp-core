@@ -14,9 +14,8 @@ import {
   Typography,
 } from "@mui/material";
 import { Transition } from "@/app/components/animation";
-import { MainCard } from "@/app/components/Cards/MainCard";
+import { MainCard, WalletConnectorCard } from "@/app/components/cards";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { WalletConnectorCard } from "@/app/components/Cards/walletConnectorCard";
 import { IconLogout, IconSettings, IconUser } from "@tabler/icons";
 import React, { FC, useState } from "react";
 import { VirtualElement } from "@popperjs/core";
