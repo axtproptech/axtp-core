@@ -16,13 +16,13 @@ a {
 }
 
 :root {
-  --primary-color: #4caf50;
-  --primary-light-color: #80e27e;
-  --primary-dark-color: #087f23;
+  --primary-color: #2196f3;
+  --primary-light-color: #90caf9;
+  --primary-dark-color: #1565c0;
 
-  --secondary-color: #0099ff;
-  --secondary-light-color: #69c9ff;
-  --secondary-dark-color: #006ccb;
+  --secondary-color: #673ab7;
+  --secondary-light-color: #b39ddb;
+  --secondary-dark-color: #4527a0;
 }
 
 /* Nprogress custom styling */

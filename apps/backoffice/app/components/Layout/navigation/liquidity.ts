@@ -1,6 +1,6 @@
 import { IconBuildingBank } from "@tabler/icons";
 
-export const pools = {
+export const liquidity = {
   id: "liquidity",
   title: "Liquidity",
   type: "group",
@@ -9,7 +9,7 @@ export const pools = {
       id: "view-liquidity",
       title: "Manage Liquidity",
       type: "item",
-      url: "/admin/liquididty",
+      url: "/admin/liquidity",
       icon: IconBuildingBank,
       breadcrumbs: false,
     },

@@ -23,5 +23,6 @@ export const Config = {
   },
   Layout: {
     DrawerWidth: 260,
+    GridSpacing: 3,
   },
 };

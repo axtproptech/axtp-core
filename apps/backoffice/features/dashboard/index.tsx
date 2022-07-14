@@ -1,9 +1,11 @@
 import { Grid } from "@mui/material";
 import { EarningCard } from "./components/earningCard";
+import { Config } from "@/app/config";
+
+const gridSpacing = Config.Layout.GridSpacing;
 
 export const Dashboard = () => {
   const isLoading = false;
-  const gridSpacing = 3;
   return (
     <Grid container spacing={gridSpacing}>
       <Grid item xs={12}>
