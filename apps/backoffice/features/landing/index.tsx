@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import { CardWrapper1, MainCard } from "@/app/components/cards";
+import { CardWrapperDark, MainCard } from "@/app/components/cards";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 
@@ -14,7 +14,7 @@ export const Landing = () => {
       <Grid item xs={3} />
       <Grid item xs={6}>
         <MainCard title="R.Est Landing Page" darkTitle>
-          <CardWrapper1>
+          <CardWrapperDark>
             <Box
               onClick={handleAdminPanel}
               sx={{
@@ -27,7 +27,7 @@ export const Landing = () => {
                 Admin Area
               </Typography>
             </Box>
-          </CardWrapper1>
+          </CardWrapperDark>
         </MainCard>
       </Grid>
     </Grid>

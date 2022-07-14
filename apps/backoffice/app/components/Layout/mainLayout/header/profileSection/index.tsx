@@ -4,7 +4,7 @@ import { Chip } from "@mui/material";
 
 import { IconSettings } from "@tabler/icons";
 import { useSession } from "next-auth/react";
-import { ProfileMenu } from "@/app/components/Layout/MainLayout/Header/profileSection/profileMenu";
+import { ProfileMenu } from "./profileMenu";
 import { Avatar } from "@/app/components/avatar";
 
 export const ProfileSection = () => {

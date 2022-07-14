@@ -1,13 +1,11 @@
-import PropTypes from "prop-types";
-
 import { useTheme } from "@mui/material/styles";
 import { Box, Drawer, useMediaQuery } from "@mui/material";
 
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { BrowserView, MobileView } from "react-device-detect";
 
-import { MenuList } from "./MenuList";
-import LogoSection from "../LogoSection";
+import { MenuList } from "./menuList";
+import LogoSection from "../logoSection";
 import { Config } from "@/app/config";
 import { FC } from "react";
 

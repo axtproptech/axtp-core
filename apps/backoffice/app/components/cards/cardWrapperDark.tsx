@@ -1,7 +1,7 @@
 import { styled } from "@mui/material";
 import { MainCard } from "@/app/components/cards/mainCard";
 
-export const CardWrapper1 = styled(MainCard)(({ theme }) => ({
+export const CardWrapperDark = styled(MainCard)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.dark,
   color: "#fff",
   overflow: "hidden",

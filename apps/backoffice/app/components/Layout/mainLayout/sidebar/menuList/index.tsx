@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { NavGroup } from "./NavGroup";
+import { NavGroup } from "./navGroup";
 import { menuItems } from "../../../navigation";
 
 export const MenuList = () => (

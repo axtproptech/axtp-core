@@ -8,8 +8,8 @@ import {
   useMediaQuery,
 } from "@mui/material";
 
-import { Header } from "./Header";
-import { Sidebar } from "./Sidebar";
+import { Header } from "./header";
+import { Sidebar } from "./sidebar";
 import { actions } from "@/app/states/appState";
 import { selectIsLeftDrawerOpened } from "@/app/states/appState";
 import { useAppDispatch, useAppSelector } from "@/states/hooks";

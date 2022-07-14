@@ -5,7 +5,7 @@ import "nprogress/nprogress.css";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { SnackBar } from "./components/SnackBar";
 import { ChildrenProps } from "@/types/ChildrenProps";
-import { MainLayout } from "@/app/components/Layout/MainLayout";
+import { MainLayout } from "./mainLayout";
 
 export const Layout: FC<ChildrenProps> = ({ children }) => {
   const router = useRouter();

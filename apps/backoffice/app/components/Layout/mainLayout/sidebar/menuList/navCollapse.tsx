@@ -10,7 +10,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { NavItem } from "../NavItem";
+import { NavItem } from "./navItem";
 
 interface Props {
   menu: any;

@@ -1,7 +1,7 @@
 import { useTheme } from "@mui/material/styles";
 import { Divider, List, Typography } from "@mui/material";
-import { NavItem } from "../NavItem";
-import { NavCollapse } from "../NavCollapse";
+import { NavItem } from "./navItem";
+import { NavCollapse } from "./navCollapse";
 import { FC } from "react";
 
 interface Props {
