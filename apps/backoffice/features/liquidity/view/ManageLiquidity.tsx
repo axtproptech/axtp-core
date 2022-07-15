@@ -51,5 +51,3 @@ export const ManageLiquidity = () => {
     </Grid>
   );
 };
-
-export default ManageLiquidity;

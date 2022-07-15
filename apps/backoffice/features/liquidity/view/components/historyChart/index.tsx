@@ -1,12 +1,17 @@
 import { Card } from "@mui/material";
 import { chartData } from "./chartData";
-import Chart from "react-apexcharts";
+import dynamic from "next/dynamic";
+
+const DynamicChart = dynamic(() => import("react-apexcharts"), {
+  loading: () => null,
+  ssr: false,
+});
 
 export const HistoryChart = () => {
   return (
     <Card sx={{ p: 2 }}>
       {/*@ts-ignore*/}
-      <Chart {...chartData} />
+      <DynamicChart {...chartData} />
     </Card>
   );
 };
