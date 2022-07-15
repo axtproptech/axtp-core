@@ -5,17 +5,7 @@ import { MintActionCard } from "@/features/liquidity/view/components/mintActionC
 import { BurnActionCard } from "@/features/liquidity/view/components/burnActionCard";
 import { MintApprovalCard } from "@/features/liquidity/view/components/mintApprovalCard";
 import { BurnApprovalCard } from "@/features/liquidity/view/components/burnApprovalCard";
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
-
-const HistoryChart = dynamic(
-  () => import("./components/dynamicHistoryChart"),
-
-  {
-    suspense: true,
-    ssr: false,
-  }
-);
+import { HistoryChart } from "@/features/liquidity/view/components/historyChart";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
@@ -34,9 +24,7 @@ export const ManageLiquidity = () => {
             />
           </Grid>
           <Grid item lg={8} md={6} sm={6} xs={12}>
-            <Suspense fallback="Loading...">
-              <HistoryChart />
-            </Suspense>
+            <HistoryChart />
           </Grid>
         </Grid>
       </Grid>
@@ -63,3 +51,5 @@ export const ManageLiquidity = () => {
     </Grid>
   );
 };
+
+export default ManageLiquidity;

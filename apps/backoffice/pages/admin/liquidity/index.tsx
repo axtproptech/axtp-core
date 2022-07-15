@@ -1,10 +1,17 @@
 import { Layout } from "@/app/components/layout";
-import { ManageLiquidity } from "@/features/liquidity";
+import dynamic from "next/dynamic";
 
-export default function poolsPage() {
+const DynamicManageLiquidity = dynamic(
+  () => import("@/features/liquidity/view/ManageLiquidity"),
+  {
+    loading: () => null,
+    ssr: false,
+  }
+);
+export default function manageLiquidityPage() {
   return (
     <Layout>
-      <ManageLiquidity />
+      <DynamicManageLiquidity />
     </Layout>
   );
 }
