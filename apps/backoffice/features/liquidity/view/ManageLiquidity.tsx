@@ -1,11 +1,21 @@
-import { Box, Grid, Typography } from "@mui/material";
-import { EarningCard } from "@/features/dashboard/components/earningCard";
+import { Grid } from "@mui/material";
 import { Config } from "@/app/config";
 import { LiquidityCard } from "@/features/liquidity/view/components/liquidityCard";
 import { MintActionCard } from "@/features/liquidity/view/components/mintActionCard";
 import { BurnActionCard } from "@/features/liquidity/view/components/burnActionCard";
 import { MintApprovalCard } from "@/features/liquidity/view/components/mintApprovalCard";
 import { BurnApprovalCard } from "@/features/liquidity/view/components/burnApprovalCard";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
+
+const HistoryChart = dynamic(
+  () => import("./components/dynamicHistoryChart"),
+
+  {
+    suspense: true,
+    ssr: false,
+  }
+);
 
 const gridSpacing = Config.Layout.GridSpacing;
 
@@ -23,18 +33,10 @@ export const ManageLiquidity = () => {
               liquidity="1.500.000,00"
             />
           </Grid>
-          <Grid item lg={4} md={6} sm={6} xs={12}>
-            {/*<TotalOrderLineChartCard isLoading={isLoading} />*/}
-          </Grid>
-          <Grid item lg={4} md={12} sm={12} xs={12}>
-            <Grid container spacing={gridSpacing}>
-              <Grid item sm={6} xs={12} md={6} lg={12}>
-                {/*<TotalIncomeDarkCard isLoading={isLoading} />*/}
-              </Grid>
-              <Grid item sm={6} xs={12} md={6} lg={12}>
-                {/*<TotalIncomeLightCard isLoading={isLoading} />*/}
-              </Grid>
-            </Grid>
+          <Grid item lg={8} md={6} sm={6} xs={12}>
+            <Suspense fallback="Loading...">
+              <HistoryChart />
+            </Suspense>
           </Grid>
         </Grid>
       </Grid>
