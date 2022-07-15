@@ -6,9 +6,11 @@ Use this scenarios to test the contract with the [SmartC Simulator](https://dele
 `APPROVE_MINT_STC = 8c51361c09aa9bd2`
 `REQUEST_SEND_TO_POOL = b5cf9834bf80b0ac`
 `APPROVE_SEND_TO_POOL = 094ac265e934bd10`
+`REQUEST_BURN_STC = f5dc19bd7ae21ec7`
+`APPROVE_BURN_STC = 8ce54b19ff9a088b`
 
 
-```js
+```json
 [
   {
     // initialize contract
@@ -64,6 +66,38 @@ Use this scenarios to test the contract with the [SmartC Simulator](https://dele
     "recipient": "999n",
     "amount": "2500_0000n",
     "messageHex": "8c51361c09aa9bd2"
-  }
+  },
+   {
+    // Request Burning - 10 STC
+    "blockheight": 10,
+    "sender": "1n",
+    "recipient": "999n",
+    "amount": "2500_0000n",
+    "messageHex": "f5dc19bd7ae21ec70a00000000000000"
+  },
+  {
+    // Approve Burning Request
+    "blockheight": 12,
+    "sender": "3n",
+    "recipient": "999n",
+    "amount": "2500_0000n",
+    "messageHex": "8ce54b19ff9a088b"
+  },
+  {
+    // Approve Burning Request
+    "blockheight": 12,
+    "sender": "2n",
+    "recipient": "999n",
+    "amount": "2500_0000n",
+    "messageHex": "8ce54b19ff9a088b"
+  },
+  {
+    // Approve Burning Request - triggers burn
+    "blockheight": 14,
+    "sender": "4n",
+    "recipient": "999n",
+    "amount": "2500_0000n",
+    "messageHex": "8ce54b19ff9a088b"
+  },
 ]
 ```

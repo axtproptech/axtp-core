@@ -35,6 +35,8 @@
 // Set public functions magic numbers
 #define REQUEST_MINT_STC 0x2ad2251e2c50bb44
 #define APPROVE_MINT_STC 0xd29baa091c36518c
+#define REQUEST_BURN_STC 0xc71ee27abd19dcf5
+#define APPROVE_BURN_STC 0x8b089aff194be58c
 #define REQUEST_SEND_TO_POOL 0xacb080bf3498cfb5
 #define APPROVE_SEND_TO_POOL 0xe3d9426f20c5859b
 
@@ -46,6 +48,7 @@
 // internal values, i.e. set during execution
 long stcTokenId;
 long pendingMintSTC;
+long pendingBurnSTC;
 long requestedPoolSendAddress;
 long pendingPoolSendSTC;
 long messageBuffer[4];
@@ -54,6 +57,7 @@ long messageBuffer[4];
 struct APPROVAL {
   long account,
     mintApproved,
+    burnApproved,
     poolSendApproved;
 } approvals[4];
 
@@ -82,6 +86,12 @@ void main(void) {
                 break;
             case APPROVE_MINT_STC:
                 ApproveMintSTC();
+            break;
+            case REQUEST_BURN_STC:
+                RequestBurnSTC(currentTX.message[1]);
+                break;
+            case APPROVE_BURN_STC:
+                ApproveBurnSTC();
             break;
             case REQUEST_SEND_TO_POOL:
                 RequestSendToPool(currentTX.message[1], currentTX.message[2]);
@@ -113,6 +123,13 @@ void resetMintActionApproval() {
     approvals[3].mintApproved = 0;
 }
 
+void resetBurnActionApproval() {
+    approvals[0].burnApproved = 0;
+    approvals[1].burnApproved = 0;
+    approvals[2].burnApproved = 0;
+    approvals[3].burnApproved = 0;
+}
+
 void resetPoolSendActionApproval() {
     approvals[0].poolSendApproved = 0;
     approvals[1].poolSendApproved = 0;
@@ -142,6 +159,33 @@ long approveMintAction() {
         approvals[1].mintApproved +
         approvals[2].mintApproved +
         approvals[3].mintApproved) >= MinimumApproval){
+       return 1;
+   }
+   return 0;
+
+}
+
+long approveBurnAction() {
+    if( approvals[0].account == currentTX.sender ) {
+        approvals[0].burnApproved = 1;
+    }
+
+    if( approvals[1].account == currentTX.sender ) {
+        approvals[1].burnApproved = 1;
+    }
+
+    if( approvals[2].account == currentTX.sender ) {
+        approvals[2].burnApproved = 1;
+    }
+
+    if( approvals[3].account == currentTX.sender ) {
+        approvals[3].burnApproved = 1;
+    }
+
+    if ((approvals[0].burnApproved +
+        approvals[1].burnApproved +
+        approvals[2].burnApproved +
+        approvals[3].burnApproved) >= MinimumApproval){
        return 1;
    }
    return 0;
@@ -232,3 +276,22 @@ void ApproveMintSTC(){
     }
 }
 
+void RequestBurnSTC(long quantitySTC) {
+    if(!isAuthorized()){
+        return;
+    }
+    pendingBurnSTC = quantitySTC;
+    resetBurnActionApproval();
+}
+
+void ApproveBurnSTC(){
+    if(!isAuthorized()){
+        return;
+    }
+
+    if(approveBurnAction()){
+        sendQuantity(pendingBurnSTC, stcTokenId, 0);
+        pendingBurnSTC = 0;
+        resetBurnActionApproval();
+    }
+}

@@ -4,6 +4,8 @@ import { Config } from "@/app/config";
 import { LiquidityCard } from "@/features/liquidity/view/components/liquidityCard";
 import { MintActionCard } from "@/features/liquidity/view/components/mintActionCard";
 import { BurnActionCard } from "@/features/liquidity/view/components/burnActionCard";
+import { MintApprovalCard } from "@/features/liquidity/view/components/mintApprovalCard";
+import { BurnApprovalCard } from "@/features/liquidity/view/components/burnApprovalCard";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
@@ -38,18 +40,22 @@ export const ManageLiquidity = () => {
       </Grid>
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={4}>
             <MintActionCard />
           </Grid>
-          <Grid item xs={12} md={6}></Grid>
+          <Grid item xs={12} md={8}>
+            <MintApprovalCard />
+          </Grid>
         </Grid>
       </Grid>
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={4}>
             <BurnActionCard />
           </Grid>
-          <Grid item xs={12} md={6}></Grid>
+          <Grid item xs={12} md={8}>
+            <BurnApprovalCard />
+          </Grid>
         </Grid>
       </Grid>
     </Grid>
