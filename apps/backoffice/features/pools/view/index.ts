@@ -1,2 +1,2 @@
-export * from "./AllPools";
-export * from "./ManagePool";
+export * from "./allPools";
+export * from "./managePool";
