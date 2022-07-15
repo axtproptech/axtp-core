@@ -63,6 +63,8 @@ importers:
       react: 18.2.0
       react-device-detect: ^2.2.2
       react-dom: 18.2.0
+      react-hook-form: ^7.33.1
+      react-number-format: ^4.9.3
       react-perfect-scrollbar: ^1.5.8
       react-redux: ^8.0.2
       redux-persist: ^6.0.0
@@ -94,6 +96,8 @@ importers:
       react: 18.2.0
       react-device-detect: 2.2.2_biqbaboplfbrettd7655fr4n2y
       react-dom: 18.2.0_react@18.2.0
+      react-hook-form: 7.33.1_react@18.2.0
+      react-number-format: 4.9.3_biqbaboplfbrettd7655fr4n2y
       react-perfect-scrollbar: 1.5.8_biqbaboplfbrettd7655fr4n2y
       react-redux: 8.0.2_rxpulxqxsibgdk5rs4llgxl6gy
       redux-persist: 6.0.0_react@18.2.0+redux@4.2.0
@@ -7766,6 +7770,18 @@ packages:
       scheduler: 0.23.0
     dev: false
 
+  /react-hook-form/7.33.1_react@18.2.0:
+    resolution:
+      {
+        integrity: sha512-ydTfTxEJdvgjCZBj5DDXRc58oTEfnFupEwwTAQ9FSKzykEJkX+3CiAkGtAMiZG7IPWHuzgT6AOBfogiKhUvKgg==,
+      }
+    engines: { node: ">=12.22.0" }
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /react-is/16.13.1:
     resolution:
       {
@@ -7777,6 +7793,20 @@ packages:
       {
         integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==,
       }
+
+  /react-number-format/4.9.3_biqbaboplfbrettd7655fr4n2y:
+    resolution:
+      {
+        integrity: sha512-am1A1xYAbENuKJ+zpM7V+B1oRTSeOHYltqVKExznIVFweBzhLmOBmyb1DfIKjHo90E0bo1p3nzVJ2NgS5xh+sQ==,
+      }
+    peerDependencies:
+      react: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /react-perfect-scrollbar/1.5.8_biqbaboplfbrettd7655fr4n2y:
     resolution:

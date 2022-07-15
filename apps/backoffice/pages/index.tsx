@@ -1,4 +1,4 @@
-import { MinimumLayout } from "@/app/components/Layout/minimumLayout";
+import { MinimumLayout } from "@/app/components/layout/minimumLayout";
 import { Landing } from "@/features/landing";
 
 export default function Page() {

@@ -1,4 +1,4 @@
-import { Layout } from "@/app/components/Layout";
+import { Layout } from "@/app/components/layout";
 import { ManageLiquidity } from "@/features/liquidity";
 
 export default function poolsPage() {

@@ -2,6 +2,8 @@ import { Box, Grid, Typography } from "@mui/material";
 import { EarningCard } from "@/features/dashboard/components/earningCard";
 import { Config } from "@/app/config";
 import { LiquidityCard } from "@/features/liquidity/view/components/liquidityCard";
+import { MintActionCard } from "@/features/liquidity/view/components/mintActionCard";
+import { BurnActionCard } from "@/features/liquidity/view/components/burnActionCard";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
@@ -36,12 +38,18 @@ export const ManageLiquidity = () => {
       </Grid>
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
-          <Grid item xs={12} md={8}>
-            {/*<TotalGrowthBarChart isLoading={isLoading} />*/}
+          <Grid item xs={12} md={6}>
+            <MintActionCard />
           </Grid>
-          <Grid item xs={12} md={4}>
-            {/*<PopularCard isLoading={isLoading} />*/}
+          <Grid item xs={12} md={6}></Grid>
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container spacing={gridSpacing}>
+          <Grid item xs={12} md={6}>
+            <BurnActionCard />
           </Grid>
+          <Grid item xs={12} md={6}></Grid>
         </Grid>
       </Grid>
     </Grid>

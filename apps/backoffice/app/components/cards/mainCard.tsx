@@ -3,6 +3,7 @@ import { forwardRef, HTMLAttributes, ReactElement, ReactNode } from "react";
 import { useTheme } from "@mui/material/styles";
 import {
   Card,
+  CardActions,
   CardContent,
   CardHeader,
   Divider,
@@ -17,6 +18,7 @@ interface Props {
   border?: boolean;
   boxShadow?: boolean;
   children: ReactNode;
+  actions?: ReactNode;
   content?: boolean;
   contentClass?: string;
   contentSX?: object;
@@ -42,6 +44,7 @@ export const MainCard = forwardRef<any, Props>(
       shadow,
       sx = {},
       title,
+      actions,
       ...others
     },
     ref
@@ -82,6 +85,7 @@ export const MainCard = forwardRef<any, Props>(
           </CardContent>
         )}
         {!content && children}
+        {actions && <CardActions>{actions}</CardActions>}
       </Card>
     );
   }

@@ -1,15 +1,7 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 
-import { styled, useTheme } from "@mui/material/styles";
-import {
-  Avatar,
-  Box,
-  Grid,
-  Menu,
-  MenuItem,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { Avatar, Box, Grid, Stack, Typography } from "@mui/material";
 
 import { IconCash, IconFlame, IconSeeding } from "@tabler/icons";
 import { CardWrapperDark } from "@/app/components/cards";
@@ -79,16 +71,24 @@ export const LiquidityCard: FC<Props> = ({
                       alignItems="center"
                       sx={{ mb: 1 }}
                     >
-                      <Typography>
-                        <Stack direction="row" alignItems="center">
-                          <IconSeeding />+ {mintLiquidity}
-                        </Stack>
-                      </Typography>
-                      <Typography>
-                        <Stack direction="row" alignItems="center">
-                          <IconFlame />- {burnLiquidity}
-                        </Stack>
-                      </Typography>
+                      <Stack
+                        justifyContent="start"
+                        direction="row"
+                        alignItems="center"
+                      >
+                        <IconSeeding />
+                        &nbsp;
+                        <Typography>+{mintLiquidity}</Typography>
+                      </Stack>
+                      <Stack
+                        justifyContent="start"
+                        direction="row"
+                        alignItems="center"
+                      >
+                        <IconFlame />
+                        &nbsp;
+                        <Typography>-{burnLiquidity}</Typography>
+                      </Stack>
                     </Stack>
                   </Grid>
                 </Grid>

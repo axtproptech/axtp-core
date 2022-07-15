@@ -8,7 +8,7 @@ import { AppInitializer } from "@/app/components/appInitializer";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, StyledEngineProvider } from "@mui/material";
 import { theme } from "@/app/themes";
-import { NavigationScroll } from "@/app/components/Layout/NavigationScroll";
+import { NavigationScroll } from "@/app/components/layout/NavigationScroll";
 import { SessionProvider } from "next-auth/react";
 
 export default function App({ Component, pageProps }: AppProps) {

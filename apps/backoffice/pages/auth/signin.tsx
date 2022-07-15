@@ -3,7 +3,7 @@ import { getProviders } from "next-auth/react";
 import { unstable_getServerSession } from "next-auth";
 import { GetServerSidePropsContext } from "next";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { MinimumLayout } from "@/app/components/Layout/minimumLayout";
+import { MinimumLayout } from "@/app/components/layout/minimumLayout";
 
 export async function getServerSideProps({
   req,
