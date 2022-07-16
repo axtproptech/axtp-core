@@ -1,10 +1,12 @@
 import { Ledger, LedgerClientFactory } from "@signumjs/core";
 import { Wallet } from "@signumjs/wallets";
+import { MasterContractService } from "./MasterContractService";
 import { ServiceContext } from "./ServiceContext";
 import { WalletDecorator } from "./WalletDecorator";
 
 export class LedgerService {
   private readonly ledger: Ledger;
+  private readonly masterContractService: MasterContractService;
 
   constructor(
     private nodeHost: string,
@@ -20,6 +22,12 @@ export class LedgerService {
       accountPublicKey,
       wallet: new WalletDecorator(wallet),
     };
+
+    this.masterContractService = new MasterContractService(context);
+  }
+
+  get masterContract(): MasterContractService {
+    return this.masterContractService;
   }
 
   async doesAccountExist(accountId: string): Promise<boolean> {

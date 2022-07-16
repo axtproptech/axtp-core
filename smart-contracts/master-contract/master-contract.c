@@ -3,29 +3,28 @@
 #pragma optimizationLevel 3
 
 #define VERSION 1
-#define MINT_ACTION 10
-#define POOL_PENDING_KEY 2
-
 #define SIMULATOR
 // #define TESTNET
 // #define MAINNET
 
 
 #ifdef SIMULATOR
+    #define TOKEN_NAME "SIMRESTC"
     #define APPROVER_1 1
     #define APPROVER_2 2
     #define APPROVER_3 3
     #define APPROVER_4 4
 #endif
 #ifdef TESTNET
-// TO DO
-    #define APPROVER_1 1
-    #define APPROVER_2 2
-    #define APPROVER_3 3
-    #define APPROVER_4 4
+    #define TOKEN_NAME "TRESTC"
+    #define APPROVER_1 3549690777743760998
+    #define APPROVER_2 7473730462792140210
+    #define APPROVER_3 5757380649245251466
+    #define APPROVER_4 10746331379201355428
 #endif
 #ifdef MAINNET
-// TO DO
+    // TO DO
+    #define TOKEN_NAME "RESTC"
     #define APPROVER_1 1
     #define APPROVER_2 2
     #define APPROVER_3 3
@@ -49,8 +48,8 @@
 long stcTokenId;
 long pendingMintSTC;
 long pendingBurnSTC;
-long requestedPoolSendAddress;
 long pendingPoolSendSTC;
+long requestedPoolSendAddress;
 long messageBuffer[4];
 
 
@@ -109,7 +108,7 @@ void main(void) {
 // ---------------- PRIVATE ---------------------------
 
 void constructor() {
-    stcTokenId = issueAsset("RESTC", "", 0);
+    stcTokenId = issueAsset(TOKEN_NAME, "", 0);
     approvals[0].account = APPROVER_1;
     approvals[1].account = APPROVER_2;
     approvals[2].account = APPROVER_3;
@@ -124,10 +123,10 @@ void resetMintActionApproval() {
 }
 
 void resetBurnActionApproval() {
-    approvals[0].burnApproved = 0;
-    approvals[1].burnApproved = 0;
-    approvals[2].burnApproved = 0;
-    approvals[3].burnApproved = 0;
+    approvals[0].mintApproved = 0;
+    approvals[1].mintApproved = 0;
+    approvals[2].mintApproved = 0;
+    approvals[3].mintApproved = 0;
 }
 
 void resetPoolSendActionApproval() {
@@ -295,3 +294,4 @@ void ApproveBurnSTC(){
         resetBurnActionApproval();
     }
 }
+
