@@ -1,7 +1,7 @@
 import { MainCard } from "@/app/components/cards";
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { FC, ReactNode } from "react";
-import { ChildrenProps } from "@/types/ChildrenProps";
+import { ChildrenProps } from "@/types/childrenProps";
 
 interface Props {
   title: string;

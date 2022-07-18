@@ -1,13 +1,11 @@
-import { ServiceContext } from "./ServiceContext";
+import { ServiceContext } from "./serviceContext";
 import { Config } from "@/app/config";
 import { withError } from "./withError";
 import { Amount } from "@signumjs/util";
-import {
-  ApprovalStatus,
-  MasterContractDataView,
-} from "./MasterContractDataView";
-import { InputValidationService } from "@/app/services/InputValidationService";
+import { MasterContractDataView } from "./masterContractDataView";
+import { InputValidationService } from "@/app/services/inputValidationService";
 import { ConfirmedTransaction } from "@signumjs/wallets";
+import { MasterContractData } from "@/types/masterContractData";
 
 const ContractId = Config.MasterContract.Id;
 const ActivationCostsPlanck = Amount.fromSigna(
@@ -17,25 +15,16 @@ const InteractionFeePlanck = Amount.fromSigna(
   Config.MasterContract.InteractionFee
 ).getPlanck();
 
-interface ContractData {
-  balance: Amount;
-  tokenId: string;
-  currentSendPoolAddress: string;
-  approvalStatusMinting: ApprovalStatus;
-  approvalStatusBurning: ApprovalStatus;
-  approvalStatusSendToPool: ApprovalStatus;
-}
-
 export class MasterContractService {
   constructor(private context: ServiceContext) {}
 
   public async readContractData() {
-    return withError<ContractData>(async () => {
+    return withError<MasterContractData>(async () => {
       const { ledger } = this.context;
       const contract = await ledger.contract.getContract(ContractId);
       const contractDataView = new MasterContractDataView(contract);
       return {
-        balance: Amount.fromPlanck(contract.balanceNQT),
+        balance: Amount.fromPlanck(contract.balanceNQT).getSigna(),
         tokenId: contractDataView.getTokenId(),
         currentSendPoolAddress: contractDataView.getCurrentPoolAddress(),
         approvalStatusBurning: contractDataView.getBurningApprovalStatus(),

@@ -4,7 +4,7 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { SnackBar } from "./components/SnackBar";
-import { ChildrenProps } from "@/types/ChildrenProps";
+import { ChildrenProps } from "@/types/childrenProps";
 import { MainLayout } from "./mainLayout";
 
 export const Layout: FC<ChildrenProps> = ({ children }) => {

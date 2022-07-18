@@ -18,7 +18,8 @@ import { isClientSide } from "@/app/isClientSide";
 import { storage } from "./storage";
 
 import { appSlice } from "@/app/states/appState";
-import { accountState } from "@/app/states/accountState";
+import { accountSlice } from "@/app/states/accountState";
+import { masterContractSlice } from "@/app/states/masterContractState";
 
 function persist<T = any>(config: any, reducer: Reducer) {
   return isClientSide()
@@ -40,14 +41,25 @@ const accountPersistConfig = {
   storage,
 };
 
+const masterContractPersistConfig = {
+  key: "masterContract",
+  version: 1,
+  storage,
+  whitelist: ["masterContract"],
+};
+
 const rootReducer = combineReducers({
   appState: persist<ReturnType<typeof appSlice.reducer>>(
     appPersistConfig,
     appSlice.reducer
   ),
-  accountState: persist<ReturnType<typeof accountState.reducer>>(
+  accountState: persist<ReturnType<typeof accountSlice.reducer>>(
     accountPersistConfig,
-    accountState.reducer
+    accountSlice.reducer
+  ),
+  masterContractState: persist<ReturnType<typeof masterContractSlice.reducer>>(
+    masterContractPersistConfig,
+    masterContractSlice.reducer
   ),
 });
 

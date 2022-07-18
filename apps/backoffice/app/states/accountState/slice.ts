@@ -10,7 +10,7 @@ const initialState: AccountState = {
   rememberWalletConnection: false,
 };
 
-export const accountState = createSlice({
+export const accountSlice = createSlice({
   name: "account",
   initialState,
   reducers: {
@@ -24,4 +24,4 @@ export const accountState = createSlice({
   },
 });
 
-export const { actions } = accountState;
+export const { actions } = accountSlice;

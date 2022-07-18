@@ -1,7 +1,7 @@
 import { FC, forwardRef } from "react";
 
 import { Collapse, Fade, Box, Grow, Slide, Zoom } from "@mui/material";
-import { ChildrenProps } from "@/types/ChildrenProps";
+import { ChildrenProps } from "@/types/childrenProps";
 
 interface Props {
   type?: "grow" | "fade" | "collapse" | "slide" | "zoom";

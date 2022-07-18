@@ -22,7 +22,7 @@ export const ChargeContractCard = () => {
   const [transactionId, setTransactionId] = useState("");
 
   // @ts-ignore
-  const { control, getValues } = useForm<FormValues>({
+  const { control, getValues, reset } = useForm<FormValues>({
     defaultValues: {
       amount: 10,
     },
@@ -36,9 +36,9 @@ export const ChargeContractCard = () => {
     try {
       const { amount } = getValues();
       const value = Amount.fromSigna(amount);
-      const { transactionId } =
-        await ledgerService.masterContract.rechargeContract(value);
-      setTransactionId(transactionId);
+      const tx = await ledgerService.masterContract.rechargeContract(value);
+      setTransactionId(tx.transactionId);
+      reset();
       showSuccess("Successfully charged contract");
     } catch (e: any) {
       showError(`Someting failed: ${e.message}`);

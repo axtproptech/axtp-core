@@ -1,4 +1,5 @@
 import { Contract, ContractDataView } from "@signumjs/contracts";
+import { ApprovalStatus } from "@/types/masterContractData";
 
 enum MasterContractDataIndex {
   TokenId = 5,
@@ -23,11 +24,6 @@ enum MasterContractDataIndex {
   ApprovalApprovedBurn4,
   ApprovalApprovedSendToPool4,
   MiniumApprovalCount,
-}
-
-export interface ApprovalStatus {
-  approvedAccounts: string[];
-  quantity: string;
 }
 
 export class MasterContractDataView {

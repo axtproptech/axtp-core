@@ -1,9 +1,9 @@
-import { FC, createContext, FunctionComponent } from "react";
+import { FC, createContext } from "react";
 import { isClientSide } from "../isClientSide";
 import { Config } from "../config";
 import { DeeplinkableWallet, GenericExtensionWallet } from "@signumjs/wallets";
 import { isMobile } from "react-device-detect";
-import { ChildrenProps } from "../../types/ChildrenProps";
+import { ChildrenProps } from "@/types/childrenProps";
 
 export interface AppContextType {
   IsClientSide: boolean;

@@ -1,4 +1,4 @@
-import { ChildrenProps } from "@/types/ChildrenProps";
+import { ChildrenProps } from "@/types/childrenProps";
 import { FC } from "react";
 import { styled } from "@mui/material/styles";
 

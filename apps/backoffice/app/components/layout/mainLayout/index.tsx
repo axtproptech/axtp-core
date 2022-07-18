@@ -14,7 +14,7 @@ import { actions } from "@/app/states/appState";
 import { selectIsLeftDrawerOpened } from "@/app/states/appState";
 import { useAppDispatch, useAppSelector } from "@/states/hooks";
 import { Config } from "@/app/config";
-import { ChildrenProps } from "@/types/ChildrenProps";
+import { ChildrenProps } from "@/types/childrenProps";
 
 export const drawerWidth = Config.Layout.DrawerWidth;
 

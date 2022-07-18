@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { motion, useCycle } from "framer-motion";
-import { ChildrenProps } from "@/types/ChildrenProps";
+import { ChildrenProps } from "@/types/childrenProps";
 
 interface Props {
   offset?: number;

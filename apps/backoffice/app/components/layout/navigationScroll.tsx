@@ -1,6 +1,6 @@
 import { FC, ReactElement, useEffect } from "react";
 import { useRouter } from "next/router";
-import { ChildrenProps } from "@/types/ChildrenProps";
+import { ChildrenProps } from "@/types/childrenProps";
 
 export const NavigationScroll: FC<ChildrenProps<ReactElement>> = ({
   children,

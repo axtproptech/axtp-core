@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { ChildrenProps } from "@/types/ChildrenProps";
+import { ChildrenProps } from "@/types/childrenProps";
 import { Box, Container } from "@mui/material";
 import { styled } from "@mui/material/styles";
 

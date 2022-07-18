@@ -1,5 +1,5 @@
 import { Ledger } from "@signumjs/core";
-import { WalletDecorator } from "./WalletDecorator";
+import { WalletDecorator } from "./walletDecorator";
 
 export interface ServiceContext {
   ledger: Ledger;

@@ -1,8 +1,8 @@
 import { Ledger, LedgerClientFactory } from "@signumjs/core";
 import { Wallet } from "@signumjs/wallets";
-import { MasterContractService } from "./MasterContractService";
-import { ServiceContext } from "./ServiceContext";
-import { WalletDecorator } from "./WalletDecorator";
+import { MasterContractService } from "./masterContractService";
+import { ServiceContext } from "./serviceContext";
+import { WalletDecorator } from "./walletDecorator";
 
 export class LedgerService {
   private readonly ledger: Ledger;
