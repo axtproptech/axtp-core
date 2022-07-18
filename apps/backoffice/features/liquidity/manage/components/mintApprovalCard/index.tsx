@@ -1,48 +1,48 @@
-import { ActionCard } from "@/features/liquidity/view/components/actionCard";
-import { IconFlame, IconUserCheck } from "@tabler/icons";
+import { ActionCard } from "../actionCard";
+import { IconSeeding, IconUserCheck } from "@tabler/icons";
 import { Box } from "@mui/material";
 import { ApprovalStepper } from "@/app/components/approvalStepper";
 import { HowToVoteRounded } from "@mui/icons-material";
 
 const ApprovalState = [
   {
-    label: "Requested Burning",
+    label: "Requested Minting",
     icon: <HowToVoteRounded />,
-    completed: false,
+    completed: true,
   },
   {
     label: "1st Approval",
     icon: <IconUserCheck />,
-    completed: false,
+    completed: true,
   },
   {
     label: "2nd Approval",
     icon: <IconUserCheck />,
-    completed: false,
+    completed: true,
   },
   {
     label: "2nd Approval",
     icon: <IconUserCheck />,
-    completed: false,
+    completed: true,
   },
   {
-    label: "Burnt",
-    icon: <IconFlame />,
-    completed: false,
+    label: "Minted",
+    icon: <IconSeeding />,
+    completed: true,
   },
 ];
 
-export const BurnApprovalCard = () => {
+export const MintApprovalCard = () => {
   const handleOnApproveAction = () => {
-    console.log("Burnt...");
+    console.log("Minted...");
   };
 
   return (
     <ActionCard
-      title="Approve Liquidity Burning"
-      description="Here you can see if there's a pending burning request and its current approval state"
+      title="Approve Liquidity Minting"
+      description="Here you can see if there's a pending minting request and its current approval state"
       actionIcon={<IconUserCheck />}
-      actionLabel="Approve Burning"
+      actionLabel="Approve Minting"
       onClick={handleOnApproveAction}
     >
       <Box sx={{ width: "100%", p: 0.5 }}>

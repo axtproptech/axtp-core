@@ -1,16 +1,12 @@
 import { Contract, ContractDataView } from "@signumjs/contracts";
 
 enum MasterContractDataIndex {
-  TokenId,
+  TokenId = 5,
   PendingMintToken,
   PendingBurnToken,
   PendingSendToPoolToken,
   RequestedSendToPoolAddress,
-  MessageBuffer1,
-  MessageBuffer2,
-  MessageBuffer3,
-  MessageBuffer4,
-  ApprovalAccount1,
+  ApprovalAccount1 = 16,
   ApprovalApprovedMint1,
   ApprovalApprovedBurn1,
   ApprovalApprovedSendToPool1,
@@ -29,12 +25,12 @@ enum MasterContractDataIndex {
   MiniumApprovalCount,
 }
 
-interface ApprovalStatus {
+export interface ApprovalStatus {
   approvedAccounts: string[];
   quantity: string;
 }
 
-export class NftDataView {
+export class MasterContractDataView {
   private readonly view: ContractDataView;
   private readonly id: string;
 
@@ -47,8 +43,8 @@ export class NftDataView {
     approvalIndex: MasterContractDataIndex,
     accountIndex: MasterContractDataIndex
   ) {
-    const approved1 = this.view.getVariableAsDecimal(approvalIndex);
-    if (approved1) {
+    const approved = parseInt(this.view.getVariableAsDecimal(approvalIndex));
+    if (approved) {
       return this.view.getVariableAsDecimal(accountIndex);
     }
     return "";
@@ -60,6 +56,12 @@ export class NftDataView {
 
   getTokenId(): string {
     return this.view.getVariableAsDecimal(MasterContractDataIndex.TokenId);
+  }
+
+  getCurrentPoolAddress(): string {
+    return this.view.getVariableAsDecimal(
+      MasterContractDataIndex.RequestedSendToPoolAddress
+    );
   }
 
   getMintingApprovalStatus(): ApprovalStatus {

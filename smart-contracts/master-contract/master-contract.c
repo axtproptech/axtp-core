@@ -3,8 +3,8 @@
 #pragma optimizationLevel 3
 
 #define VERSION 1
-#define SIMULATOR
-// #define TESTNET
+// #define SIMULATOR
+#define TESTNET
 // #define MAINNET
 
 
@@ -108,7 +108,7 @@ void main(void) {
 // ---------------- PRIVATE ---------------------------
 
 void constructor() {
-    stcTokenId = issueAsset(TOKEN_NAME, "", 0);
+    stcTokenId = issueAsset(TOKEN_NAME, "", 2);
     approvals[0].account = APPROVER_1;
     approvals[1].account = APPROVER_2;
     approvals[2].account = APPROVER_3;

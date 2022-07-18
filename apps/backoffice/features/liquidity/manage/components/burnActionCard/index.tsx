@@ -1,4 +1,4 @@
-import { ActionCard } from "@/features/liquidity/view/components/actionCard";
+import { ActionCard } from "../actionCard";
 import { IconFlame } from "@tabler/icons";
 import { Box } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";

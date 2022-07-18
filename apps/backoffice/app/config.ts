@@ -16,6 +16,7 @@ export const Config = {
       "https://t-chain.signum.network/",
     Network: process.env.NEXT_PUBLIC_SIGNUM_NETWORK || "Signum-TESTNET",
     AddressPrefix: process.env.NEXT_PUBLIC_SIGNUM_ADDRESS_PREFIX || "TS",
+    TickerSymbol: process.env.NEXT_PUBLIC_SIGNUM_TICKER_SYMBOL || "TSIGNA",
   },
   Platform: {
     Name: process.env.NEXT_PUBLIC_PLATFORM_NAME || "signumswap.io",

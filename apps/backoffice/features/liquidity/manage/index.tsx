@@ -1,11 +1,11 @@
 import { Grid } from "@mui/material";
 import { Config } from "@/app/config";
-import { LiquidityCard } from "@/features/liquidity/view/components/liquidityCard";
-import { MintActionCard } from "@/features/liquidity/view/components/mintActionCard";
-import { BurnActionCard } from "@/features/liquidity/view/components/burnActionCard";
-import { MintApprovalCard } from "@/features/liquidity/view/components/mintApprovalCard";
-import { BurnApprovalCard } from "@/features/liquidity/view/components/burnApprovalCard";
-import { HistoryChart } from "@/features/liquidity/view/components/historyChart";
+import { LiquidityCard } from "./components/liquidityCard";
+import { MintActionCard } from "./components/mintActionCard";
+import { BurnActionCard } from "./components/burnActionCard";
+import { MintApprovalCard } from "./components/mintApprovalCard";
+import { BurnApprovalCard } from "./components/burnApprovalCard";
+import { HistoryChart } from "./components/historyChart";
 
 const gridSpacing = Config.Layout.GridSpacing;
 

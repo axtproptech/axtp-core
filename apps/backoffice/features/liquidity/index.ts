@@ -1,1 +1,2 @@
-export * from "./view/ManageLiquidity";
+export * from "./manage";
+export * from "./contract";

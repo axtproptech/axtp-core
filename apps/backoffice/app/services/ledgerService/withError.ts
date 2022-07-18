@@ -3,11 +3,9 @@ import { HttpError } from "@signumjs/http";
 
 export class LedgerError extends Error {}
 
-type LedgerCallFunction = (
-  ...args: any[]
-) => Promise<string | ConfirmedTransaction>;
+type LedgerCallFunction<T> = (...args: any[]) => Promise<T>;
 
-export async function withError(fn: LedgerCallFunction) {
+export async function withError<T>(fn: LedgerCallFunction<T>) {
   try {
     return await fn();
   } catch (e) {

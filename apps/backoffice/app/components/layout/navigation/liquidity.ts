@@ -1,4 +1,4 @@
-import { IconBuildingBank } from "@tabler/icons";
+import { IconAffiliate, IconBuildingBank } from "@tabler/icons";
 
 export const liquidity = {
   id: "liquidity",
@@ -11,6 +11,14 @@ export const liquidity = {
       type: "item",
       url: "/admin/liquidity",
       icon: IconBuildingBank,
+      breadcrumbs: false,
+    },
+    {
+      id: "view-contract",
+      title: "View Master Contract",
+      type: "item",
+      url: "/admin/liquidity/master-contract",
+      icon: IconAffiliate,
       breadcrumbs: false,
     },
   ],
