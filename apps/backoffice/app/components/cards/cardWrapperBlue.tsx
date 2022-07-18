@@ -15,7 +15,7 @@ export const CardWrapperBlue = styled(MainCard)(({ theme }) => ({
     // @ts-ignore
     background: theme.palette.primary[800],
     borderRadius: "50%",
-    top: -85,
+    top: 72,
     right: -95,
     [theme.breakpoints.down("sm")]: {
       top: -105,
@@ -30,7 +30,7 @@ export const CardWrapperBlue = styled(MainCard)(({ theme }) => ({
     // @ts-ignore
     background: theme.palette.primary[800],
     borderRadius: "50%",
-    top: -125,
+    top: 32,
     right: -15,
     opacity: 0.5,
     [theme.breakpoints.down("sm")]: {

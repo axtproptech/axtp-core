@@ -1,4 +1,5 @@
 import { Amount } from "@signumjs/util";
+import { Config } from "@/app/config";
 
 export class InvalidInputError extends Error {
   constructor(detail?: string) {
@@ -10,7 +11,7 @@ export class InputValidationService {
   public static assertAmountGreaterThan(minimum: Amount, actual: Amount) {
     if (!actual.greater(minimum)) {
       throw new InvalidInputError(
-        `Amount must be greater than ${minimum.getSigna()} Signa`
+        `Amount must be greater than ${minimum.getSigna()} ${Config.Signum.TickerSymbol.toUpperCase()}`
       );
     }
   }
@@ -21,7 +22,7 @@ export class InputValidationService {
   ) {
     if (!actual.greaterOrEqual(minimum)) {
       throw new InvalidInputError(
-        `Amount must be greater or equal than ${minimum.getSigna()} Signa`
+        `Amount must be greater or equal than ${minimum.getSigna()} ${Config.Signum.TickerSymbol.toUpperCase()}`
       );
     }
   }
@@ -33,7 +34,7 @@ export class InputValidationService {
   ) {
     if (actual.greaterOrEqual(minimum) && actual.lessOrEqual(minimum)) return;
     throw new InvalidInputError(
-      `Amount must be between ${minimum.getSigna()} and ${maximum.getSigna()} Signa`
+      `Amount must be between ${minimum.getSigna()} and ${maximum.getSigna()} ${Config.Signum.TickerSymbol.toUpperCase()}`
     );
   }
 

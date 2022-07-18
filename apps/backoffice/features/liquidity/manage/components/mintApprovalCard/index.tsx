@@ -1,4 +1,4 @@
-import { ActionCard } from "../actionCard";
+import { ActionCard } from "../../../components/actionCard";
 import { IconSeeding, IconUserCheck } from "@tabler/icons";
 import { Box } from "@mui/material";
 import { ApprovalStepper } from "@/app/components/approvalStepper";
@@ -21,7 +21,7 @@ const ApprovalState = [
     completed: true,
   },
   {
-    label: "2nd Approval",
+    label: "3rd Approval",
     icon: <IconUserCheck />,
     completed: true,
   },

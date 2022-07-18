@@ -2,6 +2,7 @@
   "name": "rest",
   "version": "1.0.0",
   "description": "This is the mono repo for the R.Est project",
+  "private": true,
   "scripts": {
     "prepare": "husky install",
     "pretty": "prettier --write .",
@@ -30,5 +31,8 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
-  }
+  },
+  "workspaces": [
+    "apps/*"
+  ]
 }

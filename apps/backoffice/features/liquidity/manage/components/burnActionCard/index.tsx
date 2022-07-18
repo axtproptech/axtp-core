@@ -1,4 +1,4 @@
-import { ActionCard } from "../actionCard";
+import { ActionCard } from "../../../components/actionCard";
 import { IconFlame } from "@tabler/icons";
 import { Box } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";

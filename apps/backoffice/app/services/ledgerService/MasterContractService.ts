@@ -6,6 +6,8 @@ import {
   ApprovalStatus,
   MasterContractDataView,
 } from "./MasterContractDataView";
+import { InputValidationService } from "@/app/services/InputValidationService";
+import { ConfirmedTransaction } from "@signumjs/wallets";
 
 const ContractId = Config.MasterContract.Id;
 const ActivationCostsPlanck = Amount.fromSigna(
@@ -54,14 +56,22 @@ export class MasterContractService {
   public async rechargeContract(amount: Amount) {
     return withError(async () => {
       const { ledger, accountPublicKey, wallet } = this.context;
+      InputValidationService.assertAmountGreaterThan(
+        Amount.fromSigna(1),
+        amount
+      );
+
       const { unsignedTransactionBytes } =
         await ledger.transaction.sendAmountToSingleRecipient({
           recipientId: ContractId,
-          feePlanck: Amount.fromSigna(0.01).getSigna(),
+          feePlanck: InteractionFeePlanck,
           amountPlanck: amount.getPlanck(),
           senderPublicKey: accountPublicKey,
         });
-      await wallet.confirm(unsignedTransactionBytes);
+
+      return (await wallet.confirm(
+        unsignedTransactionBytes
+      )) as ConfirmedTransaction;
     });
   }
 

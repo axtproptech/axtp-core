@@ -2,19 +2,22 @@ import { FC } from "react";
 
 import { useTheme } from "@mui/material/styles";
 import { Avatar, Box, Grid, Stack, Typography } from "@mui/material";
-
-import { IconCash } from "@tabler/icons";
+import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
+import PriceCheckRoundedIcon from "@mui/icons-material/PriceCheckRounded";
 import { CardWrapperBlue } from "@/app/components/cards";
 import { SkeletonStatusCard } from "./skeletonStatusCard";
 import { Config } from "@/app/config";
+import { Amount } from "@signumjs/util";
 
 interface Props {
   isLoading: boolean;
-  balance: string;
+  balance: Amount;
 }
 
 export const StatusCard: FC<Props> = ({ balance, isLoading }) => {
   const theme = useTheme();
+
+  const balanceLow = balance.less(Amount.fromSigna(2));
 
   return (
     <>
@@ -27,20 +30,36 @@ export const StatusCard: FC<Props> = ({ balance, isLoading }) => {
               <Grid item>
                 <Grid container justifyContent="space-between">
                   <Grid item>
-                    <Avatar
-                      variant="rounded"
-                      sx={{
-                        // @ts-ignore
-                        ...theme.typography.commonAvatar,
-                        // @ts-ignore
-                        ...theme.typography.largeAvatar,
-                        // @ts-ignore
-                        backgroundColor: theme.palette.primary[800],
-                        mt: 1,
-                      }}
-                    >
-                      <IconCash color={theme.palette.primary.light} />
-                    </Avatar>
+                    <Stack direction="row" alignItems="center">
+                      <Avatar
+                        variant="rounded"
+                        sx={{
+                          // @ts-ignore
+                          ...theme.typography.commonAvatar,
+                          // @ts-ignore
+                          ...theme.typography.largeAvatar,
+                          // @ts-ignore
+                          backgroundColor: theme.palette.primary[800],
+                          mt: 1,
+                        }}
+                      >
+                        {balanceLow ? (
+                          <WarningAmberRoundedIcon color="warning" />
+                        ) : (
+                          <PriceCheckRoundedIcon color="success" />
+                        )}
+                      </Avatar>
+                      {balanceLow && (
+                        <Typography
+                          sx={{
+                            fontWeight: 600,
+                            ml: 1,
+                          }}
+                        >
+                          Low Balance: Please recharge contract!
+                        </Typography>
+                      )}
+                    </Stack>
                   </Grid>
                 </Grid>
               </Grid>
@@ -57,7 +76,7 @@ export const StatusCard: FC<Props> = ({ balance, isLoading }) => {
                           mb: 0.75,
                         }}
                       >
-                        {balance}
+                        {balance.getSigna()}
                       </Typography>
                       <Typography>
                         {Config.Signum.TickerSymbol.toUpperCase()}

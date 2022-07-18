@@ -1,4 +1,3 @@
-import { ConfirmedTransaction } from "@signumjs/wallets";
 import { HttpError } from "@signumjs/http";
 
 export class LedgerError extends Error {}
@@ -13,7 +12,8 @@ export async function withError<T>(fn: LedgerCallFunction<T>) {
     let message = "😭 That did not work!";
     if (e instanceof HttpError) {
       message += ` - Signum Ledger returned: ${e.message}`;
+      throw new LedgerError(message);
     }
-    throw new LedgerError(message);
+    throw e;
   }
 }

@@ -3,6 +3,8 @@ import { Config } from "@/app/config";
 import { StatusCard } from "./components/statusCard";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
 import useSWR from "swr";
+import { Amount } from "@signumjs/util";
+import { ChargeContractCard } from "./components/chargeContractCard";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
@@ -16,7 +18,7 @@ export const MasterContractView = () => {
       return ledgerService.masterContract.readContractData();
     },
     {
-      revalidateOnMount: false,
+      revalidateOnMount: true,
       refreshInterval: 120_000,
     }
   );
@@ -27,15 +29,21 @@ export const MasterContractView = () => {
     <Grid container spacing={gridSpacing}>
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
-          <Grid item lg={4} md={6} sm={6} xs={12}>
+          <Grid item sm={6} xs={12}>
             <StatusCard
               isLoading={isLoading}
-              balance={data ? data.balance.getSigna() : "0"}
+              balance={data ? data.balance : Amount.Zero()}
             />
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12}></Grid>
+      <Grid item xs={12}>
+        <Grid container spacing={gridSpacing}>
+          <Grid item xs={12} sm={6}>
+            <ChargeContractCard />
+          </Grid>
+        </Grid>
+      </Grid>
       <Grid item xs={12}></Grid>
     </Grid>
   );
