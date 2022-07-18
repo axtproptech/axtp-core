@@ -5,7 +5,8 @@ import { Amount } from "@signumjs/util";
 import { MasterContractDataView } from "./masterContractDataView";
 import { InputValidationService } from "@/app/services/inputValidationService";
 import { ConfirmedTransaction } from "@signumjs/wallets";
-import { MasterContractData } from "@/types/masterContractData";
+import { MasterContractData, TokenInfo } from "@/types/masterContractData";
+import { toStableCoinAmount } from "@/app/tokenQuantity";
 
 const ContractId = Config.MasterContract.Id;
 const ActivationCostsPlanck = Amount.fromSigna(
@@ -23,9 +24,10 @@ export class MasterContractService {
       const { ledger } = this.context;
       const contract = await ledger.contract.getContract(ContractId);
       const contractDataView = new MasterContractDataView(contract);
+      const token = await this.getTokenData(contractDataView.getTokenId());
       return {
         balance: Amount.fromPlanck(contract.balanceNQT).getSigna(),
-        tokenId: contractDataView.getTokenId(),
+        token,
         currentSendPoolAddress: contractDataView.getCurrentPoolAddress(),
         approvalStatusBurning: contractDataView.getBurningApprovalStatus(),
         approvalStatusMinting: contractDataView.getMintingApprovalStatus(),
@@ -35,11 +37,18 @@ export class MasterContractService {
     });
   }
 
-  public async getTokenData(tokenId: string) {
-    return withError(async () => {
-      const { ledger } = this.context;
-      return ledger.asset.getAsset(tokenId);
-    });
+  private async getTokenData(tokenId: string): Promise<TokenInfo> {
+    const { ledger } = this.context;
+    const assetInfo = await ledger.asset.getAsset(tokenId);
+    // TODO: adjust signumjs with new quantityCirculatingQNT
+    // @ts-ignore
+    const { name, asset, quantityQNT, quantityCirculatingQNT } = assetInfo;
+    return {
+      name,
+      id: asset,
+      supply: toStableCoinAmount(quantityCirculatingQNT),
+      quantity: toStableCoinAmount(quantityQNT),
+    };
   }
 
   public async rechargeContract(amount: Amount) {

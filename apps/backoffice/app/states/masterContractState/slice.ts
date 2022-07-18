@@ -1,9 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ApprovalStatus, MasterContractData } from "@/types/masterContractData";
+import {
+  ApprovalStatus,
+  MasterContractData,
+  TokenInfo,
+} from "@/types/masterContractData";
 
 const DefaultApprovalStatus: ApprovalStatus = {
   approvedAccounts: [],
-  quantity: "",
+  quantity: "0",
+};
+
+const DefaultTokenData: TokenInfo = {
+  name: "",
+  id: "",
+  quantity: "0",
+  supply: "0",
 };
 
 export interface MasterContractState {
@@ -18,7 +29,7 @@ const initialState: MasterContractState = {
     approvalStatusMinting: DefaultApprovalStatus,
     approvalStatusSendToPool: DefaultApprovalStatus,
     currentSendPoolAddress: "",
-    tokenId: "",
+    token: DefaultTokenData,
   },
   isInitializing: true,
 };

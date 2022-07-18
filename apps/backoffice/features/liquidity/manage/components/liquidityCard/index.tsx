@@ -6,9 +6,11 @@ import { Avatar, Box, Grid, Stack, Typography } from "@mui/material";
 import { IconCash, IconFlame, IconSeeding } from "@tabler/icons";
 import { CardWrapperDark } from "@/app/components/cards";
 import { SkeletonLiquidityCard } from "./skeletonLiquidityCard";
+import NumberFormat from "react-number-format";
 
 interface Props {
   isLoading: boolean;
+  tokenSymbol: string;
   liquidity: string;
   burnLiquidity: string;
   mintLiquidity: string;
@@ -18,6 +20,7 @@ export const LiquidityCard: FC<Props> = ({
   burnLiquidity,
   mintLiquidity,
   liquidity,
+  tokenSymbol,
   isLoading,
 }) => {
   const theme = useTheme();
@@ -53,17 +56,23 @@ export const LiquidityCard: FC<Props> = ({
               <Grid item>
                 <Grid container alignItems="center">
                   <Grid item>
-                    <Typography
-                      sx={{
-                        fontSize: "2.125rem",
-                        fontWeight: 500,
-                        mr: 1,
-                        mt: 1.75,
-                        mb: 0.75,
-                      }}
-                    >
-                      {liquidity}
-                    </Typography>
+                    <Stack direction="row" spacing={2} alignItems="baseline">
+                      <Typography
+                        sx={{
+                          fontSize: "2.125rem",
+                          fontWeight: 500,
+                          mt: 1.75,
+                          mb: 0.75,
+                        }}
+                      >
+                        <NumberFormat
+                          value={liquidity}
+                          displayType="text"
+                          thousandSeparator
+                        />
+                      </Typography>
+                      <Typography>{tokenSymbol.toUpperCase()}</Typography>
+                    </Stack>
                     <Stack
                       direction="row"
                       spacing={2}
@@ -78,7 +87,7 @@ export const LiquidityCard: FC<Props> = ({
                       >
                         <IconSeeding />
                         &nbsp;
-                        <Typography>+{mintLiquidity}</Typography>
+                        <Typography>+ {mintLiquidity}</Typography>
                       </Stack>
                       <Stack
                         justifyContent="start"
@@ -87,7 +96,7 @@ export const LiquidityCard: FC<Props> = ({
                       >
                         <IconFlame />
                         &nbsp;
-                        <Typography>-{burnLiquidity}</Typography>
+                        <Typography>- {burnLiquidity}</Typography>
                       </Stack>
                     </Stack>
                   </Grid>

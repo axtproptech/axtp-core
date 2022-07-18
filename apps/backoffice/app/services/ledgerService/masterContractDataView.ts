@@ -2,12 +2,12 @@ import { Contract, ContractDataView } from "@signumjs/contracts";
 import { ApprovalStatus } from "@/types/masterContractData";
 
 enum MasterContractDataIndex {
-  TokenId = 5,
+  TokenId = 4,
   PendingMintToken,
   PendingBurnToken,
   PendingSendToPoolToken,
   RequestedSendToPoolAddress,
-  ApprovalAccount1 = 16,
+  ApprovalAccount1 = 15,
   ApprovalApprovedMint1,
   ApprovalApprovedBurn1,
   ApprovalApprovedSendToPool1,
@@ -90,7 +90,7 @@ export class MasterContractDataView {
 
     return {
       approvedAccounts,
-      quantity,
+      quantity: quantity,
     };
   }
 
@@ -124,7 +124,7 @@ export class MasterContractDataView {
 
     return {
       approvedAccounts,
-      quantity,
+      quantity: quantity,
     };
   }
 
@@ -158,7 +158,7 @@ export class MasterContractDataView {
 
     return {
       approvedAccounts,
-      quantity,
+      quantity: quantity,
     };
   }
 }

@@ -6,10 +6,14 @@ import { BurnActionCard } from "./components/burnActionCard";
 import { MintApprovalCard } from "./components/mintApprovalCard";
 import { BurnApprovalCard } from "./components/burnApprovalCard";
 import { HistoryChart } from "./components/historyChart";
+import { useMasterContract } from "@/app/hooks/useMasterContract";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
 export const ManageLiquidity = () => {
+  const { approvalStatusMinting, approvalStatusBurning, token } =
+    useMasterContract();
+
   const isLoading = false;
   return (
     <Grid container spacing={gridSpacing}>
@@ -18,9 +22,10 @@ export const ManageLiquidity = () => {
           <Grid item lg={4} md={6} sm={6} xs={12}>
             <LiquidityCard
               isLoading={isLoading}
-              mintLiquidity="125.000,00"
-              burnLiquidity="0,00"
-              liquidity="1.500.000,00"
+              mintLiquidity={approvalStatusMinting.quantity}
+              burnLiquidity={approvalStatusBurning.quantity}
+              liquidity={token.supply}
+              tokenSymbol={token.name}
             />
           </Grid>
           <Grid item lg={8} md={6} sm={6} xs={12}>

@@ -1,4 +1,4 @@
-import { Ledger, LedgerClientFactory } from "@signumjs/core";
+import { AssetApi, Ledger, LedgerClientFactory } from "@signumjs/core";
 import { Wallet } from "@signumjs/wallets";
 import { MasterContractService } from "./masterContractService";
 import { ServiceContext } from "./serviceContext";

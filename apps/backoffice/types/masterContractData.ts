@@ -1,4 +1,9 @@
-import { Amount } from "@signumjs/util";
+export interface TokenInfo {
+  name: string;
+  supply: string;
+  quantity: string;
+  id: string;
+}
 
 export interface ApprovalStatus {
   approvedAccounts: string[];
@@ -7,7 +12,7 @@ export interface ApprovalStatus {
 
 export interface MasterContractData {
   balance: string;
-  tokenId: string;
+  token: TokenInfo;
   currentSendPoolAddress: string;
   approvalStatusMinting: ApprovalStatus;
   approvalStatusBurning: ApprovalStatus;
