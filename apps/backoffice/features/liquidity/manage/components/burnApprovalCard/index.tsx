@@ -10,6 +10,7 @@ import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { asRSAddress } from "@/app/asRSAddress";
+import { useAccount } from "@/app/hooks/useAccount";
 
 const getApprovalState = (status: ApprovalStatus, token: TokenInfo) => {
   const isBurningRequested = parseInt(status.quantity, 10) > 0;
@@ -59,12 +60,22 @@ const getApprovalState = (status: ApprovalStatus, token: TokenInfo) => {
 };
 
 export const BurnApprovalCard = () => {
+  const { accountId } = useAccount();
   const { approvalStatusBurning, token } = useMasterContract();
   const { execute, isExecuting, transactionId } = useLedgerAction();
 
   const approvalState = useMemo(() => {
     return getApprovalState(approvalStatusBurning, token);
   }, [approvalStatusBurning, token]);
+
+  const canApprove = useMemo(() => {
+    if (!accountId) return false;
+
+    const isMintingRequested = parseInt(approvalStatusBurning.quantity, 10) > 0;
+    const hasApprovedAlready =
+      approvalStatusBurning.approvedAccounts.includes(accountId);
+    return isMintingRequested && !hasApprovedAlready;
+  }, [approvalStatusBurning, accountId]);
 
   const handleOnApproveAction = () => {
     execute((service) => service.masterContract.approveBurn());
@@ -78,6 +89,7 @@ export const BurnApprovalCard = () => {
       actionLabel="Approve Burning"
       onClick={handleOnApproveAction}
       isLoading={isExecuting}
+      disabled={!canApprove}
     >
       <Box sx={{ width: "100%", p: 0.5 }}>
         <ApprovalStepper state={approvalState} />

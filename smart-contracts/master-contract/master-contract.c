@@ -123,10 +123,10 @@ void resetMintActionApproval() {
 }
 
 void resetBurnActionApproval() {
-    approvals[0].mintApproved = 0;
-    approvals[1].mintApproved = 0;
-    approvals[2].mintApproved = 0;
-    approvals[3].mintApproved = 0;
+    approvals[0].burnApproved = 0;
+    approvals[1].burnApproved = 0;
+    approvals[2].burnApproved = 0;
+    approvals[3].burnApproved = 0;
 }
 
 void resetPoolSendActionApproval() {

@@ -3,5 +3,8 @@ import { Config } from "@/app/config";
 
 export const asRSAddress = (numericId: string) =>
   numericId
-    ? Address.fromNumericId(numericId, Config.Signum.AddressPrefix)
+    ? Address.fromNumericId(
+        numericId,
+        Config.Signum.AddressPrefix
+      ).getReedSolomonAddress()
     : "";
