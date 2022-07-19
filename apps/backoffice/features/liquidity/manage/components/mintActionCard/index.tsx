@@ -1,20 +1,53 @@
 import { ActionCard } from "../../../components/actionCard";
 import { IconSeeding } from "@tabler/icons";
 import { Controller, useForm } from "react-hook-form";
-import { Box } from "@mui/material";
-import NumberFormat from "react-number-format";
+import { Box, Typography } from "@mui/material";
+import NumberFormat, { NumberFormatValues } from "react-number-format";
 import { TextInput } from "@/app/components/inputs";
+import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
+import { useEffect, useState } from "react";
+import { useLedgerAction } from "@/app/hooks/useLedgerAction";
+import { useMasterContract } from "@/app/hooks/useMasterContract";
+import { toStableCoinQuantity } from "@/app/tokenQuantity";
+import { useTheme } from "@mui/material/styles";
 
 type FormValues = {
   amount: number;
 };
 
 export const MintActionCard = () => {
+  const theme = useTheme();
   // @ts-ignore
-  const { control, getValues } = useForm<FormValues>({ amount: 0 });
+  const { control, reset } = useForm<FormValues>({ amount: 0 });
+  const [error, setError] = useState("");
+  const [floatAmount, setFloatAmount] = useState(0.0);
+  const { execute, isExecuting, transactionId } = useLedgerAction();
+  const { token } = useMasterContract();
 
   const handleOnMintAction = () => {
-    console.log("Minted...", getValues());
+    const amountQuantity = toStableCoinQuantity(floatAmount.toString(10));
+    execute((service) => service.masterContract.requestMint(amountQuantity));
+  };
+
+  useEffect(() => {
+    if (!transactionId) return;
+    if (error && transactionId) {
+      setError("");
+    }
+    reset();
+  }, [transactionId]);
+
+  const handleValueChange = (values: NumberFormatValues) => {
+    const MinimumValue = 1;
+    if (values.floatValue !== undefined && values.floatValue <= MinimumValue) {
+      return setError(`Value must be greater than ${MinimumValue}`);
+    }
+
+    if (values.floatValue !== undefined) {
+      setFloatAmount(values.floatValue);
+    }
+
+    setError("");
   };
 
   return (
@@ -25,22 +58,24 @@ export const MintActionCard = () => {
       color="success"
       actionIcon={<IconSeeding />}
       onClick={handleOnMintAction}
+      isLoading={isExecuting}
+      disabled={!!error}
     >
       <Box sx={{ width: "100%" }}>
         <Controller
           render={({ field }) => (
             <NumberFormat
-              label="Amount"
+              label={`Amount ${token.name.toUpperCase()}`}
               color="primary"
               decimalScale={2}
               allowEmptyFormatting={false}
               // @ts-ignore
               control={control}
-              prefix={"STC "}
               fixedDecimalScale={true}
               thousandSeparator={true}
               {...field}
               customInput={TextInput}
+              onValueChange={handleValueChange}
             />
           )}
           name="amount"
@@ -49,6 +84,10 @@ export const MintActionCard = () => {
           variant="outlined"
         />
       </Box>
+      {error && (
+        <Typography color={theme.palette.error.main}>{error}</Typography>
+      )}
+      <SucceededTransactionSection transactionId={transactionId} />
     </ActionCard>
   );
 };

@@ -1,5 +1,6 @@
 import { Contract, ContractDataView } from "@signumjs/contracts";
 import { ApprovalStatus } from "@/types/masterContractData";
+import { toStableCoinAmount } from "@/app/tokenQuantity";
 
 enum MasterContractDataIndex {
   TokenId = 4,
@@ -84,8 +85,8 @@ export class MasterContractDataView {
     approved3 && approvedAccounts.push(approved3);
     approved4 && approvedAccounts.push(approved4);
 
-    const quantity = this.view.getVariableAsDecimal(
-      MasterContractDataIndex.PendingMintToken
+    const quantity = toStableCoinAmount(
+      this.view.getVariableAsDecimal(MasterContractDataIndex.PendingMintToken)
     );
 
     return {
@@ -118,8 +119,8 @@ export class MasterContractDataView {
     approved3 && approvedAccounts.push(approved3);
     approved4 && approvedAccounts.push(approved4);
 
-    const quantity = this.view.getVariableAsDecimal(
-      MasterContractDataIndex.PendingBurnToken
+    const quantity = toStableCoinAmount(
+      this.view.getVariableAsDecimal(MasterContractDataIndex.PendingBurnToken)
     );
 
     return {

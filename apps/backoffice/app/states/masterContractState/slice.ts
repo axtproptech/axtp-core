@@ -19,7 +19,6 @@ const DefaultTokenData: TokenInfo = {
 
 export interface MasterContractState {
   masterContract: MasterContractData;
-  isInitializing: boolean;
 }
 
 const initialState: MasterContractState = {
@@ -30,8 +29,8 @@ const initialState: MasterContractState = {
     approvalStatusSendToPool: DefaultApprovalStatus,
     currentSendPoolAddress: "",
     token: DefaultTokenData,
+    transactions: [],
   },
-  isInitializing: true,
 };
 
 export const masterContractSlice = createSlice({
@@ -43,7 +42,6 @@ export const masterContractSlice = createSlice({
       action: PayloadAction<MasterContractData>
     ) => {
       state.masterContract = action.payload;
-      state.isInitializing = false;
     },
   },
 });

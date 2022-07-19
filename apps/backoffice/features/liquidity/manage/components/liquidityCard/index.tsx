@@ -68,6 +68,8 @@ export const LiquidityCard: FC<Props> = ({
                         <NumberFormat
                           value={liquidity}
                           displayType="text"
+                          decimalScale={2}
+                          fixedDecimalScale
                           thousandSeparator
                         />
                       </Typography>

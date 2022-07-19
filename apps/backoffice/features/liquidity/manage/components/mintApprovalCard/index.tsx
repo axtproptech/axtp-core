@@ -2,39 +2,81 @@ import { ActionCard } from "../../../components/actionCard";
 import { IconSeeding, IconUserCheck } from "@tabler/icons";
 import { Box } from "@mui/material";
 import { ApprovalStepper } from "@/app/components/approvalStepper";
-import { HowToVoteRounded } from "@mui/icons-material";
+import { useMasterContract } from "@/app/hooks/useMasterContract";
+import { useMemo } from "react";
+import { ApprovalStatus, TokenInfo } from "@/types/masterContractData";
+import NumberFormat from "react-number-format";
+import { useLedgerAction } from "@/app/hooks/useLedgerAction";
+import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
+import { asRSAddress } from "@/app/asRSAddress";
+import { useAccount } from "@/app/hooks/useAccount";
 
-const ApprovalState = [
-  {
-    label: "Requested Minting",
-    icon: <HowToVoteRounded />,
-    completed: true,
-  },
-  {
-    label: "1st Approval",
-    icon: <IconUserCheck />,
-    completed: true,
-  },
-  {
-    label: "2nd Approval",
-    icon: <IconUserCheck />,
-    completed: true,
-  },
-  {
-    label: "3rd Approval",
-    icon: <IconUserCheck />,
-    completed: true,
-  },
-  {
-    label: "Minted",
-    icon: <IconSeeding />,
-    completed: true,
-  },
-];
+const getApprovalState = (status: ApprovalStatus, token: TokenInfo) => {
+  const isMintingRequested = parseInt(status.quantity, 10) > 0;
+  return [
+    {
+      label: isMintingRequested ? (
+        <div>
+          Minting{" "}
+          <NumberFormat
+            value={status.quantity}
+            displayType="text"
+            thousandSeparator
+            fixedDecimalScale
+            decimalScale={2}
+          />{" "}
+          {token.name.toUpperCase()}
+        </div>
+      ) : (
+        "No Pending Request"
+      ),
+      icon: <IconSeeding />,
+      completed: isMintingRequested,
+    },
+    {
+      label: status.approvedAccounts[0]
+        ? `Approved by ${asRSAddress(status.approvedAccounts[0])}`
+        : "1st Approval",
+      icon: <IconUserCheck />,
+      completed: !!status.approvedAccounts[0],
+    },
+    {
+      label: status.approvedAccounts[1]
+        ? `Approved by ${asRSAddress(status.approvedAccounts[1])}`
+        : "2nd Approval",
+      icon: <IconUserCheck />,
+      completed: !!status.approvedAccounts[1],
+    },
+    {
+      label: status.approvedAccounts[2]
+        ? `Approved by ${asRSAddress(status.approvedAccounts[2])}`
+        : "3rd Approval",
+      icon: <IconUserCheck />,
+      completed: !!status.approvedAccounts[2],
+    },
+  ];
+};
 
 export const MintApprovalCard = () => {
+  const { accountId } = useAccount();
+  const { approvalStatusMinting, token } = useMasterContract();
+  const { execute, isExecuting, transactionId } = useLedgerAction();
+
+  const approvalState = useMemo(() => {
+    return getApprovalState(approvalStatusMinting, token);
+  }, [approvalStatusMinting, token]);
+
+  const canApprove = useMemo(() => {
+    if (!accountId) return false;
+
+    const isMintingRequested = parseInt(approvalStatusMinting.quantity, 10) > 0;
+    const hasApprovedAlready =
+      approvalStatusMinting.approvedAccounts.includes(accountId);
+    return isMintingRequested && !hasApprovedAlready;
+  }, [approvalStatusMinting, accountId]);
+
   const handleOnApproveAction = () => {
-    console.log("Minted...");
+    execute((service) => service.masterContract.approveMint());
   };
 
   return (
@@ -44,10 +86,13 @@ export const MintApprovalCard = () => {
       actionIcon={<IconUserCheck />}
       actionLabel="Approve Minting"
       onClick={handleOnApproveAction}
+      isLoading={isExecuting}
+      disabled={!canApprove}
     >
       <Box sx={{ width: "100%", p: 0.5 }}>
-        <ApprovalStepper state={ApprovalState} />
+        <ApprovalStepper state={approvalState} />
       </Box>
+      <SucceededTransactionSection transactionId={transactionId} />
     </ActionCard>
   );
 };

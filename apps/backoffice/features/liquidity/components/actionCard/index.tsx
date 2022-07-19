@@ -10,6 +10,7 @@ interface Props {
   actionIcon?: ReactNode;
   onClick: () => void;
   color?: any;
+  disabled?: boolean;
   isLoading?: boolean;
 }
 
@@ -19,6 +20,7 @@ const Action: FC<Props> = ({
   color = "primary",
   onClick,
   isLoading = false,
+  disabled = false,
 }) => (
   <Box sx={{ display: "flex", flexDirection: "row" }}>
     {isLoading ? (
@@ -26,7 +28,7 @@ const Action: FC<Props> = ({
         variant="contained"
         color={color}
         onClick={onClick}
-        disabled={isLoading}
+        disabled={true}
       >
         <CircularProgress size={24} />
         &nbsp;{actionLabel}
@@ -36,7 +38,7 @@ const Action: FC<Props> = ({
         variant="contained"
         color={color}
         onClick={onClick}
-        disabled={isLoading}
+        disabled={disabled}
       >
         {actionIcon}&nbsp;{actionLabel}
       </Button>

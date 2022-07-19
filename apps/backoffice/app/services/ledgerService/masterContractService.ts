@@ -24,10 +24,14 @@ export class MasterContractService {
       const { ledger } = this.context;
       const contract = await ledger.contract.getContract(ContractId);
       const contractDataView = new MasterContractDataView(contract);
-      const token = await this.getTokenData(contractDataView.getTokenId());
+      const [token, transactions] = await Promise.all([
+        this.getTokenData(contractDataView.getTokenId()),
+        ledger.account.getAccountTransactions({ accountId: ContractId }),
+      ]);
       return {
         balance: Amount.fromPlanck(contract.balanceNQT).getSigna(),
         token,
+        transactions: transactions.transactions,
         currentSendPoolAddress: contractDataView.getCurrentPoolAddress(),
         approvalStatusBurning: contractDataView.getBurningApprovalStatus(),
         approvalStatusMinting: contractDataView.getMintingApprovalStatus(),
@@ -39,15 +43,30 @@ export class MasterContractService {
 
   private async getTokenData(tokenId: string): Promise<TokenInfo> {
     const { ledger } = this.context;
-    const assetInfo = await ledger.asset.getAsset(tokenId);
+    const [assetInfo, accountInfo] = await Promise.all([
+      ledger.asset.getAsset(tokenId),
+      ledger.account.getAccount({
+        accountId: ContractId,
+        includeCommittedAmount: false,
+        includeEstimatedCommitment: false,
+      }),
+    ]);
+
+    const assetBalance =
+      accountInfo.assetBalances &&
+      accountInfo.assetBalances.find(({ asset }) => tokenId === asset);
+    let quantity = "0";
+    if (assetBalance) {
+      quantity = toStableCoinAmount(assetBalance.balanceQNT);
+    }
     // TODO: adjust signumjs with new quantityCirculatingQNT
     // @ts-ignore
-    const { name, asset, quantityQNT, quantityCirculatingQNT } = assetInfo;
+    const { name, asset, quantityCirculatingQNT } = assetInfo;
     return {
       name,
       id: asset,
+      quantity,
       supply: toStableCoinAmount(quantityCirculatingQNT),
-      quantity: toStableCoinAmount(quantityQNT),
     };
   }
 
@@ -74,6 +93,7 @@ export class MasterContractService {
   }
 
   public async requestMint(quantity: number) {
+    InputValidationService.assertNumberGreaterOrEqualThan(0.1, quantity);
     return this.callMethod(Config.MasterContract.Methods.RequestMint, quantity);
   }
 
@@ -82,6 +102,7 @@ export class MasterContractService {
   }
 
   public async requestBurn(quantity: number) {
+    InputValidationService.assertNumberGreaterOrEqualThan(0.1, quantity);
     return this.callMethod(Config.MasterContract.Methods.RequestBurn, quantity);
   }
 
@@ -113,7 +134,9 @@ export class MasterContractService {
           methodHash: method,
           methodArgs: args,
         });
-      return wallet.confirm(unsignedTransactionBytes);
+      return (await wallet.confirm(
+        unsignedTransactionBytes
+      )) as ConfirmedTransaction;
     });
   }
 }

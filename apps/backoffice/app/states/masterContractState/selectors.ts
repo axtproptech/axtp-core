@@ -6,11 +6,12 @@ export const selectMasterContractState = (
   state: RootState
 ): MasterContractData => state.masterContractState.masterContract;
 
-export const selectIsInitializingMasterContractState = (
-  state: RootState
-): boolean => state.masterContractState.isInitializing;
-
 export const selectMasterTokenInfo = createSelector(
   selectMasterContractState,
   (state) => state.token
+);
+
+export const selectIsInitializingMasterContractState = createSelector(
+  selectMasterContractState,
+  (state) => !state.token.name
 );

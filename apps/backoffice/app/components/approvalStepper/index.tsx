@@ -72,7 +72,7 @@ function StepIconBuilder(
 }
 
 interface StateType {
-  label: string;
+  label: string | ReactElement;
   completed: boolean;
   icon: ReactElement;
 }

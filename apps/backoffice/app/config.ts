@@ -32,7 +32,7 @@ export const Config = {
       process.env.NEXT_PUBLIC_CONTRACT_MASTER_APPROVAL_ACCOUNTS || ""
     ),
     ActivationCosts:
-      toNumber(process.env.NEXT_PUBLIC_CONTRACT_MASTER_APPROVAL_ACCOUNTS) ||
+      toNumber(process.env.NEXT_PUBLIC_CONTRACT_MASTER_ACTIVATION_COSTS) ||
       "0.25",
     InteractionFee:
       toNumber(process.env.NEXT_PUBLIC_CONTRACT_MASTER_INTERACTION_FEE) ||

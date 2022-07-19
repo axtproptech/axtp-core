@@ -10,6 +10,7 @@ import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { Amount } from "@signumjs/util";
 import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
+import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 
 type FormValues = {
   amount: number;
@@ -78,16 +79,7 @@ export const ChargeContractCard = () => {
           variant="outlined"
         />
       </Box>
-      {transactionId && (
-        <>
-          <Typography variant="subtitle2">
-            The transaction was successfully broadcast to the network. It takes
-            about four minutes until it takes effect. You can trace the
-            transaction in the networks explorer.
-          </Typography>
-          <OpenExplorerButton id={transactionId} type="tx" />
-        </>
-      )}
+      <SucceededTransactionSection transactionId={transactionId} />
     </ActionCard>
   );
 };

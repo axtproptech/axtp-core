@@ -10,7 +10,7 @@ const DynamicChart = dynamic(() => import("react-apexcharts"), {
 
 export const PieChart = () => {
   const { token } = useMasterContract();
-  const [holding, circulating] = [
+  const [holding, supply] = [
     parseInt(token.quantity, 10),
     parseInt(token.supply, 10),
   ];
@@ -18,7 +18,7 @@ export const PieChart = () => {
     <Card sx={{ p: 2, height: "218px" }}>
       {/*@ts-ignore*/}
       <DynamicChart
-        {...chartData([holding, circulating], ["Holding", "Circulating"])}
+        {...chartData([holding, supply - holding], ["Holding", "Circulating"])}
       />
     </Card>
   );
