@@ -6,6 +6,7 @@ import { BurnActionCard } from "./components/burnActionCard";
 import { MintApprovalCard } from "./components/mintApprovalCard";
 import { BurnApprovalCard } from "./components/burnApprovalCard";
 import { HistoryChart } from "./components/historyChart";
+import { PieChart } from "./components/pieChart";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 
 const gridSpacing = Config.Layout.GridSpacing;
@@ -28,7 +29,10 @@ export const ManageLiquidity = () => {
               tokenSymbol={token.name}
             />
           </Grid>
-          <Grid item lg={8} md={6} sm={6} xs={12}>
+          <Grid item lg={3} md={6} sm={6} xs={12}>
+            <PieChart />
+          </Grid>
+          <Grid item lg={5} md={6} sm={6} xs={12}>
             <HistoryChart />
           </Grid>
         </Grid>
