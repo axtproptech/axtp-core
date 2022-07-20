@@ -4,29 +4,26 @@ import { withError } from "./withError";
 import { Amount } from "@signumjs/util";
 import { MasterContractDataView } from "./masterContractDataView";
 import { InputValidationService } from "@/app/services/inputValidationService";
-import { ConfirmedTransaction } from "@signumjs/wallets";
-import { MasterContractData, TokenInfo } from "@/types/masterContractData";
-import { toStableCoinAmount } from "@/app/tokenQuantity";
+import { MasterContractData } from "@/types/masterContractData";
+import { GenericContractService } from "@/app/services/ledgerService/genericContractService";
 
-const ContractId = Config.MasterContract.Id;
-const ActivationCostsPlanck = Amount.fromSigna(
-  Config.MasterContract.ActivationCosts
-).getPlanck();
-const InteractionFeePlanck = Amount.fromSigna(
-  Config.MasterContract.InteractionFee
-).getPlanck();
+export class MasterContractService extends GenericContractService {
+  constructor(context: ServiceContext) {
+    super(context);
+  }
 
-export class MasterContractService {
-  constructor(private context: ServiceContext) {}
+  public contractId(): string {
+    return Config.MasterContract.Id;
+  }
 
-  public async readContractData() {
+  public async readContractData(): Promise<MasterContractData> {
     return withError<MasterContractData>(async () => {
       const { ledger } = this.context;
-      const contract = await ledger.contract.getContract(ContractId);
+      const contract = await ledger.contract.getContract(this.contractId());
       const contractDataView = new MasterContractDataView(contract);
       const [token, transactions] = await Promise.all([
         this.getTokenData(contractDataView.getTokenId()),
-        ledger.account.getAccountTransactions({ accountId: ContractId }),
+        ledger.account.getAccountTransactions({ accountId: this.contractId() }),
       ]);
       return {
         balance: Amount.fromPlanck(contract.balanceNQT).getSigna(),
@@ -38,57 +35,6 @@ export class MasterContractService {
         approvalStatusSendToPool:
           contractDataView.getSendingToPoolApprovalStatus(),
       };
-    });
-  }
-
-  private async getTokenData(tokenId: string): Promise<TokenInfo> {
-    const { ledger } = this.context;
-    const [assetInfo, accountInfo] = await Promise.all([
-      ledger.asset.getAsset(tokenId),
-      ledger.account.getAccount({
-        accountId: ContractId,
-        includeCommittedAmount: false,
-        includeEstimatedCommitment: false,
-      }),
-    ]);
-
-    const assetBalance =
-      accountInfo.assetBalances &&
-      accountInfo.assetBalances.find(({ asset }) => tokenId === asset);
-    let quantity = "0";
-    if (assetBalance) {
-      quantity = toStableCoinAmount(assetBalance.balanceQNT);
-    }
-    // TODO: adjust signumjs with new quantityCirculatingQNT
-    // @ts-ignore
-    const { name, asset, quantityCirculatingQNT } = assetInfo;
-    return {
-      name,
-      id: asset,
-      quantity,
-      supply: toStableCoinAmount(quantityCirculatingQNT),
-    };
-  }
-
-  public async rechargeContract(amount: Amount) {
-    return withError(async () => {
-      const { ledger, accountPublicKey, wallet } = this.context;
-      InputValidationService.assertAmountGreaterThan(
-        Amount.fromSigna(1),
-        amount
-      );
-
-      const { unsignedTransactionBytes } =
-        await ledger.transaction.sendAmountToSingleRecipient({
-          recipientId: ContractId,
-          feePlanck: InteractionFeePlanck,
-          amountPlanck: amount.getPlanck(),
-          senderPublicKey: accountPublicKey,
-        });
-
-      return (await wallet.confirm(
-        unsignedTransactionBytes
-      )) as ConfirmedTransaction;
     });
   }
 
@@ -120,23 +66,5 @@ export class MasterContractService {
 
   public async approveSendToPool() {
     return this.callMethod(Config.MasterContract.Methods.ApproveSendToPool);
-  }
-
-  private callMethod(method: string, ...args: any[]) {
-    return withError(async () => {
-      const { ledger, accountPublicKey, wallet } = this.context;
-      const { unsignedTransactionBytes } =
-        await ledger.contract.callContractMethod({
-          senderPublicKey: accountPublicKey,
-          feePlanck: InteractionFeePlanck,
-          amountPlanck: ActivationCostsPlanck,
-          contractId: ContractId,
-          methodHash: method,
-          methodArgs: args,
-        });
-      return (await wallet.confirm(
-        unsignedTransactionBytes
-      )) as ConfirmedTransaction;
-    });
   }
 }

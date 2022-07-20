@@ -1,9 +1,8 @@
 import { ActionCard } from "../../../components/actionCard";
-import { IconFlame, IconSeeding, IconUserCheck } from "@tabler/icons";
+import { IconFlame, IconUserCheck } from "@tabler/icons";
 import { Box } from "@mui/material";
 import { ApprovalStepper } from "@/app/components/approvalStepper";
-import { HowToVoteRounded } from "@mui/icons-material";
-import { ApprovalStatus, TokenInfo } from "@/types/masterContractData";
+import { ApprovalStatus } from "@/types/approvalStatus";
 import NumberFormat from "react-number-format";
 import { useMemo } from "react";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
@@ -11,8 +10,9 @@ import { useLedgerAction } from "@/app/hooks/useLedgerAction";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { asRSAddress } from "@/app/asRSAddress";
 import { useAccount } from "@/app/hooks/useAccount";
+import { BasicTokenInfo } from "@/types/basicTokenInfo";
 
-const getApprovalState = (status: ApprovalStatus, token: TokenInfo) => {
+const getApprovalState = (status: ApprovalStatus, token: BasicTokenInfo) => {
   const isBurningRequested = parseInt(status.quantity, 10) > 0;
 
   return [

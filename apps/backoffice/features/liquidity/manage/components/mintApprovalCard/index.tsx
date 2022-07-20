@@ -4,14 +4,15 @@ import { Box } from "@mui/material";
 import { ApprovalStepper } from "@/app/components/approvalStepper";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { useMemo } from "react";
-import { ApprovalStatus, TokenInfo } from "@/types/masterContractData";
+import { ApprovalStatus } from "@/types/approvalStatus";
 import NumberFormat from "react-number-format";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { asRSAddress } from "@/app/asRSAddress";
 import { useAccount } from "@/app/hooks/useAccount";
+import { BasicTokenInfo } from "@/types/basicTokenInfo";
 
-const getApprovalState = (status: ApprovalStatus, token: TokenInfo) => {
+const getApprovalState = (status: ApprovalStatus, token: BasicTokenInfo) => {
   const isMintingRequested = parseInt(status.quantity, 10) > 0;
   return [
     {

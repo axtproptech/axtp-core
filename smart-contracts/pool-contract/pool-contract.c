@@ -12,15 +12,15 @@
     #define APPROVER_2 2
     #define APPROVER_3 3
     #define APPROVER_4 4
-    #define STC_TOKEN_ID 100
+    #define RESTC_TOKEN_ID 100
 #endif
 #ifdef TESTNET
 // TO DO
-    #define APPROVER_1 1
-    #define APPROVER_2 2
-    #define APPROVER_3 3
-    #define APPROVER_4 4
-    #define STC_TOKEN_ID 6874634292089191957
+    #define APPROVER_1 3549690777743760998
+    #define APPROVER_2 7473730462792140210
+    #define APPROVER_3 5757380649245251466
+    #define APPROVER_4 10746331379201355428
+    #define RESTC_TOKEN_ID 9224329060507884640
 #endif
 #ifdef MAINNET
 // TO DO
@@ -28,7 +28,7 @@
     #define APPROVER_2 2
     #define APPROVER_3 3
     #define APPROVER_4 4
-    #define STC_TOKEN_ID 100
+    #define RESTC_TOKEN_ID 100
 #endif
 
 // global variables, will be available in all functions
@@ -78,19 +78,19 @@ constructor();
 void main(void) {
     while ((currentTX.txId = getNextTx()) != 0) {
         currentTX.sender = getSender(currentTX.txId);
-        currentTX.quantitySTC = getQuantity(currentTX.txId, STC_TOKEN_ID);
+        currentTX.quantitySTC = getQuantity(currentTX.txId, RESTC_TOKEN_ID);
         currentTX.quantityPST = getQuantity(currentTX.txId, poolTokenId);
         readMessage(currentTX.txId, 0, currentTX.message);
 
         switch (currentTX.message[0]) {
-        case SEND_RPST_TO_HOLDER:
-            SendRPSTToHolder(currentTX.message[1], currentTX.message[2]);
-            break;
-        case APPROVE_DISTRIBUTION:
-             ApproveDistribution();
-            break;
-        default:
-            txReceived();
+            case SEND_RPST_TO_HOLDER:
+                SendRPSTToHolder(currentTX.message[1], currentTX.message[2]);
+                break;
+            case APPROVE_DISTRIBUTION:
+                 ApproveDistribution();
+                break;
+            default:
+                txReceived();
         }
     }
 }
@@ -100,7 +100,6 @@ void main(void) {
 
 void constructor() {
     poolTokenId = issueAsset(poolName, "", 0);
-    mintAsset(poolTokenQuantity, poolTokenId);
     nominalValueSTC = poolTokenQuantity * poolRate;
     approvals[0].account = APPROVER_1;
     approvals[1].account = APPROVER_2;
@@ -160,7 +159,7 @@ long isAuthorized() {
 void ApproveDistribution() {
     setApproved();
     if(isApproved()){
-        distributeToHolders(1, poolTokenId,0, pendingPayoutSTC, STC_TOKEN_ID);
+        distributeToHolders(1, poolTokenId,0, pendingPayoutSTC, RESTC_TOKEN_ID);
         paidSTC += pendingPayoutSTC;
         resetApproved();
         pendingPayoutSTC=0;
@@ -172,11 +171,12 @@ void SendRPSTToHolder(long holderId, long quantityRPST) {
         return;
     }
 
-    if(getAssetBalance(poolTokenId) < quantityRPST){
+    if(getAssetBalance(poolTokenId) + quantityRPST > poolTokenQuantity){
         messageBuffer[]="Not enough Pool Tokens left";
         sendMessage(messageBuffer, currentTX.sender);
         return;
     }
+    mintAsset(quantityRPST, poolTokenId);
     sendQuantity(quantityRPST, poolTokenId, holderId);
 }
 

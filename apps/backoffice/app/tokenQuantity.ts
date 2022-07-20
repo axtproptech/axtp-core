@@ -1,9 +1,9 @@
-const fromQuantity = (qnt: string | number, decimals: number) => {
+export const fromQuantity = (qnt: string | number, decimals: number) => {
   const int = typeof qnt === "string" ? parseInt(qnt) : qnt;
   return (int / 10 ** decimals).toString(10);
 };
 
-const toQuantity = (qnt: string | number, decimals: number) => {
+export const toQuantity = (qnt: string | number, decimals: number) => {
   const float = typeof qnt === "string" ? parseFloat(qnt) : qnt;
   return float * 10 ** decimals;
 };

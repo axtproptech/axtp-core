@@ -1,6 +1,6 @@
 import { Contract, ContractDataView } from "@signumjs/contracts";
-import { ApprovalStatus } from "@/types/masterContractData";
 import { toStableCoinAmount } from "@/app/tokenQuantity";
+import { ApprovalStatus } from "@/types/approvalStatus";
 
 enum MasterContractDataIndex {
   TokenId = 4,

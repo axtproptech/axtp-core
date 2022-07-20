@@ -1,17 +1,16 @@
 import { Grid } from "@mui/material";
-import { EarningCard } from "./components/earningCard";
+import { StableCoinCard } from "./components/stableCoinCard";
 import { Config } from "@/app/config";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
 export const Dashboard = () => {
-  const isLoading = false;
   return (
     <Grid container spacing={gridSpacing}>
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={4} md={6} sm={6} xs={12}>
-            <EarningCard isLoading={isLoading} />
+            <StableCoinCard />
           </Grid>
           <Grid item lg={4} md={6} sm={6} xs={12}>
             {/*<TotalOrderLineChartCard isLoading={isLoading} />*/}

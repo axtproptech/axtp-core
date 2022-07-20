@@ -1,16 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  ApprovalStatus,
-  MasterContractData,
-  TokenInfo,
-} from "@/types/masterContractData";
+import { MasterContractData } from "@/types/masterContractData";
+import { BasicTokenInfo } from "@/types/basicTokenInfo";
+import { ApprovalStatus } from "@/types/approvalStatus";
 
 const DefaultApprovalStatus: ApprovalStatus = {
   approvedAccounts: [],
   quantity: "0",
 };
 
-const DefaultTokenData: TokenInfo = {
+const DefaultTokenData: BasicTokenInfo = {
   name: "",
   id: "",
   quantity: "0",

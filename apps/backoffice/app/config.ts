@@ -58,6 +58,24 @@ export const Config = {
         "11206579990877624803",
     },
   },
+  PoolContract: {
+    ApprovalAccounts: toArray(
+      process.env.NEXT_PUBLIC_CONTRACT_POOL_APPROVAL_ACCOUNTS || ""
+    ),
+    ActivationCosts:
+      toNumber(process.env.NEXT_PUBLIC_CONTRACT_POOL_ACTIVATION_COSTS) ||
+      "0.25",
+    InteractionFee:
+      toNumber(process.env.NEXT_PUBLIC_CONTRACT_POOL_INTERACTION_FEE) || "0.01",
+    Methods: {
+      SendShareToHolder:
+        process.env.NEXT_PUBLIC_CONTRACT_POOL_METHOD_SEND_SHARE_TO_HOLDER ||
+        "16240026124049279851",
+      ApproveDistribution:
+        process.env.NEXT_PUBLIC_CONTRACT_POOL_METHOD_APPROVE_DISTRIBUTE ||
+        "4257520191800449546",
+    },
+  },
   Layout: {
     DrawerWidth: 260,
     GridSpacing: 3,
