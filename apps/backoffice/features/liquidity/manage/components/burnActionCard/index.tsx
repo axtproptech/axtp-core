@@ -1,4 +1,3 @@
-import { ActionCard } from "../../../components/actionCard";
 import { IconFlame } from "@tabler/icons";
 import { Box, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
@@ -10,6 +9,7 @@ import { useTheme } from "@mui/material/styles";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { useEffect, useState } from "react";
+import { ActionCard } from "@/app/components/cards";
 
 type FormValues = {
   amount: number;

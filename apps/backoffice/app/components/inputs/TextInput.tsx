@@ -1,4 +1,4 @@
-import { FC, HtmlHTMLAttributes } from "react";
+import { FC, forwardRef, HtmlHTMLAttributes } from "react";
 import {
   FormControl,
   FormHelperText,
@@ -12,7 +12,7 @@ interface Props extends HtmlHTMLAttributes<HTMLInputElement> {
   label: string;
 }
 
-export const TextInput: FC<Props> = (props) => {
+export const TextInput = forwardRef((props: Props, ref) => {
   const theme = useTheme();
   const { error, label, ...args } = props;
 
@@ -26,7 +26,7 @@ export const TextInput: FC<Props> = (props) => {
     >
       <InputLabel htmlFor={props.id}>{props.label}</InputLabel>
       {/*@ts-ignore*/}
-      <OutlinedInput label={label} {...args} inputProps={{}} />
+      <OutlinedInput label={label} {...args} inputProps={{}} ref={ref} />
       {hasError && (
         <FormHelperText error id={props.id}>
           {error}
@@ -34,4 +34,4 @@ export const TextInput: FC<Props> = (props) => {
       )}
     </FormControl>
   );
-};
+});

@@ -1,4 +1,4 @@
-import { ActionCard } from "../../../components/actionCard";
+import { ActionCard } from "@/app/components/cards";
 import { IconSeeding, IconUserCheck } from "@tabler/icons";
 import { Box } from "@mui/material";
 import { ApprovalStepper } from "@/app/components/approvalStepper";
