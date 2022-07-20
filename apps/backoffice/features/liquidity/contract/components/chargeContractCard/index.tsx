@@ -1,4 +1,3 @@
-import { ActionCard } from "../../../components/actionCard";
 import { IconRecharging } from "@tabler/icons";
 import { Box, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
@@ -11,6 +10,7 @@ import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { Amount } from "@signumjs/util";
 import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
+import { ActionCard } from "@/app/components/cards";
 
 type FormValues = {
   amount: number;

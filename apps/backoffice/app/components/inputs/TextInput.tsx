@@ -12,7 +12,7 @@ interface Props extends HtmlHTMLAttributes<HTMLInputElement> {
   label: string;
 }
 
-export const TextInput = forwardRef((props: Props, ref) => {
+export const TextInput: FC<Props> = forwardRef((props: Props, ref) => {
   const theme = useTheme();
   const { error, label, ...args } = props;
 

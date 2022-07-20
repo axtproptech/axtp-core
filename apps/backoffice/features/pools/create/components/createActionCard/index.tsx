@@ -1,6 +1,6 @@
 import { ActionCard } from "@/app/components/cards";
 import { IconFlame, IconNewSection } from "@tabler/icons";
-import { Box, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat, { NumberFormatValues } from "react-number-format";
 import { TextInput } from "@/app/components/inputs";
@@ -10,6 +10,7 @@ import { styled, useTheme } from "@mui/material/styles";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { useEffect, useState } from "react";
+import { Config } from "@/app/config";
 
 const FullBox = styled(Box)(() => ({
   width: "100%",
@@ -24,20 +25,25 @@ type FormValues = {
   url: string;
 };
 
+const required = {
+  value: true,
+  message: "The field is required",
+};
+
 export const CreateActionCard = () => {
   const theme = useTheme();
-  const {
-    control,
-    reset,
-    getValues,
-    formState: { errors },
-  } = useForm<FormValues>({
+  const { token } = useMasterContract();
+  const [numberValues, setNumberValues] = useState({
+    rate: 0.0,
+    tokenCount: 0,
+  });
+  const [nominalLiquidity, setNominalLiquidity] = useState(0.0);
+  const { control, reset } = useForm<FormValues>({
     mode: "onChange",
     defaultValues: {
       name: "PST0001",
       description: "Write a description here...",
-      rate: 3000,
-      nominalLiquidity: 0,
+      rate: 0.0,
       tokenCount: 0,
       url: "",
     },
@@ -72,12 +78,24 @@ export const CreateActionCard = () => {
   //   setError("");
   // };
 
-  const handleOnCreate = () => {
-    console.log("Created");
+  const resetForm = () => {
     reset();
+    setNumberValues({ rate: 0, tokenCount: 0 });
   };
 
-  console.log("errors", errors.name);
+  const handleOnCreate = () => {
+    console.log("Created");
+    resetForm();
+  };
+
+  const handleNumberChange =
+    (field: "tokenCount" | "rate") => (values: NumberFormatValues) => {
+      setNumberValues({ ...numberValues, [field]: values.floatValue });
+    };
+
+  useEffect(() => {
+    setNominalLiquidity(numberValues.tokenCount * numberValues.rate);
+  }, [numberValues]);
 
   return (
     <ActionCard
@@ -89,30 +107,109 @@ export const CreateActionCard = () => {
       // isLoading={isExecuting}
       // disabled={!!error}
     >
+      <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 0, md: 2 }}>
+        <FullBox>
+          <Controller
+            render={({ field, fieldState: { error } }) => (
+              <TextInput
+                label="Pool Token Symbol"
+                {...field}
+                error={error ? error.message : ""}
+              />
+            )}
+            name="name"
+            control={control}
+            // @ts-ignore
+            variant="outlined"
+            rules={{
+              pattern: {
+                value: /^PST\d{4}$/,
+                message:
+                  "Name must be like PST0002 - It's the name of the token",
+              },
+              required,
+            }}
+          />
+        </FullBox>
+        <FullBox>
+          <Controller
+            render={({ field }) => (
+              <NumberFormat
+                label="Amount of Shares"
+                color="primary"
+                decimalScale={0}
+                allowEmptyFormatting={false}
+                fixedDecimalScale
+                thousandSeparator
+                // @ts-ignore
+                control={control}
+                {...field}
+                customInput={TextInput}
+                onValueChange={handleNumberChange("tokenCount")}
+              />
+            )}
+            name="tokenCount"
+            control={control}
+            // @ts-ignore
+            variant="outlined"
+            rules={{
+              required,
+            }}
+          />
+        </FullBox>
+      </Stack>
+      <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 0, md: 2 }}>
+        <FullBox>
+          <Controller
+            render={({ field }) => (
+              <NumberFormat
+                label={`Price per Share in ${token.name}`}
+                color="primary"
+                decimalScale={2}
+                allowEmptyFormatting={false}
+                fixedDecimalScale
+                thousandSeparator
+                // @ts-ignore
+                control={control}
+                {...field}
+                customInput={TextInput}
+                onValueChange={handleNumberChange("rate")}
+              />
+            )}
+            name="rate"
+            control={control}
+            // @ts-ignore
+            variant="outlined"
+            rules={{
+              required,
+            }}
+          />
+        </FullBox>
+        <FullBox>
+          <NumberFormat
+            label={`Nominal Liquidity in ${token.name}`}
+            color="primary"
+            decimalScale={2}
+            allowEmptyFormatting={false}
+            fixedDecimalScale
+            thousandSeparator
+            customInput={TextInput}
+            value={nominalLiquidity}
+            disabled
+          />
+        </FullBox>
+      </Stack>
       <FullBox>
         <Controller
-          render={({ field, fieldState: { error } }) => (
+          render={({ field }) => (
             <TextInput
-              label="Pool Token Symbol"
               {...field}
-              error={error ? error.message : ""}
+              label="Description"
+              // @ts-ignore
+              multiline
+              maxRows={6}
             />
           )}
-          name="name"
-          control={control}
-          // @ts-ignore
-          variant="outlined"
-          rules={{
-            pattern: {
-              value: /^PST\d{4}$/,
-              message: "Name must be like PST0002 - It's the name of the token",
-            },
-          }}
-        />
-      </FullBox>
-      <FullBox>
-        <Controller
-          render={({ field }) => <TextInput label="Description" {...field} />}
           name="description"
           control={control}
           // @ts-ignore
@@ -124,19 +221,14 @@ export const CreateActionCard = () => {
       </FullBox>
       <FullBox>
         <Controller
-          render={({ field }) => (
-            <NumberFormat
-              label={`Share Token Amount`}
-              color="primary"
-              decimalScale={0}
-              allowEmptyFormatting={false}
-              // @ts-ignore
-              control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextInput
+              label="Additional Information URL"
               {...field}
-              customInput={TextInput}
+              error={error ? error.message : ""}
             />
           )}
-          name="tokenCount"
+          name="url"
           control={control}
           // @ts-ignore
           variant="outlined"

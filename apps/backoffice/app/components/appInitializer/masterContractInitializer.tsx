@@ -9,7 +9,7 @@ export const MasterContractInitializer = () => {
   const dispatch = useAppDispatch();
 
   const { data } = useSWR(
-    ledgerService ? "fetch/masterContractData" : null,
+    ledgerService ? "fetch/masterContractData/" : null,
     async () => {
       if (!ledgerService) return null;
       return ledgerService.masterContract.readContractData();

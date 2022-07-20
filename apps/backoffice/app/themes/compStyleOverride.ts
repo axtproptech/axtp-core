@@ -111,7 +111,7 @@ export default function componentStyleOverrides(theme: any) {
             borderColor: theme.colors?.primaryLight,
           },
           "&.MuiInputBase-multiline": {
-            padding: 1,
+            paddingLeft: 0,
           },
         },
         input: {
