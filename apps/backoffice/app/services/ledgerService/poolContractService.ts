@@ -1,54 +1,76 @@
 import { ServiceContext } from "./serviceContext";
+import { PoolInstanceService } from "./poolInstanceService";
+import { ConfirmedTransaction } from "@signumjs/wallets";
 import { Config } from "@/app/config";
-import { withError } from "./withError";
-import { Amount } from "@signumjs/util";
-import { InputValidationService } from "../inputValidationService";
-import { PoolContractDataView } from "./poolContractDataView";
-import { GenericContractService } from "./genericContractService";
-import { PoolContractData } from "@/types/poolContractData";
+import { Amount } from "@signumjs/core";
+import { withError } from "@/app/services/ledgerService/withError";
+import { InputValidationService } from "@/app/services/inputValidationService";
+import {
+  convertHexStringToDecString,
+  convertStringToHexString,
+} from "@signumjs/util";
 
-export class PoolContractService extends GenericContractService {
-  constructor(context: ServiceContext, private poolId: string) {
-    super(context);
+interface CreatePoolInstanceArgs {
+  documentationUrl: string;
+  description: string;
+  name: string;
+  rate: number;
+  quantity: number;
+}
+
+export class PoolContractService {
+  constructor(private context: ServiceContext) {}
+
+  with(poolId: string): PoolInstanceService {
+    return new PoolInstanceService(this.context, poolId);
   }
 
-  contractId(): string {
-    return this.poolId;
-  }
+  async createPoolInstance(args: CreatePoolInstanceArgs) {
+    return withError(async () => {
+      const { ledger, accountPublicKey, wallet } = this.context;
 
-  public readContractData() {
-    return withError<PoolContractData>(async () => {
-      const { ledger } = this.context;
-      const contract = await ledger.contract.getContract(this.poolId);
-      const contractDataView = new PoolContractDataView(contract);
-      const [token, transactions] = await Promise.all([
-        this.getTokenData(contractDataView.getPoolTokenId()),
-        ledger.account.getAccountTransactions({ accountId: this.contractId() }),
-      ]);
-      return {
-        balance: Amount.fromPlanck(contract.balanceNQT).getSigna(),
-        token,
-        transactions: transactions.transactions,
-        approvalStatusDistribution:
-          contractDataView.getDistributionApprovalStatus(),
-        paidDistribution: contractDataView.getDistributedStableCoins(),
-        maxShareQuantity: contractDataView.getPoolTokenMaxQuantity(),
-        nominalLiquidity: contractDataView.getNominalLiquidity(),
-        tokenRate: contractDataView.getPoolTokenRate(),
-      };
+      PoolContractService.assertCreationArguments(args);
+
+      const description = PoolContractService.createDescriptor(args);
+      const data = PoolContractService.createInitialDataStack(args);
+
+      const { unsignedTransactionBytes } =
+        await ledger.contract.publishContractByReference({
+          senderPublicKey: accountPublicKey,
+          description,
+          referencedTransactionHash: Config.PoolContract.Reference,
+          feePlanck: Amount.fromSigna(
+            Config.PoolContract.CreationCosts
+          ).getPlanck(),
+          activationAmountPlanck: Amount.fromSigna(
+            Config.PoolContract.ActivationCosts
+          ).getPlanck(),
+          name: `${Config.PoolContract.Basename}_${args.name}`,
+          data,
+        });
+      return (await wallet.confirm(
+        unsignedTransactionBytes
+      )) as ConfirmedTransaction;
     });
   }
 
-  public async approveDistribution() {
-    return this.callMethod(Config.PoolContract.Methods.ApproveDistribution);
+  private static createDescriptor(args: CreatePoolInstanceArgs) {
+    return JSON.stringify({
+      version: 1,
+      description: args.description,
+      documentation: args.documentationUrl,
+    });
   }
 
-  public async sendShareToHolder(recipientId: string, quantity: number) {
-    InputValidationService.assertNumberGreaterOrEqualThan(1, quantity);
-    return this.callMethod(
-      Config.PoolContract.Methods.SendShareToHolder,
-      recipientId,
-      quantity
+  private static createInitialDataStack(args: CreatePoolInstanceArgs) {
+    const name = convertHexStringToDecString(
+      convertStringToHexString(args.name)
     );
+    return [0, 0, 0, 0, name, args.rate, args.quantity];
+  }
+
+  private static assertCreationArguments(args: CreatePoolInstanceArgs) {
+    InputValidationService.assertTextLessThan(args.description, 512);
+    InputValidationService.assertTextLessThan(args.documentationUrl, 384);
   }
 }

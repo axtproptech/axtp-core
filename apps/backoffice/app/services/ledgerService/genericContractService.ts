@@ -7,17 +7,12 @@ import { ConfirmedTransaction } from "@signumjs/wallets";
 import { fromQuantity, toStableCoinAmount } from "@/app/tokenQuantity";
 import { BasicTokenInfo } from "@/types/basicTokenInfo";
 
-const ActivationCostsPlanck = Amount.fromSigna(
-  Config.MasterContract.ActivationCosts
-).getPlanck();
-const InteractionFeePlanck = Amount.fromSigna(
-  Config.MasterContract.InteractionFee
-).getPlanck();
-
 export abstract class GenericContractService {
   protected constructor(protected context: ServiceContext) {}
 
   public abstract contractId(): string;
+  public abstract activationCosts(): Amount;
+  public abstract interactionFee(): Amount;
 
   protected async getTokenData(tokenId: string): Promise<BasicTokenInfo> {
     const { ledger } = this.context;
@@ -59,7 +54,7 @@ export abstract class GenericContractService {
       const { unsignedTransactionBytes } =
         await ledger.transaction.sendAmountToSingleRecipient({
           recipientId: this.contractId(),
-          feePlanck: InteractionFeePlanck,
+          feePlanck: this.interactionFee().getPlanck(),
           amountPlanck: amount.getPlanck(),
           senderPublicKey: accountPublicKey,
         });
@@ -76,8 +71,8 @@ export abstract class GenericContractService {
       const { unsignedTransactionBytes } =
         await ledger.contract.callContractMethod({
           senderPublicKey: accountPublicKey,
-          feePlanck: InteractionFeePlanck,
-          amountPlanck: ActivationCostsPlanck,
+          feePlanck: this.interactionFee().getPlanck(),
+          amountPlanck: this.activationCosts().getPlanck(),
           contractId: this.contractId(),
           methodHash: method,
           methodArgs: args,

@@ -3,10 +3,12 @@ import { Wallet } from "@signumjs/wallets";
 import { MasterContractService } from "./masterContractService";
 import { ServiceContext } from "./serviceContext";
 import { WalletDecorator } from "./walletDecorator";
+import { PoolContractService } from "@/app/services/ledgerService/poolContractService";
 
 export class LedgerService {
   private readonly ledger: Ledger;
   private readonly masterContractService: MasterContractService;
+  private readonly poolContractService: PoolContractService;
 
   constructor(
     private nodeHost: string,
@@ -24,18 +26,14 @@ export class LedgerService {
     };
 
     this.masterContractService = new MasterContractService(context);
+    this.poolContractService = new PoolContractService(context);
   }
 
   get masterContract(): MasterContractService {
     return this.masterContractService;
   }
 
-  async doesAccountExist(accountId: string): Promise<boolean> {
-    try {
-      await this.ledger.account.getAccount({ accountId });
-      return true;
-    } catch (e: any) {
-      return false;
-    }
+  get poolContract(): PoolContractService {
+    return this.poolContractService;
   }
 }

@@ -24,6 +24,7 @@ export const useLedgerAction = () => {
         showSuccess("Successfully executed transaction");
       } catch (e: any) {
         showError(`Someting failed: ${e.message}`);
+        throw e;
       } finally {
         setIsExecuting(false);
       }

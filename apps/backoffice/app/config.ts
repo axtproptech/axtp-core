@@ -59,6 +59,12 @@ export const Config = {
     },
   },
   PoolContract: {
+    Reference: process.env.NEXT_PUBLIC_CONTRACT_POOL_REF || "",
+    CodeHash:
+      process.env.NEXT_PUBLIC_CONTRACT_POOL_CODEHASH || "17139226199807531405",
+    CreationCosts:
+      process.env.NEXT_PUBLIC_CONTRACT_POOL_CREATION_COSTS || "0.06",
+    Basename: process.env.NEXT_PUBLIC_CONTRACT_POOL_NAME || "RESTPOOL",
     ApprovalAccounts: toArray(
       process.env.NEXT_PUBLIC_CONTRACT_POOL_APPROVAL_ACCOUNTS || ""
     ),

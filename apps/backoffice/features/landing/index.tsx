@@ -2,11 +2,15 @@ import { Grid, Typography } from "@mui/material";
 import { CardWrapperDark, MainCard } from "@/app/components/cards";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
+import { Animate } from "@/app/components/animation";
+import { useState } from "react";
 
 export const Landing = () => {
   const router = useRouter();
-
+  const [isRouting, setIsRouting] = useState(false);
   const handleAdminPanel = () => {
+    if (isRouting) return;
+    setIsRouting(true);
     router.push("/admin");
   };
   return (
@@ -14,20 +18,23 @@ export const Landing = () => {
       <Grid item xs={3} />
       <Grid item xs={6}>
         <MainCard title="R.Est Landing Page" darkTitle>
-          <CardWrapperDark>
+          <Animate>
             <Box
               onClick={handleAdminPanel}
               sx={{
-                maxWidth: 280,
                 m: "auto",
                 textAlign: "center",
+                cursor: "pointer",
+                filter: isRouting ? "saturate(0.1) brightness(2)" : "",
               }}
             >
-              <Typography variant="h4" color="primary.light">
-                Admin Area
-              </Typography>
+              <CardWrapperDark>
+                <Typography variant="h4" color="primary.light">
+                  Admin Area
+                </Typography>
+              </CardWrapperDark>
             </Box>
-          </CardWrapperDark>
+          </Animate>
         </MainCard>
       </Grid>
     </Grid>

@@ -68,6 +68,14 @@ export class InputValidationService {
     }
   }
 
+  public static assertTextLessThan(text: string, maxLength: number) {
+    if (text.length > maxLength) {
+      throw new InvalidInputError(
+        `Text must be less or equal than ${maxLength}`
+      );
+    }
+  }
+
   public static isTextGreaterThan(text: string, characters: number): boolean {
     return !!(text && text.length > characters);
   }

@@ -12,6 +12,14 @@ export class MasterContractService extends GenericContractService {
     super(context);
   }
 
+  public activationCosts(): Amount {
+    return Amount.fromSigna(Config.MasterContract.ActivationCosts);
+  }
+
+  public interactionFee(): Amount {
+    return Amount.fromSigna(Config.MasterContract.InteractionFee);
+  }
+
   public contractId(): string {
     return Config.MasterContract.Id;
   }

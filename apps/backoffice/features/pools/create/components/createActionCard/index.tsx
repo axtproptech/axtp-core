@@ -6,11 +6,10 @@ import NumberFormat, { NumberFormatValues } from "react-number-format";
 import { TextInput } from "@/app/components/inputs";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
 import { toStableCoinQuantity } from "@/app/tokenQuantity";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { useEffect, useState } from "react";
-import { Config } from "@/app/config";
 
 const FullBox = styled(Box)(() => ({
   width: "100%",
@@ -31,14 +30,19 @@ const required = {
 };
 
 export const CreateActionCard = () => {
-  const theme = useTheme();
+  const { execute, isExecuting, transactionId } = useLedgerAction();
   const { token } = useMasterContract();
   const [numberValues, setNumberValues] = useState({
     rate: 0.0,
     tokenCount: 0,
   });
   const [nominalLiquidity, setNominalLiquidity] = useState(0.0);
-  const { control, reset } = useForm<FormValues>({
+  const {
+    control,
+    reset,
+    getValues,
+    formState: { isValid },
+  } = useForm<FormValues>({
     mode: "onChange",
     defaultValues: {
       name: "PST0001",
@@ -49,44 +53,29 @@ export const CreateActionCard = () => {
     },
   });
 
-  // const [error, setError] = useState("");
-  // const [floatAmount, setFloatAmount] = useState(0.0);
-  // const { execute, isExecuting, transactionId } = useLedgerAction();
-  // const { token } = useMasterContract();
-
-  // const handleOnBurnAction = () => {
-  //   const amountQuantity = toStableCoinQuantity(floatAmount.toString(10));
-  //   execute((service) => service.masterContract.requestBurn(amountQuantity));
-  // };
-  //
-  // useEffect(() => {
-  //   if (!transactionId) return;
-  //   if (error && transactionId) {
-  //     setError("");
-  //   }
-  //   reset();
-  // }, [transactionId]);
-  //
-  // const handleValueChange = (values: NumberFormatValues) => {
-  //   const MinimumValue = 0.1;
-  //   if (values.floatValue !== undefined && values.floatValue <= MinimumValue) {
-  //     return setError(`Value must be greater than ${MinimumValue}`);
-  //   }
-  //   if (values.floatValue !== undefined) {
-  //     setFloatAmount(values.floatValue);
-  //   }
-  //   setError("");
-  // };
-
   const resetForm = () => {
     reset();
     setNumberValues({ rate: 0, tokenCount: 0 });
   };
 
-  const handleOnCreate = () => {
-    console.log("Created");
+  const handleOnCreate = async () => {
+    const formValues = getValues();
+    await execute((service) =>
+      service.poolContract.createPoolInstance({
+        name: formValues.name,
+        documentationUrl: formValues.url,
+        description: formValues.description,
+        rate: toStableCoinQuantity(numberValues.rate),
+        quantity: numberValues.tokenCount,
+      })
+    );
     resetForm();
   };
+
+  useEffect(() => {
+    if (!transactionId) return;
+    reset();
+  }, [transactionId]);
 
   const handleNumberChange =
     (field: "tokenCount" | "rate") => (values: NumberFormatValues) => {
@@ -104,8 +93,8 @@ export const CreateActionCard = () => {
       actionIcon={<IconNewSection />}
       actionLabel="Create Pool"
       onClick={handleOnCreate}
-      // isLoading={isExecuting}
-      // disabled={!!error}
+      isLoading={isExecuting}
+      disabled={!isValid}
     >
       <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 0, md: 2 }}>
         <FullBox>
@@ -215,7 +204,7 @@ export const CreateActionCard = () => {
           // @ts-ignore
           variant="outlined"
           rules={{
-            maxLength: 384,
+            maxLength: 512,
           }}
         />
       </FullBox>
@@ -232,12 +221,12 @@ export const CreateActionCard = () => {
           control={control}
           // @ts-ignore
           variant="outlined"
+          rules={{
+            maxLength: 384,
+          }}
         />
       </FullBox>
-      {/*{error && (*/}
-      {/*  <Typography color={theme.palette.error.main}>{error}</Typography>*/}
-      {/*)}*/}
-      {/*<SucceededTransactionSection transactionId={transactionId} />*/}
+      <SucceededTransactionSection transactionId={transactionId} />
     </ActionCard>
   );
 };
