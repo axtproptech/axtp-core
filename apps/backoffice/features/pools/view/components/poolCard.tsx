@@ -12,46 +12,30 @@ import NumberFormat from "react-number-format";
 // @ts-ignore
 import hashicon from "hashicon";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
-
-export interface PoolData {
-  id: string;
-  tokenSymbol: string;
-  rate: number;
-  maxTokenCount: number;
-  circulatingTokenCount: number;
-  pendingPayout: number;
-  paid: number;
-}
+import { PoolContractData } from "@/types/poolContractData";
 
 interface Props {
-  data: PoolData;
+  data: PoolContractData;
 }
 
 export const PoolCard: FC<Props> = ({ data }) => {
-  const theme = useTheme();
-  const { token } = useMasterContract();
+  const masterContract = useMasterContract();
 
-  const {
-    id,
-    pendingPayout,
-    paid,
-    rate,
-    maxTokenCount,
-    circulatingTokenCount,
-    tokenSymbol,
-  } = data;
+  const stcTokenSymbol = masterContract.token.name;
 
-  const liquidity = rate * maxTokenCount;
+  const { poolId, paidDistribution, token, nominalLiquidity } = data;
+
+  console.log("PoolCard", data);
 
   const iconUrl = useMemo(() => {
-    if (!id) return "";
-    return hashicon(id, { size: 32 }).toDataURL();
-  }, [id]);
+    if (!poolId) return "";
+    return hashicon(poolId, { size: 32 }).toDataURL();
+  }, [poolId]);
 
-  const initialLiquidity = rate * maxTokenCount;
   const performancePercent =
-    ((initialLiquidity + paid) / initialLiquidity) * 100;
-  const occupationPercent = (circulatingTokenCount / maxTokenCount) * 100;
+    ((nominalLiquidity + paidDistribution) / nominalLiquidity) * 100;
+  const occupationPercent =
+    (parseInt(token?.quantity || "0") / parseInt(token?.supply || "0")) * 100;
 
   return (
     <CardWrapperBlue border={false} content={false}>
@@ -61,12 +45,12 @@ export const PoolCard: FC<Props> = ({ data }) => {
             <Grid container justifyContent="space-between">
               <Grid item>
                 <Chip
-                  label={tokenSymbol}
+                  label={token.name.toUpperCase()}
                   color="primary"
                   avatar={
                     <img
                       src={iconUrl}
-                      alt={id}
+                      alt={poolId}
                       style={{ backgroundColor: "transparent" }}
                     />
                   }
@@ -89,14 +73,14 @@ export const PoolCard: FC<Props> = ({ data }) => {
                         }}
                       >
                         <NumberFormat
-                          value={liquidity}
+                          value={nominalLiquidity}
                           displayType="text"
                           decimalScale={2}
                           fixedDecimalScale
                           thousandSeparator
                         />
                       </Typography>
-                      <Typography>{token.name.toUpperCase()}</Typography>
+                      <Typography>{stcTokenSymbol}</Typography>
                     </>
                   </Tooltip>
                 </Stack>
@@ -116,13 +100,13 @@ export const PoolCard: FC<Props> = ({ data }) => {
                     &nbsp;
                     <Typography>
                       <NumberFormat
-                        value={paid}
+                        value={paidDistribution}
                         displayType="text"
                         decimalScale={2}
                         fixedDecimalScale
                         thousandSeparator
                       />{" "}
-                      {token.name.toUpperCase()}
+                      {stcTokenSymbol}
                     </Typography>
                   </Stack>
                   <Stack
@@ -159,7 +143,7 @@ export const PoolCard: FC<Props> = ({ data }) => {
                     <IconPeople />
                     &nbsp;
                     <Typography>
-                      {`${circulatingTokenCount}/${maxTokenCount}`} (
+                      {`${token.quantity}/${token.supply}`} (
                       <NumberFormat
                         value={occupationPercent}
                         displayType="text"

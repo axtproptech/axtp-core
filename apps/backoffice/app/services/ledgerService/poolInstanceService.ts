@@ -33,7 +33,10 @@ export class PoolInstanceService extends GenericContractService {
         this.getTokenData(contractDataView.getPoolTokenId()),
         ledger.account.getAccountTransactions({ accountId: this.contractId() }),
       ]);
+
+      token.supply = contractDataView.getPoolTokenMaxQuantity().toString(10);
       return {
+        poolId: this.poolId,
         balance: Amount.fromPlanck(contract.balanceNQT).getSigna(),
         token,
         transactions: transactions.transactions,

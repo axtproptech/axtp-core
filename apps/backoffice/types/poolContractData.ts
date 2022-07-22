@@ -11,4 +11,5 @@ export interface PoolContractData {
   maxShareQuantity: number;
   nominalLiquidity: number;
   tokenRate: number;
+  poolId: string;
 }

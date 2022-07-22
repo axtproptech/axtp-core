@@ -1,9 +1,9 @@
 import localforage from "localforage";
 
 localforage.config({
-  name: "signum_swap_storage",
+  name: "rest_backoffice_storage",
   version: 1,
-  storeName: "signum_swap",
+  storeName: "rest_backoffice",
 });
 
 export const storage = localforage;

@@ -20,6 +20,7 @@ import { storage } from "./storage";
 import { appSlice } from "@/app/states/appState";
 import { accountSlice } from "@/app/states/accountState";
 import { masterContractSlice } from "@/app/states/masterContractState";
+import { poolsSlice } from "@/app/states/poolsState";
 
 function persist<T = any>(config: any, reducer: Reducer) {
   return isClientSide()
@@ -48,6 +49,12 @@ const masterContractPersistConfig = {
   whitelist: ["masterContract"],
 };
 
+const poolsPersistConfig = {
+  key: "pools",
+  version: 1,
+  storage,
+};
+
 const rootReducer = combineReducers({
   appState: persist<ReturnType<typeof appSlice.reducer>>(
     appPersistConfig,
@@ -60,6 +67,10 @@ const rootReducer = combineReducers({
   masterContractState: persist<ReturnType<typeof masterContractSlice.reducer>>(
     masterContractPersistConfig,
     masterContractSlice.reducer
+  ),
+  poolsState: persist<ReturnType<typeof poolsSlice.reducer>>(
+    poolsPersistConfig,
+    poolsSlice.reducer
   ),
 });
 

@@ -1,21 +1,28 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { Config } from "@/app/config";
+import { useRouter } from "next/router";
+import { PoolCard } from "@/features/pools/view/components/poolCard";
+import { useAppSelector } from "@/states/hooks";
+import { selectPoolContractState } from "@/app/states/poolsState";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
 export const ManagePool = () => {
+  const {
+    query: { poolId },
+  } = useRouter();
+
+  // @ts-ignore
+  const poolData = useAppSelector(selectPoolContractState(poolId));
+
+  if (!poolData) return null;
+
   return (
     <Grid container spacing={gridSpacing}>
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={4} md={6} sm={6} xs={12}>
-            {/*<LiquidityCard*/}
-            {/*  isLoading={isLoading}*/}
-            {/*  mintLiquidity={approvalStatusMinting.quantity}*/}
-            {/*  burnLiquidity={approvalStatusBurning.quantity}*/}
-            {/*  liquidity={token.supply}*/}
-            {/*  tokenSymbol={token.name}*/}
-            {/*/>*/}
+            <PoolCard data={poolData} />
           </Grid>
           <Grid item lg={3} md={6} sm={6} xs={12}>
             {/*<PieChart />*/}
