@@ -1,20 +1,20 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Config } from "@/app/config";
 import { useRouter } from "next/router";
 import { PoolCard } from "@/features/pools/view/components/poolCard";
 import { useAppSelector } from "@/states/hooks";
 import { selectPoolContractState } from "@/app/states/poolsState";
+import { PayoutActionCard } from "./payoutActionCard";
+import { PayoutApprovalCard } from "./payoutApprovalCard";
+import { singleQueryArg } from "@/app/singleQueryArg";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
 export const ManagePool = () => {
-  const {
-    query: { poolId },
-  } = useRouter();
+  const { query } = useRouter();
 
-  // @ts-ignore
+  const poolId = singleQueryArg(query.poolId);
   const poolData = useAppSelector(selectPoolContractState(poolId));
-
   if (!poolData) return null;
 
   return (
@@ -35,20 +35,10 @@ export const ManagePool = () => {
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item xs={12} md={4}>
-            {/*<MintActionCard />*/}
+            <PayoutActionCard poolId={poolId} />
           </Grid>
           <Grid item xs={12} md={8}>
-            {/*<MintApprovalCard />*/}
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container spacing={gridSpacing}>
-          <Grid item xs={12} md={4}>
-            {/*<BurnActionCard />*/}
-          </Grid>
-          <Grid item xs={12} md={8}>
-            {/*<BurnApprovalCard />*/}
+            <PayoutApprovalCard />
           </Grid>
         </Grid>
       </Grid>

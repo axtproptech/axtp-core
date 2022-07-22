@@ -45,7 +45,7 @@ export class PoolContractService {
           activationAmountPlanck: Amount.fromSigna(
             Config.PoolContract.ActivationCosts
           ).getPlanck(),
-          name: `${Config.PoolContract.Basename}_${args.name}`,
+          name: `${Config.PoolContract.Basename}${args.name}`,
           data,
         });
       return (await wallet.confirm(

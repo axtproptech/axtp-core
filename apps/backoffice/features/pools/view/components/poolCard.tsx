@@ -62,27 +62,25 @@ export const PoolCard: FC<Props> = ({ data }) => {
             <Grid container alignItems="center">
               <Grid item>
                 <Stack direction="row" spacing={2} alignItems="baseline">
-                  <Tooltip title="Nominal Base Valuation">
-                    <>
-                      <Typography
-                        sx={{
-                          fontSize: "2.125rem",
-                          fontWeight: 500,
-                          mt: 1.75,
-                          mb: 0.75,
-                        }}
-                      >
-                        <NumberFormat
-                          value={nominalLiquidity}
-                          displayType="text"
-                          decimalScale={2}
-                          fixedDecimalScale
-                          thousandSeparator
-                        />
-                      </Typography>
-                      <Typography>{stcTokenSymbol}</Typography>
-                    </>
+                  <Tooltip arrow title="Initial Base Valuation">
+                    <Typography
+                      sx={{
+                        fontSize: "2.125rem",
+                        fontWeight: 500,
+                        mt: 1.75,
+                        mb: 0.75,
+                      }}
+                    >
+                      <NumberFormat
+                        value={nominalLiquidity}
+                        displayType="text"
+                        decimalScale={2}
+                        fixedDecimalScale
+                        thousandSeparator
+                      />
+                    </Typography>
                   </Tooltip>
+                  <Typography>{stcTokenSymbol}</Typography>
                 </Stack>
                 <Stack
                   direction="row"
@@ -98,16 +96,18 @@ export const PoolCard: FC<Props> = ({ data }) => {
                   >
                     <IconPayments />
                     &nbsp;
-                    <Typography>
-                      <NumberFormat
-                        value={paidDistribution}
-                        displayType="text"
-                        decimalScale={2}
-                        fixedDecimalScale
-                        thousandSeparator
-                      />{" "}
-                      {stcTokenSymbol}
-                    </Typography>
+                    <Tooltip arrow title="Paid Distribution">
+                      <Typography>
+                        <NumberFormat
+                          value={paidDistribution}
+                          displayType="text"
+                          decimalScale={2}
+                          fixedDecimalScale
+                          thousandSeparator
+                        />{" "}
+                        {stcTokenSymbol}
+                      </Typography>
+                    </Tooltip>
                   </Stack>
                   <Stack
                     justifyContent="start"
@@ -116,16 +116,18 @@ export const PoolCard: FC<Props> = ({ data }) => {
                   >
                     <IconSpeed />
                     &nbsp;
-                    <Typography>
-                      <NumberFormat
-                        value={performancePercent}
-                        displayType="text"
-                        decimalScale={2}
-                        fixedDecimalScale
-                        thousandSeparator
-                      />{" "}
-                      %
-                    </Typography>
+                    <Tooltip arrow title="Relative Valuation after Payouts">
+                      <Typography>
+                        <NumberFormat
+                          value={performancePercent}
+                          displayType="text"
+                          decimalScale={2}
+                          fixedDecimalScale
+                          thousandSeparator
+                        />{" "}
+                        %
+                      </Typography>
+                    </Tooltip>
                   </Stack>
                 </Stack>
                 <Stack
@@ -142,17 +144,19 @@ export const PoolCard: FC<Props> = ({ data }) => {
                   >
                     <IconPeople />
                     &nbsp;
-                    <Typography>
-                      {`${token.quantity}/${token.supply}`} (
-                      <NumberFormat
-                        value={occupationPercent}
-                        displayType="text"
-                        decimalScale={2}
-                        fixedDecimalScale
-                        thousandSeparator
-                      />{" "}
-                      %)
-                    </Typography>
+                    <Tooltip arrow title="Token Holders and Token Maximum">
+                      <Typography>
+                        {`${token.quantity}/${token.supply}`} (
+                        <NumberFormat
+                          value={occupationPercent}
+                          displayType="text"
+                          decimalScale={2}
+                          fixedDecimalScale
+                          thousandSeparator
+                        />{" "}
+                        %)
+                      </Typography>
+                    </Tooltip>
                   </Stack>
                 </Stack>
               </Grid>
