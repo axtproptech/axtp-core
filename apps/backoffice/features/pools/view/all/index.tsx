@@ -62,7 +62,9 @@ export const AllPools = () => {
               <Box sx={{ cursor: "pointer" }}>
                 <Animate scale={{ hover: 1.025, tap: 0.975 }}>
                   <Link href={`/admin/pools/${data.id}`}>
-                    <PoolCard data={data} />
+                    <div>
+                      <PoolCard data={data} />
+                    </div>
                   </Link>
                 </Animate>
               </Box>
