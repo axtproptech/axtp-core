@@ -31,6 +31,10 @@
     #define RESTC_TOKEN_ID 100
 #endif
 
+// Set public functions magic numbers
+#define SEND_RPST_TO_HOLDER 0xe16029b76b056b6b
+#define APPROVE_DISTRIBUTION 0x3b15c00ea0519a0a
+
 // global variables, will be available in all functions
 // external/loadable variables
 long poolName;
@@ -51,12 +55,6 @@ long poolTokenId;
 long pendingPayoutSTC;
 long paidSTC;
 
-long messageBuffer[4];
-
-// Set public functions magic numbers
-#define SEND_RPST_TO_HOLDER 0xe16029b76b056b6b
-#define APPROVE_DISTRIBUTION 0x3b15c00ea0519a0a
-
 struct APPROVAL {
   long account, approved;
 } approvals[4];
@@ -72,6 +70,8 @@ struct TXINFO {
         quantityPST,
         message[4];
 } currentTX;
+
+long messageBuffer[4];
 
 constructor();
 
