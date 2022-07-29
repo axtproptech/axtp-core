@@ -28,7 +28,6 @@ export const PayoutActionCard: FC<Props> = ({ poolId }) => {
   const [floatAmount, setFloatAmount] = useState(0.0);
   const { execute, isExecuting, transactionId } = useLedgerAction();
   const { token } = useMasterContract();
-
   const handleOnRequestPayoutAction = async () => {
     const amountQuantity = toStableCoinQuantity(floatAmount.toString(10));
     await execute((service) =>

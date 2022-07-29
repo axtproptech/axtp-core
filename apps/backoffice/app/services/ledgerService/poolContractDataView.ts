@@ -77,6 +77,13 @@ export class PoolContractDataView {
     return parseFloat(toStableCoinAmount(qnt));
   }
 
+  getAccumulatedStableCoinsForDistribution(): number {
+    const qnt = this.view.getVariableAsDecimal(
+      PoolContractDataIndex.PendingDistributionRESTC
+    );
+    return parseFloat(toStableCoinAmount(qnt));
+  }
+
   getDistributionApprovalStatus(): ApprovalStatus {
     const approvedAccounts = [];
     const approved1 = this.getApprovedAccount(
@@ -101,11 +108,8 @@ export class PoolContractDataView {
     approved3 && approvedAccounts.push(approved3);
     approved4 && approvedAccounts.push(approved4);
 
-    const quantity = toStableCoinAmount(
-      this.view.getVariableAsDecimal(
-        PoolContractDataIndex.PendingDistributionRESTC
-      )
-    );
+    const quantity =
+      this.getAccumulatedStableCoinsForDistribution().toString(10);
 
     return {
       approvedAccounts,

@@ -8,3 +8,5 @@ export const selectPoolContractState =
 
 export const selectAllPools = (state: RootState): PoolContractData[] =>
   Object.values(state.poolsState.pools);
+
+export const selectPoolState = (state: RootState) => state.poolsState;

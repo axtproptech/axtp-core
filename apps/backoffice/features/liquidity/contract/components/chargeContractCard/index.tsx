@@ -1,5 +1,5 @@
 import { IconRecharging } from "@tabler/icons";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
 import { TextInput } from "@/app/components/inputs";
@@ -8,7 +8,6 @@ import { useState } from "react";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { Amount } from "@signumjs/util";
-import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { ActionCard } from "@/app/components/cards";
 

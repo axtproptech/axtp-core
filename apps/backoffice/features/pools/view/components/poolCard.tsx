@@ -1,15 +1,6 @@
 import { FC, useMemo } from "react";
 
-import {
-  Avatar,
-  Box,
-  Chip,
-  Grid,
-  Stack,
-  Tooltip,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Chip, Grid, Stack, Tooltip, Typography } from "@mui/material";
 import {
   Speed as IconSpeed,
   Payments as IconPayments,
@@ -31,7 +22,7 @@ interface Props {
   showContractBalance?: boolean;
 }
 
-const LowBalance = Amount.fromSigna(2);
+// FIXME: add pending/accumulated payout liquidity
 
 export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
   const masterContract = useMasterContract();
@@ -58,7 +49,9 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
   const occupationPercent =
     (parseInt(token?.quantity || "0") / parseInt(token?.supply || "0")) * 100;
 
-  const isBalanceLow = balanceAmount.less(LowBalance);
+  const isBalanceLow = balanceAmount.less(
+    Config.PoolContract.LowBalanceThreshold
+  );
 
   return (
     <CardWrapperBlue border={false} content={false}>
@@ -67,11 +60,19 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
           <Grid item>
             <Grid container justifyContent="space-between">
               <Grid item>
-                <Tooltip arrow title="Pool/Share Token Name">
+                <Tooltip
+                  arrow
+                  title="Pool Token - Click to open in blockchain explorer "
+                >
                   <Chip
                     sx={{ mr: 2 }}
                     label={token.name.toUpperCase()}
                     color="primary"
+                    href={`${Config.Signum.Explorer}asset/${token.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    clickable
+                    component={"a"}
                     avatar={
                       <img
                         src={iconUrl}

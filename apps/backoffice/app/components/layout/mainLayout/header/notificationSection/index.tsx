@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 // material-ui
 import { useTheme } from "@mui/material/styles";
 import {
   Avatar,
+  Badge,
   Box,
   Button,
   ButtonBase,
@@ -25,51 +25,32 @@ import {
 import PerfectScrollbar from "react-perfect-scrollbar";
 
 // project imports
-import MainCard from "ui-component/cards/MainCard";
-import Transitions from "ui-component/extended/Transitions";
-import NotificationList from "./NotificationList";
+import { MainCard } from "@/app/components/cards/mainCard";
+import { NotificationList } from "./notificationList";
 
 // assets
 import { IconBell } from "@tabler/icons";
+import { Transition } from "@/app/components/animation";
+import { useAppSelector } from "@/states/hooks";
+import { selectAllNotifications } from "@/app/states/notificationsState";
 
-// notification status options
-const status = [
-  {
-    value: "all",
-    label: "All Notification",
-  },
-  {
-    value: "new",
-    label: "New",
-  },
-  {
-    value: "unread",
-    label: "Unread",
-  },
-  {
-    value: "other",
-    label: "Other",
-  },
-];
-
-// ==============================|| NOTIFICATION ||============================== //
-
-const NotificationSection = () => {
+export const NotificationSection = () => {
   const theme = useTheme();
   const matchesXs = useMediaQuery(theme.breakpoints.down("md"));
+  const notifications = useAppSelector(selectAllNotifications);
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+
   /**
    * anchorRef is used on different componets and specifying one type leads to other components throwing an error
    * */
-  const anchorRef = useRef(null);
+  const anchorRef = useRef<any | null>(null);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleClose = (event) => {
+  const handleClose = (event: MouseEvent | TouchEvent) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
@@ -78,15 +59,13 @@ const NotificationSection = () => {
 
   const prevOpen = useRef(open);
   useEffect(() => {
-    if (prevOpen.current === true && open === false) {
+    if (prevOpen.current && anchorRef.current && !open) {
       anchorRef.current.focus();
     }
     prevOpen.current = open;
   }, [open]);
 
-  const handleChange = (event) => {
-    if (event?.target.value) setValue(event?.target.value);
-  };
+  if (!notifications.length) return null;
 
   return (
     <>
@@ -99,29 +78,33 @@ const NotificationSection = () => {
           },
         }}
       >
-        <ButtonBase sx={{ borderRadius: "12px" }}>
-          <Avatar
-            variant="rounded"
-            sx={{
-              ...theme.typography.commonAvatar,
-              ...theme.typography.mediumAvatar,
-              transition: "all .2s ease-in-out",
-              background: theme.palette.secondary.light,
-              color: theme.palette.secondary.dark,
-              '&[aria-controls="menu-list-grow"],&:hover': {
-                background: theme.palette.secondary.dark,
-                color: theme.palette.secondary.light,
-              },
-            }}
-            ref={anchorRef}
-            aria-controls={open ? "menu-list-grow" : undefined}
-            aria-haspopup="true"
-            onClick={handleToggle}
-            color="inherit"
-          >
-            <IconBell stroke={1.5} size="1.3rem" />
-          </Avatar>
-        </ButtonBase>
+        <Badge badgeContent={notifications.length.toString(10)} color="warning">
+          <ButtonBase sx={{ borderRadius: "12px" }}>
+            <Avatar
+              variant="rounded"
+              sx={{
+                // @ts-ignore
+                ...theme.typography.commonAvatar,
+                // @ts-ignore
+                ...theme.typography.mediumAvatar,
+                transition: "all .2s ease-in-out",
+                background: theme.palette.secondary.light,
+                color: theme.palette.secondary.dark,
+                '&[aria-controls="menu-list-grow"],&:hover': {
+                  background: theme.palette.secondary.dark,
+                  color: theme.palette.secondary.light,
+                },
+              }}
+              ref={anchorRef}
+              aria-controls={open ? "menu-list-grow" : undefined}
+              aria-haspopup="true"
+              onClick={handleToggle}
+              color="inherit"
+            >
+              <IconBell stroke={1.5} size="1.3rem" />
+            </Avatar>
+          </ButtonBase>
+        </Badge>
       </Box>
       <Popper
         placement={matchesXs ? "bottom" : "bottom-end"}
@@ -142,7 +125,7 @@ const NotificationSection = () => {
         }}
       >
         {({ TransitionProps }) => (
-          <Transitions
+          <Transition
             position={matchesXs ? "top" : "top-right"}
             in={open}
             {...TransitionProps}
@@ -179,16 +162,6 @@ const NotificationSection = () => {
                             />
                           </Stack>
                         </Grid>
-                        <Grid item>
-                          <Typography
-                            component={Link}
-                            to="#"
-                            variant="subtitle2"
-                            color="primary"
-                          >
-                            Mark as all read
-                          </Typography>
-                        </Grid>
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
@@ -200,34 +173,11 @@ const NotificationSection = () => {
                         }}
                       >
                         <Grid container direction="column" spacing={2}>
-                          <Grid item xs={12}>
-                            <Box sx={{ px: 2, pt: 0.25 }}>
-                              <TextField
-                                id="outlined-select-currency-native"
-                                select
-                                fullWidth
-                                value={value}
-                                onChange={handleChange}
-                                SelectProps={{
-                                  native: true,
-                                }}
-                              >
-                                {status.map((option) => (
-                                  <option
-                                    key={option.value}
-                                    value={option.value}
-                                  >
-                                    {option.label}
-                                  </option>
-                                ))}
-                              </TextField>
-                            </Box>
-                          </Grid>
                           <Grid item xs={12} p={0}>
                             <Divider sx={{ my: 0 }} />
                           </Grid>
                         </Grid>
-                        <NotificationList />
+                        <NotificationList notifications={notifications} />
                       </PerfectScrollbar>
                     </Grid>
                   </Grid>
@@ -240,11 +190,9 @@ const NotificationSection = () => {
                 </MainCard>
               </ClickAwayListener>
             </Paper>
-          </Transitions>
+          </Transition>
         )}
       </Popper>
     </>
   );
 };
-
-export default NotificationSection;

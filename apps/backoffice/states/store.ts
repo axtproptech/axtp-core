@@ -21,6 +21,7 @@ import { appSlice } from "@/app/states/appState";
 import { accountSlice } from "@/app/states/accountState";
 import { masterContractSlice } from "@/app/states/masterContractState";
 import { poolsSlice } from "@/app/states/poolsState";
+import { notificationsSlice } from "@/app/states/notificationsState";
 
 function persist<T = any>(config: any, reducer: Reducer) {
   return isClientSide()
@@ -55,6 +56,12 @@ const poolsPersistConfig = {
   storage,
 };
 
+const notificationsPersistConfig = {
+  key: "notifications",
+  version: 1,
+  storage,
+};
+
 const rootReducer = combineReducers({
   appState: persist<ReturnType<typeof appSlice.reducer>>(
     appPersistConfig,
@@ -71,6 +78,10 @@ const rootReducer = combineReducers({
   poolsState: persist<ReturnType<typeof poolsSlice.reducer>>(
     poolsPersistConfig,
     poolsSlice.reducer
+  ),
+  notificationsState: persist<ReturnType<typeof notificationsSlice.reducer>>(
+    notificationsPersistConfig,
+    notificationsSlice.reducer
   ),
 });
 

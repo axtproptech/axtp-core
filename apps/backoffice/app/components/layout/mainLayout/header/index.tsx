@@ -5,6 +5,7 @@ import LogoSection from "../logoSection";
 import { ProfileSection } from "./profileSection";
 import { IconMenu2 } from "@tabler/icons";
 import { FC, MouseEventHandler } from "react";
+import { NotificationSection } from "./notificationSection";
 
 interface Props {
   handleLeftDrawerToggle: MouseEventHandler;
@@ -55,14 +56,11 @@ export const Header: FC<Props> = ({ handleLeftDrawerToggle }) => {
           </Avatar>
         </ButtonBase>
       </Box>
-
       {/* header search */}
       {/*<SearchSection />*/}
       <Box sx={{ flexGrow: 1 }} />
       <Box sx={{ flexGrow: 1 }} />
-
-      {/* notification & profile */}
-      {/*<NotificationSection />*/}
+      <NotificationSection />
       <ProfileSection />
     </>
   );

@@ -14,8 +14,6 @@ interface Props {
   balance: string;
 }
 
-const LowBalance = Amount.fromSigna(2);
-
 export const StatusCard: FC<Props> = ({ balance, isLoading }) => {
   const theme = useTheme();
 
@@ -31,7 +29,9 @@ export const StatusCard: FC<Props> = ({ balance, isLoading }) => {
     return <SkeletonStatusCard />;
   }
 
-  const isBalanceLow = balanceAmount.less(LowBalance);
+  const isBalanceLow = balanceAmount.less(
+    Config.MasterContract.LowBalanceThreshold
+  );
 
   return (
     <CardWrapperBlue border={false} content={false}>

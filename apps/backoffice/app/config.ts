@@ -1,3 +1,5 @@
+import { Amount } from "@signumjs/util";
+
 const toNumber = (v: any): number => {
   const n = parseFloat(v);
   return Number.isNaN(n) ? -1 : n;
@@ -27,6 +29,7 @@ export const Config = {
       process.env.NEXT_PUBLIC_PLATFORM_CANONICAL_URL || "https://signumswap.io",
   },
   MasterContract: {
+    LowBalanceThreshold: Amount.fromSigna(2),
     Id: process.env.NEXT_PUBLIC_CONTRACT_MASTER_ID || "",
     ApprovalAccounts: toArray(
       process.env.NEXT_PUBLIC_CONTRACT_MASTER_APPROVAL_ACCOUNTS || ""
@@ -59,6 +62,7 @@ export const Config = {
     },
   },
   PoolContract: {
+    LowBalanceThreshold: Amount.fromSigna(2),
     Reference: process.env.NEXT_PUBLIC_CONTRACT_POOL_REF || "",
     CodeHash:
       process.env.NEXT_PUBLIC_CONTRACT_POOL_CODEHASH || "17139226199807531405",
