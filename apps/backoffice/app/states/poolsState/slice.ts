@@ -17,8 +17,9 @@ export const poolsSlice = createSlice({
   name: "pools",
   initialState,
   reducers: {
-    setPoolData: (state, action: PayloadAction<PoolStateMap>) => {
-      state.pools = action.payload;
+    setPoolData: (state, action: PayloadAction<PoolContractData>) => {
+      const poolData = action.payload;
+      state.pools[poolData.poolId] = poolData;
     },
   },
 });

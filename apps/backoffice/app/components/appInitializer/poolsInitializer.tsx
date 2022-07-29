@@ -53,7 +53,7 @@ export const PoolsInitializer = () => {
     ledgerService ? "fetch/allPools" : null,
     async () => {
       if (!ledgerService) return null;
-      return Promise.resolve(MockedPools);
+      return ledgerService.poolContract.fetchAllContracts();
     },
     {
       refreshInterval: 30_000,
@@ -62,7 +62,9 @@ export const PoolsInitializer = () => {
 
   useEffect(() => {
     if (!data) return;
-    dispatch(actions.setPoolData(data));
+    data.forEach((pool) => {
+      dispatch(actions.setPoolData(pool));
+    });
   }, [data]);
 
   return null;

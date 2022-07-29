@@ -29,6 +29,7 @@ export class PoolInstanceService extends GenericContractService {
       const { ledger } = this.context;
       const contract = await ledger.contract.getContract(this.poolId);
       const contractDataView = new PoolContractDataView(contract);
+
       const [token, transactions] = await Promise.all([
         this.getTokenData(contractDataView.getPoolTokenId()),
         ledger.account.getAccountTransactions({ accountId: this.contractId() }),

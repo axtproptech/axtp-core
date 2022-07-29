@@ -6,9 +6,11 @@ import { Amount } from "@signumjs/core";
 import { withError } from "@/app/services/ledgerService/withError";
 import { InputValidationService } from "@/app/services/inputValidationService";
 import {
+  convertHexEndianess,
   convertHexStringToDecString,
   convertStringToHexString,
 } from "@signumjs/util";
+import { PoolContractData } from "@/types/poolContractData";
 
 interface CreatePoolInstanceArgs {
   documentationUrl: string;
@@ -64,7 +66,7 @@ export class PoolContractService {
 
   private static createInitialDataStack(args: CreatePoolInstanceArgs) {
     const name = convertHexStringToDecString(
-      convertStringToHexString(args.name)
+      convertHexEndianess(convertStringToHexString(args.name))
     );
     return [0, 0, 0, 0, name, args.rate, args.quantity];
   }
@@ -72,5 +74,18 @@ export class PoolContractService {
   private static assertCreationArguments(args: CreatePoolInstanceArgs) {
     InputValidationService.assertTextLessThan(args.description, 512);
     InputValidationService.assertTextLessThan(args.documentationUrl, 384);
+  }
+
+  async fetchAllContracts() {
+    return withError(async () => {
+      const { ledger } = this.context;
+      const poolIds = await ledger.contract.getAllContractIds({
+        machineCodeHash: Config.PoolContract.CodeHash,
+      });
+      const promises = poolIds.atIds.map((poolId) =>
+        this.with(poolId).readContractData()
+      );
+      return Promise.all(promises);
+    });
   }
 }

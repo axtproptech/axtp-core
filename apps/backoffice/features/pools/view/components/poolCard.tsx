@@ -1,7 +1,15 @@
 import { FC, useMemo } from "react";
 
-import { useTheme } from "@mui/material/styles";
-import { Box, Chip, Grid, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Chip,
+  Grid,
+  Stack,
+  Tooltip,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import {
   Speed as IconSpeed,
   Payments as IconPayments,
@@ -13,29 +21,44 @@ import NumberFormat from "react-number-format";
 import hashicon from "hashicon";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { PoolContractData } from "@/types/poolContractData";
+import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
+import PriceCheckRoundedIcon from "@mui/icons-material/PriceCheckRounded";
+import { Amount } from "@signumjs/util";
+import { Config } from "@/app/config";
 
 interface Props {
   data: PoolContractData;
+  showContractBalance?: boolean;
 }
 
-export const PoolCard: FC<Props> = ({ data }) => {
+const LowBalance = Amount.fromSigna(2);
+
+export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
   const masterContract = useMasterContract();
 
   const stcTokenSymbol = masterContract.token.name;
 
-  const { poolId, paidDistribution, token, nominalLiquidity } = data;
-
-  console.log("PoolCard", data);
+  const { poolId, paidDistribution, token, nominalLiquidity, balance } = data;
 
   const iconUrl = useMemo(() => {
     if (!poolId) return "";
     return hashicon(poolId, { size: 32 }).toDataURL();
   }, [poolId]);
 
+  const balanceAmount = useMemo(() => {
+    try {
+      return Amount.fromSigna(balance);
+    } catch (e) {
+      return Amount.Zero();
+    }
+  }, [balance]);
+
   const performancePercent =
     ((nominalLiquidity + paidDistribution) / nominalLiquidity) * 100;
   const occupationPercent =
     (parseInt(token?.quantity || "0") / parseInt(token?.supply || "0")) * 100;
+
+  const isBalanceLow = balanceAmount.less(LowBalance);
 
   return (
     <CardWrapperBlue border={false} content={false}>
@@ -44,17 +67,42 @@ export const PoolCard: FC<Props> = ({ data }) => {
           <Grid item>
             <Grid container justifyContent="space-between">
               <Grid item>
-                <Chip
-                  label={token.name.toUpperCase()}
-                  color="primary"
-                  avatar={
-                    <img
-                      src={iconUrl}
-                      alt={poolId}
-                      style={{ backgroundColor: "transparent" }}
+                <Tooltip arrow title="Pool/Share Token Name">
+                  <Chip
+                    sx={{ mr: 2 }}
+                    label={token.name.toUpperCase()}
+                    color="primary"
+                    avatar={
+                      <img
+                        src={iconUrl}
+                        alt={poolId}
+                        style={{ backgroundColor: "transparent" }}
+                      />
+                    }
+                  />
+                </Tooltip>
+                {(showContractBalance || isBalanceLow) && (
+                  <Tooltip
+                    arrow
+                    title={
+                      isBalanceLow
+                        ? "Low Balance: Please recharge contract!"
+                        : "Contract Balance is fine"
+                    }
+                  >
+                    <Chip
+                      label={`${balance} ${Config.Signum.TickerSymbol}`}
+                      color={isBalanceLow ? "warning" : "primary"}
+                      avatar={
+                        isBalanceLow ? (
+                          <WarningAmberRoundedIcon color="warning" />
+                        ) : (
+                          <PriceCheckRoundedIcon color="success" />
+                        )
+                      }
                     />
-                  }
-                />
+                  </Tooltip>
+                )}
               </Grid>
             </Grid>
           </Grid>

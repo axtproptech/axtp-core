@@ -1,5 +1,4 @@
 import { ServiceContext } from "./serviceContext";
-import { Config } from "@/app/config";
 import { withError } from "./withError";
 import { Amount } from "@signumjs/util";
 import { InputValidationService } from "@/app/services/inputValidationService";
@@ -15,6 +14,14 @@ export abstract class GenericContractService {
   public abstract interactionFee(): Amount;
 
   protected async getTokenData(tokenId: string): Promise<BasicTokenInfo> {
+    if (!tokenId || tokenId === "0") {
+      return Promise.resolve({
+        name: "",
+        id: "0",
+        quantity: "0",
+        supply: "0",
+      });
+    }
     const { ledger } = this.context;
     const [assetInfo, accountInfo] = await Promise.all([
       ledger.asset.getAsset(tokenId),

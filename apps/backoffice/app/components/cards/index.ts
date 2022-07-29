@@ -3,3 +3,4 @@ export * from "./mainCard";
 export * from "./actionCard";
 export * from "./cardWrapperDark";
 export * from "./cardWrapperBlue";
+export * from "./chargeContractCard";
