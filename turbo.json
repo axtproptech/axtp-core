@@ -11,6 +11,9 @@
     },
     "pretty": {
       "outputs": []
+    },
+    "dev": {
+      "cache": false
     }
   }
 }

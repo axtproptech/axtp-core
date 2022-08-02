@@ -1,0 +1,9 @@
+{
+  "name": "@rest/core-package",
+  "version": "1.0.1",
+  "description": "A shared library",
+  "main": "index.js",
+  "author": "ohager",
+  "license": "MIT",
+  "private": true
+}
