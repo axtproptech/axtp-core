@@ -6,7 +6,7 @@ interface Props {}
 export default class MyDocument extends Document<Props> {
   render() {
     return (
-      <Html>
+      <Html data-theme="luxury">
         <Head>
           {/* PWA primary color */}
           <meta name="theme-color" content="#000000" />
@@ -17,13 +17,13 @@ export default class MyDocument extends Document<Props> {
           />
 
           {/* PWA SETUP */}
-          <meta name="application-name" content="Fixcoin.eco" />
+          <meta name="application-name" content="Wallet" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta
             name="apple-mobile-web-app-status-bar-style"
             content="default"
           />
-          <meta name="apple-mobile-web-app-title" content="Fixcoin.eco" />
+          <meta name="apple-mobile-web-app-title" content="Wallet" />
           <meta name="description" content="bla bla bla" />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
