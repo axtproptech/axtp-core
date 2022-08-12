@@ -9,7 +9,7 @@ export interface MetaTagsProps {
   viewport?: string;
 }
 
-export const SEOMetaTags = (props: MetaTagsProps) => {
+export const MetaTags = (props: MetaTagsProps) => {
   return (
     <Head>
       {props.title ? <title>{props.title}</title> : null}

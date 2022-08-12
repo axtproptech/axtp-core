@@ -1,4 +1,4 @@
-import { Layout } from "@/app/components/Layout";
+import { Layout } from "@/app/components/layout";
 import { ErrorPage } from "@/features/404";
 
 export default function Custom404() {

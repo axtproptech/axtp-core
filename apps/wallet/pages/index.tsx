@@ -1,8 +1,8 @@
-import { Layout } from "@/app/components/Layout";
+import { Layout } from "@/app/components/layout";
 import { Home } from "@/features/home";
-import { SEOMetaTags } from "@/app/components/SEOMetaTags";
+import { MetaTags } from "@/app/components/metaTags";
 import { Status } from "@/bff/types/status";
-import { BackendForFrontendService } from "@/bff/BackendForFrontendService";
+import { BackendForFrontendService } from "@/bff/backendForFrontendService";
 import { GetServerSideProps, NextPage } from "next";
 import useSWR, { SWRConfig } from "swr";
 
@@ -16,7 +16,7 @@ const HomePage: NextPage<Props> = ({ url }) => {
   return (
     <Layout>
       {data && (
-        <SEOMetaTags
+        <MetaTags
           title={data.name + " • FixcoinApp"}
           description={data.description || null}
           // add here an image for SEO

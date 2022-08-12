@@ -1,7 +1,7 @@
 import { FC, createContext } from "react";
 import { isClientSide } from "../isClientSide";
 import { isMobile } from "react-device-detect";
-import { ChildrenProps } from "../../types/ChildrenProps";
+import { ChildrenProps } from "@/types/childrenProps";
 
 export interface AppContextType {
   IsClientSide: boolean;

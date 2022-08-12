@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
-import { ChildrenProps } from "../../../types/ChildrenProps";
+import { ChildrenProps } from "@/types/childrenProps";
 
 export const Layout: FC<ChildrenProps> = ({ children }) => {
   const router = useRouter();

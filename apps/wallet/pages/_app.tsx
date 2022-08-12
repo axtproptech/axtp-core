@@ -3,9 +3,9 @@ import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import { store } from "@/states/store";
-import { AppContextProvider } from "@/app/contexts/AppContext";
-import { SEOMetaTags } from "@/app/components/SEOMetaTags";
-import { AppInitializer } from "@/app/components/AppInitializer";
+import { AppContextProvider } from "@/app/contexts/appContext";
+import { MetaTags } from "@/app/components/metaTags";
+import { AppInitializer } from "@/app/components/appInitializer";
 
 import "./globals.css";
 import * as React from "react";
@@ -15,7 +15,7 @@ const persistor = persistStore(store);
 function App({ Component, pageProps }: AppProps) {
   return (
     <AppContextProvider>
-      <SEOMetaTags
+      <MetaTags
         title="Fixcoin.eco"
         // canonical={Config.Platform.CanonicalUrl + router.asPath}
         // imgUrl={Config.Platform.CanonicalUrl + "/assets/img/seo.jpg"}
