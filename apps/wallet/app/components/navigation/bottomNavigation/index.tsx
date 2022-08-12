@@ -4,7 +4,8 @@ import { FC } from "react";
 
 export interface BottomNavigationItem {
   icon: any;
-  route: string;
+  route?: string;
+  back?: boolean;
 }
 
 interface Props {
@@ -13,13 +14,23 @@ interface Props {
 
 export const BottomNavigation: FC<Props> = ({ nav }) => {
   const router = useRouter();
+
+  const handleOnClick = (n: BottomNavigationItem) => {
+    if (n.back) {
+      router.back();
+      return;
+    }
+
+    n.route && router.push(n.route);
+  };
+
   return (
-    <IconContext.Provider value={{ size: "1.25em" }}>
-      <div className="btm-nav">
+    <IconContext.Provider value={{ size: "1.5em" }}>
+      <div className="btm-nav max-w-[768px] mx-auto">
         {nav.map((n, index) => (
           <button
             key={index}
-            onClick={() => router.push(n.route || "/")}
+            onClick={() => handleOnClick(n)}
             className={router.route === n.route ? "active" : ""}
           >
             <n.icon />
