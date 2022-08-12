@@ -1,29 +1,38 @@
-import { Fragment, FC, useEffect } from "react";
-import { useRouter } from "next/router";
-
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
+import { FC } from "react";
 import { ChildrenProps } from "@/types/childrenProps";
+import { Container } from "./container";
+import {
+  BottomNavigation,
+  BottomNavigationItem,
+} from "../navigation/bottomNavigation";
+import { Body } from "./body";
+import { RiHome6Line, RiLineChartLine, RiAccountBoxLine } from "react-icons/ri";
 
-export const Layout: FC<ChildrenProps> = ({ children }) => {
-  const router = useRouter();
+// TODO: configure correct
+const DefaultNav = [
+  {
+    route: "/",
+    icon: RiHome6Line,
+  },
+  {
+    route: "/stats",
+    icon: RiLineChartLine,
+  },
+  {
+    route: "/account",
+    icon: RiAccountBoxLine,
+  },
+];
 
-  useEffect(() => {
-    NProgress.configure({ showSpinner: false, easing: "ease", speed: 400 });
+interface Props extends ChildrenProps {
+  bottomNav?: BottomNavigationItem[];
+}
 
-    router.events.on("routeChangeStart", () => {
-      NProgress.start();
-    });
-
-    router.events.on("routeChangeComplete", () => {
-      NProgress.done();
-    });
-
-    router.events.on("routeChangeError", () => {
-      NProgress.done();
-    });
-  }, []);
-
-  // TODO: define the layout
-  return <Fragment>{children}</Fragment>;
+export const Layout: FC<Props> = ({ children, bottomNav }) => {
+  return (
+    <Container>
+      <Body>{children}</Body>
+      <BottomNavigation nav={bottomNav || DefaultNav} />
+    </Container>
+  );
 };

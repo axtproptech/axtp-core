@@ -1,54 +1,18 @@
 import { Layout } from "@/app/components/layout";
 import { Home } from "@/features/home";
 import { MetaTags } from "@/app/components/metaTags";
-import { Status } from "@/bff/types/status";
-import { BackendForFrontendService } from "@/bff/backendForFrontendService";
-import { GetServerSideProps, NextPage } from "next";
-import useSWR, { SWRConfig } from "swr";
 
-interface Props {
-  url: string;
-}
-
-const HomePage: NextPage<Props> = ({ url }) => {
-  const { data } = useSWR(url);
-
+export default function Page() {
   return (
     <Layout>
-      {data && (
-        <MetaTags
-          title={data.name + " • FixcoinApp"}
-          description={data.description || null}
-          // add here an image for SEO
-          // imgUrl={some image url}
-          keywords={`Fixcoin, Payback, Fidelity, Tokens, Blockchain`}
-        />
-      )}
-      <Home status={data} />
+      <MetaTags
+        title="Signum R.Est"
+        description={""}
+        // add here an image for SEO
+        // imgUrl={some image url}
+        keywords="tokenomics, real estate, blockchain, signum, sustainable"
+      />
+      <Home />
     </Layout>
   );
-};
-
-export default function Page({ fallback }: { fallback: any }) {
-  return (
-    <SWRConfig value={{ fallback }}>
-      <HomePage url={fallback.fetchingUrl} />
-    </SWRConfig>
-  );
 }
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const queryURL = "status";
-  const service = new BackendForFrontendService(ctx.req);
-  const data = await service.get<Status>(queryURL);
-
-  return {
-    notFound: !data,
-    props: {
-      fallback: {
-        [queryURL]: data,
-        fetchingUrl: queryURL,
-      },
-    },
-  };
-};

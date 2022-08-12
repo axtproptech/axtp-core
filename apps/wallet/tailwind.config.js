@@ -8,4 +8,15 @@ module.exports = {
     extend: {},
   },
   plugins: [require("daisyui")],
+
+  daisyui: {
+    styled: true,
+    themes: ["luxury", "bumblebee"],
+    base: true,
+    utils: true,
+    logs: true,
+    rtl: false,
+    prefix: "",
+    darkTheme: "luxury",
+  },
 };

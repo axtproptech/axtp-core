@@ -1,13 +1,12 @@
-import { Status } from "@/bff/types/status";
+import { AnimatedIconStockShare } from "@/app/components/animatedIcons/animatedIconStockShare";
 
-interface Props {
-  status: Status;
-}
-
-export const Home: React.FC<Props> = ({ status }) => {
+export const Home = () => {
   return (
     <div className="my-5">
-      <h1>Hallo</h1>
+      <h1>Home</h1>
+      <div className="w-[240px] mx-auto">
+        <AnimatedIconStockShare loopDelay={5000} touchable />
+      </div>
     </div>
   );
 };
