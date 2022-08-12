@@ -9,7 +9,7 @@ interface Props {
 export const Home: React.FC<Props> = ({ status }) => {
   return (
     <div className="my-5">
-      <WelcomeDialog status={status} />
+      <h1>Hallo</h1>
     </div>
   );
 };

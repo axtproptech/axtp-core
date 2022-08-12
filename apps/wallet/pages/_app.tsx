@@ -4,7 +4,6 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import { store } from "@/states/store";
 import { AppContextProvider } from "@/app/contexts/AppContext";
-import { isClientSide } from "@/app/isClientSide";
 import { SEOMetaTags } from "@/app/components/SEOMetaTags";
 import { AppInitializer } from "@/app/components/AppInitializer";
 
@@ -13,7 +12,6 @@ import * as React from "react";
 
 const persistor = persistStore(store);
 
-// TODO: we can get the host (Canonical) dynamically - no need for an env var here
 function App({ Component, pageProps }: AppProps) {
   return (
     <AppContextProvider>
@@ -25,18 +23,11 @@ function App({ Component, pageProps }: AppProps) {
         description="bla bla bla"
         viewport="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
       />
-
       <ReduxProvider store={store}>
-        {isClientSide() ? (
-          <>
-            <AppInitializer />
-            <PersistGate loading={null} persistor={persistor}>
-              <Component {...pageProps} />
-            </PersistGate>
-          </>
-        ) : (
+        <AppInitializer />
+        <PersistGate loading={null} persistor={persistor}>
           <Component {...pageProps} />
-        )}
+        </PersistGate>
       </ReduxProvider>
     </AppContextProvider>
   );
