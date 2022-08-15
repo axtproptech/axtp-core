@@ -1,5 +1,7 @@
 module.exports = {
   content: [
+    "../../node_modules/daisyui/dist/**/*.js",
+    "../../node_modules/react-daisyui/dist/**/*.js",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./app/**/*.{js,ts,jsx,tsx}",
     "./features/**/*.{js,ts,jsx,tsx}",
@@ -14,7 +16,6 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [require("@tailwindcss/typography"), require("daisyui")],
 
   daisyui: {
     styled: true,
@@ -26,4 +27,5 @@ module.exports = {
     prefix: "",
     darkTheme: "luxury",
   },
+  plugins: [require("@tailwindcss/typography"), require("daisyui")],
 };
