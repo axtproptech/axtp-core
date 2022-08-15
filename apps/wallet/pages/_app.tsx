@@ -6,6 +6,7 @@ import { store } from "@/states/store";
 import { AppContextProvider } from "@/app/contexts/appContext";
 import { MetaTags } from "@/app/components/metaTags";
 import { AppInitializer } from "@/app/components/appInitializer";
+import { appWithTranslation } from "next-i18next";
 
 import "./globals.css";
 import * as React from "react";
@@ -33,4 +34,5 @@ function App({ Component, pageProps }: AppProps) {
   );
 }
 
-export default App;
+// @ts-ignore
+export default appWithTranslation(App);
