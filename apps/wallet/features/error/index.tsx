@@ -1,10 +1,10 @@
-import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
+import { AnimatedIconRoadBlock } from "@/app/components/animatedIcons/animatedIconRoadBlock";
 
 export const Error404Page = () => {
   return (
-    <div className="my-5">
+    <div className="my-5 p-4">
       <div className="w-[240px] mx-auto">
-        <AnimatedIconError loopDelay={5000} touchable />
+        <AnimatedIconRoadBlock loopDelay={5000} touchable />
       </div>
       <article className="prose mx-auto">
         <h2 className="text-center">Ooops, this is unexpected</h2>

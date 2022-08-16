@@ -1,33 +1,31 @@
 import { useTranslation } from "next-i18next";
 import { Input } from "react-daisyui";
-import { ChangeEvent, KeyboardEvent, useState } from "react";
+import { ChangeEvent } from "react";
 
 export const StepOne = () => {
   const { t } = useTranslation();
-
-  const [pinValue, setPinValue] = useState("");
 
   const handlePinChange = (e: ChangeEvent<HTMLInputElement>) => {
     console.log("PIN", e.target.value);
   };
 
   return (
-    <div className="flex flex-col justify-center content-center text-center h-[90vh] relative prose max-w-none">
+    <div className="flex flex-col justify-center content-center text-center h-[90vh] relative prose max-w-none w-full">
       <section>
         <h2>{t("define_pin")}</h2>
       </section>
       <section className="relative top-[15%]">
         <Input
-          className="text-center"
+          className="text-center border-base-content"
           type={"password"}
           size="lg"
           maxLength={7}
           onChange={handlePinChange}
-          placeholder="ENTER YOUR SECRET"
+          placeholder={t("pin_input_placeholder")}
         />
       </section>
       <section className="w-[75%] m-auto text-justify border border-base-content/50 p-4 rounded relative top-8">
-        <small>{t("define_pin_hint")}</small>
+        <p>{t("define_pin_hint")}</p>
       </section>
     </div>
   );

@@ -9,11 +9,11 @@ export default function Custom404() {
       bottomNav={[
         {
           back: true,
-          icon: RiArrowLeftCircleLine,
+          icon: <RiArrowLeftCircleLine />,
         },
         {
           route: "/",
-          icon: RiHome6Line,
+          icon: <RiHome6Line />,
         },
       ]}
     >

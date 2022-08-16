@@ -1,6 +1,16 @@
 {
   "hello": "hello",
   "good_things": "See all the good things here!",
+  "pin_input_placeholder": "Enter your PIN",
   "define_pin": "Define your pin",
-  "define_pin_hint": "The PIN is your digital signature and secures your data on this device."
+  "define_pin_hint": "The PIN is your digital signature and secures your data on this device.",
+  "your_account": "Your new account",
+  "your_account_hint": "This will be your unique address on the Signum blockchain. Use [Regenerate] to get another random address.",
+  "your_seed": "Your Seed",
+  "your_seed_hint": "It is very important that you [Download] this seed and store it in a secret place. If you lose your seed, you will lose the access to your account.",
+  "verification": "Verification",
+  "verification_placeholder": "Enter Word {{word}}",
+  "verification_hint": "Enter Word {{word}} from your seed. Please, be sure you downloaded or wrote down the seed!",
+  "confirmation": "Confirmation",
+  "confirmation_text": "Hereby, I confirm that I have stored the seed in a secure place. I understand that I lose access to my account, in case I lose my seed."
 }
