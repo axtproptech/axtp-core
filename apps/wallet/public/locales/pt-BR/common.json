@@ -1,4 +1,6 @@
 {
   "hello": "Oi",
-  "good_things": "Ve todas as coisas boas por aqui"
+  "good_things": "Ve todas as coisas boas por aqui",
+  "define_pin": "Defina seu PIN",
+  "define_pin_hint": "O PIN é sua assinatura digital e protege seus dados neste dispositivo"
 }

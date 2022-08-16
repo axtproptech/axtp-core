@@ -1,4 +1,6 @@
 {
   "hello": "hello",
-  "good_things": "See all the good things here!"
+  "good_things": "See all the good things here!",
+  "define_pin": "Define your pin",
+  "define_pin_hint": "The PIN is your digital signature and secures your data on this device."
 }
