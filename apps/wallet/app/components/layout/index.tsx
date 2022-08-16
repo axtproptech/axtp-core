@@ -12,15 +12,15 @@ import { RiHome6Line, RiLineChartLine, RiAccountBoxLine } from "react-icons/ri";
 const DefaultNav = [
   {
     route: "/",
-    icon: RiHome6Line,
+    icon: <RiHome6Line />,
   },
   {
     route: "/stats",
-    icon: RiLineChartLine,
+    icon: <RiLineChartLine />,
   },
   {
     route: "/account",
-    icon: RiAccountBoxLine,
+    icon: <RiAccountBoxLine />,
   },
 ];
 

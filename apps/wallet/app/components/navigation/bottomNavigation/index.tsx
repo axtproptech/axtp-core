@@ -6,6 +6,7 @@ export interface BottomNavigationItem {
   icon: any;
   route?: string;
   back?: boolean;
+  onClick?: (n: BottomNavigationItem) => void;
 }
 
 interface Props {
@@ -21,6 +22,7 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
       return;
     }
 
+    n.onClick && n.onClick(n);
     n.route && router.push(n.route);
   };
 
@@ -33,7 +35,7 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
             onClick={() => handleOnClick(n)}
             className={router.route === n.route ? "active" : ""}
           >
-            <n.icon />
+            {n.icon}
           </button>
         ))}
       </div>
