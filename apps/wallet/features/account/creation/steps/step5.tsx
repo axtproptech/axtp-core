@@ -1,22 +1,36 @@
 import { useTranslation } from "next-i18next";
-import { ChangeEvent, FC } from "react";
-import { Checkbox, Form, Input } from "react-daisyui";
+import { ChangeEvent, FC, useEffect, useState } from "react";
+import { Checkbox, Input } from "react-daisyui";
+import { AttentionSeeker } from "react-awesome-reveal";
+import { RiCheckboxCircleLine } from "react-icons/ri";
 
 interface Props {
   seed: string;
   pin: string;
+  onConfirmationChange: (verified: boolean) => void;
 }
 
-export const StepFive: FC<Props> = ({ seed, pin }) => {
+export const StepFive: FC<Props> = ({ seed, pin, onConfirmationChange }) => {
   const { t } = useTranslation();
+  const [accepted, setAccepted] = useState(false);
+  const [confirmedPin, setConfirmedPin] = useState("");
+  const [verified, setVerified] = useState(false);
 
   const handlePinChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log("PIN", e.target.value);
+    setConfirmedPin(e.target.value);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log("Checked", e.target.checked);
+    setAccepted(e.target.checked);
   };
+
+  useEffect(() => {
+    setVerified(confirmedPin === pin && accepted);
+  }, [confirmedPin, pin, accepted]);
+
+  useEffect(() => {
+    onConfirmationChange(verified);
+  }, [verified]);
 
   return (
     <div className="flex flex-col justify-center content-center text-center h-[90vh] relative prose max-w-none w-full">
@@ -35,12 +49,21 @@ export const StepFive: FC<Props> = ({ seed, pin }) => {
       </section>
       <section className="w-[75%] m-auto text-justify border border-base-content/50 px-4 py-2 rounded relative top-8">
         <div className="form-control w-full flex flex-row justify-center items-center py-2">
-          <Checkbox
-            className="mr-2"
-            color={"primary"}
-            onChange={handleChange}
-          />
-          <div>{t("confirmation_text")}</div>
+          {verified ? (
+            <AttentionSeeker effect="tada" className="text-center">
+              <RiCheckboxCircleLine size={92} className="w-full" />
+            </AttentionSeeker>
+          ) : (
+            <>
+              <Checkbox
+                className="mr-2"
+                color={"primary"}
+                checked={accepted}
+                onChange={handleChange}
+              />
+              <div>{t("confirmation_text")}</div>
+            </>
+          )}
         </div>
       </section>
     </div>

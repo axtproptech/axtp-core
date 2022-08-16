@@ -13,10 +13,18 @@ import {
   StepTwo,
   StepThree,
   StepFour,
+  StepFive,
 } from "@/features/account/creation/steps";
 import { generateMasterKeys, PassPhraseGenerator } from "@signumjs/crypto";
 import { Address } from "@signumjs/core";
-import { StepFive } from "@/features/account/creation/steps/step5";
+
+enum Steps {
+  DefinePin,
+  SeeAccount,
+  GetSeed,
+  VerifySeed,
+  Confirm,
+}
 
 export interface OnStepChangeArgs {
   steps: number;
@@ -33,7 +41,10 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
   const StepCount = 5;
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [seed, setSeed] = useState<string>("");
+  const [pin, setPin] = useState<string>("");
   const [accountAddress, setAccountAddress] = useState<string>("");
+  const [isVerified, setIsVerified] = useState<boolean>(false);
+  const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
 
   const nextStep = async () => {
     const newStep = Math.min(currentStep + 1, StepCount - 1);
@@ -64,7 +75,17 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
       },
     };
 
-    const bottomNav = [
+    let canProceed = true;
+
+    if (currentStep === Steps.DefinePin) {
+      canProceed = pin.length > 4;
+    } else if (currentStep === Steps.VerifySeed) {
+      canProceed = isVerified;
+    } else if (currentStep === Steps.Confirm) {
+      canProceed = isConfirmed;
+    }
+
+    const bottomNav: BottomNavigationItem[] = [
       {
         onClick: currentStep > 0 ? previousStep : voidFn,
         icon: currentStep > 0 ? <RiArrowLeftCircleLine /> : <div />,
@@ -72,6 +93,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
       menuMiddleMap[currentStep] || EmptyItem,
       {
         onClick: currentStep < StepCount - 1 ? nextStep : createAccount,
+        disabled: !canProceed,
         icon:
           currentStep < StepCount - 1 ? (
             <RiArrowRightCircleLine />
@@ -81,7 +103,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
       },
     ];
     onStepChange({ steps: StepCount, currentStep, bottomNav });
-  }, [currentStep]);
+  }, [currentStep, isVerified, pin, isConfirmed]);
 
   async function generateSeed() {
     const arr = new Uint8Array(128);
@@ -113,6 +135,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
         {
           onClick: nextStep,
           icon: <RiArrowRightCircleLine />,
+          disabled: true,
         },
       ],
       currentStep: 0,
@@ -139,14 +162,9 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
     <>
       <div className="mt-4">
         <Stepper currentStep={currentStep} steps={StepCount}></Stepper>
-        <div className="carousel w-full">
-          {/*<div id="step0" className="carousel-item relative w-full">*/}
-          {/*  <div className="mt-4 prose">*/}
-          {/*    <h1>Account Creation</h1>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
+        <div className="carousel w-full touch-none">
           <div id="step0" className="carousel-item relative w-full">
-            <StepOne />
+            <StepOne onPinChange={setPin} />
           </div>
           <div id="step1" className="carousel-item relative w-full">
             <StepTwo account={accountAddress} />
@@ -155,10 +173,14 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
             <StepThree seed={seed} />
           </div>
           <div id="step3" className="carousel-item relative w-full">
-            <StepFour seed={seed} />
+            <StepFour seed={seed} onVerificationChange={setIsVerified} />
           </div>
           <div id="step4" className="carousel-item relative w-full">
-            <StepFive seed={seed} pin={"pin"} />
+            <StepFive
+              seed={seed}
+              pin={pin}
+              onConfirmationChange={setIsConfirmed}
+            />
           </div>
         </div>
       </div>

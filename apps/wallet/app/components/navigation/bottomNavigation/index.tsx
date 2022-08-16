@@ -7,6 +7,7 @@ export interface BottomNavigationItem {
   route?: string;
   back?: boolean;
   onClick?: (n: BottomNavigationItem) => void;
+  disabled?: boolean;
 }
 
 interface Props {
@@ -34,6 +35,7 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
             key={index}
             onClick={() => handleOnClick(n)}
             className={router.route === n.route ? "active" : ""}
+            disabled={n.disabled || false}
           >
             {n.icon}
           </button>
