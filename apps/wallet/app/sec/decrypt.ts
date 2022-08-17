@@ -1,11 +1,12 @@
-export async function decrypt(key: CryptoKey, cipher: any, iv: Uint8Array) {
+export async function decrypt(key: CryptoKey, encryptedB64: string) {
+  const [iv, cipher] = encryptedB64.split(".");
   const decrypted = await window.crypto.subtle.decrypt(
     {
       name: "AES-GCM",
-      iv,
+      iv: Buffer.from(iv, "base64"),
     },
     key,
-    cipher
+    Buffer.from(cipher, "base64")
   );
   return new TextDecoder().decode(decrypted);
 }

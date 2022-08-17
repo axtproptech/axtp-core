@@ -6,8 +6,9 @@ export async function encrypt(key: CryptoKey, message: string) {
     key,
     encoded
   );
-  return {
-    cipher,
-    iv,
-  };
+  return (
+    Buffer.from(iv).toString("base64") +
+    "." +
+    Buffer.from(cipher).toString("base64")
+  );
 }
