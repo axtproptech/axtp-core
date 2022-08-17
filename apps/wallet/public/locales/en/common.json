@@ -6,6 +6,8 @@
   "define_pin_hint": "The PIN is your digital signature and secures your data on this device.",
   "your_account": "Your new account",
   "your_account_hint": "This will be your unique address on the Signum blockchain. Use [Regenerate] to get another random address.",
+  "your_imported_account": "Your imported account",
+  "your_imported_account_hint": "Verify, if this address is your account. In case it does not match your account, you should go back and verify the entered seed.",
   "your_seed": "Your Seed",
   "enter_your_seed": "Enter your seed",
   "enter_your_seed_hint": "Please, enter your seed to import your account on this device.",

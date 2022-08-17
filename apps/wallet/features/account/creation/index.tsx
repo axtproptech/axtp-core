@@ -102,7 +102,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
       menuMiddleMap[currentStep] || EmptyItem,
       {
         label: currentStep < StepCount ? t("next") : t("create_account"),
-        onClick: currentStep < StepCount - 1 ? nextStep : createAccount,
+        onClick: currentStep < StepCount - 1 ? nextStep : storeAccount,
         disabled: !canProceed,
         icon:
           currentStep < StepCount - 1 ? (
@@ -127,7 +127,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
     console.log("Save");
   }
 
-  async function createAccount() {
+  async function storeAccount() {
     try {
       const keys = generateMasterKeys(seed);
       const { salt, key } = await stretchKey(pin);
