@@ -16,6 +16,7 @@ import {
 import { isClientSide } from "@/app/isClientSide";
 import { appSlice } from "@/app/states/appState";
 import { storage } from "./storage";
+import { accountSlice } from "@/app/states/accountState";
 
 function persist<T = any>(config: any, reducer: Reducer) {
   return isClientSide()
@@ -31,10 +32,20 @@ const appPersistConfig = {
   whitelist: ["themeMode"],
 };
 
+const accountPersistConfig = {
+  key: "account",
+  version: 1,
+  storage,
+};
+
 const rootReducer = combineReducers({
   appState: persist<ReturnType<typeof appSlice.reducer>>(
     appPersistConfig,
     appSlice.reducer
+  ),
+  accountState: persist<ReturnType<typeof accountSlice.reducer>>(
+    accountPersistConfig,
+    accountSlice.reducer
   ),
   // add more states here
 });

@@ -12,7 +12,7 @@ const initialState: AppState = {
   notification: {
     message: "test notification",
     type: "info",
-    shown: true,
+    shown: false,
   },
 };
 
