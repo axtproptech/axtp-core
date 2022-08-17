@@ -19,7 +19,7 @@ function selectRandomWord(seed: string) {
   };
 }
 
-export const StepFour: FC<Props> = ({ seed, onVerificationChange }) => {
+export const StepVerifySeed: FC<Props> = ({ seed, onVerificationChange }) => {
   const { t } = useTranslation();
   const { index, word } = selectRandomWord(seed);
   const [verified, setVerified] = useState(false);

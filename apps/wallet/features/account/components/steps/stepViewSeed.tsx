@@ -9,7 +9,7 @@ interface Props {
   seed: string;
 }
 
-export const StepThree: FC<Props> = ({ seed }) => {
+export const StepViewSeed: FC<Props> = ({ seed }) => {
   const { t } = useTranslation();
   const { showInfo, showWarning } = useNotification();
 

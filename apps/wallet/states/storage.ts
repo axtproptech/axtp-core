@@ -1,7 +1,7 @@
 import localforage from "localforage";
 
 localforage.config({
-  name: "axtp_storage",
+  name: "axtp_db",
   version: 1,
   storeName: "AXTP",
 });

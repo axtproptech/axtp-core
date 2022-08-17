@@ -7,6 +7,8 @@
   "your_account": "Your new account",
   "your_account_hint": "This will be your unique address on the Signum blockchain. Use [Regenerate] to get another random address.",
   "your_seed": "Your Seed",
+  "enter_your_seed": "Enter your seed",
+  "enter_your_seed_hint": "Please, enter your seed to import your account on this device.",
   "your_seed_hint": "It is very important that you [Download] this seed and store it in a secret place. If you lose your seed, you will lose the access to your account.",
   "verification": "Verification",
   "verification_placeholder": "Enter Word {{word}}",
@@ -16,9 +18,10 @@
   "copy_clipboard_success": "Copied to clipboard",
   "copy_clipboard_failure": "Hmm, couldn't copy to clipboard",
   "create_account": "Create Account",
+  "import_account": "Import Account",
   "back": "Back",
   "next": "Next",
   "home": "Home",
-  "account_created_success": "Your account is now stored on this device",
+  "account_stored_success": "Your account is now stored on this device",
   "severe_error": "Oh, no. Something went terribly wrong: {{reason}}"
 }

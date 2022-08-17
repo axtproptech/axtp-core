@@ -8,27 +8,25 @@ import {
 } from "react-icons/ri";
 import { voidFn } from "@/app/voidFn";
 import { useRouter } from "next/router";
-import {
-  StepConfirm,
-  StepVerifySeed,
-  StepDefinePin,
-  StepViewSeed,
-  StepSeeNewAccount,
-} from "../components/steps";
-import { generateMasterKeys, PassPhraseGenerator } from "@signumjs/crypto";
+import { generateMasterKeys } from "@signumjs/crypto";
 import { Address } from "@signumjs/core";
 import { useTranslation } from "next-i18next";
 import { encrypt, stretchKey } from "@/app/sec";
 import { useDispatch } from "react-redux";
 import { accountActions } from "@/app/states/accountState";
 import { useNotification } from "@/app/hooks/useNotification";
-import { OnStepChangeArgs } from "../types/onStepChangeArgs";
+import {
+  StepDefinePin,
+  StepConfirm,
+  StepImportSeed,
+  StepSeeImportAccount,
+} from "@/features/account/components/steps";
+import { OnStepChangeArgs } from "@/features/account/types/onStepChangeArgs";
 
 enum Steps {
   DefinePin,
+  ImportSeed,
   SeeAccount,
-  GetSeed,
-  VerifySeed,
   Confirm,
 }
 
@@ -36,17 +34,16 @@ interface Props {
   onStepChange: (args: OnStepChangeArgs) => void;
 }
 
-export const AccountCreation: FC<Props> = ({ onStepChange }) => {
+export const AccountImport: FC<Props> = ({ onStepChange }) => {
+  const StepCount = 4;
   const router = useRouter();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { showSuccess } = useNotification();
-  const StepCount = 5;
+  const { showSuccess, showError } = useNotification();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [seed, setSeed] = useState<string>("");
   const [pin, setPin] = useState<string>("");
   const [accountAddress, setAccountAddress] = useState<string>("");
-  const [isVerified, setIsVerified] = useState<boolean>(false);
   const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
 
   const nextStep = async () => {
@@ -62,32 +59,10 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
   };
 
   useEffect(() => {
-    const EmptyItem: BottomNavigationItem = {
-      onClick: voidFn,
-      icon: <div />,
-      disabled: true,
-      label: "",
-    };
-
-    const menuMiddleMap: any = {
-      "1": {
-        label: "Regenerate",
-        onClick: generateSeed,
-        icon: <div>Regenerate</div>,
-      },
-      "2": {
-        label: "Download",
-        onClick: download,
-        icon: <div>Download</div>,
-      },
-    };
-
     let canProceed = true;
 
     if (currentStep === Steps.DefinePin) {
       canProceed = pin.length > 4;
-    } else if (currentStep === Steps.VerifySeed) {
-      canProceed = isVerified;
     } else if (currentStep === Steps.Confirm) {
       canProceed = isConfirmed;
     }
@@ -99,9 +74,14 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
         icon: currentStep > 0 ? <RiArrowLeftCircleLine /> : <div />,
         disabled: currentStep <= 0,
       },
-      menuMiddleMap[currentStep] || EmptyItem,
       {
-        label: currentStep < StepCount ? t("next") : t("create_account"),
+        onClick: voidFn,
+        icon: <div />,
+        disabled: true,
+        label: "",
+      },
+      {
+        label: currentStep < StepCount ? t("next") : t("import_account"),
         onClick: currentStep < StepCount - 1 ? nextStep : createAccount,
         disabled: !canProceed,
         icon:
@@ -113,19 +93,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
       },
     ];
     onStepChange({ steps: StepCount, currentStep, bottomNav });
-  }, [currentStep, isVerified, pin, isConfirmed]);
-
-  async function generateSeed() {
-    const arr = new Uint8Array(128);
-    crypto.getRandomValues(arr);
-    const generator = new PassPhraseGenerator();
-    const words = await generator.generatePassPhrase(Array.from(arr));
-    setSeed(words.join(" "));
-  }
-
-  async function download() {
-    console.log("Save");
-  }
+  }, [currentStep, pin, isConfirmed]);
 
   async function createAccount() {
     try {
@@ -169,8 +137,6 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
       currentStep: 0,
       steps: StepCount,
     });
-
-    generateSeed();
   }, []);
 
   useEffect(() => {
@@ -195,15 +161,12 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
             <StepDefinePin onPinChange={setPin} />
           </div>
           <div id="step1" className="carousel-item relative w-full">
-            <StepSeeNewAccount account={accountAddress} />
+            <StepImportSeed onSeedChange={setSeed} />
           </div>
           <div id="step2" className="carousel-item relative w-full">
-            <StepViewSeed seed={seed} />
+            <StepSeeImportAccount account={accountAddress} />
           </div>
           <div id="step3" className="carousel-item relative w-full">
-            <StepVerifySeed seed={seed} onVerificationChange={setIsVerified} />
-          </div>
-          <div id="step4" className="carousel-item relative w-full">
             <StepConfirm
               seed={seed}
               pin={pin}
@@ -215,6 +178,3 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
     </>
   );
 };
-function showError(arg0: any) {
-  throw new Error("Function not implemented.");
-}

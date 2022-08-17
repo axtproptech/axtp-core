@@ -7,7 +7,7 @@ interface Props {
   account: string;
 }
 
-export const StepTwo: FC<Props> = ({ account }) => {
+export const StepSeeImportAccount: FC<Props> = ({ account }) => {
   const { t } = useTranslation();
 
   return (

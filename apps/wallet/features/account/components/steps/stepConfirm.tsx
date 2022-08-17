@@ -10,7 +10,7 @@ interface Props {
   onConfirmationChange: (verified: boolean) => void;
 }
 
-export const StepFive: FC<Props> = ({ seed, pin, onConfirmationChange }) => {
+export const StepConfirm: FC<Props> = ({ seed, pin, onConfirmationChange }) => {
   const { t } = useTranslation();
   const [accepted, setAccepted] = useState(false);
   const [confirmedPin, setConfirmedPin] = useState("");

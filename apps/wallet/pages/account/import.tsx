@@ -5,7 +5,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useState } from "react";
 
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
-import { AccountCreation, OnStepChangeArgs } from "@/features/account";
+import { AccountImport, OnStepChangeArgs } from "@/features/account";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -32,7 +32,7 @@ export default function Page() {
         // imgUrl={some image url}
         keywords="tokenomics, real estate, blockchain, signum, sustainable"
       />
-      <AccountCreation onStepChange={handleStepChange} />
+      <AccountImport onStepChange={handleStepChange} />
     </Layout>
   );
 }

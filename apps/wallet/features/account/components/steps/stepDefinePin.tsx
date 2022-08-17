@@ -8,7 +8,7 @@ interface Props {
 
 const MinPinLength = 4;
 
-export const StepOne: FC<Props> = ({ onPinChange }) => {
+export const StepDefinePin: FC<Props> = ({ onPinChange }) => {
   const { t } = useTranslation();
   const [pin, setPin] = useState("");
 
