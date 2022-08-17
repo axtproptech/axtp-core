@@ -4,16 +4,12 @@ import { NotificationType } from "@/types/notificationType";
 
 export interface AppState {
   themeMode: "light" | "dark";
-  notification: NotificationType;
+  notification: NotificationType | null;
 }
 
 const initialState: AppState = {
   themeMode: getSystemTheme(),
-  notification: {
-    message: "test notification",
-    type: "info",
-    shown: false,
-  },
+  notification: null,
 };
 
 export const appSlice = createSlice({
@@ -30,6 +26,13 @@ export const appSlice = createSlice({
       state.notification = { ...action.payload, shown: true };
     },
     hideNotification: (state) => {
+      if (!state.notification) {
+        state.notification = {
+          shown: false,
+          type: undefined,
+          message: "",
+        };
+      }
       state.notification.shown = false;
     },
   },

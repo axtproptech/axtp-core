@@ -17,6 +17,7 @@ import {
 } from "@/features/account/creation/steps";
 import { generateMasterKeys, PassPhraseGenerator } from "@signumjs/crypto";
 import { Address } from "@signumjs/core";
+import { useTranslation } from "next-i18next";
 
 enum Steps {
   DefinePin,
@@ -38,6 +39,7 @@ interface Props {
 
 export const AccountCreation: FC<Props> = ({ onStepChange }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const StepCount = 5;
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [seed, setSeed] = useState<string>("");
@@ -59,17 +61,21 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
   };
 
   useEffect(() => {
-    const EmptyItem = {
+    const EmptyItem: BottomNavigationItem = {
       onClick: voidFn,
       icon: <div />,
+      disabled: true,
+      label: "",
     };
 
     const menuMiddleMap: any = {
       "1": {
+        label: "Regenerate",
         onClick: generateSeed,
         icon: <div>Regenerate</div>,
       },
       "2": {
+        label: "Download",
         onClick: download,
         icon: <div>Download</div>,
       },
@@ -87,11 +93,14 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
 
     const bottomNav: BottomNavigationItem[] = [
       {
+        label: currentStep > 0 ? t("back") : "",
         onClick: currentStep > 0 ? previousStep : voidFn,
         icon: currentStep > 0 ? <RiArrowLeftCircleLine /> : <div />,
+        disabled: currentStep <= 0,
       },
       menuMiddleMap[currentStep] || EmptyItem,
       {
+        label: currentStep < StepCount ? t("next") : t("create_account"),
         onClick: currentStep < StepCount - 1 ? nextStep : createAccount,
         disabled: !canProceed,
         icon:
@@ -126,14 +135,17 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
       bottomNav: [
         {
           onClick: voidFn,
+          label: "",
           icon: <div />,
         },
         {
           onClick: voidFn,
+          label: "",
           icon: <div />,
         },
         {
           onClick: nextStep,
+          label: t("next"),
           icon: <RiArrowRightCircleLine />,
           disabled: true,
         },

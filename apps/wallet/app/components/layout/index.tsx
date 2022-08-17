@@ -10,17 +10,20 @@ import { RiHome6Line, RiLineChartLine, RiAccountBoxLine } from "react-icons/ri";
 import { Notification } from "@/app/components/notification";
 
 // TODO: configure correct
-const DefaultNav = [
+const DefaultNav: BottomNavigationItem[] = [
   {
     route: "/",
+    label: "Home",
     icon: <RiHome6Line />,
   },
   {
     route: "/stats",
+    label: "Stats",
     icon: <RiLineChartLine />,
   },
   {
     route: "/account",
+    label: "Account",
     icon: <RiAccountBoxLine />,
   },
 ];

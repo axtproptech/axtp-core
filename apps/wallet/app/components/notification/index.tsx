@@ -18,6 +18,8 @@ export const Notification = () => {
   const { hide } = useNotification();
 
   const icon = useMemo(() => {
+    if (!notification) return null;
+
     const Size = 24;
     switch (notification.type) {
       case "success":
@@ -30,7 +32,9 @@ export const Notification = () => {
       default:
         return <RiInformationLine size={Size} />;
     }
-  }, [notification.type]);
+  }, [notification]);
+
+  if (!notification) return null;
 
   return (
     <div className="top-2 w-full z-top px-2 absolute">

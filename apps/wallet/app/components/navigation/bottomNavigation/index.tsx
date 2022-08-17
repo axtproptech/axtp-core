@@ -4,10 +4,12 @@ import { FC } from "react";
 
 export interface BottomNavigationItem {
   icon: any;
+  label: string;
   route?: string;
   back?: boolean;
   onClick?: (n: BottomNavigationItem) => void;
   disabled?: boolean;
+  showLabel?: boolean;
 }
 
 interface Props {
@@ -36,6 +38,7 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
             onClick={() => handleOnClick(n)}
             className={router.route === n.route ? "active" : ""}
             disabled={n.disabled || false}
+            aria-label={n.label}
           >
             {n.icon}
           </button>
