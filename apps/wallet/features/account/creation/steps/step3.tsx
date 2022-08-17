@@ -3,6 +3,7 @@ import { FC } from "react";
 import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
 import { Button } from "react-daisyui";
 import { RiClipboardLine } from "react-icons/ri";
+import { useNotification } from "@/app/hooks/useNotification";
 
 interface Props {
   seed: string;
@@ -10,13 +11,14 @@ interface Props {
 
 export const StepThree: FC<Props> = ({ seed }) => {
   const { t } = useTranslation();
+  const { showInfo, showWarning } = useNotification();
 
   const handleOnCLick = async () => {
     try {
       await navigator.clipboard.writeText(seed);
-      // success
+      showInfo(t("copy_clipboard_success"));
     } catch (e) {
-      // error
+      showWarning(t("copy_clipboard_failure"));
     }
   };
 
@@ -27,10 +29,10 @@ export const StepThree: FC<Props> = ({ seed }) => {
       </section>
       <section className="relative">
         <div className="relative w-[75%] m-auto text-justify">
-          <p className="border border-base-content p-4 rounded relative text-xl">
+          <div className="border border-base-content p-4 rounded relative text-xl">
             {seed}
-          </p>
-          <div className="text-right w-full">
+          </div>
+          <div className="text-right w-full mt-2">
             <Button onClick={handleOnCLick}>
               <RiClipboardLine className="mr-2" />
               {t("copy")}

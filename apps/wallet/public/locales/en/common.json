@@ -12,5 +12,7 @@
   "verification_placeholder": "Enter Word {{word}}",
   "verification_hint": "Enter Word {{word}} from your seed. Please, be sure you downloaded or wrote down the seed!",
   "confirmation": "Confirmation",
-  "confirmation_text": "Hereby, I confirm that I have stored the seed in a secure place. I understand that I lose access to my account, in case I lose my seed."
+  "confirmation_text": "Hereby, I confirm that I have stored the seed in a secure place. I understand that I lose access to my account, in case I lose my seed.",
+  "copy_clipboard_success": "Copied to clipboard",
+  "copy_clipboard_failure": "Hmm, couldn't copy to clipboard"
 }

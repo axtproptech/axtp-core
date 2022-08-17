@@ -7,6 +7,7 @@ import {
 } from "../navigation/bottomNavigation";
 import { Body } from "./body";
 import { RiHome6Line, RiLineChartLine, RiAccountBoxLine } from "react-icons/ri";
+import { Notification } from "@/app/components/notification";
 
 // TODO: configure correct
 const DefaultNav = [
@@ -31,6 +32,7 @@ interface Props extends ChildrenProps {
 export const Layout: FC<Props> = ({ children, bottomNav }) => {
   return (
     <Container>
+      <Notification />
       <Body>{children}</Body>
       <BottomNavigation nav={bottomNav || DefaultNav} />
     </Container>

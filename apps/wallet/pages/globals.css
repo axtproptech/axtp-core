@@ -49,3 +49,7 @@ a {
   background-position: center !important;
   background-repeat: no-repeat !important;
 }
+
+.alert {
+  @apply rounded-lg;
+}
