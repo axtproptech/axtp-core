@@ -1,5 +1,5 @@
 import { Stepper } from "@/app/components/stepper";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import {
   RiArrowLeftCircleLine,
@@ -18,6 +18,10 @@ import {
 import { generateMasterKeys, PassPhraseGenerator } from "@signumjs/crypto";
 import { Address } from "@signumjs/core";
 import { useTranslation } from "next-i18next";
+import { encrypt, stretchKey } from "@/app/sec";
+import { useDispatch } from "react-redux";
+import { accountActions } from "@/app/states/accountState";
+import { useNotification } from "@/app/hooks/useNotification";
 
 enum Steps {
   DefinePin,
@@ -39,7 +43,9 @@ interface Props {
 
 export const AccountCreation: FC<Props> = ({ onStepChange }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { showSuccess } = useNotification();
   const StepCount = 5;
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [seed, setSeed] = useState<string>("");
@@ -127,7 +133,22 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
   }
 
   async function createAccount() {
-    console.log("Create account");
+    try {
+      const keys = generateMasterKeys(seed);
+      const { salt, key } = await stretchKey(pin);
+      const securedKeys = await encrypt(key, JSON.stringify(keys));
+      dispatch(
+        accountActions.setAccount({
+          accountId: Address.fromPublicKey(keys.publicKey).getNumericId(),
+          securedKeys,
+          salt,
+        })
+      );
+      await router.replace("/");
+      showSuccess(t("account_created_success"));
+    } catch (e: any) {
+      showError(t("severe_error", { reason: e.message }));
+    }
   }
 
   useEffect(() => {
@@ -199,3 +220,6 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
     </>
   );
 };
+function showError(arg0: any) {
+  throw new Error("Function not implemented.");
+}

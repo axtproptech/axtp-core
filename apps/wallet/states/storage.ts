@@ -1,9 +1,9 @@
 import localforage from "localforage";
 
 localforage.config({
-  name: "fixcoin_eco_storage",
+  name: "axtp_storage",
   version: 1,
-  storeName: "fixcoin",
+  storeName: "AXTP",
 });
 
 export const storage = localforage;

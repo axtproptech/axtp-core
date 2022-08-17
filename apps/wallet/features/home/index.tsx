@@ -2,22 +2,24 @@ import { AnimatedIconStockShare } from "@/app/components/animatedIcons/animatedI
 import { useTranslation } from "next-i18next";
 import { useNotification } from "@/app/hooks/useNotification";
 import { useEffect } from "react";
-import { decrypt, deriveKey, encrypt } from "@/app/sec";
+import { decrypt, stretchKey, encrypt, StretchedKey } from "@/app/sec";
 
 export const Home = () => {
   const { t } = useTranslation();
   const { showSuccess } = useNotification();
 
   useEffect(() => {
-    let k: CryptoKey | null = null;
+    let k: StretchedKey;
 
-    deriveKey("MySecret", "someSalt")
+    stretchKey("MySecret")
       .then((key) => {
         k = key;
-        return encrypt(key, "some funnny message");
+        console.log("Key", key);
+        return encrypt(key.key, "some funnny message");
       })
       .then((cipher) => {
-        return decrypt(k!, cipher);
+        console.log("Cipher", cipher);
+        return decrypt(k.key, cipher);
       })
       .then((decrypted) => {
         console.log("result", decrypted);

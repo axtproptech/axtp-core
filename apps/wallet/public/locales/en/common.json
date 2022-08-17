@@ -18,5 +18,7 @@
   "create_account": "Create Account",
   "back": "Back",
   "next": "Next",
-  "home": "Home"
+  "home": "Home",
+  "account_created_success": "Your account is now stored on this device",
+  "severe_error": "Oh, no. Something went terribly wrong: {{reason}}"
 }
