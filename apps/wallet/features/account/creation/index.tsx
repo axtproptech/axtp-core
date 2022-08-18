@@ -5,6 +5,7 @@ import {
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
   RiUserAddLine,
+  RiUserReceivedLine,
 } from "react-icons/ri";
 import { voidFn } from "@/app/voidFn";
 import { useRouter } from "next/router";
@@ -23,6 +24,8 @@ import { useDispatch } from "react-redux";
 import { accountActions } from "@/app/states/accountState";
 import { useNotification } from "@/app/hooks/useNotification";
 import { OnStepChangeArgs } from "../types/onStepChangeArgs";
+import { useAppDispatch } from "@/states/hooks";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 enum Steps {
   DefinePin,
@@ -41,6 +44,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { showSuccess } = useNotification();
+  const { Ledger } = useAppContext();
   const StepCount = 5;
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [seed, setSeed] = useState<string>("");
@@ -92,18 +96,22 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
       canProceed = isConfirmed;
     }
 
+    const isFirstStep = currentStep === 0;
+    const isLastStep = currentStep === StepCount - 1;
+
     const bottomNav: BottomNavigationItem[] = [
       {
-        label: currentStep > 0 ? t("back") : "",
-        onClick: currentStep > 0 ? previousStep : voidFn,
-        icon: currentStep > 0 ? <RiArrowLeftCircleLine /> : <div />,
-        disabled: currentStep <= 0,
+        label: !isFirstStep ? t("back") : "",
+        onClick: !isFirstStep ? previousStep : voidFn,
+        icon: !isFirstStep ? <RiArrowLeftCircleLine /> : <div />,
+        disabled: isFirstStep,
       },
       menuMiddleMap[currentStep] || EmptyItem,
       {
-        label: currentStep < StepCount ? t("next") : t("create_account"),
-        onClick: currentStep < StepCount - 1 ? nextStep : storeAccount,
+        label: !isLastStep ? t("next") : t("import_account"),
+        onClick: !isLastStep ? nextStep : storeAccount,
         disabled: !canProceed,
+        color: isLastStep ? "secondary" : undefined,
         icon:
           currentStep < StepCount - 1 ? (
             <RiArrowRightCircleLine />
@@ -179,7 +187,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
     const { publicKey } = generateMasterKeys(seed);
 
     try {
-      const address = Address.fromPublicKey(publicKey);
+      const address = Address.fromPublicKey(publicKey, Ledger.AddressPrefix);
       setAccountAddress(address.getReedSolomonAddress());
     } catch (e: any) {
       console.error("Something failed", e.message);

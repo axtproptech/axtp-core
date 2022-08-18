@@ -5,6 +5,15 @@ import { FC } from "react";
 export interface BottomNavigationItem {
   icon: any;
   label: string;
+  color?:
+    | "primary"
+    | "secondary"
+    | "accent"
+    | "ghost"
+    | "info"
+    | "success"
+    | "warning"
+    | "error";
   route?: string;
   back?: boolean;
   onClick?: (n: BottomNavigationItem) => void;
@@ -32,17 +41,21 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
   return (
     <IconContext.Provider value={{ size: "1.5em" }}>
       <div className="btm-nav max-w-[768px] mx-auto">
-        {nav.map((n, index) => (
-          <button
-            key={index}
-            onClick={() => handleOnClick(n)}
-            className={router.route === n.route ? "active" : ""}
-            disabled={n.disabled || false}
-            aria-label={n.label}
-          >
-            {n.icon}
-          </button>
-        ))}
+        {nav.map((n, index) => {
+          const active = router.route === n.route ? "active" : "";
+          const btnColor = n.color ? `rounded-lg btn-${n.color}` : "";
+          return (
+            <button
+              key={index}
+              onClick={() => handleOnClick(n)}
+              className={`${btnColor} ${active}`}
+              disabled={n.disabled || false}
+              aria-label={n.label}
+            >
+              {n.icon}
+            </button>
+          );
+        })}
       </div>
     </IconContext.Provider>
   );

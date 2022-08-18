@@ -1,5 +1,6 @@
-// 50_000 takes about 1 sec on a XPS 9560 - consider a bit less on mobile
-const Iterations = 50_000;
+import { isMobile } from "react-device-detect";
+
+const Iterations = isMobile ? 10_000 : 50_000;
 
 export interface StretchedKey {
   salt: string;

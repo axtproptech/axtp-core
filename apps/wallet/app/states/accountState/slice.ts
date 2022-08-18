@@ -28,6 +28,7 @@ export const accountSlice = createSlice({
       state.securedKeys = action.payload.securedKeys;
       state.salt = action.payload.salt;
     },
+    resetAccount: (_) => initialState,
   },
 });
 

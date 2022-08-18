@@ -5,6 +5,7 @@ import {
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
   RiUserAddLine,
+  RiUserReceivedLine,
 } from "react-icons/ri";
 import { voidFn } from "@/app/voidFn";
 import { useRouter } from "next/router";
@@ -67,12 +68,15 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
       canProceed = isConfirmed;
     }
 
+    const isFirstStep = currentStep === 0;
+    const isLastStep = currentStep < StepCount - 1;
+
     const bottomNav: BottomNavigationItem[] = [
       {
-        label: currentStep > 0 ? t("back") : "",
-        onClick: currentStep > 0 ? previousStep : voidFn,
-        icon: currentStep > 0 ? <RiArrowLeftCircleLine /> : <div />,
-        disabled: currentStep <= 0,
+        label: !isFirstStep ? t("back") : "",
+        onClick: !isFirstStep ? previousStep : voidFn,
+        icon: !isFirstStep ? <RiArrowLeftCircleLine /> : <div />,
+        disabled: isFirstStep,
       },
       {
         onClick: voidFn,
@@ -81,14 +85,15 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
         label: "",
       },
       {
-        label: currentStep < StepCount ? t("next") : t("import_account"),
-        onClick: currentStep < StepCount - 1 ? nextStep : createAccount,
+        label: !isLastStep ? t("next") : t("import_account"),
+        onClick: !isLastStep ? nextStep : createAccount,
         disabled: !canProceed,
+        color: isLastStep ? "secondary" : undefined,
         icon:
           currentStep < StepCount - 1 ? (
             <RiArrowRightCircleLine />
           ) : (
-            <RiUserAddLine />
+            <RiUserReceivedLine />
           ),
       },
     ];

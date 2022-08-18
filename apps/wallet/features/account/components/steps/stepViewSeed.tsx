@@ -33,7 +33,7 @@ export const StepViewSeed: FC<Props> = ({ seed }) => {
             {seed}
           </div>
           <div className="text-right w-full mt-2">
-            <Button onClick={handleOnCLick}>
+            <Button color="secondary" onClick={handleOnCLick}>
               <RiClipboardLine className="mr-2" />
               {t("copy")}
             </Button>
