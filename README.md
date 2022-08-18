@@ -1,3 +1,3 @@
-# R.Est Project
+# AXT Prop Tech
 
-A mono repository for all R.Est related development
+A mono repository for all related development

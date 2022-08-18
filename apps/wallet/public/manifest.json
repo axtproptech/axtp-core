@@ -1,6 +1,9 @@
 {
-  "name": "Working Title",
-  "short_name": "WorkingTitle",
+  "name": "AXTP Wallet",
+  "short_name": "AXTP Wallet",
+  "description": "This is the multi-platform AXTP wallet.",
+  "author": "ohager",
+  "categories": ["finance"],
   "icons": [
     {
       "src": "/icons/android-chrome-192x192.png",
