@@ -147,21 +147,11 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
           salt,
         })
       );
-      resetState();
       await router.replace("/");
       showSuccess(t("account_stored_success"));
     } catch (e: any) {
       showError(t("severe_error", { reason: e.message }));
     }
-  }
-
-  function resetState() {
-    setPin("");
-    setAccountAddress("");
-    setSeed("");
-    setIsVerified(false);
-    setIsConfirmed(false);
-    setCurrentStep(0);
   }
 
   useEffect(() => {

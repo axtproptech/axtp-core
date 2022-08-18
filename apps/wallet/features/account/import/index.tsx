@@ -23,6 +23,7 @@ import {
   StepSeeImportAccount,
 } from "@/features/account/components/steps";
 import { OnStepChangeArgs } from "@/features/account/types/onStepChangeArgs";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 enum Steps {
   DefinePin,
@@ -40,6 +41,7 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { Ledger } = useAppContext();
   const { showSuccess, showError } = useNotification();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [seed, setSeed] = useState<string>("");
@@ -112,20 +114,11 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
           salt,
         })
       );
-      resetState();
       await router.replace("/");
       showSuccess(t("account_stored_success"));
     } catch (e: any) {
       showError(t("severe_error", { reason: e.message }));
     }
-  }
-
-  function resetState() {
-    setPin("");
-    setAccountAddress("");
-    setSeed("");
-    setIsConfirmed(false);
-    setCurrentStep(0);
   }
 
   useEffect(() => {
@@ -159,12 +152,12 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
     const { publicKey } = generateMasterKeys(seed);
 
     try {
-      const address = Address.fromPublicKey(publicKey);
+      const address = Address.fromPublicKey(publicKey, Ledger.AddressPrefix);
       setAccountAddress(address.getReedSolomonAddress());
     } catch (e: any) {
       console.error("Something failed", e.message);
     }
-  }, [seed]);
+  }, [Ledger.AddressPrefix, seed]);
 
   return (
     <>
