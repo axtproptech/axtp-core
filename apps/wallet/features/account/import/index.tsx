@@ -69,7 +69,7 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
     }
 
     const isFirstStep = currentStep === 0;
-    const isLastStep = currentStep < StepCount - 1;
+    const isLastStep = currentStep === StepCount - 1;
 
     const bottomNav: BottomNavigationItem[] = [
       {
@@ -112,11 +112,20 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
           salt,
         })
       );
+      resetState();
       await router.replace("/");
       showSuccess(t("account_stored_success"));
     } catch (e: any) {
       showError(t("severe_error", { reason: e.message }));
     }
+  }
+
+  function resetState() {
+    setPin("");
+    setAccountAddress("");
+    setSeed("");
+    setIsConfirmed(false);
+    setCurrentStep(0);
   }
 
   useEffect(() => {

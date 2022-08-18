@@ -23,8 +23,8 @@ export const StepDefinePin: FC<Props> = ({ onPinChange }) => {
       <section>
         <h2>{t("define_pin")}</h2>
       </section>
-      <section className="relative top-[15%]">
-        <div className="relative flex flex-col w-[50%] m-auto">
+      <section className="relative mt-[15%] mb-2">
+        <div className="relative flex flex-col w-[75%] md:w-[50%] m-auto">
           <Input
             className="text-center border-base-content"
             type={"password"}
@@ -38,7 +38,7 @@ export const StepDefinePin: FC<Props> = ({ onPinChange }) => {
           </small>
         </div>
       </section>
-      <section className="w-[75%] m-auto text-justify border border-base-content/50 p-4 rounded relative top-8">
+      <section className="w-[75%] m-auto text-justify border border-base-content/50 p-4 rounded relative">
         <p>{t("define_pin_hint")}</p>
       </section>
     </div>

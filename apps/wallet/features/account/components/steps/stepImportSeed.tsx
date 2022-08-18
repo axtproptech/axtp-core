@@ -18,7 +18,7 @@ export const StepImportSeed: FC<Props> = ({ onSeedChange }) => {
       <section>
         <h2>{t("enter_your_seed")}</h2>
       </section>
-      <section className="relative top-[15%]">
+      <section className="relative mt-[15%] mb-2">
         <Textarea
           className="text-justify border-base-content text-lg"
           onChange={handleSeedChange}
@@ -26,7 +26,7 @@ export const StepImportSeed: FC<Props> = ({ onSeedChange }) => {
           rows={5}
         />
       </section>
-      <section className="w-[75%] m-auto  border border-base-content/50 px-4 py-2 rounded relative top-8">
+      <section className="w-[75%] m-auto  border border-base-content/50 px-4 py-2 rounded relative">
         <p>{t("enter_your_seed_hint")}</p>
       </section>
     </div>

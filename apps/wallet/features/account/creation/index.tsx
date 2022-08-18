@@ -147,6 +147,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
           salt,
         })
       );
+      resetState();
       await router.replace("/");
       showSuccess(t("account_stored_success"));
     } catch (e: any) {
@@ -154,31 +155,49 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
     }
   }
 
+  function resetState() {
+    setPin("");
+    setAccountAddress("");
+    setSeed("");
+    setIsVerified(false);
+    setIsConfirmed(false);
+    setCurrentStep(0);
+  }
+
   useEffect(() => {
+    const InitialBottomNav: BottomNavigationItem[] = [
+      {
+        onClick: voidFn,
+        label: "",
+        icon: <div />,
+      },
+      {
+        onClick: voidFn,
+        label: "",
+        icon: <div />,
+      },
+      {
+        onClick: nextStep,
+        label: t("next"),
+        icon: <RiArrowRightCircleLine />,
+        disabled: true,
+      },
+    ];
     onStepChange({
-      bottomNav: [
-        {
-          onClick: voidFn,
-          label: "",
-          icon: <div />,
-        },
-        {
-          onClick: voidFn,
-          label: "",
-          icon: <div />,
-        },
-        {
-          onClick: nextStep,
-          label: t("next"),
-          icon: <RiArrowRightCircleLine />,
-          disabled: true,
-        },
-      ],
+      bottomNav: InitialBottomNav,
       currentStep: 0,
       steps: StepCount,
     });
 
     generateSeed();
+
+    return () => {
+      onStepChange({
+        bottomNav: InitialBottomNav,
+        currentStep: 0,
+        steps: StepCount,
+      });
+    };
   }, []);
 
   useEffect(() => {

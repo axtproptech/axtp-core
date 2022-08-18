@@ -35,7 +35,7 @@ export const StepVerifySeed: FC<Props> = ({ seed, onVerificationChange }) => {
       <section>
         <h2>{t("verification")}</h2>
       </section>
-      <section className="relative top-[15%]">
+      <section className="relative mt-[15%] mb-2">
         <Input
           className="text-center border-base-content"
           size="lg"
@@ -43,7 +43,7 @@ export const StepVerifySeed: FC<Props> = ({ seed, onVerificationChange }) => {
           placeholder={t("verification_placeholder", { word: index + 1 })}
         />
       </section>
-      <section className="w-[75%] m-auto  border border-base-content/50 px-4 py-2 rounded relative top-8">
+      <section className="w-[75%] m-auto  border border-base-content/50 px-4 py-2 rounded relative">
         {verified ? (
           <AttentionSeeker effect="tada" className="text-center">
             <RiCheckboxCircleLine size={92} className="w-full" />

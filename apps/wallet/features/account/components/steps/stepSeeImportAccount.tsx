@@ -15,7 +15,7 @@ export const StepSeeImportAccount: FC<Props> = ({ account }) => {
       <section>
         <h2>{t("your_imported_account")}</h2>
       </section>
-      <section className="relative top-[15%]">
+      <section className="relative mt-[15%] mb-2">
         <Input
           className="text-center border-base-content"
           size="lg"

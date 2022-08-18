@@ -37,7 +37,7 @@ export const StepConfirm: FC<Props> = ({ seed, pin, onConfirmationChange }) => {
       <section>
         <h2>{t("confirmation")}</h2>
       </section>
-      <section className="relative top-[15%]">
+      <section className="relative">
         <Input
           className="text-center border-base-content"
           type={"password"}
@@ -47,7 +47,7 @@ export const StepConfirm: FC<Props> = ({ seed, pin, onConfirmationChange }) => {
           placeholder={t("pin_input_placeholder")}
         />
       </section>
-      <section className="w-[75%] m-auto text-justify border border-base-content/50 px-4 py-2 rounded relative top-8">
+      <section className="w-[75%] m-auto text-justify border border-base-content/50 px-4 py-2 rounded relative">
         <div className="form-control w-full flex flex-row justify-center items-center py-2">
           {verified ? (
             <AttentionSeeker effect="tada" className="text-center">
