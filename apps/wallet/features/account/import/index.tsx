@@ -91,7 +91,7 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
         label: !isLastStep ? t("next") : t("import_account"),
         onClick: !isLastStep ? nextStep : createAccount,
         disabled: !canProceed,
-        color: isLastStep ? "secondary" : undefined,
+        color: canProceed ? "secondary" : undefined,
         loading: isCreating,
         icon: !isLastStep ? <RiArrowRightCircleLine /> : <RiUserReceivedLine />,
       },
