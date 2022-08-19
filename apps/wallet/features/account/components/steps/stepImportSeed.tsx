@@ -14,7 +14,7 @@ export const StepImportSeed: FC<Props> = ({ onSeedChange }) => {
   };
 
   return (
-    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full">
+    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-ful mx-auto">
       <section>
         <h2>{t("enter_your_seed")}</h2>
       </section>

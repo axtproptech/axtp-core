@@ -11,7 +11,7 @@ export const StepSeeNewAccount: FC<Props> = ({ account }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full">
+    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full mx-auto">
       <section>
         <h2>{t("your_account")}</h2>
       </section>
