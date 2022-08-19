@@ -112,7 +112,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
         label: !isLastStep ? t("next") : t("import_account"),
         onClick: !isLastStep ? nextStep : storeAccount,
         disabled: !canProceed,
-        color: isLastStep ? "secondary" : undefined,
+        color: canProceed ? "secondary" : undefined,
         loading: isCreating,
         icon:
           currentStep < StepCount - 1 ? (

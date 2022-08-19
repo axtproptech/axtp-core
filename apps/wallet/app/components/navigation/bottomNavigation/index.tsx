@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { IconContext } from "react-icons";
-import { FC } from "react";
+import React, { FC } from "react";
 
 export interface BottomNavigationItem {
   icon: any;
@@ -56,7 +56,7 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
               disabled={n.disabled || false}
               aria-label={n.label}
             >
-              {n.icon}
+              {React.cloneElement(n.icon, { size: 32 })}
             </button>
           );
         })}
