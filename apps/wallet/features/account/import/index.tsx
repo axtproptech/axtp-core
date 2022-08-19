@@ -48,6 +48,7 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
   const [pin, setPin] = useState<string>("");
   const [accountAddress, setAccountAddress] = useState<string>("");
   const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
+  const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const nextStep = async () => {
     const newStep = Math.min(currentStep + 1, StepCount - 1);
@@ -91,19 +92,16 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
         onClick: !isLastStep ? nextStep : createAccount,
         disabled: !canProceed,
         color: isLastStep ? "secondary" : undefined,
-        icon:
-          currentStep < StepCount - 1 ? (
-            <RiArrowRightCircleLine />
-          ) : (
-            <RiUserReceivedLine />
-          ),
+        loading: isCreating,
+        icon: !isLastStep ? <RiArrowRightCircleLine /> : <RiUserReceivedLine />,
       },
     ];
     onStepChange({ steps: StepCount, currentStep, bottomNav });
-  }, [currentStep, pin, isConfirmed]);
+  }, [currentStep, pin, isConfirmed, isCreating]);
 
   async function createAccount() {
     try {
+      setIsCreating(true);
       const keys = generateMasterKeys(seed);
       const { salt, key } = await stretchKey(pin);
       const securedKeys = await encrypt(key, JSON.stringify(keys));
@@ -118,6 +116,7 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
       showSuccess(t("account_stored_success"));
     } catch (e: any) {
       showError(t("severe_error", { reason: e.message }));
+      setIsCreating(false);
     }
   }
 
@@ -174,11 +173,7 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
             <StepSeeImportAccount account={accountAddress} />
           </div>
           <div id="step3" className="carousel-item relative w-full">
-            <StepConfirm
-              seed={seed}
-              pin={pin}
-              onConfirmationChange={setIsConfirmed}
-            />
+            <StepConfirm pin={pin} onConfirmationChange={setIsConfirmed} />
           </div>
         </div>
       </div>

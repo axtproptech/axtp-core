@@ -19,12 +19,12 @@ export const StepDefinePin: FC<Props> = ({ onPinChange }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center content-center text-center h-[90vh] relative prose max-w-none w-full">
+    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full">
       <section>
         <h2>{t("define_pin")}</h2>
       </section>
-      <section className="relative mt-[15%] mb-2">
-        <div className="relative flex flex-col w-[75%] md:w-[50%] m-auto">
+      <section className="mb-2">
+        <div className="relative flex flex-col w-[75%] mx-auto">
           <Input
             className="text-center border-base-content"
             type={"password"}
@@ -38,7 +38,7 @@ export const StepDefinePin: FC<Props> = ({ onPinChange }) => {
           </small>
         </div>
       </section>
-      <section className="w-[75%] m-auto text-justify border border-base-content/50 p-4 rounded relative">
+      <section className="w-[75%] mx-auto text-justify border border-base-content/50 p-4 rounded relative">
         <p>{t("define_pin_hint")}</p>
       </section>
     </div>

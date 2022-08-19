@@ -17,11 +17,11 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <AppContextProvider>
       <MetaTags
-        title="Fixcoin.eco"
+        title="AXT PropTech"
         // canonical={Config.Platform.CanonicalUrl + router.asPath}
         // imgUrl={Config.Platform.CanonicalUrl + "/assets/img/seo.jpg"}
-        keywords="Blockchain, Payback, Fidelity, Signum"
-        description="bla bla bla"
+        keywords="tokenomics, real estate, blockchain, signum, sustainable"
+        description=""
         viewport="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
       />
       <ReduxProvider store={store}>

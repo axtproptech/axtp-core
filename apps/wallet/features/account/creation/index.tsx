@@ -43,7 +43,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { showSuccess } = useNotification();
+  const { showSuccess, showError } = useNotification();
   const { Ledger } = useAppContext();
   const StepCount = 5;
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -52,6 +52,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
   const [accountAddress, setAccountAddress] = useState<string>("");
   const [isVerified, setIsVerified] = useState<boolean>(false);
   const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
+  const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const nextStep = async () => {
     const newStep = Math.min(currentStep + 1, StepCount - 1);
@@ -112,6 +113,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
         onClick: !isLastStep ? nextStep : storeAccount,
         disabled: !canProceed,
         color: isLastStep ? "secondary" : undefined,
+        loading: isCreating,
         icon:
           currentStep < StepCount - 1 ? (
             <RiArrowRightCircleLine />
@@ -120,8 +122,9 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
           ),
       },
     ];
+    console.log("updating...");
     onStepChange({ steps: StepCount, currentStep, bottomNav });
-  }, [currentStep, isVerified, pin, isConfirmed]);
+  }, [currentStep, isVerified, pin, isConfirmed, isCreating]);
 
   async function generateSeed() {
     const arr = new Uint8Array(128);
@@ -137,6 +140,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
 
   async function storeAccount() {
     try {
+      setIsCreating(true);
       const keys = generateMasterKeys(seed);
       const { salt, key } = await stretchKey(pin);
       const securedKeys = await encrypt(key, JSON.stringify(keys));
@@ -151,6 +155,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
       showSuccess(t("account_stored_success"));
     } catch (e: any) {
       showError(t("severe_error", { reason: e.message }));
+      setIsCreating(false);
     }
   }
 
@@ -221,17 +226,10 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
             <StepVerifySeed seed={seed} onVerificationChange={setIsVerified} />
           </div>
           <div id="step4" className="carousel-item relative w-full">
-            <StepConfirm
-              seed={seed}
-              pin={pin}
-              onConfirmationChange={setIsConfirmed}
-            />
+            <StepConfirm pin={pin} onConfirmationChange={setIsConfirmed} />
           </div>
         </div>
       </div>
     </>
   );
 };
-function showError(arg0: any) {
-  throw new Error("Function not implemented.");
-}

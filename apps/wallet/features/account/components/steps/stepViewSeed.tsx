@@ -23,16 +23,16 @@ export const StepViewSeed: FC<Props> = ({ seed }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center content-center text-center h-[90vh] relative prose max-w-none w-full">
+    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full">
       <section>
         <h2>{t("your_seed")}</h2>
       </section>
       <section className="relative">
-        <div className="relative w-[75%] m-auto text-justify">
+        <div className="relative w-[75%] mx-auto text-justify">
           <div className="border border-base-content p-4 rounded relative text-xl">
             {seed}
           </div>
-          <div className="text-right w-full mt-2">
+          <div className="text-right w-full my-2">
             <Button color="secondary" onClick={handleOnCLick}>
               <RiClipboardLine className="mr-2" />
               {t("copy")}

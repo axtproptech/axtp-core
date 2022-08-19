@@ -5,7 +5,7 @@ import { selectNotificationState } from "@/app/states/appState";
 import { useNotification } from "@/app/hooks/useNotification";
 import { Alert } from "react-daisyui";
 import { AttentionSeeker, Slide } from "react-awesome-reveal";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   RiAlarmWarningLine,
   RiCheckboxCircleLine,
@@ -13,9 +13,18 @@ import {
   RiInformationLine,
 } from "react-icons/ri";
 
+enum ShowState {
+  NotVisible,
+  Entering,
+  Leaving,
+}
+
+const AnimationDuration = 300;
+
 export const Notification = () => {
   const notification = useAppSelector(selectNotificationState);
   const { hide } = useNotification();
+  const [showState, setShowState] = useState(ShowState.NotVisible);
 
   const icon = useMemo(() => {
     if (!notification) return null;
@@ -34,15 +43,35 @@ export const Notification = () => {
     }
   }, [notification]);
 
-  if (!notification) return null;
+  useEffect(() => {
+    if (!notification) {
+      setShowState(ShowState.NotVisible);
+      return;
+    }
+
+    if (notification.shown) {
+      setShowState(ShowState.Entering);
+    } else {
+      setShowState((prevState) => {
+        if (prevState === ShowState.Entering) {
+          setTimeout(() => {
+            setShowState(ShowState.NotVisible);
+          }, AnimationDuration + 100);
+          return ShowState.Leaving;
+        }
+        return ShowState.NotVisible;
+      });
+    }
+  }, [notification]);
+
+  if (showState === ShowState.NotVisible) return null;
 
   return (
     <div className="top-2 w-full z-top px-2 absolute">
       <Slide
-        direction={notification.shown ? "down" : "up"}
-        triggerOnce
-        duration={500}
-        reverse={!notification.shown}
+        direction={showState === ShowState.Entering ? "down" : "up"}
+        duration={AnimationDuration}
+        reverse={showState === ShowState.Leaving}
       >
         <Alert status={notification.type} onClick={hide}>
           <div className="w-full flex flex-row justify-start items-center gap-2">

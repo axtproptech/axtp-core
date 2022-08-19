@@ -14,6 +14,7 @@ export interface BottomNavigationItem {
     | "success"
     | "warning"
     | "error";
+  loading?: boolean;
   route?: string;
   back?: boolean;
   onClick?: (n: BottomNavigationItem) => void;
@@ -43,12 +44,15 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
       <div className="btm-nav max-w-[768px] mx-auto">
         {nav.map((n, index) => {
           const active = router.route === n.route ? "active" : "";
-          const btnColor = n.color ? `rounded-lg btn-${n.color}` : "";
+          const btnColor = n.color
+            ? `rounded-lg btn-${n.color}`
+            : "bg-transparent border-0";
+          const loading = n.loading ? "loading" : "";
           return (
             <button
               key={index}
               onClick={() => handleOnClick(n)}
-              className={`${btnColor} ${active}`}
+              className={`flex-row flex-shrink btn h-full ${btnColor} ${active} ${loading}`}
               disabled={n.disabled || false}
               aria-label={n.label}
             >
