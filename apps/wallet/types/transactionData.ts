@@ -4,6 +4,7 @@ export interface TransactionData {
   id: string;
   explorerUrl: string;
   dateTime: string; // ISO-DATE
+  timestamp: number;
   isPending: boolean;
   type: "out" | "in";
   signa: number;

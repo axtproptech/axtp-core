@@ -9,6 +9,7 @@ import { Keys } from "@signumjs/crypto";
 import useSWR from "swr";
 import { mapLedgerTransaction } from "@/app/mapLedgerTransaction";
 import { AccountData } from "@/types/accountData";
+import { toStableCoinAmount } from "@/app/tokenQuantity";
 
 export const useAccount = () => {
   const { Ledger, AXTTokenId } = useAppContext();
@@ -45,6 +46,10 @@ export const useAccount = () => {
         },
       };
 
+      const axtBalance = accountData.assetBalances.find(
+        ({ asset }) => asset === AXTTokenId
+      );
+
       return {
         // @ts-ignore
         isActive: !!accountData.publicKey,
@@ -54,7 +59,10 @@ export const useAccount = () => {
         transactions: accountTransactions.transactions.map((tx) =>
           mapLedgerTransaction(tx, mappingContext)
         ),
-        // TODO: add AXT Balance and AXTPxxxx balances
+        balanceAxt: axtBalance
+          ? toStableCoinAmount(axtBalance.balanceQNT)
+          : "0",
+        // TODO: add AXTPxxxx balances
       } as AccountData;
     },
     {

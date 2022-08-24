@@ -78,6 +78,7 @@ export const mapLedgerTransaction = (
   const { accountId, axtToken, poolTokens } = context;
   return {
     id: tx.transaction,
+    timestamp: tx.timestamp,
     dateTime: ChainTime.fromChainTimestamp(tx.timestamp)
       .getDate()
       .toISOString(),
