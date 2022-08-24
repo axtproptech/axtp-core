@@ -39,6 +39,7 @@ const Chart: FC<ChartProps> = ({ data }) => (
     ]}
     fill={[{ match: "*", id: "gradientA" }]}
     colors={{ datum: "color" }}
+    animate
   />
 );
 
@@ -95,10 +96,13 @@ export const DashboardHeader: FC<Props> = ({ accountData }) => {
       {chartData ? <Chart data={chartData} /> : <ChartSkeleton />}
       <div className="absolute top-0 p-4 w-full">
         <div className="flex flex-col">
-          <h1 className="text-4xl">AXT {accountData?.balanceAxt}</h1>
+          <h1 className="text-4xl">{accountData?.balanceAxt} AXT</h1>
           <h3 className="text-lg opacity-80">
-            SIGNA {accountData?.balanceSigna}
+            {accountData?.balanceSigna} SIGNA
           </h3>
+          <h5 className="text-sm opacity-60">
+            ~ {accountData?.balanceSigna} USD
+          </h5>
         </div>
       </div>
     </div>
