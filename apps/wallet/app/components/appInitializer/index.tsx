@@ -15,7 +15,7 @@ export const AppInitializer = () => {
 
   return (
     <>
-      <TokenInitializer />.
+      <TokenInitializer />
       {/* if you need to initialize your app then this is a good point to add initilizer components here */}
     </>
   );

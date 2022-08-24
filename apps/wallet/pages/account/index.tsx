@@ -4,7 +4,7 @@ import { AccountDashboard } from "@/features/account/dashboard";
 
 export default function Page() {
   return (
-    <Layout>
+    <Layout noBody>
       <MetaTags
         title="AXT PropTech Account"
         description={""}

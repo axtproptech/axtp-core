@@ -30,13 +30,14 @@ const DefaultNav: BottomNavigationItem[] = [
 
 interface Props extends ChildrenProps {
   bottomNav?: BottomNavigationItem[];
+  noBody?: boolean;
 }
 
-export const Layout: FC<Props> = ({ children, bottomNav }) => {
+export const Layout: FC<Props> = ({ children, bottomNav, noBody = false }) => {
   return (
     <Container>
       <Notification />
-      <Body>{children}</Body>
+      {noBody ? children : <Body>{children}</Body>}
       <BottomNavigation nav={bottomNav || DefaultNav} />
     </Container>
   );

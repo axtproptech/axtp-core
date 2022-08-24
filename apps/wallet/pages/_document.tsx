@@ -46,7 +46,6 @@ export default class MyDocument extends Document<Props> {
           <link rel="manifest" href="/manifest.json" />
           <link rel="shortcut icon" href="/favicon.ico" />
         </Head>
-
         <body>
           <Main />
           <NextScript />

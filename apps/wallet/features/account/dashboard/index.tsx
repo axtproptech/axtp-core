@@ -2,6 +2,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Dataviz } from "@/features/account/dashboard/sections/dataviz";
+import { Body } from "@/app/components/layout/body";
 
 export const AccountDashboard = () => {
   const router = useRouter();
@@ -18,7 +19,9 @@ export const AccountDashboard = () => {
   return (
     <div>
       <section>{accountData && <Dataviz accountData={accountData} />}</section>
-      <section>Body</section>
+      <Body>
+        <section>Body</section>
+      </Body>
     </div>
   );
 };
