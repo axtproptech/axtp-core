@@ -12,9 +12,19 @@ const fromArray = (csv: string): string[] => csv.split(",");
 export const Config = {
   Fetcher: fetcher,
   Ledger: {
-    AddressPrefix: process.env.LEDGER_PREFIX_HOST_URLS || "TS",
+    AddressPrefix: process.env.NEXT_PUBLIC_LEDGER_ACCOUNT_PREFIX || "TS",
+    PollingInterval:
+      toNumber(process.env.NEXT_PUBLIC_LEDGER_POLLING_INTERVAL_SECS || "30") *
+      1000,
     Hosts: fromArray(
-      process.env.LEDGER_ACCOUNT_PREFIX || "http://localhost:6876"
+      process.env.NEXT_PUBLIC_LEDGER_HOST_URLS || "http://localhost:6876"
     ),
+    ExplorerUrl:
+      process.env.NEXT_PUBLIC_LEDGER_EXPLORER_URL ||
+      "https//t-chain.signum.network",
+  },
+  Tokens: {
+    AXT: process.env.NEXT_PUBLIC_AXT_TOKEN_ID || "",
+    AXTPs: fromArray(process.env.NEXT_PUBLIC_AXTP_TOKEN_IDS || ""),
   },
 };

@@ -2,8 +2,8 @@ import { ServiceContext } from "./serviceContext";
 import { PoolInstanceService } from "./poolInstanceService";
 import { ConfirmedTransaction } from "@signumjs/wallets";
 import { Config } from "@/app/config";
-import { Amount } from "@signumjs/core";
-import { withError } from "@/app/services/ledgerService/withError";
+import { Amount } from "@signumjs/util";
+import { withError } from "./withError";
 import { InputValidationService } from "@/app/services/inputValidationService";
 import {
   convertHexEndianess,

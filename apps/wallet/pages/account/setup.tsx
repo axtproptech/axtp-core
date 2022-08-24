@@ -1,6 +1,6 @@
 import { Layout } from "@/app/components/layout";
 import { MetaTags } from "@/app/components/metaTags";
-import { AccountDashboard } from "@/features/account/dashboard";
+import { AccountSetup } from "@/features/account/accountSetup";
 
 export default function Page() {
   return (
@@ -12,7 +12,7 @@ export default function Page() {
         // imgUrl={some image url}
         keywords="tokenomics, real estate, blockchain, signum, sustainable"
       />
-      <AccountDashboard />
+      <AccountSetup />
     </Layout>
   );
 }

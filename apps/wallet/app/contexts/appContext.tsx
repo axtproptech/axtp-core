@@ -3,23 +3,33 @@ import { isClientSide } from "../isClientSide";
 import { isMobile } from "react-device-detect";
 import { ChildrenProps } from "@/types/childrenProps";
 import { Config } from "@/app/config";
+import { Ledger, LedgerClientFactory } from "@signumjs/core";
 
 export interface AppContextType {
   IsClientSide: boolean;
   IsMobile: boolean;
+  AXTTokenId: string;
+  AXTPoolTokenIds: string[];
   Ledger: {
+    Client: Ledger;
     AddressPrefix: string;
     Hosts: string[];
+    PollingInterval: number;
   };
-  // put all _global_ and _constant_ status herein
 }
 
 const config: AppContextType = {
   IsMobile: isMobile,
   IsClientSide: isClientSide(),
+  AXTTokenId: Config.Tokens.AXT,
+  AXTPoolTokenIds: Config.Tokens.AXTPs,
   Ledger: {
+    Client: LedgerClientFactory.createClient({
+      nodeHost: Config.Ledger.Hosts[0],
+    }),
     AddressPrefix: Config.Ledger.AddressPrefix,
     Hosts: Config.Ledger.Hosts,
+    PollingInterval: Config.Ledger.PollingInterval,
   },
 };
 

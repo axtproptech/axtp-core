@@ -17,6 +17,7 @@ import { isClientSide } from "@/app/isClientSide";
 import { appSlice } from "@/app/states/appState";
 import { storage } from "./storage";
 import { accountSlice } from "@/app/states/accountState";
+import { tokenSlice } from "@/app/states/tokenState";
 
 function persist<T = any>(config: any, reducer: Reducer) {
   return isClientSide()
@@ -38,6 +39,12 @@ const accountPersistConfig = {
   storage,
 };
 
+const tokenPersistConfig = {
+  key: "token",
+  version: 1,
+  storage,
+};
+
 const rootReducer = combineReducers({
   appState: persist<ReturnType<typeof appSlice.reducer>>(
     appPersistConfig,
@@ -46,6 +53,10 @@ const rootReducer = combineReducers({
   accountState: persist<ReturnType<typeof accountSlice.reducer>>(
     accountPersistConfig,
     accountSlice.reducer
+  ),
+  tokenState: persist<ReturnType<typeof tokenSlice.reducer>>(
+    tokenPersistConfig,
+    tokenSlice.reducer
   ),
   // add more states here
 });
