@@ -23,12 +23,14 @@ export abstract class GenericContractService {
 
     // TODO: adjust signumjs with new quantityCirculatingQNT
     // @ts-ignore
-    const { name, asset, quantityCirculatingQNT, decimals } = assetInfo;
+    const { name, asset, quantityCirculatingQNT, decimals, numberOfAccounts } =
+      assetInfo;
     return {
       name,
       id: asset,
       decimals,
       supply: toStableCoinAmount(quantityCirculatingQNT),
+      numHolders: numberOfAccounts,
     };
   }
 }

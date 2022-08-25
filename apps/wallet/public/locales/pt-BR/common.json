@@ -24,5 +24,7 @@
   "your_imported_account": "Sua conta importada",
   "your_imported_account_hint": "Verifique se este endereço é a sua conta. Caso não corresponda à sua conta, você deve voltar e verificar a frase secreta inserida.",
   "your_seed": "Sua frase de recuperação",
-  "your_seed_hint": "É muito importante que você [Baixar] esta frase de recuperação e guarde-a em um lugar seguro. Se você perder sua frase de recuperação, perderá o acesso à sua conta."
+  "your_seed_hint": "É muito importante que você [Baixar] esta frase de recuperação e guarde-a em um lugar seguro. Se você perder sua frase de recuperação, perderá o acesso à sua conta.",
+  "free_pool_seats": "Only {{freeSeats}} shares left!",
+  "pool_full": "This pool has no shares left anymore"
 }

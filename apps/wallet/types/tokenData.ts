@@ -2,6 +2,7 @@ import { TokenMetaData } from "@/types/tokenMetaData";
 
 export interface TokenData extends TokenMetaData {
   supply: string;
+  numHolders: number;
 }
 
 export const DefaultTokenData: TokenData = {
@@ -9,4 +10,5 @@ export const DefaultTokenData: TokenData = {
   decimals: 0,
   name: "",
   id: "",
+  numHolders: 0,
 };

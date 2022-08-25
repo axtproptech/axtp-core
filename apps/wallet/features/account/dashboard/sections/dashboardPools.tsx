@@ -13,9 +13,16 @@ export const DashboardPools: FC<Props> = ({ accountData }) => {
 
   // todo: return pools ny the tokens this account owns
   return (
-    <div className="bg-gradient-to-r from-base-100 to-secondary">
+    <div>
       {pools.map((p) => {
-        return <PoolCard className="mt-2" key={p.poolId} poolData={p} />;
+        return (
+          <PoolCard
+            className="mt-4 bg-gradient-to-r from-base-100 to-secondary"
+            key={p.poolId}
+            poolData={p}
+            accountShares={2}
+          />
+        );
       })}
     </div>
   );

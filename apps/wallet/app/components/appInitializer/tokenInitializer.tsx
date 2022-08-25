@@ -4,19 +4,25 @@ import useSWR from "swr";
 import { tokenActions } from "@/app/states/tokenState";
 import { toStableCoinAmount } from "@/app/tokenQuantity";
 import { Ledger as LedgerClient } from "@signumjs/core";
+import { TokenData } from "@/types/tokenData";
 
-async function fetchTokenData(tokenId: string, ledger: LedgerClient) {
+async function fetchTokenData(
+  tokenId: string,
+  ledger: LedgerClient
+): Promise<TokenData> {
   const {
     name,
     decimals,
     quantityCirculatingQNT,
     asset: id,
+    numberOfAccounts: numHolders,
   } = await ledger.asset.getAsset({ assetId: tokenId });
   return {
     name,
     decimals,
     supply: toStableCoinAmount(quantityCirculatingQNT),
     id,
+    numHolders,
   };
 }
 
