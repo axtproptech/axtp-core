@@ -5,7 +5,6 @@ import { MainCard } from "@/app/components/cards";
 import { Animate } from "@/app/components/animation";
 import { IconShieldLock } from "@tabler/icons";
 import { useRouter } from "next/router";
-import { styled } from "@mui/material/styles";
 
 interface Props {
   providers?: any;

@@ -1,5 +1,8 @@
 import { ServiceContext } from "./serviceContext";
 import { PoolInstanceService } from "./poolInstanceService";
+import { withError } from "./withError";
+import { Config } from "@/app/config";
+import { PoolContractData } from "@/types/poolContractData";
 
 export class PoolContractService {
   constructor(private context: ServiceContext) {}
@@ -8,16 +11,12 @@ export class PoolContractService {
     return new PoolInstanceService(this.context, poolId);
   }
 
-  // async fetchAllContracts() {
-  //   return withError(async () => {
-  //     const { ledger } = this.context;
-  //     const poolIds = await ledger.contract.getAllContractIds({
-  //       machineCodeHash: Config.PoolContract.CodeHash,
-  //     });
-  //     const promises = poolIds.atIds.map((poolId) =>
-  //       this.with(poolId).readContractData()
-  //     );
-  //     return Promise.all(promises);
-  //   });
-  // }
+  async fetchAllContracts(): Promise<PoolContractData[]> {
+    return withError(async () => {
+      const promises = Config.Contracts.PoolContractIds.map((poolId) =>
+        this.with(poolId).readContractData()
+      );
+      return Promise.all(promises);
+    });
+  }
 }

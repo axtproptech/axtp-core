@@ -18,6 +18,8 @@ import { appSlice } from "@/app/states/appState";
 import { storage } from "./storage";
 import { accountSlice } from "@/app/states/accountState";
 import { tokenSlice } from "@/app/states/tokenState";
+import { marketSlice } from "@/app/states/marketState";
+import { poolsSlice } from "@/app/states/poolsState";
 
 function persist<T = any>(config: any, reducer: Reducer) {
   return isClientSide()
@@ -45,6 +47,18 @@ const tokenPersistConfig = {
   storage,
 };
 
+const poolPersistConfig = {
+  key: "pools",
+  version: 1,
+  storage,
+};
+
+const marketPersistConfig = {
+  key: "market",
+  version: 1,
+  storage,
+};
+
 const rootReducer = combineReducers({
   appState: persist<ReturnType<typeof appSlice.reducer>>(
     appPersistConfig,
@@ -57,6 +71,14 @@ const rootReducer = combineReducers({
   tokenState: persist<ReturnType<typeof tokenSlice.reducer>>(
     tokenPersistConfig,
     tokenSlice.reducer
+  ),
+  poolState: persist<ReturnType<typeof poolsSlice.reducer>>(
+    poolPersistConfig,
+    poolsSlice.reducer
+  ),
+  marketState: persist<ReturnType<typeof marketSlice.reducer>>(
+    marketPersistConfig,
+    marketSlice.reducer
   ),
   // add more states here
 });

@@ -23,6 +23,9 @@ export const Config = {
       process.env.NEXT_PUBLIC_LEDGER_EXPLORER_URL ||
       "https//t-chain.signum.network",
   },
+  Contracts: {
+    PoolContractIds: fromArray(process.env.NEXT_PUBLIC_AXTP_CONTRACT_IDS || ""),
+  },
   Tokens: {
     AXT: process.env.NEXT_PUBLIC_AXT_TOKEN_ID || "",
     AXTPs: fromArray(process.env.NEXT_PUBLIC_AXTP_TOKEN_IDS || ""),

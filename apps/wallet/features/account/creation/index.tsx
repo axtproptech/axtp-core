@@ -122,7 +122,6 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
           ),
       },
     ];
-    console.log("updating...");
     onStepChange({ steps: StepCount, currentStep, bottomNav });
   }, [currentStep, isVerified, pin, isConfirmed, isCreating]);
 

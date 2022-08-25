@@ -22,8 +22,6 @@ export const tokenSlice = createSlice({
     },
     updatePoolTokenData: (state, action: PayloadAction<TokenData>) => {
       const { id } = action.payload;
-      console.log("updatePoolTokenData", action.payload);
-
       state.poolTokens[id] = action.payload;
     },
   },

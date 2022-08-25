@@ -6,6 +6,10 @@ const isRehydrated = (sliceState: any): boolean => {
 
 export const useIsReady = () => {
   return useAppSelector(
-    (state) => isRehydrated(state.accountState) && isRehydrated(state.appState)
+    (state) =>
+      isRehydrated(state.accountState) &&
+      isRehydrated(state.appState) &&
+      isRehydrated(state.tokenState) &&
+      isRehydrated(state.marketState)
   );
 };

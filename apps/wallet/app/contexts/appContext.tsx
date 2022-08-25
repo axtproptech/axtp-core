@@ -5,6 +5,8 @@ import { ChildrenProps } from "@/types/childrenProps";
 import { Config } from "@/app/config";
 import { Ledger, LedgerClientFactory } from "@signumjs/core";
 
+type AddressPrefixType = "TS" | "S";
+
 export interface AppContextType {
   IsClientSide: boolean;
   IsMobile: boolean;
@@ -12,7 +14,8 @@ export interface AppContextType {
   AXTPoolTokenIds: string[];
   Ledger: {
     Client: Ledger;
-    AddressPrefix: string;
+    AddressPrefix: AddressPrefixType;
+    SignaPrefix: "TSIGNA" | "SIGNA";
     Hosts: string[];
     PollingInterval: number;
   };
@@ -27,7 +30,8 @@ const config: AppContextType = {
     Client: LedgerClientFactory.createClient({
       nodeHost: Config.Ledger.Hosts[0],
     }),
-    AddressPrefix: Config.Ledger.AddressPrefix,
+    AddressPrefix: Config.Ledger.AddressPrefix as AddressPrefixType,
+    SignaPrefix: Config.Ledger.AddressPrefix === "TS" ? "TSIGNA" : "SIGNA",
     Hosts: Config.Ledger.Hosts,
     PollingInterval: Config.Ledger.PollingInterval,
   },

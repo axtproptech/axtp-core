@@ -37,7 +37,6 @@ export const TokenInitializer = () => {
           fetchTokenData(tokenId, Ledger.Client)
         );
         const results = await Promise.all(promises);
-        console.log("pooltokens", results);
         results.forEach((t) => dispatch(tokenActions.updatePoolTokenData(t)));
       } catch (e: any) {
         console.error("TokenInitializer:fetchPoolTokens", e);
