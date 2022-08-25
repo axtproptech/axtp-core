@@ -7,6 +7,8 @@ import { selectAXTToken } from "@/app/states/tokenState";
 import { useTranslation } from "next-i18next";
 // @ts-ignore
 import hashicon from "hashicon";
+import { Badge } from "react-daisyui";
+import { AttentionSeeker, Zoom } from "react-awesome-reveal";
 
 interface Props {
   poolData: PoolContractData;
@@ -44,23 +46,32 @@ export const PoolCard: FC<Props> = ({
         className="card card-side w-full glass cursor-pointer h-full"
         onClick={() => onClick(poolData)}
       >
-        <figure className="ml-8 mt-8 w-[64px] flex-col">
-          <img src={iconUrl} alt={poolData.token.name} />
+        <figure className="ml-8 mt-14 w-[64px] flex-col relative">
+          <AttentionSeeker effect="rubberBand" triggerOnce delay={5000}>
+            <img src={iconUrl} alt={poolData.token.name} />
+          </AttentionSeeker>
           <img
-            className="blur-sm scale-y-50 opacity-40"
+            className="blur-sm scale-y-50 opacity-40 absolute top-12"
             src={iconUrl}
-            alt={poolData.token.name}
+            alt={`${poolData.token.name}-dropshadow`}
           />
         </figure>
         <div className="card-body">
           <div className="flex flex-row justify-between items-start">
-            <h2 className="card-title">{poolData.token.name}</h2>
+            <div className="flex flex-row items-center">
+              <h2 className="card-title mr-2">{poolData.token.name}</h2>
+              {accountShares && (
+                <Badge color="success" size="lg">
+                  {accountShares}
+                </Badge>
+              )}
+            </div>
             <h2 className="card-title text-green-400">
               <Number value={performance} suffix="%" />
             </h2>
           </div>
           <div>
-            <div className="flex flex-col justify-between lg:items-end">
+            <div className="flex flex-col justify-between items-end">
               <h2 className="text-lg font-bold">
                 <Number value={poolData.nominalLiquidity} suffix={name} />
               </h2>

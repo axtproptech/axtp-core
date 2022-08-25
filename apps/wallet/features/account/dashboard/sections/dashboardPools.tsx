@@ -3,6 +3,7 @@ import { AccountData } from "@/types/accountData";
 import { useAppSelector } from "@/states/hooks";
 import { selectAllPools } from "@/app/states/poolsState";
 import { PoolCard } from "@/app/components/cards/poolCard";
+import { Zoom } from "react-awesome-reveal";
 
 interface Props {
   accountData?: AccountData;
@@ -14,16 +15,18 @@ export const DashboardPools: FC<Props> = ({ accountData }) => {
   // todo: return pools ny the tokens this account owns
   return (
     <div>
-      {pools.map((p) => {
-        return (
-          <PoolCard
-            className="mt-4 bg-gradient-to-r from-base-100 to-secondary"
-            key={p.poolId}
-            poolData={p}
-            accountShares={2}
-          />
-        );
-      })}
+      <Zoom cascade>
+        {pools.map((p) => {
+          return (
+            <PoolCard
+              className="mt-4 bg-gradient-to-r from-base-100 to-secondary"
+              key={p.poolId}
+              poolData={p}
+              accountShares={2}
+            />
+          );
+        })}
+      </Zoom>
     </div>
   );
 };
