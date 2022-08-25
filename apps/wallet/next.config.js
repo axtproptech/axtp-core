@@ -9,9 +9,9 @@ module.exports = withPWA(
     debug: process.env.NODE_ENV === "development",
     pwa: {
       dest: "public",
-      // runtimeCaching,
+      runtimeCaching,
       disable: process.env.NODE_ENV === "development",
-      // buildExcludes: [/middleware-manifest\.json$/]
+      buildExcludes: [/middleware-manifest\.json$/],
     },
     reactStrictMode: true,
     i18n,

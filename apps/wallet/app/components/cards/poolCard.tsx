@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { voidFn } from "@/app/voidFn";
 import { PoolContractData } from "@/types/poolContractData";
 import { Number } from "@/app/components/number";
@@ -7,7 +7,6 @@ import { selectAXTToken } from "@/app/states/tokenState";
 import { useTranslation } from "next-i18next";
 // @ts-ignore
 import hashicon from "hashicon";
-import { useAppContext } from "@/app/hooks/useAppContext";
 
 interface Props {
   poolData: PoolContractData;
@@ -45,7 +44,7 @@ export const PoolCard: FC<Props> = ({
         className="card card-side w-full glass cursor-pointer h-full"
         onClick={() => onClick(poolData)}
       >
-        <figure className="ml-8 w-[64px] flex-col">
+        <figure className="ml-8 mt-8 w-[64px] flex-col">
           <img src={iconUrl} alt={poolData.token.name} />
           <img
             className="blur-sm scale-y-50 opacity-40"
@@ -84,9 +83,6 @@ export const PoolCard: FC<Props> = ({
             <small>
               {freeSeats ? t("free_pool_seats", { freeSeats }) : t("pool_full")}
             </small>
-          </div>
-          <div className="card-actions justify-between">
-            {/*<button classNameName="btn btn-primary">Learn now!</button>*/}
           </div>
         </div>
       </div>

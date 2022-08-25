@@ -3,10 +3,11 @@ import { useRouter } from "next/router";
 import { MouseEvent } from "react";
 import { RiUserAddLine, RiUserReceivedLine } from "react-icons/ri";
 import { AttentionSeeker } from "react-awesome-reveal";
+import { useTranslation } from "next-i18next";
 
 export const AccountSetup = () => {
   const router = useRouter();
-
+  const { t } = useTranslation();
   const handleCardClick = (route: string) => async (_: MouseEvent) => {
     await router.push(`/account/${route}`);
   };
@@ -21,8 +22,8 @@ export const AccountSetup = () => {
               <RiUserReceivedLine size={32} />
             </AttentionSeeker>
           }
-          title="Import Account"
-          text="Choose this if you have an account already, and you want to import using the seed"
+          title={t("import_account")}
+          text={t("import_account_hint")}
           onClick={handleCardClick("import")}
         />
         <Glasscard
@@ -32,8 +33,8 @@ export const AccountSetup = () => {
               <RiUserAddLine size={32} />
             </AttentionSeeker>
           }
-          title="New Account"
-          text="Choose this if you have no Signum account and you want to create one"
+          title={t("create_account")}
+          text={t("create_account_hint")}
           onClick={handleCardClick("new")}
         />
       </div>
