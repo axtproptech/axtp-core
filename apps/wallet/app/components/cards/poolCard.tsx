@@ -34,15 +34,15 @@ export const PoolCard: FC<Props> = ({
 
   const accountShares = useMemo(() => {
     if (!accountData) return 0;
-    if (!accountData.balancesPools) return 0;
-
-    const index = accountData.balancesPools.findIndex(
-      (balance) => balance.id === poolData.poolId
-    );
-    if (index === -1) return 0;
-
-    // FIXME: use the real balance
     return 4;
+    // FIXME: use the real balance
+    // if (!accountData.balancesPools) return 0;
+    //
+    // const index = accountData.balancesPools.findIndex(
+    //   (balance) => balance.id === poolData.poolId
+    // );
+    // if (index === -1) return 0;
+    //
     // return parseInt(accountData.balancesPools[index].quantity);
   }, [accountData, poolData]);
 
