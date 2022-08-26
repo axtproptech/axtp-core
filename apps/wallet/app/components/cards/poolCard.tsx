@@ -34,6 +34,7 @@ export const PoolCard: FC<Props> = ({
 
   const accountShares = useMemo(() => {
     if (!accountData) return 0;
+    if (!accountData.balancesPools) return 0;
 
     const index = accountData.balancesPools.findIndex(
       (balance) => balance.id === poolData.poolId
