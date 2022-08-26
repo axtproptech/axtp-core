@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { DashboardHeader } from "@/features/account/dashboard/sections/dashboardHeader";
 import { Body } from "@/app/components/layout/body";
-import { DashboardPools } from "./sections/dashboardPools";
+import { PoolList } from "@/app/components/poolList";
 
 export const AccountDashboard = () => {
   const router = useRouter();
@@ -22,8 +22,11 @@ export const AccountDashboard = () => {
       <section>
         <DashboardHeader accountData={accountData} />
       </section>
-      <Body className="overflow-x-auto h-[calc(100vh_-_240px_-_64px)] shadow-inner shadow-2xl">
-        <DashboardPools accountData={accountData} />
+      <div className="relative">
+        <div className="absolute z-10 top-[-1px] bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
+      </div>
+      <Body className="overflow-x-auto h-[calc(100vh_-_240px_-_64px)]">
+        <PoolList accountData={accountData} />
       </Body>
     </div>
   );

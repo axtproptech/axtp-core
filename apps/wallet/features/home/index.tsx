@@ -9,13 +9,14 @@ import { Fade, Slide } from "react-awesome-reveal";
 import { selectAllPools } from "@/app/states/poolsState";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
+import { PoolList } from "@/app/components/poolList";
+import { useNotification } from "@/app/hooks/useNotification";
 
 export const Home = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const { showInfo } = useNotification();
   const pools = useAppSelector(selectAllPools);
-  const { accountAddress } = useAccount();
-  const dispatch = useAppDispatch();
 
   const stats = useMemo(() => {
     return {
@@ -26,44 +27,36 @@ export const Home = () => {
     };
   }, [pools]);
 
-  const handleOnClickDisconnect = async () => {
-    dispatch(accountActions.resetAccount());
-  };
-
   const handleOnJoinClick = async () => {
-    router.push("/pools");
+    showInfo("Not implemented yet");
   };
 
   return (
     <div>
-      <section>
+      <section className="relative">
         <Slide direction="down">
           <Fade>
-            <TextLogo className="pt-8 h-full mx-auto w-[50%] lg:w-[33%]" />
+            <TextLogo className="py-4 h-full mx-auto w-[50%] lg:w-[33%]" />
           </Fade>
         </Slide>
       </section>
-      <section className="w-full">
-        <DashboardStats stats={stats} />
-      </section>
-      <div className="prose text-center mx-auto mt-4">
-        <div className="animate-wiggle">
-          <Button color="primary" size="lg" onClick={handleOnJoinClick}>
-            {t("join_club")}
-          </Button>
-        </div>
-
-        {accountAddress && (
-          <>
-            <p>You are connected as</p>
-            <h3>{accountAddress}</h3>
-            <div className="mt-2">
-              <Button color="ghost" onClick={handleOnClickDisconnect}>
-                Disconnect
-              </Button>
-            </div>
-          </>
-        )}
+      <div className="relative">
+        <div className="absolute z-10 top-[-1px] bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
+      </div>
+      <div className="relative overflow-x-hidden h-[calc(100vh_-_140px_-_64px)] lg:h-[calc(100vh_-_180px_-_64px)]">
+        <section className="w-full">
+          <DashboardStats stats={stats} />
+        </section>
+        <section className="prose text-center mx-auto mt-4">
+          <div className="animate-wiggle">
+            <Button color="primary" size="lg" onClick={handleOnJoinClick}>
+              {t("join_club")}
+            </Button>
+          </div>
+        </section>
+        <section className="mt-8">
+          <PoolList />
+        </section>
       </div>
     </div>
   );

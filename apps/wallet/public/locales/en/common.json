@@ -34,5 +34,8 @@
   "total_paid_divs": "Total Paid Dividends",
   "to_n_holders": "to {{count}} holders",
   "overall_performance": "Overall Performance",
-  "settings": "Settings"
+  "settings": "Settings",
+  "disconnect": "Disconnect",
+  "disconnect_hint": "Disconnecting your account is like logging out. To log in again you need to import your account using the Recovery Phrase",
+  "you_own_n_shares": "You own {{count}} shares"
 }

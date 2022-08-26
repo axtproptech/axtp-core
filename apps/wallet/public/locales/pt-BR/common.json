@@ -33,5 +33,8 @@
   "total_paid_divs": "Total de Dividendos Pagos",
   "to_n_holders": "para {{count}} acionistas",
   "overall_performance": "Desempenho Global",
-  "settings": "Configurações"
+  "settings": "Configurações",
+  "disconnect": "Desconectar",
+  "disconnect_hint": "Desconectar sua conta é como deslogar. Para fazer login novamente, você precisa importar sua conta usando a Frase de Recuperação",
+  "you_own_n_shares": "Possui {{count}} ações"
 }

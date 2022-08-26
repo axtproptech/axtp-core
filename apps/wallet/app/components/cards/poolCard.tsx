@@ -9,10 +9,11 @@ import { useTranslation } from "next-i18next";
 import hashicon from "hashicon";
 import { Badge } from "react-daisyui";
 import { AttentionSeeker, Zoom } from "react-awesome-reveal";
+import { AccountData } from "@/types/accountData";
 
 interface Props {
   poolData: PoolContractData;
-  accountShares?: number;
+  accountData?: AccountData;
   onClick?: (pool: PoolContractData) => void;
   className?: string;
 }
@@ -21,7 +22,7 @@ export const PoolCard: FC<Props> = ({
   onClick = voidFn,
   className = "",
   poolData,
-  accountShares = 0,
+  accountData,
 }) => {
   const { t } = useTranslation();
   const { name } = useAppSelector(selectAXTToken);
@@ -30,6 +31,19 @@ export const PoolCard: FC<Props> = ({
     if (!poolData) return "";
     return hashicon(poolData.poolId, { size: 64 }).toDataURL();
   }, [poolData]);
+
+  const accountShares = useMemo(() => {
+    if (!accountData) return 0;
+
+    const index = accountData.balancesPools.findIndex(
+      (balance) => balance.id === poolData.poolId
+    );
+    if (index === -1) return 0;
+
+    // FIXME: use the real balance
+    return 4;
+    // return parseInt(accountData.balancesPools[index].quantity);
+  }, [accountData, poolData]);
 
   const freeSeats = Math.max(
     poolData.maxShareQuantity - poolData.token.numHolders,
@@ -48,7 +62,7 @@ export const PoolCard: FC<Props> = ({
   return (
     <div className={className}>
       <div
-        className="card card-side w-full glass cursor-pointer h-full"
+        className="relative card card-side w-full glass cursor-pointer h-full"
         onClick={() => onClick(poolData)}
       >
         <figure className="ml-8 mt-14 w-[64px] flex-col relative">
@@ -63,20 +77,13 @@ export const PoolCard: FC<Props> = ({
         </figure>
         <div className="card-body">
           <div className="flex flex-row justify-between items-start">
-            <div className="flex flex-row items-center">
-              <h2 className="card-title mr-2">{poolData.token.name}</h2>
-              {accountShares && (
-                <Badge color="success" size="lg">
-                  {accountShares}
-                </Badge>
-              )}
-            </div>
+            <h2 className="card-title mr-2">{poolData.token.name}</h2>
             <h2 className="card-title text-green-400">
               <Number value={performance} suffix="%" />
             </h2>
           </div>
           <div>
-            <div className="flex flex-col justify-between items-end">
+            <div className="flex flex-col justify-between items-start lg:items-end">
               <h2 className="text-lg font-bold">
                 <Number value={poolData.nominalLiquidity} suffix={name} />
               </h2>
@@ -99,6 +106,11 @@ export const PoolCard: FC<Props> = ({
             <small>
               {freeSeats ? t("free_pool_seats", { freeSeats }) : t("pool_full")}
             </small>
+            {accountShares > 0 && (
+              <Badge color="secondary" className="absolute bottom-2 right-2">
+                {t("you_own_n_shares", { count: accountShares })}
+              </Badge>
+            )}
           </div>
         </div>
       </div>

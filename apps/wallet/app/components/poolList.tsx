@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { AccountData } from "@/types/accountData";
 import { useAppSelector } from "@/states/hooks";
 import { selectAllPools } from "@/app/states/poolsState";
@@ -9,7 +9,7 @@ interface Props {
   accountData?: AccountData;
 }
 
-export const DashboardPools: FC<Props> = ({ accountData }) => {
+export const PoolList: FC<Props> = ({ accountData }) => {
   const pools = useAppSelector(selectAllPools);
 
   // todo: return pools ny the tokens this account owns
@@ -22,7 +22,7 @@ export const DashboardPools: FC<Props> = ({ accountData }) => {
               className="mt-4 bg-gradient-to-r from-base-100 to-secondary"
               key={p.poolId}
               poolData={p}
-              accountShares={2}
+              accountData={accountData}
             />
           );
         })}

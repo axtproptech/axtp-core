@@ -30,9 +30,9 @@ interface Props extends ChildrenProps {
 export const Layout: FC<Props> = ({ children, bottomNav, noBody = false }) => {
   return (
     <Container>
-      <Notification />
       {noBody ? children : <Body>{children}</Body>}
       <BottomNavigation nav={bottomNav || DefaultNav} />
+      <Notification />
     </Container>
   );
 };

@@ -2,12 +2,9 @@ import { Layout } from "@/app/components/layout";
 import { MetaTags } from "@/app/components/metaTags";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
-import {
-  RiArrowLeftCircleLine,
-  RiHome6Line,
-  RiSettings4Line,
-} from "react-icons/ri";
+import { RiArrowLeftCircleLine, RiHome6Line } from "react-icons/ri";
 import { useTranslation } from "next-i18next";
+import { Settings } from "@/features/settings";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -42,7 +39,7 @@ export default function Page() {
         // imgUrl={some image url}
         keywords="tokenomics, real estate, blockchain, signum, sustainable"
       />
-      <h1>Settings</h1>
+      <Settings />
     </Layout>
   );
 }
