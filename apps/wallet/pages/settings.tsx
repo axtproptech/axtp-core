@@ -1,17 +1,13 @@
 import { Layout } from "@/app/components/layout";
 import { MetaTags } from "@/app/components/metaTags";
-import { AccountDashboard } from "@/features/account/dashboard";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useAccount } from "../../app/hooks/useAccount";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { BottomNavigationItem } from "../../app/components/navigation/bottomNavigation";
-import { useTranslation } from "next-i18next";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import {
   RiArrowLeftCircleLine,
   RiHome6Line,
   RiSettings4Line,
 } from "react-icons/ri";
+import { useTranslation } from "next-i18next";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -23,17 +19,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
 }
 
 export default function Page() {
-  const router = useRouter();
   const { t } = useTranslation();
-  const { accountId } = useAccount();
-
-  useEffect(() => {
-    if (!accountId && router) {
-      router.replace("/account/setup");
-    }
-  }, [accountId, router]);
-
-  if (!accountId) return null;
 
   const bottomNav: BottomNavigationItem[] = [
     {
@@ -46,23 +32,17 @@ export default function Page() {
       route: "/",
       icon: <RiHome6Line />,
     },
-    {
-      label: t("settings"),
-      route: "/settings",
-      icon: <RiSettings4Line />,
-    },
   ];
-
   return (
-    <Layout noBody bottomNav={bottomNav}>
+    <Layout bottomNav={bottomNav}>
       <MetaTags
-        title="AXT PropTech Account"
+        title="AXT PropTech"
         description={""}
         // add here an image for SEO
         // imgUrl={some image url}
         keywords="tokenomics, real estate, blockchain, signum, sustainable"
       />
-      <AccountDashboard />
+      <h1>Settings</h1>
     </Layout>
   );
 }

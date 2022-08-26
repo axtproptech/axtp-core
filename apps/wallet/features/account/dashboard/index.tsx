@@ -22,7 +22,7 @@ export const AccountDashboard = () => {
       <section>
         <DashboardHeader accountData={accountData} />
       </section>
-      <Body className="overflow-x-auto h-[calc(100vh_-_240px_-_64px)]">
+      <Body className="overflow-x-auto h-[calc(100vh_-_240px_-_64px)] shadow-inner shadow-2xl">
         <DashboardPools accountData={accountData} />
       </Body>
     </div>

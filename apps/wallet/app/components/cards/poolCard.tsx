@@ -40,6 +40,11 @@ export const PoolCard: FC<Props> = ({
       poolData.nominalLiquidity) *
     100
   ).toFixed(2);
+
+  const randomDelay = useMemo(() => {
+    return 2_000 + Math.floor(Math.random() * 3_000);
+  }, [poolData.poolId]);
+
   return (
     <div className={className}>
       <div
@@ -47,7 +52,7 @@ export const PoolCard: FC<Props> = ({
         onClick={() => onClick(poolData)}
       >
         <figure className="ml-8 mt-14 w-[64px] flex-col relative">
-          <AttentionSeeker effect="rubberBand" triggerOnce delay={5000}>
+          <AttentionSeeker effect="rubberBand" delay={randomDelay}>
             <img src={iconUrl} alt={poolData.token.name} />
           </AttentionSeeker>
           <img

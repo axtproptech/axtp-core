@@ -1,5 +1,4 @@
 {
-  "good_things": "Ve todas as coisas boas por aqui",
   "define_pin": "Defina seu PIN",
   "define_pin_hint": "O PIN é sua assinatura digital e protege seus dados neste dispositivo",
   "account_stored_success": "Sua conta agora está armazenada neste dispositivo",
@@ -27,5 +26,12 @@
   "your_seed_hint": "É muito importante que você [Baixar] esta frase de recuperação e guarde-a em um lugar seguro. Se você perder sua frase de recuperação, perderá o acesso à sua conta.",
   "free_pool_seats": "Só {{freeSeats}} ações restantes!",
   "pool_full": "Esgotado",
-  "joined": "Participando"
+  "joined": "Participando",
+  "join_club": "Participa já!",
+  "total_shv": "Valor total aos acionistas",
+  "in_n_pools": "em {{count}} polos",
+  "total_paid_divs": "Total de Dividendos Pagos",
+  "to_n_holders": "para {{count}} acionistas",
+  "overall_performance": "Desempenho Global",
+  "settings": "Configurações"
 }

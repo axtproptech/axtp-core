@@ -1,5 +1,4 @@
 {
-  "good_things": "This is just a test screen!",
   "pin_input_placeholder": "Enter your PIN",
   "define_pin": "Define your PIN",
   "define_pin_hint": "The PIN is your digital signature and secures your data on this device.",
@@ -28,5 +27,12 @@
   "severe_error": "Oh, no. Something went terribly wrong: {{reason}}",
   "free_pool_seats": "Only {{freeSeats}} shares left!",
   "pool_full": "This pool has no shares left anymore",
-  "joined": "Joined"
+  "joined": "Joined",
+  "join_club": "Join the Club!",
+  "total_shv": "Total Shareholder Value",
+  "in_n_pools": "in {{count}} pools",
+  "total_paid_divs": "Total Paid Dividends",
+  "to_n_holders": "to {{count}} holders",
+  "overall_performance": "Overall Performance",
+  "settings": "Settings"
 }
