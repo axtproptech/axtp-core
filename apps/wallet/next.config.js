@@ -6,13 +6,6 @@ const runtimeCaching = require("next-pwa/cache");
 const withTM = require("next-transpile-modules")(["react-daisyui"]);
 module.exports = withPWA(
   withTM({
-    webpack(config) {
-      config.module.rules.push({
-        test: /\.svg$/,
-        use: ["@svgr/webpack"],
-      });
-      return config;
-    },
     debug: process.env.NODE_ENV === "development",
     pwa: {
       dest: "public",
