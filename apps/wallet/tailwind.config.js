@@ -17,12 +17,17 @@ module.exports = {
     extend: {
       keyframes: {
         wiggle: {
-          "0%, 100%": { transform: "rotate(-3deg)" },
-          "50%": { transform: "rotate(3deg)" },
+          "0%, 100%": { transform: "scale(1.0)" },
+          "50%": { transform: "scale(1.05)" },
+        },
+        shimmer: {
+          "100%": {
+            transform: "translateX(100%)",
+          },
         },
       },
       animation: {
-        wiggle: "wiggle 1s ease-in-out infinite",
+        wiggle: "wiggle 2s ease-in-out infinite",
       },
     },
   },

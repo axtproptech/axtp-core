@@ -53,7 +53,7 @@ export const PoolsInitializer = () => {
   const dispatch = useAppDispatch();
 
   const { data } = useSWR(
-    ledgerService ? "fetch/allPools" : null,
+    "fetch/allPools",
     async () => {
       if (!ledgerService) return null;
       return ledgerService.poolContract.fetchAllContracts();
@@ -69,7 +69,7 @@ export const PoolsInitializer = () => {
     data.forEach((pool: PoolContractData) => {
       dispatch(actions.setPoolData(pool));
     });
-  }, [data]);
+  }, [data, dispatch]);
 
   return null;
 };

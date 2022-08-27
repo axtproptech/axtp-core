@@ -1,24 +1,17 @@
-import { useTranslation } from "next-i18next";
-import { useAccount } from "@/app/hooks/useAccount";
-import { Button } from "react-daisyui";
-import { useAppDispatch, useAppSelector } from "@/states/hooks";
-import { accountActions } from "@/app/states/accountState";
+import { useAppSelector } from "@/states/hooks";
 import { DashboardStats } from "./sections/dashboardStats";
 import { TextLogo } from "@/app/components/logo/textLogo";
 import { Fade, Slide } from "react-awesome-reveal";
 import { selectAllPools } from "@/app/states/poolsState";
 import { useMemo } from "react";
-import { useRouter } from "next/router";
 import { PoolList } from "@/app/components/poolList";
-import { useNotification } from "@/app/hooks/useNotification";
+import { JoinClubButton } from "@/app/components/buttons/joinClubButton";
 
 export const Home = () => {
-  const { t } = useTranslation();
-  const router = useRouter();
-  const { showInfo } = useNotification();
   const pools = useAppSelector(selectAllPools);
 
   const stats = useMemo(() => {
+    // TODO: calc the correct values
     return {
       initialShareholderValue: 10_000_000,
       shareholderCount: 352,
@@ -27,16 +20,12 @@ export const Home = () => {
     };
   }, [pools]);
 
-  const handleOnJoinClick = async () => {
-    showInfo("Not implemented yet");
-  };
-
   return (
     <div>
       <section className="relative">
         <Slide direction="down">
           <Fade>
-            <TextLogo className="py-4 h-full mx-auto w-[50%] lg:w-[33%]" />
+            <TextLogo className="py-4 mx-auto w-[50%] lg:w-[33%]" />
           </Fade>
         </Slide>
       </section>
@@ -48,11 +37,7 @@ export const Home = () => {
           <DashboardStats stats={stats} />
         </section>
         <section className="prose text-center mx-auto mt-4">
-          <div className="animate-wiggle">
-            <Button color="primary" size="lg" onClick={handleOnJoinClick}>
-              {t("join_club")}
-            </Button>
-          </div>
+          <JoinClubButton />
         </section>
         <section className="mt-8">
           <PoolList />

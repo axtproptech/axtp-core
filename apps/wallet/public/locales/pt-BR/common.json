@@ -36,5 +36,10 @@
   "settings": "Configurações",
   "disconnect": "Desconectar",
   "disconnect_hint": "Desconectar sua conta é como deslogar. Para fazer login novamente, você precisa importar sua conta usando a Frase de Recuperação",
-  "you_own_n_shares": "Possui {{count}} ações"
+  "you_own_n_shares": "Possui {{count}} ações",
+  "account_unregistered": "Conta não registrada",
+  "no_pool_joined_hint": "Aqui você normalmente veria as pools cujas ações você detém. Mas não há nada aqui. Que pena!",
+  "404_title": "Ooops, isto vem sem intenção",
+  "404_hint": "Pedimos desculpas por este evento desagradável. Mesmo que haja um pequeno chance de que o problema esteja na frente do monitor, nós nos sentimos plenamente responsável por este percalço. Pedimos a gentileza de voltar ao página anterior.",
+  "404_hint2": "Se este problema persistir, não hesite em nos contatar imediatamente."
 }

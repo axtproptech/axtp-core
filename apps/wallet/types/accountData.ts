@@ -11,3 +11,14 @@ export interface AccountData {
   balancesPools: (TokenMetaData & { quantity: string })[];
   transactions: TransactionData[];
 }
+
+export const DefaultAccountData: AccountData = {
+  accountId: "",
+  name: "",
+  description: "",
+  isActive: false,
+  balanceSigna: "0",
+  balanceAxt: "0",
+  balancesPools: [],
+  transactions: [],
+};

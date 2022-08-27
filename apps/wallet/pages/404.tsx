@@ -3,6 +3,16 @@ import { Error404Page } from "@/features/error";
 import { MetaTags } from "@/app/components/metaTags";
 import { RiArrowLeftCircleLine, RiHome6Line } from "react-icons/ri";
 import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale)),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
 export default function Custom404() {
   const { t } = useTranslation();
@@ -23,7 +33,7 @@ export default function Custom404() {
       ]}
     >
       <MetaTags
-        title="Signum R.Est - Meh!"
+        title="AXT PropTech - Meh!"
         description={""}
         // add here an image for SEO
         // imgUrl={some image url}

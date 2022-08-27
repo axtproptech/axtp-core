@@ -8,7 +8,7 @@ import { useAppContext } from "@/app/hooks/useAppContext";
 import { Keys } from "@signumjs/crypto";
 import useSWR from "swr";
 import { mapLedgerTransaction } from "@/app/mapLedgerTransaction";
-import { AccountData } from "@/types/accountData";
+import { AccountData, DefaultAccountData } from "@/types/accountData";
 import { toStableCoinAmount } from "@/app/tokenQuantity";
 
 export const useAccount = () => {
@@ -17,10 +17,10 @@ export const useAccount = () => {
     (state) => state.accountState
   );
 
-  const { data: accountData, error } = useSWR(
+  const { data } = useSWR(
     `/fetchAccount/${accountId}`,
     async () => {
-      const [accountData, accountTransactions] = await Promise.all([
+      const [account, accountTransactions] = await Promise.all([
         Ledger.Client.account.getAccount({
           accountId,
           includeCommittedAmount: false,
@@ -46,16 +46,17 @@ export const useAccount = () => {
         },
       };
 
-      const axtBalance = accountData.assetBalances.find(
+      const axtBalance = account.assetBalances.find(
         ({ asset }) => asset === AXTTokenId
       );
 
       return {
+        accountId,
         // @ts-ignore
-        isActive: !!accountData.publicKey,
-        balanceSigna: Amount.fromPlanck(accountData.balanceNQT).getSigna(),
-        name: accountData.name || "",
-        description: accountData.description || "",
+        isActive: !!account.publicKey,
+        balanceSigna: Amount.fromPlanck(account.balanceNQT).getSigna(),
+        name: account.name || "",
+        description: account.description || "",
         transactions: accountTransactions.transactions.map((tx) =>
           mapLedgerTransaction(tx, mappingContext)
         ),
@@ -98,10 +99,10 @@ export const useAccount = () => {
     }
 
     return null;
-  }, [accountId]);
+  }, [Ledger.AddressPrefix, accountId]);
 
   return {
-    accountData,
+    accountData: data || { ...DefaultAccountData, accountId },
     accountAddress,
     accountId,
     getKeys,

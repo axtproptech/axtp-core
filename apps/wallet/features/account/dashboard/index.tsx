@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { DashboardHeader } from "@/features/account/dashboard/sections/dashboardHeader";
 import { Body } from "@/app/components/layout/body";
 import { PoolList } from "@/app/components/poolList";
+import { HintBox } from "@/app/components/hintBox";
 
 export const AccountDashboard = () => {
   const router = useRouter();

@@ -3,11 +3,23 @@ import { AccountData } from "@/types/accountData";
 import { ResponsiveLine, Serie } from "@nivo/line";
 import { linearGradientDef } from "@nivo/core";
 import { usePortfolioBalance } from "@/app/hooks/usePortfolioBalance";
+import { Badge } from "react-daisyui";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 const ChartSkeleton = () => {
   return (
-    <div className="h-full">
-      <div>Loading...</div>
+    <div className="h-[240px] relative py-4">
+      <div className="absolute top-0 p-4 w-full">
+        <div className="animate-pulse flex flex-row justify-between items-start">
+          <div className="flex flex-col">
+            <h1 className="text-3xl rounded bg-primary-content/100 w-[160px] h-[36px] mb-1"></h1>
+            <h3 className="text-lg rounded bg-primary-content/80 bg-base-100 w-[120px] h-[28px] mb-1" />
+            <h3 className="text-sm rounded bg-primary-content/60 bg-base-100 w-[100px] h-[20px]" />
+          </div>
+        </div>
+        <h1 className="text-3xl rounded bg-primary-content/30 w-full h-[4px] mt-12" />
+      </div>
     </div>
   );
 };
@@ -50,11 +62,17 @@ const Chart: FC<ChartProps> = ({ data }) => {
 };
 
 interface Props {
-  accountData?: AccountData;
+  accountData: AccountData;
 }
 
 export const DashboardHeader: FC<Props> = ({ accountData }) => {
   const { signaBalance, axtBalance, fiatBalance } = usePortfolioBalance();
+  const { t } = useTranslation();
+  const router = useRouter();
+
+  const handleOnClickInactive = async () => {
+    await router.push("/account/activate");
+  };
 
   const chartData = useMemo<Serie[] | null>(() => {
     if (!accountData) return null;
@@ -115,25 +133,32 @@ export const DashboardHeader: FC<Props> = ({ accountData }) => {
     return [signaHistory, axtHistory];
   }, [accountData]);
 
+  const loadingClassName = chartData ? "" : `blur animate-pulse`;
+
   return (
-    <div className="h-[240px] relative py-4">
-      {chartData ? (
-        <>
-          <div className="absolute top-0 h-[240px] w-full">
-            <Chart data={chartData[0]} />
-          </div>
-          <div className="absolute top-0 h-[240px] w-full">
-            <Chart data={chartData[1]} />
-          </div>
-        </>
-      ) : (
-        <ChartSkeleton />
-      )}
+    <div className={`h-[240px] relative py-4 ${loadingClassName}`}>
+      <div className="absolute top-0 h-[240px] w-full">
+        {chartData && <Chart data={chartData[0]} />}
+      </div>
+      <div className="absolute top-0 h-[240px] w-full">
+        {chartData && <Chart data={chartData[1]} />}
+      </div>
       <div className="absolute top-0 p-4 w-full">
-        <div className="flex flex-col">
-          <h1 className="text-3xl">{axtBalance.formatted}</h1>
-          <h3 className="text-lg opacity-80">{signaBalance.formatted}</h3>
-          <h5 className="text-sm opacity-60">~ {fiatBalance.formatted}</h5>
+        <div className="flex flex-row justify-between items-start">
+          <div className="flex flex-col">
+            <h1 className={"text-3xl"}>{axtBalance.formatted}</h1>
+            <h3 className={"text-lg opacity-80"}>{signaBalance.formatted}</h3>
+            <h5 className={"text-sm opacity-60"}>~ {fiatBalance.formatted}</h5>
+          </div>
+          {!accountData.isActive && (
+            <Badge
+              className="mt-1"
+              color="warning"
+              onClick={handleOnClickInactive}
+            >
+              {t("account_unregistered")}
+            </Badge>
+          )}
         </div>
       </div>
     </div>

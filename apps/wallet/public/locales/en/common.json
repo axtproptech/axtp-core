@@ -37,5 +37,10 @@
   "settings": "Settings",
   "disconnect": "Disconnect",
   "disconnect_hint": "Disconnecting your account is like logging out. To log in again you need to import your account using the Recovery Phrase",
-  "you_own_n_shares": "You own {{count}} shares"
+  "you_own_n_shares": "You own {{count}} shares",
+  "account_unregistered": "Unregistered Account",
+  "no_pool_joined_hint": "Here you would normally see the pools whose shares you hold. But here is nothing. Too bad!",
+  "404_title": "Oooops, that comes unintentionally",
+  "404_hint": " We apologize for this unpleasant event. Even if there is a small chance that the problem is in front of the monitor, we feel fully responsible for this mishap. We kindly ask you to return to the previous page.",
+  "404_hint2": "If this problem persist, do not hesitate to contact us immediately."
 }

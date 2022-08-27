@@ -19,9 +19,11 @@ export const Settings = () => {
       {accountAddress && (
         <div className="mt-2 mx-auto">
           <HintBox text={t("disconnect_hint")}>
-            <Button color="error" onClick={handleOnClickDisconnect}>
-              {t("disconnect")}
-            </Button>
+            <div className="text-center">
+              <Button color="error" onClick={handleOnClickDisconnect}>
+                {t("disconnect")}
+              </Button>
+            </div>
           </HintBox>
         </div>
       )}
