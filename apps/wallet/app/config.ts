@@ -10,6 +10,9 @@ const toBoolean = (v: string): boolean => v.toLowerCase() === "true";
 const fromArray = (csv: string): string[] => csv.split(",");
 
 export const Config = {
+  JotForm: {
+    Id: process.env.NEXT_PUBLIC_JOTFORM_ID || "",
+  },
   Fetcher: fetcher,
   Ledger: {
     AddressPrefix: process.env.NEXT_PUBLIC_LEDGER_ACCOUNT_PREFIX || "TS",

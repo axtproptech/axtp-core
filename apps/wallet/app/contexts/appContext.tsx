@@ -12,6 +12,7 @@ export interface AppContextType {
   IsMobile: boolean;
   AXTTokenId: string;
   AXTPoolTokenIds: string[];
+  JotFormId: string;
   Ledger: {
     Client: Ledger;
     AddressPrefix: AddressPrefixType;
@@ -26,6 +27,7 @@ const config: AppContextType = {
   IsClientSide: isClientSide(),
   AXTTokenId: Config.Tokens.AXT,
   AXTPoolTokenIds: Config.Tokens.AXTPs,
+  JotFormId: Config.JotForm.Id,
   Ledger: {
     Client: LedgerClientFactory.createClient({
       nodeHost: Config.Ledger.Hosts[0],

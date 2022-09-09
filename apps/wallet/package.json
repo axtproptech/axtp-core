@@ -27,6 +27,7 @@
     "@signumjs/util": "^1.0.0-rc.27",
     "daisyui": "^2.22.0",
     "hashicon": "0.3.0",
+    "jotform-react": "^1.0.4",
     "localforage": "^1.10.0",
     "lottie-react": "^2.3.1",
     "next": "^12.2.3",

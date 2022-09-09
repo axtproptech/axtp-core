@@ -9,7 +9,7 @@ export const JoinClubButton = () => {
   const { showInfo } = useNotification();
 
   const handleOnJoinClick = async () => {
-    showInfo("Not implemented yet");
+    await router.push("/account/register");
   };
 
   return (
