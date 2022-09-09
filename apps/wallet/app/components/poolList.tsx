@@ -28,7 +28,7 @@ export const PoolList: FC<Props> = ({ accountData }) => {
   return (
     <div>
       {hasPools && (
-        <Zoom cascade>
+        <Zoom cascade triggerOnce>
           {relevantPools.map((p) => {
             return (
               <PoolCard
