@@ -37,12 +37,22 @@ model Customer {
     email2                  String?
     isActive                Boolean @default(true)
     isBlocked               Boolean @default(false)
+    termsOfUse              TermsOfUse[]
     documents               Document[]
     addresses               Address[]
     blockchainAccounts      BlockchainAccount[]
     verificationLevel       VerificationLevel @default(NotVerified)
     verificationResult      VerificationResult?
     @@index([lastName,email1,cpfCnpj])
+}
+
+model TermsOfUse {
+    id                      Int @id @default(autoincrement())
+    createdAt               DateTime @default(now())
+    customer                Customer @relation(fields: [customerId], references: [id])
+    customerId              Int
+    url                     String
+    accepted                Boolean @default(false)
 }
 
 model BlockchainAccount {
