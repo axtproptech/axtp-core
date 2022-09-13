@@ -1,6 +1,6 @@
 import { HandlerFunction } from "@/bff/route";
 import { prisma } from "@axt/db-package";
-import { internal, notFound } from "@hapi/boom";
+import { notFound } from "@hapi/boom";
 import { handleError } from "@/bff/handler/handleError";
 
 export const getCustomer: HandlerFunction = async (req, res) => {
@@ -13,6 +13,11 @@ export const getCustomer: HandlerFunction = async (req, res) => {
       },
       include: {
         blockchainAccounts: true,
+        termsOfUse: {
+          where: {
+            id: Number(process.env.ACTIVE_TERMS_OF_USE_ID || "1"),
+          },
+        },
       },
     });
 
