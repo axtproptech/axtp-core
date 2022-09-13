@@ -1,0 +1,121 @@
+export const submission = {
+  responseCode: 200,
+  message: "success",
+  content: {
+    id: "5385606161011301029",
+    form_id: "222474866607061",
+    ip: "177.45.150.101",
+    created_at: "2022-09-09 15:23:37",
+    status: "ACTIVE",
+    new: "0",
+    flag: "0",
+    notes: "",
+    updated_at: "2022-09-09 17:12:45",
+    answers: {
+      "1": {
+        name: "nome",
+        order: "1",
+        sublabels:
+          '{"prefix":"Prefix","first":"Primeiro Nome","middle":"Middle Name","last":"Sobrenome","suffix":"Suffix"}',
+        text: "Nome",
+        type: "control_fullname",
+        answer: {
+          first: "Digital",
+          last: "ME",
+        },
+        prettyFormat: "Digital ME",
+      },
+      "3": {
+        name: "email",
+        order: "3",
+        text: "Email",
+        type: "control_email",
+        answer: "oliver@digital-independence.dev",
+      },
+      "4": {
+        maxValue: "",
+        name: "cpf",
+        order: "2",
+        text: "CPF",
+        type: "control_number",
+        answer: "464365436",
+      },
+      "5": {
+        name: "dataDe",
+        order: "4",
+        sublabels:
+          '{"day":"Day","month":"Month","year":"Year","last":"Last Name","hour":"Hour","minutes":"Minutes","litemode":"ex: 01\\/04\\/1982"}',
+        text: "Data de Nascimento",
+        timeFormat: "AM/PM",
+        type: "control_datetime",
+        answer: {
+          day: "23",
+          month: "11",
+          year: "1976",
+          datetime: "1976-11-23 00:00:00",
+        },
+        prettyFormat: "23/11/1976",
+      },
+      "6": {
+        name: "localDe",
+        order: "5",
+        text: "Local de Nascimento",
+        type: "control_textbox",
+        answer: "Hanover",
+      },
+      "7": {
+        name: "profissao",
+        order: "6",
+        text: "Profissão",
+        type: "control_textbox",
+        answer: "Cozinheiro",
+      },
+      "9": {
+        name: "endereco",
+        order: "7",
+        sublabels:
+          '{"cc_firstName":"First Name","cc_lastName":"Last Name","cc_number":"Credit Card Number","cc_ccv":"Security Code","cc_exp_month":"Expiration Month","cc_exp_year":"Expiration Year","addr_line1":"Logradouro","addr_line2":"Complemento","city":"Cidade","state":"Estado","postal":"CEP\\/ZIP-Code","country":"Country"}',
+        text: "Endereço",
+        type: "control_address",
+        answer: {
+          addr_line1: "Rua Ariovaldo Marini, 105",
+          city: "Valinhos",
+          state: "SP",
+          postal: "13279-172",
+          country: "Brazil",
+        },
+        prettyFormat:
+          "Logradouro: Rua Ariovaldo Marini, 105, Cidade: Valinhos Estado: SP CEP / ZIP - Code: 13279 - 172 Country: Brazil",
+      },
+      "10": {
+        name: "comprovanteDe",
+        order: "8",
+        text: "Comprovante de Residência",
+        type: "control_fileupload",
+        answer: [
+          "https://www.jotform.com/uploads/clayhouseoh/222474866607061/5385606161011301029/unknown (4).png",
+        ],
+        prettyFormat: "unknown (4).png",
+      },
+      "11": {
+        name: "tipoDe",
+        order: "9",
+        text: "Tipo de Documento",
+        type: "control_radio",
+        answer: "CNH",
+      },
+      "12": {
+        name: "enviarArquivos",
+        order: "10",
+        text: "Enviar arquivos",
+        type: "control_fileupload",
+        answer: [
+          "https://www.jotform.com/uploads/clayhouseoh/222474866607061/5385606161011301029/My mockup 2 from Urban Store Sign Mockups.jpg",
+        ],
+        prettyFormat: "My mockup 2 from Urban Store Sign Mockups.jpg",
+      },
+    },
+  },
+  duration: "316.74ms",
+  "limit-left": 997,
+};

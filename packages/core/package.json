@@ -1,5 +1,5 @@
 {
-  "name": "@rest/core-package",
+  "name": "@axt/core-package",
   "version": "1.0.1",
   "description": "A shared library",
   "main": "index.js",

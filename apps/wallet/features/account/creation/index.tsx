@@ -5,7 +5,6 @@ import {
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
   RiUserAddLine,
-  RiUserReceivedLine,
 } from "react-icons/ri";
 import { voidFn } from "@/app/voidFn";
 import { useRouter } from "next/router";
@@ -24,7 +23,6 @@ import { useDispatch } from "react-redux";
 import { accountActions } from "@/app/states/accountState";
 import { useNotification } from "@/app/hooks/useNotification";
 import { OnStepChangeArgs } from "../types/onStepChangeArgs";
-import { useAppDispatch } from "@/states/hooks";
 import { useAppContext } from "@/app/hooks/useAppContext";
 
 enum Steps {

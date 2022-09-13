@@ -14,6 +14,7 @@ datasource db {
 
 enum VerificationLevel {
     NotVerified
+    Pending
     Level1
     Level2
     // add more if needed
@@ -27,20 +28,32 @@ model Customer {
     lastName                String
     dateOfBirth             DateTime
     placeOfBirth            String
-    nationality             String
+    nationality             String?
     profession              String
     cpfCnpj                 String @unique
     phone1                  String
-    phone2                  String
+    phone2                  String?
     email1                  String
-    email2                  String
+    email2                  String?
     isActive                Boolean @default(true)
     isBlocked               Boolean @default(false)
     documents               Document[]
     addresses               Address[]
+    blockchainAccounts      BlockchainAccount[]
     verificationLevel       VerificationLevel @default(NotVerified)
     verificationResult      VerificationResult?
     @@index([lastName,email1,cpfCnpj])
+}
+
+model BlockchainAccount {
+    id                      Int @id @default(autoincrement())
+    createdAt               DateTime @default(now())
+    customer                Customer @relation(fields: [customerId], references: [id])
+    customerId              Int
+    publicKey               String @unique
+    accountId               String @unique
+    rsAddress               String @unique
+    @@index([publicKey,accountId,rsAddress])
 }
 
 enum AddressType {

@@ -1,8 +1,7 @@
 import { Layout } from "@/app/components/layout";
 import { MetaTags } from "@/app/components/metaTags";
-import { AccountSetup } from "@/features/account/accountSetup";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Registry } from "@/features/account/registry";
+import { NewKYC } from "@/features/kyc/new";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -17,13 +16,13 @@ export default function Page() {
   return (
     <Layout noBody>
       <MetaTags
-        title="AXT PropTech Account"
+        title="AXT PropTech"
         description={""}
         // add here an image for SEO
         // imgUrl={some image url}
         keywords="tokenomics, real estate, blockchain, signum, sustainable"
       />
-      <Registry />
+      <NewKYC />
     </Layout>
   );
 }

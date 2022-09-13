@@ -1,5 +1,5 @@
 {
-  "name": "@rest/wallet-app",
+  "name": "@axt/wallet-app",
   "description": "The wallet for this very cool project",
   "authors": [
     "ohager"
@@ -16,7 +16,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "@axt/db-package": "^1.0.2",
     "@emotion/react": "^11.10.0",
+    "@hapi/boom": "^10.0.0",
     "@headlessui/react": "^1.6.6",
     "@nivo/core": "^0.79.0",
     "@nivo/line": "^0.79.1",
@@ -27,6 +29,7 @@
     "@signumjs/util": "^1.0.0-rc.27",
     "daisyui": "^2.22.0",
     "hashicon": "0.3.0",
+    "jotform": "^0.1.5",
     "jotform-react": "^1.0.4",
     "localforage": "^1.10.0",
     "lottie-react": "^2.3.1",

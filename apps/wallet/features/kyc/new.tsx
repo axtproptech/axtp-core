@@ -2,7 +2,7 @@
 import JotForm from "jotform-react";
 import { useAppContext } from "@/app/hooks/useAppContext";
 
-export const Registry = () => {
+export const NewKYC = () => {
   const { JotFormId } = useAppContext();
 
   const handleOnSubmit = (data: any) => {
