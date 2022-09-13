@@ -17,7 +17,7 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <AppContextProvider>
       <MetaTags
-        title="AXT PropTech"
+        title="AXT PropTech S/A"
         // canonical={Config.Platform.CanonicalUrl + router.asPath}
         // imgUrl={Config.Platform.CanonicalUrl + "/assets/img/seo.jpg"}
         keywords="tokenomics, real estate, blockchain, signum, sustainable"

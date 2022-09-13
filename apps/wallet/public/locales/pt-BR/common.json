@@ -41,5 +41,11 @@
   "no_pool_joined_hint": "Aqui você normalmente veria as pools cujas ações você detém. Mas não há nada aqui. Que pena!",
   "404_title": "Ooops, isto vem sem intenção",
   "404_hint": "Pedimos desculpas por este evento desagradável. Mesmo que haja um pequeno chance de que o problema esteja na frente do monitor, nós nos sentimos plenamente responsável por este percalço. Pedimos a gentileza de voltar ao página anterior.",
-  "404_hint2": "Se este problema persistir, não hesite em nos contatar imediatamente."
+  "404_hint2": "Se este problema persistir, não hesite em nos contatar imediatamente.",
+  "register_successful": "Registrado com sucesso",
+  "register_welcome": "Bem vindo ao clube, {{firstName}}!",
+  "register_description": "Seu registro foi submetido com sucesso. Dentro das próximas 48 horas você terá acesso total a todas as funções da carteira.",
+  "terms_of_use": "Termos de Uso",
+  "accept_terms": "Confirmo, que li e aceito os",
+  "privacy_policy": "Privacy Policy"
 }

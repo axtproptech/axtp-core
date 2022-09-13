@@ -4,6 +4,8 @@ import { prisma } from "@axt/db-package";
 import jotform from "jotform";
 import { JotFormSubmissionContent } from "@/bff/handler/customer/jotFormSubmissionResponse";
 import { JotFormSubmissionParser } from "@/bff/handler/customer/jotFormSubmissionParser";
+import { internal } from "@hapi/boom";
+import { handleError } from "@/bff/handler/handleError";
 
 jotform.options({
   debug: process.env.NODE_ENV !== "production",
@@ -25,7 +27,8 @@ export const registerCustomer: HandlerFunction = async (req, res) => {
     });
 
     if (existingCustomer) {
-      return res.redirect(`/kyc/new/existsAlready?id=${existingCustomer.id}`);
+      res.redirect(302, `/kyc/new/success?id=${existingCustomer.id}`);
+      return;
     }
 
     const documents = answers.residentProofUrls.map((url) => ({
@@ -75,10 +78,8 @@ export const registerCustomer: HandlerFunction = async (req, res) => {
       },
     });
 
-    res.redirect(`/kyc/new/success?id=${newCustomer.id}`);
+    res.redirect(302, `/kyc/new/success?id=${newCustomer.id}`);
   } catch (e: any) {
-    // need to log the data also
-    console.log("#Error - registerCustomer:", e.message);
-    res.status(500).json(req.body);
+    handleError({ e, res });
   }
 };

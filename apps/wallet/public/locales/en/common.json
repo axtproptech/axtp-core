@@ -42,5 +42,11 @@
   "no_pool_joined_hint": "Here you would normally see the pools whose shares you hold. But here is nothing. Too bad!",
   "404_title": "Oooops, that comes unintentionally",
   "404_hint": " We apologize for this unpleasant event. Even if there is a small chance that the problem is in front of the monitor, we feel fully responsible for this mishap. We kindly ask you to return to the previous page.",
-  "404_hint2": "If this problem persist, do not hesitate to contact us immediately."
+  "404_hint2": "If this problem persist, do not hesitate to contact us immediately.",
+  "register_successful": "Successfully Registered",
+  "register_welcome": "Welcome to the club, {{firstName}}!",
+  "register_description": "Your registration was submitted successfully. Within the next 48 hours you'll get access to all functions of the wallet.",
+  "terms_of_use": "Terms of Use",
+  "accept_terms": "Hereby, I confirm, that I read and accept the",
+  "privacy_policy": "Privacy Policy"
 }

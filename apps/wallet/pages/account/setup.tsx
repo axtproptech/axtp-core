@@ -16,7 +16,7 @@ export default function Page() {
   return (
     <Layout>
       <MetaTags
-        title="AXT PropTech Account"
+        title="AXT PropTech S/A Account"
         description={""}
         // add here an image for SEO
         // imgUrl={some image url}

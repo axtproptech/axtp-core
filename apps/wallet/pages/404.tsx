@@ -33,7 +33,7 @@ export default function Custom404() {
       ]}
     >
       <MetaTags
-        title="AXT PropTech - Meh!"
+        title="AXT PropTech S/A - Meh!"
         description={""}
         // add here an image for SEO
         // imgUrl={some image url}

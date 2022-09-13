@@ -1,12 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Address } from "@signumjs/core";
 
 export interface AccountState {
+  publicKey: string;
   accountId: string;
   securedKeys: string;
   salt: string;
 }
 
 const initialState: AccountState = {
+  publicKey: "",
   accountId: "",
   securedKeys: "",
   salt: "",
@@ -19,12 +22,15 @@ export const accountSlice = createSlice({
     setAccount: (
       state,
       action: PayloadAction<{
-        accountId: string;
+        publicKey: string;
         securedKeys: string;
         salt: string;
       }>
     ) => {
-      state.accountId = action.payload.accountId;
+      state.publicKey = action.payload.publicKey;
+      state.accountId = Address.fromPublicKey(
+        action.payload.publicKey
+      ).getNumericId();
       state.securedKeys = action.payload.securedKeys;
       state.salt = action.payload.salt;
     },

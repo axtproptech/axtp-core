@@ -34,7 +34,7 @@ export const MetaTags = (props: MetaTagsProps) => {
       <meta property="og:type" content="website" key="defaultWebsite" />
       <meta
         property="og:site_name"
-        content="fixcoin.io"
+        content="https://axt-proptech.com"
         key="defaultSiteName"
       />
 
@@ -117,8 +117,8 @@ export const MetaTags = (props: MetaTagsProps) => {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebSite",
-            alternateName: "FixcoinApp",
-            url: "https://fixcoin.io/",
+            alternateName: "AXT PropTech S/A",
+            url: "https://axt-proptech.com/",
           }),
         }}
       />

@@ -107,7 +107,7 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
       const securedKeys = await encrypt(key, JSON.stringify(keys));
       dispatch(
         accountActions.setAccount({
-          accountId: Address.fromPublicKey(keys.publicKey).getNumericId(),
+          publicKey: keys.publicKey,
           securedKeys,
           salt,
         })

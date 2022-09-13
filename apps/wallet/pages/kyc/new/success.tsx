@@ -7,7 +7,7 @@ import useSWR, { SWRConfig } from "swr";
 
 export async function getServerSideProps(ctx: any) {
   const { query, locale, req } = ctx;
-  const queryURL = `customer/${query.id}`;
+  const queryURL = `/customer/${query.id}`;
   const service = new BackendForFrontendService(req);
   const data = await service.get(queryURL);
   return {
@@ -25,10 +25,12 @@ export async function getServerSideProps(ctx: any) {
 const SuccessPage = ({ url }: any) => {
   const { data } = useSWR(url);
 
+  console.log(url, data);
+
   return (
     <Layout>
       <MetaTags
-        title="AXT PropTech"
+        title="AXT PropTech S/A"
         description={""}
         // add here an image for SEO
         // imgUrl={some image url}
