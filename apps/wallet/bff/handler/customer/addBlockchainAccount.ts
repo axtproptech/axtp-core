@@ -20,7 +20,7 @@ export const addBlockchainAccount: HandlerFunction = async (req, res) => {
 
     await prisma.customer.update({
       where: {
-        id: customerId,
+        cuid: customerId,
       },
       data: {
         blockchainAccounts: {

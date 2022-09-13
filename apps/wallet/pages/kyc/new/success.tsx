@@ -7,7 +7,7 @@ import useSWR, { SWRConfig } from "swr";
 
 export async function getServerSideProps(ctx: any) {
   const { query, locale, req } = ctx;
-  const queryURL = `/customer/${query.id}`;
+  const queryURL = `/customer/${query.cuid}`;
   const service = new BackendForFrontendService(req);
   const data = await service.get(queryURL);
   return {
@@ -24,9 +24,6 @@ export async function getServerSideProps(ctx: any) {
 
 const SuccessPage = ({ url }: any) => {
   const { data } = useSWR(url);
-
-  console.log(url, data);
-
   return (
     <Layout>
       <MetaTags

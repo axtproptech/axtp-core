@@ -1,5 +1,5 @@
 export interface CustomerData {
-  id: number;
+  cuid: string;
   createdAt: string; // ISO DATE
   updatedAt: string; // ISO DATE
   firstName: string;

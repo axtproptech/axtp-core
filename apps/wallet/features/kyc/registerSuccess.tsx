@@ -5,6 +5,7 @@ import { useTranslation } from "next-i18next";
 import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
 import Link from "next/link";
 import { Checkbox } from "react-daisyui";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 interface Props {
   customer: CustomerData;
@@ -12,13 +13,23 @@ interface Props {
 
 export const RegisterSuccess: FC<Props> = ({ customer }) => {
   const { t } = useTranslation();
+  const { KycService } = useAppContext();
+  const [submitting, setSubmitting] = useState(false);
   const [accepted, setAccepted] = useState(false);
 
-  const handleChecked = (e: ChangeEvent<HTMLInputElement>) => {
-    // do a post to
-    console.log("Terms accepeted", e.target.checked);
-
-    setAccepted(e.target.checked);
+  const handleChecked = async (e: ChangeEvent<HTMLInputElement>) => {
+    try {
+      setAccepted(e.target.checked);
+      if (!e.target.checked) return;
+      // do a post to
+      setSubmitting(true);
+      await KycService.acceptTermsOfUse(customer.cuid);
+      console.log("Terms accepted", e.target.checked);
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const { firstName } = customer;
@@ -39,6 +50,7 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
               color={"primary"}
               checked={accepted}
               onChange={handleChecked}
+              disabled={submitting}
             />
             <div>
               <span className="mt-2 mr-1">{t("accept_terms")}</span>

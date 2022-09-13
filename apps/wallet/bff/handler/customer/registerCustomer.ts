@@ -27,7 +27,7 @@ export const registerCustomer: HandlerFunction = async (req, res) => {
     });
 
     if (existingCustomer) {
-      res.redirect(302, `/kyc/new/success?id=${existingCustomer.id}`);
+      res.redirect(302, `/kyc/new/success?cuid=${existingCustomer.cuid}`);
       return;
     }
 
@@ -78,7 +78,7 @@ export const registerCustomer: HandlerFunction = async (req, res) => {
       },
     });
 
-    res.redirect(302, `/kyc/new/success?id=${newCustomer.id}`);
+    res.redirect(302, `/kyc/new/success?cuid=${newCustomer.cuid}`);
   } catch (e: any) {
     handleError({ e, res });
   }

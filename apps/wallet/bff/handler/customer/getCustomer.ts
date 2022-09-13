@@ -9,13 +9,15 @@ export const getCustomer: HandlerFunction = async (req, res) => {
 
     const customer = await prisma.customer.findUnique({
       where: {
-        id: Number(customerId as string),
+        cuid: customerId as string,
       },
       include: {
         blockchainAccounts: true,
         termsOfUse: {
           where: {
-            id: Number(process.env.ACTIVE_TERMS_OF_USE_ID || "1"),
+            termsOfUseId: Number(
+              process.env.ACTIVE_TERMS_OF_USE_ID || ("1" as string)
+            ),
           },
         },
       },

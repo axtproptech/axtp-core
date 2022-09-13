@@ -21,52 +21,50 @@ enum VerificationLevel {
 }
 
 model Customer {
-  id                   Int                    @id @default(autoincrement())
-  cuid                 String                 @unique @default(cuid())
-  createdAt            DateTime               @default(now())
-  updatedAt            DateTime               @updatedAt
-  firstName            String
-  lastName             String
-  dateOfBirth          DateTime
-  placeOfBirth         String
-  nationality          String?
-  profession           String
-  cpfCnpj              String                 @unique
-  phone1               String
-  phone2               String?
-  email1               String
-  email2               String?
-  isActive             Boolean                @default(true)
-  isBlocked            Boolean                @default(false)
-  termsOfUse           TermsOfUse[]
-  documents            Document[]
-  addresses            Address[]
-  blockchainAccounts   BlockchainAccount[]
-  verificationLevel    VerificationLevel      @default(NotVerified)
-  verificationResult   VerificationResult?
-  TermsOfUseOnCustomer TermsOfUseOnCustomer[]
+  id                 Int                    @id @default(autoincrement())
+  cuid               String                 @unique @default(cuid())
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  firstName          String
+  lastName           String
+  dateOfBirth        DateTime
+  placeOfBirth       String
+  nationality        String?
+  profession         String
+  cpfCnpj            String                 @unique
+  phone1             String
+  phone2             String?
+  email1             String
+  email2             String?
+  isActive           Boolean                @default(true)
+  isBlocked          Boolean                @default(false)
+  documents          Document[]
+  addresses          Address[]
+  blockchainAccounts BlockchainAccount[]
+  verificationLevel  VerificationLevel      @default(NotVerified)
+  verificationResult VerificationResult?
+  termsOfUse         TermsOfUseOnCustomer[]
 
   @@index([cuid, lastName, email1, cpfCnpj])
 }
 
 model TermsOfUseOnCustomer {
-  id           Int        @id @default(autoincrement())
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
   customer     Customer   @relation(fields: [customerId], references: [id])
   customerId   Int
   termsOfUse   TermsOfUse @relation(fields: [termsOfUseId], references: [id])
   termsOfUseId Int
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
   accepted     Boolean    @default(false)
+
+  @@id([customerId, termsOfUseId])
 }
 
 model TermsOfUse {
-  id                   Int                    @id @default(autoincrement()) // this also reflects the version
-  createdAt            DateTime               @default(now())
-  url                  String
-  Customer             Customer?              @relation(fields: [customerId], references: [id])
-  customerId           Int?
-  TermsOfUseOnCustomer TermsOfUseOnCustomer[]
+  id        Int                    @id @default(autoincrement()) // this also reflects the version
+  createdAt DateTime               @default(now())
+  url       String
+  customer  TermsOfUseOnCustomer[]
 }
 
 model BlockchainAccount {
