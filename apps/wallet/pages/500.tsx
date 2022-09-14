@@ -1,5 +1,5 @@
 import { Layout } from "@/app/components/layout";
-import { Error404 } from "@/features/error";
+import { Error500 } from "@/features/error";
 import { MetaTags } from "@/app/components/metaTags";
 import { RiArrowLeftCircleLine, RiHome6Line } from "react-icons/ri";
 import { useTranslation } from "next-i18next";
@@ -14,7 +14,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
   };
 }
 
-export default function Custom404() {
+export default function Custom500() {
   const { t } = useTranslation();
 
   return (
@@ -39,7 +39,7 @@ export default function Custom404() {
         // imgUrl={some image url}
         keywords="tokenomics, real estate, blockchain, signum, sustainable"
       />
-      <Error404 />
+      <Error500 />
     </Layout>
   );
 }

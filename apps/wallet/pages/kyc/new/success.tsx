@@ -2,8 +2,8 @@ import { Layout } from "@/app/components/layout";
 import { MetaTags } from "@/app/components/metaTags";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BackendForFrontendService } from "@/bff/backendForFrontendService";
-import { RegisterSuccess } from "@/features/kyc/registerSuccess";
 import useSWR, { SWRConfig } from "swr";
+import { RegisterSuccess } from "@/features/kyc/registerSuccess";
 
 export async function getServerSideProps(ctx: any) {
   const { query, locale, req } = ctx;

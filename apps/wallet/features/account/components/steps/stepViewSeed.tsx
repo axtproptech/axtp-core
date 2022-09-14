@@ -1,6 +1,6 @@
 import { useTranslation } from "next-i18next";
 import { FC } from "react";
-import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
+import { AnimatedIconWarn } from "@/app/components/animatedIcons/animatedIconWarn";
 import { Button } from "react-daisyui";
 import { RiClipboardLine } from "react-icons/ri";
 import { useNotification } from "@/app/hooks/useNotification";
@@ -43,7 +43,7 @@ export const StepViewSeed: FC<Props> = ({ seed }) => {
       <section className="w-[75%] m-auto text-justify border border-base-content/50 px-4 py-2 rounded relative">
         <div className="flex flex-col content-center">
           <div className="w-20 m-auto absolute bg-base-100 top-[-48px]">
-            <AnimatedIconError touchable loopDelay={3000} />
+            <AnimatedIconWarn touchable loopDelay={3000} />
           </div>
           <p>{t("your_seed_hint")}</p>
         </div>

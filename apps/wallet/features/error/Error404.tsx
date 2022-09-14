@@ -1,7 +1,7 @@
 import { AnimatedIconRoadBlock } from "@/app/components/animatedIcons/animatedIconRoadBlock";
 import { useTranslation } from "next-i18next";
 
-export const Error404Page = () => {
+export const Error404 = () => {
   const { t } = useTranslation();
   return (
     <div className="p-4">

@@ -4,8 +4,6 @@ import { prisma } from "@axt/db-package";
 import jotform from "jotform";
 import { JotFormSubmissionContent } from "@/bff/handler/customer/jotFormSubmissionResponse";
 import { JotFormSubmissionParser } from "@/bff/handler/customer/jotFormSubmissionParser";
-import { internal } from "@hapi/boom";
-import { handleError } from "@/bff/handler/handleError";
 
 jotform.options({
   debug: process.env.NODE_ENV !== "production",
@@ -77,9 +75,9 @@ export const registerCustomer: HandlerFunction = async (req, res) => {
         },
       },
     });
-
     res.redirect(302, `/kyc/new/success?cuid=${newCustomer.cuid}`);
   } catch (e: any) {
-    handleError({ e, res });
+    // TODO: logging
+    res.redirect(302, "/500");
   }
 };
