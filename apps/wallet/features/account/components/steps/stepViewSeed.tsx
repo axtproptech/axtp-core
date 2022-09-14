@@ -4,6 +4,7 @@ import { AnimatedIconWarn } from "@/app/components/animatedIcons/animatedIconWar
 import { Button } from "react-daisyui";
 import { RiClipboardLine } from "react-icons/ri";
 import { useNotification } from "@/app/hooks/useNotification";
+import { HintBox } from "@/app/components/hintBox";
 
 interface Props {
   seed: string;
@@ -28,7 +29,7 @@ export const StepViewSeed: FC<Props> = ({ seed }) => {
         <h2>{t("your_seed")}</h2>
       </section>
       <section className="relative">
-        <div className="relative w-[75%] mx-auto text-justify">
+        <div className="relative w-full lg:w-[75%] mx-auto text-justify">
           <div className="border border-base-content p-4 rounded relative text-xl">
             {seed}
           </div>
@@ -40,13 +41,13 @@ export const StepViewSeed: FC<Props> = ({ seed }) => {
           </div>
         </div>
       </section>
-      <section className="w-[75%] m-auto text-justify border border-base-content/50 px-4 py-2 rounded relative">
-        <div className="flex flex-col content-center">
+      <section>
+        <HintBox text={""}>
           <div className="w-20 m-auto absolute bg-base-100 top-[-48px]">
             <AnimatedIconWarn touchable loopDelay={3000} />
           </div>
           <p>{t("your_seed_hint")}</p>
-        </div>
+        </HintBox>
       </section>
     </div>
   );

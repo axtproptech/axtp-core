@@ -4,6 +4,7 @@ import { Input } from "react-daisyui";
 import { RiCheckboxCircleLine } from "react-icons/ri";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { isAttachmentVersion } from "@signumjs/core";
+import { HintBox } from "@/app/components/hintBox";
 
 interface Props {
   seed: string;
@@ -43,14 +44,16 @@ export const StepVerifySeed: FC<Props> = ({ seed, onVerificationChange }) => {
           placeholder={t("verification_placeholder", { word: index + 1 })}
         />
       </section>
-      <section className="w-[75%] mx-auto border border-base-content/50 px-4 py-2 rounded relative">
-        {verified ? (
-          <AttentionSeeker effect="tada" className="text-center">
-            <RiCheckboxCircleLine size={92} className="w-full" />
-          </AttentionSeeker>
-        ) : (
-          <p>{t("verification_hint", { word: index + 1 })}</p>
-        )}
+      <section>
+        <HintBox text={""}>
+          {verified ? (
+            <AttentionSeeker effect="tada" className="text-center">
+              <RiCheckboxCircleLine size={92} className="w-full" />
+            </AttentionSeeker>
+          ) : (
+            <p>{t("verification_hint", { word: index + 1 })}</p>
+          )}
+        </HintBox>
       </section>
     </div>
   );

@@ -1,6 +1,7 @@
 import { useTranslation } from "next-i18next";
 import { Input } from "react-daisyui";
 import { ChangeEvent, FC, useState } from "react";
+import { HintBox } from "@/app/components/hintBox";
 
 interface Props {
   onPinChange: (e: string) => void;
@@ -38,8 +39,8 @@ export const StepDefinePin: FC<Props> = ({ onPinChange }) => {
           </small>
         </div>
       </section>
-      <section className="w-[75%] mx-auto text-justify border border-base-content/50 p-4 rounded relative">
-        <p>{t("define_pin_hint")}</p>
+      <section>
+        <HintBox text={t("define_pin_hint")} />
       </section>
     </div>
   );

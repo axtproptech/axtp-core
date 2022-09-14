@@ -3,6 +3,7 @@ import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Checkbox, Input } from "react-daisyui";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { RiCheckboxCircleLine } from "react-icons/ri";
+import { HintBox } from "@/app/components/hintBox";
 
 interface Props {
   pin: string;
@@ -36,14 +37,14 @@ export const StepConfirm: FC<Props> = ({ pin, onConfirmationChange }) => {
       <section>
         <h2>{t("confirmation")}</h2>
       </section>
-      <section className="w-[75%] text-justify border border-base-content/50 px-4 py-2 rounded relative mx-auto">
-        <div className="form-control w-full flex flex-row justify-center items-center py-2">
+      <section>
+        <HintBox>
           {verified ? (
             <AttentionSeeker effect="tada" className="text-center">
               <RiCheckboxCircleLine size={92} className="w-full" />
             </AttentionSeeker>
           ) : (
-            <>
+            <div className="flex flex-row">
               <Checkbox
                 className="mr-2"
                 color={"primary"}
@@ -51,9 +52,9 @@ export const StepConfirm: FC<Props> = ({ pin, onConfirmationChange }) => {
                 onChange={handleChange}
               />
               <div>{t("confirmation_text")}</div>
-            </>
+            </div>
           )}
-        </div>
+        </HintBox>
       </section>
       <section className="relative mt-2">
         <Input
