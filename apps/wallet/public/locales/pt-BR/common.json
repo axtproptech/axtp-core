@@ -42,7 +42,7 @@
   "404_title": "Ooops, isto vem sem intenção",
   "404_hint": "Pedimos desculpas por este evento desagradável. Mesmo que haja um pequeno chance de que o problema esteja na frente do monitor, nós nos sentimos plenamente responsável por este percalço. Pedimos a gentileza de voltar ao página anterior.",
   "404_hint2": "Se este problema persistir, não hesite em nos contatar imediatamente.",
-  "500_title": "Woooow, você encontrou um bug! \uD83D\uDC1E",
+  "500_title": "Woooow, você encontrou um bug! 🐞",
   "500_hint": "Isto é definitivamente por nossa conta e pedimos desculpas por este inconveniente.",
   "500_hint2": "Se este problema persistir, não hesite em nos contatar imediatamente.",
   "register_successful": "Cadastrado com sucesso",
@@ -59,5 +59,7 @@
   "kyc-registered-hint": "Suas informações pessoais foram cadastradas com sucesso",
   "kyc-analyzing-hint": "Seu cadastro está sendo analisado",
   "kyc-accepted-hint": "Parabéns. Você é verificado e faz parte de um clube de investimento exclusivo",
-  "kyc-current-verification": "Este é o seu status atual de verificação. Uma vez verificado, você pode começar a investir."
+  "kyc-current-verification": "Este é o seu status atual de verificação. Uma vez verificado, você pode começar a investir.",
+  "import_account_hint": "Escolha isso se você já tiver uma conta e quiser importar usando a Frase de Recuperação",
+  "create_account_hint": "Escolha isso se você não tiver uma conta Signum e quiser criar uma"
 }
