@@ -7,6 +7,7 @@ import { Ledger, LedgerClientFactory } from "@signumjs/core";
 import { KycService } from "@/app/services/kycService";
 
 type AddressPrefixType = "TS" | "S";
+type SignaPrefixType = "TSIGNA" | "SIGNA";
 
 export interface AppContextType {
   IsClientSide: boolean;
@@ -16,9 +17,10 @@ export interface AppContextType {
   JotFormId: string;
   KycService: KycService;
   Ledger: {
+    IsTestNet: boolean;
     Client: Ledger;
     AddressPrefix: AddressPrefixType;
-    SignaPrefix: "TSIGNA" | "SIGNA";
+    SignaPrefix: SignaPrefixType;
     Hosts: string[];
     PollingInterval: number;
   };
@@ -32,11 +34,12 @@ const config: AppContextType = {
   JotFormId: Config.JotForm.Id,
   KycService: new KycService(),
   Ledger: {
+    IsTestNet: Config.Ledger.IsTestNet,
     Client: LedgerClientFactory.createClient({
       nodeHost: Config.Ledger.Hosts[0],
     }),
-    AddressPrefix: Config.Ledger.AddressPrefix as AddressPrefixType,
-    SignaPrefix: Config.Ledger.AddressPrefix === "TS" ? "TSIGNA" : "SIGNA",
+    AddressPrefix: Config.Ledger.IsTestNet ? "TS" : "S",
+    SignaPrefix: Config.Ledger.IsTestNet ? "TSIGNA" : "SIGNA",
     Hosts: Config.Ledger.Hosts,
     PollingInterval: Config.Ledger.PollingInterval,
   },

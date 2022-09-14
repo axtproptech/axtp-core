@@ -1,5 +1,3 @@
-import { fetcher } from "@/app/fetcher";
-
 const toNumber = (v: any): number => {
   const n = parseFloat(v);
   return Number.isNaN(n) ? -1 : n;
@@ -9,13 +7,17 @@ const toBoolean = (v: string): boolean => v.toLowerCase() === "true";
 
 const fromArray = (csv: string): string[] => csv.split(",");
 
+const isTestNet = toBoolean(
+  process.env.NEXT_PUBLIC_LEDGER_IS_TESTNET || "true"
+);
+
 export const Config = {
   JotForm: {
     Id: process.env.NEXT_PUBLIC_JOTFORM_ID || "",
   },
-  Fetcher: fetcher,
+
   Ledger: {
-    AddressPrefix: process.env.NEXT_PUBLIC_LEDGER_ACCOUNT_PREFIX || "TS",
+    IsTestNet: isTestNet,
     PollingInterval:
       toNumber(process.env.NEXT_PUBLIC_LEDGER_POLLING_INTERVAL_SECS || "30") *
       1000,

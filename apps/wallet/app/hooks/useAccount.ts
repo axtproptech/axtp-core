@@ -13,7 +13,7 @@ import { toStableCoinAmount } from "@/app/tokenQuantity";
 
 export const useAccount = () => {
   const { Ledger, AXTTokenId } = useAppContext();
-  const { publicKey, accountId, salt, securedKeys } =
+  const { publicKey, accountId, salt, securedKeys, customer } =
     useAppSelector<AccountState>((state) => state.accountState);
 
   const { data } = useSWR(
@@ -105,6 +105,7 @@ export const useAccount = () => {
     accountPublicKey: publicKey,
     accountAddress,
     accountId,
+    customer,
     getKeys,
   };
 };

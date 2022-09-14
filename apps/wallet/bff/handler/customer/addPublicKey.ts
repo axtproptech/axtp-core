@@ -3,9 +3,10 @@ import { prisma } from "@axt/db-package";
 import { Address } from "@signumjs/core";
 import { handleError } from "@/bff/handler/handleError";
 
-export const addBlockchainAccount: HandlerFunction = async (req, res) => {
+export const addPublicKey: HandlerFunction = async (req, res) => {
   try {
-    const { customerId, publicKey, isTestnet = false } = req.body;
+    const { customerId } = req.query;
+    const { publicKey, isTestnet = false } = req.body;
 
     const address = Address.fromPublicKey(publicKey, isTestnet ? "TS" : "S");
     const existingAccount = await prisma.blockchainAccount.findUnique({
@@ -20,7 +21,7 @@ export const addBlockchainAccount: HandlerFunction = async (req, res) => {
 
     await prisma.customer.update({
       where: {
-        cuid: customerId,
+        cuid: customerId as string,
       },
       data: {
         blockchainAccounts: {
@@ -33,8 +34,11 @@ export const addBlockchainAccount: HandlerFunction = async (req, res) => {
       },
     });
 
-    res.status(204).end();
+    res.status(201).end();
   } catch (e: any) {
-    handleError({ e, res });
+    if (e.code !== "P2002") {
+      // ignore expected duplicate error
+      handleError({ e, res });
+    }
   }
 };

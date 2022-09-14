@@ -1,9 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Address } from "@signumjs/core";
 
+export interface CustomerState {
+  customerId: string;
+  firstName: string;
+  verificationLevel: string;
+  acceptedTerms: boolean;
+}
+
 export interface AccountState {
   publicKey: string;
   accountId: string;
+  customer?: CustomerState;
   securedKeys: string;
   salt: string;
 }
@@ -33,6 +41,9 @@ export const accountSlice = createSlice({
       ).getNumericId();
       state.securedKeys = action.payload.securedKeys;
       state.salt = action.payload.salt;
+    },
+    setCustomer: (state, action: PayloadAction<CustomerState>) => {
+      state.customer = { ...action.payload };
     },
     resetAccount: (_) => initialState,
   },

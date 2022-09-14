@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { route } from "@/bff/route";
-import { getStatus } from "@/bff/handler/status/getStatus";
+import { addPublicKey } from "@/bff/handler/customer/addPublicKey";
 
 export default function handler(
   req: NextApiRequest,
@@ -9,6 +9,6 @@ export default function handler(
   return route({
     req,
     res,
-    get: getStatus,
+    post: addPublicKey,
   });
 }

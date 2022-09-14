@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { CustomerData } from "@/types/customerData";
 import { HintBox } from "@/app/components/hintBox";
 import { useTranslation } from "next-i18next";
@@ -6,6 +6,8 @@ import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIco
 import Link from "next/link";
 import { Checkbox } from "react-daisyui";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { useAppDispatch } from "@/states/hooks";
+import { accountActions } from "@/app/states/accountState";
 
 interface Props {
   customer: CustomerData;
@@ -14,8 +16,22 @@ interface Props {
 export const RegisterSuccess: FC<Props> = ({ customer }) => {
   const { t } = useTranslation();
   const { KycService } = useAppContext();
+  const dispatch = useAppDispatch();
   const [submitting, setSubmitting] = useState(false);
   const [accepted, setAccepted] = useState(false);
+
+  useEffect(() => {
+    if (!customer) return;
+
+    dispatch(
+      accountActions.setCustomer({
+        customerId: customer.cuid,
+        firstName: customer.firstName,
+        verificationLevel: customer.verificationLevel,
+        acceptedTerms: false,
+      })
+    );
+  }, [customer, dispatch]);
 
   const handleChecked = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
@@ -37,7 +53,7 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
   return (
     <div className="flex flex-col text-center h-[80vh] relative prose w-full mx-auto">
       <section>
-        <div className="w-[240px] mx-auto">
+        <div className="w-[180px] mx-auto">
           <AnimatedIconContract loopDelay={7500} touchable />
         </div>
       </section>
