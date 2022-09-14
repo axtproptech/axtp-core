@@ -4,11 +4,12 @@ import { HintBox } from "@/app/components/hintBox";
 import { useTranslation } from "next-i18next";
 import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
 import Link from "next/link";
-import { Checkbox } from "react-daisyui";
+import { Button, Checkbox } from "react-daisyui";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useAppDispatch } from "@/states/hooks";
 import { accountActions } from "@/app/states/accountState";
 import { VerificationLevelType } from "@/types/verificationLevelType";
+import { useRouter } from "next/router";
 
 interface Props {
   customer: CustomerData;
@@ -16,6 +17,7 @@ interface Props {
 
 export const RegisterSuccess: FC<Props> = ({ customer }) => {
   const { t } = useTranslation();
+  const router = useRouter();
   const { KycService } = useAppContext();
   const dispatch = useAppDispatch();
   const [submitting, setSubmitting] = useState(false);
@@ -38,15 +40,17 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
     try {
       setAccepted(e.target.checked);
       if (!e.target.checked) return;
-      // do a post to
       setSubmitting(true);
       await KycService.acceptTermsOfUse(customer.cuid);
-      console.log("Terms accepted", e.target.checked);
     } catch (err: any) {
       console.error(err);
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleRouteHome = async () => {
+    await router.push("/");
   };
 
   const { firstName } = customer;
@@ -74,12 +78,21 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
               <Link href="/#">{t("terms_of_use")}</Link>
             </div>
           </div>
+          <div className="text-center">
+            <Button
+              className="px-8"
+              color="primary"
+              onClick={handleRouteHome}
+              disabled={!accepted && !submitting}
+            >
+              {t("home")}
+            </Button>
+          </div>
         </HintBox>
         <div className="mt-2">
           <Link href="/#">{t("privacy_policy")}</Link>
         </div>
       </section>
-      <section></section>
     </div>
   );
 };
