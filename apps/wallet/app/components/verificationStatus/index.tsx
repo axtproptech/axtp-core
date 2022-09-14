@@ -21,7 +21,7 @@ export const VerificationStatus = memo<Props>(function VerificationStatus({
           <Steps.Step color="success" value="✓">
             {t("kyc-registered")}
           </Steps.Step>
-          <Steps.Step color="success" value="⏳">
+          <Steps.Step color="success" value="⃝">
             <span className="px-4 lg:px-8">{t("kyc-analyzing")}</span>
           </Steps.Step>
           <Steps.Step value="">{t("kyc-accepted")}</Steps.Step>
@@ -30,13 +30,13 @@ export const VerificationStatus = memo<Props>(function VerificationStatus({
     case "Level1":
       return hideIfAccepted ? null : (
         <Steps>
-          <Steps.Step color="success" value="✓">
+          <Steps.Step color="info" value="✓">
             {t("kyc-registered")}
           </Steps.Step>
-          <Steps.Step color="success" value="✓">
+          <Steps.Step color="info" value="✓">
             <span className="px-4 lg:px-8">{t("kyc-analyzing")}</span>
           </Steps.Step>
-          <Steps.Step color="success" value="L1">
+          <Steps.Step color="info" value="L1">
             {t("kyc-accepted")}
           </Steps.Step>
         </Steps>
@@ -44,13 +44,13 @@ export const VerificationStatus = memo<Props>(function VerificationStatus({
     case "Level2":
       return hideIfAccepted ? null : (
         <Steps>
-          <Steps.Step color="success" value="✓">
+          <Steps.Step color="info" value="✓">
             {t("kyc-registered")}
           </Steps.Step>
-          <Steps.Step color="success" value="✓">
+          <Steps.Step color="info" value="✓">
             <span className="px-4 lg:px-8">{t("kyc-analyzing")}</span>
           </Steps.Step>
-          <Steps.Step color="success" value="L2">
+          <Steps.Step color="info" value="L2">
             {t("kyc-accepted")}
           </Steps.Step>
         </Steps>

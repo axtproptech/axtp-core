@@ -5,10 +5,8 @@ import { selectAllPools } from "@/app/states/poolsState";
 import { PoolCard } from "@/app/components/cards/poolCard";
 import { Zoom } from "react-awesome-reveal";
 import { HintBox } from "@/app/components/hintBox";
-import { JoinClubButton } from "@/app/components/buttons/joinClubButton";
 import { useTranslation } from "next-i18next";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
-import { VerificationStatus } from "@/app/components/verificationStatus";
 
 interface Props {
   accountData?: AccountData;

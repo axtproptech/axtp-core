@@ -7,7 +7,7 @@ export const JoinClubButton = () => {
   const router = useRouter();
 
   const handleOnJoinClick = async () => {
-    await router.push("/account/register");
+    await router.push("/kyc/new");
   };
 
   return (

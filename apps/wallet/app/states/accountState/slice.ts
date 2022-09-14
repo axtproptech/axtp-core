@@ -22,6 +22,7 @@ const initialState: AccountState = {
   accountId: "",
   securedKeys: "",
   salt: "",
+  customer: undefined,
 };
 
 export const accountSlice = createSlice({

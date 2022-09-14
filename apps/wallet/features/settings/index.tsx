@@ -4,14 +4,17 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useAppDispatch } from "@/states/hooks";
 import { useTranslation } from "next-i18next";
 import { HintBox } from "@/app/components/hintBox";
+import { useRouter } from "next/router";
 
 export const Settings = () => {
   const { accountAddress } = useAccount();
+  const router = useRouter();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   const handleOnClickDisconnect = async () => {
     dispatch(accountActions.resetAccount());
+    await router.push("/");
   };
 
   return (

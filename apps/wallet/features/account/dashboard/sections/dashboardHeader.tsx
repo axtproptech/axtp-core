@@ -6,23 +6,8 @@ import { usePortfolioBalance } from "@/app/hooks/usePortfolioBalance";
 import { Badge } from "react-daisyui";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-
-const ChartSkeleton = () => {
-  return (
-    <div className="h-[240px] relative py-4">
-      <div className="absolute top-0 p-4 w-full">
-        <div className="animate-pulse flex flex-row justify-between items-start">
-          <div className="flex flex-col">
-            <h1 className="text-3xl rounded bg-primary-content/100 w-[160px] h-[36px] mb-1"></h1>
-            <h3 className="text-lg rounded bg-primary-content/80 bg-base-100 w-[120px] h-[28px] mb-1" />
-            <h3 className="text-sm rounded bg-primary-content/60 bg-base-100 w-[100px] h-[20px]" />
-          </div>
-        </div>
-        <h1 className="text-3xl rounded bg-primary-content/30 w-full h-[4px] mt-12" />
-      </div>
-    </div>
-  );
-};
+import { VerificationLevelType } from "@/types/verificationLevelType";
+import { VerificationBadge } from "@/app/components/badges/verificationBadge";
 
 interface ChartProps {
   data: Serie;
@@ -63,9 +48,13 @@ const Chart: FC<ChartProps> = ({ data }) => {
 
 interface Props {
   accountData: AccountData;
+  verificationLevel: VerificationLevelType;
 }
 
-export const DashboardHeader: FC<Props> = ({ accountData }) => {
+export const DashboardHeader: FC<Props> = ({
+  accountData,
+  verificationLevel,
+}) => {
   const { signaBalance, axtBalance, fiatBalance } = usePortfolioBalance();
   const { t } = useTranslation();
   const router = useRouter();
@@ -150,15 +139,18 @@ export const DashboardHeader: FC<Props> = ({ accountData }) => {
             <h3 className={"text-lg opacity-80"}>{signaBalance.formatted}</h3>
             <h5 className={"text-sm opacity-60"}>~ {fiatBalance.formatted}</h5>
           </div>
-          {!accountData.isActive && (
-            <Badge
-              className="mt-1"
-              color="warning"
-              onClick={handleOnClickInactive}
-            >
-              {t("account_unregistered")}
-            </Badge>
-          )}
+          <div className="flex flex-col">
+            {!accountData.isActive && (
+              <Badge
+                className="mt-1 cursor-pointer"
+                color="warning"
+                onClick={handleOnClickInactive}
+              >
+                {t("account_unregistered")}
+              </Badge>
+            )}
+            <VerificationBadge verificationLevel={verificationLevel} />
+          </div>
         </div>
       </div>
     </div>
