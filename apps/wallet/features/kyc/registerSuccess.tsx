@@ -8,6 +8,7 @@ import { Checkbox } from "react-daisyui";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useAppDispatch } from "@/states/hooks";
 import { accountActions } from "@/app/states/accountState";
+import { VerificationLevelType } from "@/types/verificationLevelType";
 
 interface Props {
   customer: CustomerData;
@@ -27,7 +28,7 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
       accountActions.setCustomer({
         customerId: customer.cuid,
         firstName: customer.firstName,
-        verificationLevel: customer.verificationLevel,
+        verificationLevel: customer.verificationLevel as VerificationLevelType,
         acceptedTerms: false,
       })
     );

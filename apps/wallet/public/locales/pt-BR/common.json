@@ -47,5 +47,9 @@
   "register_description": "Seu registro foi submetido com sucesso. Dentro das próximas 48 horas você terá acesso total a todas as funções da carteira.",
   "terms_of_use": "Termos de Uso",
   "accept_terms": "Confirmo, que li e aceito os",
-  "privacy_policy": "Privacy Policy"
+  "privacy_policy": "Privacy Policy",
+  "kyc-registered": "Registerado",
+  "kyc-analyzing": "Em Análise",
+  "kyc-accepted": "Verificado",
+  "kyc-current-verification": "Este é o seu status atual de verificação. Uma vez verificado, você pode começar a investir."
 }

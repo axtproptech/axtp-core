@@ -48,5 +48,9 @@
   "register_description": "Your registration was submitted successfully. Within the next 48 hours you'll get access to all functions of the wallet.",
   "terms_of_use": "Terms of Use",
   "accept_terms": "Hereby, I confirm, that I read and accept the",
-  "privacy_policy": "Privacy Policy"
+  "privacy_policy": "Privacy Policy",
+  "kyc-registered": "Registered",
+  "kyc-analyzing": "Analyzing",
+  "kyc-accepted": "Verified",
+  "kyc-current-verification": "This is your current verification status. Once verified you can start investing."
 }

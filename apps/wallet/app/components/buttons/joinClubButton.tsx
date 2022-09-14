@@ -1,12 +1,10 @@
 import { Button } from "react-daisyui";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import { useNotification } from "@/app/hooks/useNotification";
 
 export const JoinClubButton = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { showInfo } = useNotification();
 
   const handleOnJoinClick = async () => {
     await router.push("/account/register");

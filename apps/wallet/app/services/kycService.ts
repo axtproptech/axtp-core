@@ -9,7 +9,9 @@ export class KycService {
   }
 
   acceptTermsOfUse(customerId: string) {
-    return retry(() => this.httpClient.put("/termsOfUse", { customerId }));
+    return retry(() => {
+      this.httpClient.put("/termsOfUse", { customerId });
+    });
   }
 
   assignPublicKeyToCustomer(
@@ -17,11 +19,18 @@ export class KycService {
     publicKey: string,
     isTestnet: boolean
   ) {
-    return retry(() =>
+    return retry(() => {
       this.httpClient.post(`/customer/${customerId}/publicKey`, {
         publicKey,
         isTestnet,
-      })
-    );
+      });
+    });
+  }
+
+  async fetchCustomerData(customerId: string) {
+    return retry(async () => {
+      const { response } = await this.httpClient.get(`/customer/${customerId}`);
+      return response;
+    });
   }
 }

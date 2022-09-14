@@ -5,11 +5,13 @@ import { Fade, Slide } from "react-awesome-reveal";
 import { selectAllPools } from "@/app/states/poolsState";
 import { useMemo } from "react";
 import { PoolList } from "@/app/components/poolList";
+import { useAccount } from "@/app/hooks/useAccount";
+import { VerificationStatus } from "@/app/components/verificationStatus";
 import { JoinClubButton } from "@/app/components/buttons/joinClubButton";
 
 export const Home = () => {
   const pools = useAppSelector(selectAllPools);
-
+  const { customer } = useAccount();
   const stats = useMemo(() => {
     // TODO: calc the correct values
     return {
@@ -37,7 +39,14 @@ export const Home = () => {
           <DashboardStats stats={stats} />
         </section>
         <section className="prose text-center mx-auto mt-4">
-          <JoinClubButton />
+          {!customer ? (
+            <JoinClubButton />
+          ) : (
+            <VerificationStatus
+              verificationLevel={customer?.verificationLevel || ""}
+              hideIfAccepted
+            />
+          )}
         </section>
         <section className="mt-8">
           <PoolList />

@@ -8,6 +8,7 @@ import { HintBox } from "@/app/components/hintBox";
 import { JoinClubButton } from "@/app/components/buttons/joinClubButton";
 import { useTranslation } from "next-i18next";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
+import { VerificationStatus } from "@/app/components/verificationStatus";
 
 interface Props {
   accountData?: AccountData;
@@ -48,9 +49,6 @@ export const PoolList: FC<Props> = ({ accountData }) => {
               <AnimatedIconCoins loopDelay={5000} touchable />
             </div>
           </HintBox>
-          <div className="w-1/2 mx-auto">
-            <JoinClubButton />
-          </div>
         </div>
       )}
     </div>

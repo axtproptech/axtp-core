@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Address } from "@signumjs/core";
+import { VerificationLevelType } from "@/types/verificationLevelType";
 
 export interface CustomerState {
   customerId: string;
   firstName: string;
-  verificationLevel: string;
+  verificationLevel: VerificationLevelType;
   acceptedTerms: boolean;
 }
 

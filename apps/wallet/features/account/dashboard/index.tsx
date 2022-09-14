@@ -5,10 +5,14 @@ import { DashboardHeader } from "@/features/account/dashboard/sections/dashboard
 import { Body } from "@/app/components/layout/body";
 import { PoolList } from "@/app/components/poolList";
 import { HintBox } from "@/app/components/hintBox";
+import { JoinClubButton } from "@/app/components/buttons/joinClubButton";
+import { VerificationStatus } from "@/app/components/verificationStatus";
+import { useTranslation } from "next-i18next";
 
 export const AccountDashboard = () => {
   const router = useRouter();
-  const { accountId, accountData } = useAccount();
+  const { t } = useTranslation();
+  const { accountId, accountData, customer } = useAccount();
 
   useEffect(() => {
     if (!accountId && router) {
@@ -17,6 +21,10 @@ export const AccountDashboard = () => {
   }, [accountId, router]);
 
   if (!accountId) return null;
+
+  const verificationLevel = customer
+    ? customer.verificationLevel
+    : "NotVerified";
 
   return (
     <div className="overflow-hidden h-[100vh]">
@@ -27,7 +35,23 @@ export const AccountDashboard = () => {
         <div className="absolute z-10 top-[-1px] bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
       </div>
       <Body className="overflow-x-auto h-[calc(100vh_-_240px_-_64px)]">
-        <PoolList accountData={accountData} />
+        <HintBox className="mx-auto" text={t("kyc-current-verification")}>
+          <div className="text-center">
+            {!customer ? (
+              <JoinClubButton />
+            ) : (
+              <VerificationStatus
+                verificationLevel={verificationLevel}
+                hideIfAccepted
+              />
+            )}
+          </div>
+        </HintBox>
+        {verificationLevel.startsWith("Level") && (
+          <div className="mt-16">
+            <PoolList accountData={accountData} />
+          </div>
+        )}
       </Body>
     </div>
   );
