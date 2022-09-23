@@ -9,8 +9,8 @@ export const requireAuth: Middleware = async ({
   ctx,
 }): Promise<boolean | undefined> => {
   const session = await unstable_getServerSession(req, res, authOptions);
-  // if(session){
-  //   return true;
-  // }
+  if (session) {
+    return true;
+  }
   throw Boom.unauthorized();
 };

@@ -1,15 +1,15 @@
-import * as _prisma_client from ".prisma/client";
+import { Prisma } from ".prisma/client";
 import { PrismaClient } from "@prisma/client";
 
 declare global {
   var prisma: PrismaClient | undefined;
+  var Prisma: Prisma;
 }
+
 declare const prisma: PrismaClient<
-  _prisma_client.Prisma.PrismaClientOptions,
+  Prisma.PrismaClientOptions,
   never,
-  | _prisma_client.Prisma.RejectOnNotFound
-  | _prisma_client.Prisma.RejectPerOperation
-  | undefined
+  Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
 >;
 
-export { prisma };
+export { prisma, Prisma };
