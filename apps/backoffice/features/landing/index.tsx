@@ -17,7 +17,7 @@ export const Landing = () => {
     <Grid container spacing={2}>
       <Grid item xs={3} />
       <Grid item xs={6}>
-        <MainCard title="R.Est Landing Page" darkTitle>
+        <MainCard title="AXT Landing Page" darkTitle>
           <Animate>
             <Box
               onClick={handleAdminPanel}

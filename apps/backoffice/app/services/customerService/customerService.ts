@@ -1,11 +1,33 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
+import { jsonToQueryString } from "@/app/jsonToQueryString";
+import { CustomerResponse } from "@/bff/types/customerResponse";
+
+type Troolean = "all" | "true" | "false" | boolean;
+
+interface FetchPendingCustomersArgs {
+  verified?: Troolean;
+  active?: Troolean;
+  blocked?: Troolean;
+}
 
 export class CustomerService {
   private http: Http;
 
   constructor() {
-    this.http = HttpClientFactory.createHttpClient("/");
+    this.http = HttpClientFactory.createHttpClient("/api/admin");
   }
 
-  fetchPendingCustomers() {}
+  async fetchCustomers(args: FetchPendingCustomersArgs) {
+    const params = jsonToQueryString(args);
+    const { response } = await this.http.get(
+      params ? `/customers?${params}` : "/customers"
+    );
+    return response as CustomerResponse[];
+  }
+
+  fetchPendingCustomers() {
+    return this.fetchCustomers({ verified: "false" });
+  }
 }
+
+export const customerService = new CustomerService();

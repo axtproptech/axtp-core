@@ -1,23 +1,33 @@
 import { prisma } from "@axt/db-package";
 import { ApiHandler } from "@/bff/types/apiHandler";
+import { badRequest } from "@hapi/boom";
 
-import { object, mixed } from "yup";
+import { object, mixed, ValidationError } from "yup";
+
+const troolean = () =>
+  mixed().oneOf(["all", "true", "false"]).optional().default("all");
 
 let customerRequestSchema = object({
-  verified: mixed()
-    .oneOf(["all", "verified", "pending"])
-    .optional()
-    .default("all"),
+  verified: troolean(),
+  active: troolean(),
+  blocked: troolean(),
 });
+
+function getPureTroolean(value: "all" | "true" | "false") {
+  if (value === "all") return undefined;
+  return value === "true";
+}
 
 function getVerificationLevel(verified: string) {
   switch (verified) {
-    case "verified":
+    case "true":
       return {
-        not: "NotVerified",
+        notIn: ["Pending", "NotVerified"],
       };
-    case "pending":
-      return "NotVerified";
+    case "false":
+      return {
+        in: ["Pending", "NotVerified"],
+      };
     default:
       return undefined;
   }
@@ -26,41 +36,21 @@ function getVerificationLevel(verified: string) {
 export const getCustomers: ApiHandler = async ({ req, res }) => {
   try {
     const query = req.query;
-
-    const { verified } = customerRequestSchema.validateSync(query);
-
+    const { verified, active, blocked } =
+      customerRequestSchema.validateSync(query);
     const customers = await prisma.customer.findMany({
       where: {
         // @ts-ignore
         verificationLevel: getVerificationLevel(verified),
+        isBlocked: getPureTroolean(blocked),
+        isActive: getPureTroolean(active),
       },
     });
-
-    // const { customerId } = req.query;
-    //
-    // const customer = await prisma.customer.findUnique({
-    //   where: {
-    //     cuid: customerId as string,
-    //   },
-    //   include: {
-    //     blockchainAccounts: true,
-    //     termsOfUse: {
-    //       where: {
-    //         termsOfUseId: Number(
-    //           process.env.ACTIVE_TERMS_OF_USE_ID || ("1" as string)
-    //         ),
-    //       },
-    //     },
-    //   },
-    // });
-    //
-    // if (!customer) {
-    //   const { output } = notFound();
-    //   return res.status(output.statusCode).json(output.payload);
-    // }
-
     return res.status(200).json(customers);
   } catch (e: any) {
+    if (e instanceof ValidationError) {
+      throw badRequest(e.errors.join(","));
+    }
     throw e;
   }
 };
