@@ -183,5 +183,12 @@ export default function componentStyleOverrides(theme: any) {
         },
       },
     },
+    MuiDataGrid: {
+      styleOverrides: {
+        columnHeaderTitle: {
+          fontWeight: 700,
+        },
+      },
+    },
   };
 }

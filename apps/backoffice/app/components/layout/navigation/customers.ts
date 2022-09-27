@@ -1,4 +1,4 @@
-import { IconUsers } from "@tabler/icons";
+import { IconUsers, IconUserPlus } from "@tabler/icons";
 
 export const customers = {
   id: "customers",
@@ -11,6 +11,14 @@ export const customers = {
       type: "item",
       url: "/admin/customers",
       icon: IconUsers,
+      breadcrumbs: false,
+    },
+    {
+      id: "manage-pending-customers",
+      title: "Pending Token Holders",
+      type: "item",
+      url: "/admin/customers/pending",
+      icon: IconUserPlus,
       breadcrumbs: false,
     },
     // {

@@ -17,8 +17,8 @@ export class CustomerService {
     this.http = HttpClientFactory.createHttpClient("/api/admin");
   }
 
-  async fetchCustomers(args: FetchPendingCustomersArgs) {
-    const params = jsonToQueryString(args);
+  async fetchCustomers(args?: FetchPendingCustomersArgs) {
+    const params = args ? jsonToQueryString(args) : "";
     const { response } = await this.http.get(
       params ? `/customers?${params}` : "/customers"
     );
