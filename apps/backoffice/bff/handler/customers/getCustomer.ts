@@ -1,0 +1,38 @@
+import { prisma } from "@axt/db-package";
+import { ApiHandler } from "@/bff/types/apiHandler";
+import { notFound, badRequest } from "@hapi/boom";
+
+import { object, string, ValidationError } from "yup";
+
+let customerRequestSchema = object({ cuid: string() });
+
+export const getCustomer: ApiHandler = async ({ req, res }) => {
+  try {
+    const query = req.query;
+
+    console.log("cuid", query.cuid);
+
+    const { cuid } = customerRequestSchema.validateSync(query);
+    const customer = await prisma.customer.findUnique({
+      where: { cuid },
+      include: {
+        termsOfUse: true,
+        blockchainAccounts: true,
+        documents: true,
+        verificationResult: true,
+        addresses: true,
+      },
+    });
+
+    if (!customer) {
+      throw notFound();
+    }
+
+    return res.status(200).json(customer);
+  } catch (e: any) {
+    if (e instanceof ValidationError) {
+      throw badRequest(e.errors.join(","));
+    }
+    throw e;
+  }
+};

@@ -28,6 +28,11 @@ export class CustomerService {
   fetchPendingCustomers() {
     return this.fetchCustomers({ verified: "false" });
   }
+
+  async fetchCustomer(cuid: string) {
+    const { response } = await this.http.get(`/customers/${cuid}`);
+    return response as CustomerResponse;
+  }
 }
 
 export const customerService = new CustomerService();

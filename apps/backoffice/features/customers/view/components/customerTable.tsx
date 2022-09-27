@@ -2,8 +2,16 @@ import { MainCard } from "@/app/components/cards";
 import useSWR from "swr";
 import { customerService } from "@/app/services/customerService/customerService";
 import { useMemo } from "react";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridEvents,
+  GridEventsStr,
+  GridRenderCellParams,
+  GridRowParams,
+} from "@mui/x-data-grid";
 import { Chip } from "@mui/material";
+import { useRouter } from "next/router";
 
 const Days = 1000 * 60 * 60 * 24;
 
@@ -45,6 +53,8 @@ const columns: GridColDef[] = [
 ];
 
 export const CustomerTable = () => {
+  const router = useRouter();
+
   const { data, error } = useSWR("getAllTokenHolders", () => {
     return customerService.fetchCustomers({ verified: true });
   });
@@ -55,7 +65,7 @@ export const CustomerTable = () => {
     }
     return data.map(
       ({
-        id,
+        cuid,
         firstName,
         lastName,
         cpfCnpj,
@@ -65,7 +75,7 @@ export const CustomerTable = () => {
         verificationLevel,
       }) => {
         return {
-          id,
+          id: cuid,
           firstName,
           lastName,
           cpfCnpj,
@@ -80,11 +90,20 @@ export const CustomerTable = () => {
 
   const loading = !data && !error;
 
+  const handleRowClick = async (e: GridRowParams) => {
+    await router.push(`/admin/customers/${e.id}`);
+  };
+
   return (
     <MainCard title="Token Holders">
-      <div style={{ height: "400px" }}>
+      <div style={{ height: "70vh" }}>
         <div style={{ display: "flex", height: "100%" }}>
-          <DataGrid rows={tableRows} columns={columns} loading={loading} />
+          <DataGrid
+            rows={tableRows}
+            columns={columns}
+            loading={loading}
+            onRowClick={handleRowClick}
+          />
         </div>
       </div>
     </MainCard>

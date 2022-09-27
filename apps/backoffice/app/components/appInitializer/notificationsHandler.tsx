@@ -8,6 +8,8 @@ import { MasterContractData } from "@/types/masterContractData";
 import { PoolContractData } from "@/types/poolContractData";
 import { Amount } from "@signumjs/util";
 import { Config } from "@/app/config";
+import useSWR from "swr";
+import { customerService } from "@/app/services/customerService/customerService";
 
 const isApprovalRequested = (status: ApprovalStatus) =>
   parseInt(status.quantity, 10) > 0;
@@ -89,10 +91,28 @@ function getPoolContractNotifications(
   return notifications;
 }
 
+const Minutes = 1000 * 60;
+
 export const NotificationsHandler = () => {
   const masterContract = useMasterContract();
   const pools = useAppSelector((rootState) => rootState.poolsState.pools);
   const dispatch = useAppDispatch();
+
+  useSWR(
+    "getPendingTokenHolders",
+    async () => {
+      const pending = await customerService.fetchPendingCustomers();
+      dispatch(
+        actions.setMenuBadge({
+          itemId: "manage-pending-customers",
+          value: pending.length.toString(),
+        })
+      );
+    },
+    {
+      refreshInterval: 5 * Minutes,
+    }
+  );
 
   useEffect(() => {
     const notifications = [];

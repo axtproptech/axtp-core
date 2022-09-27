@@ -2,7 +2,13 @@ import { MainCard } from "@/app/components/cards";
 import useSWR from "swr";
 import { customerService } from "@/app/services/customerService/customerService";
 import { useMemo } from "react";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowParams,
+} from "@mui/x-data-grid";
+import { useRouter } from "next/router";
 
 const Days = 1000 * 60 * 60 * 24;
 
@@ -31,6 +37,8 @@ const columns: GridColDef[] = [
 ];
 
 export const PendingCustomerTable = () => {
+  const router = useRouter();
+
   const { data, error } = useSWR("getPendingTokenHolders", () => {
     return customerService.fetchPendingCustomers();
   });
@@ -40,9 +48,9 @@ export const PendingCustomerTable = () => {
       return [];
     }
     return data.map(
-      ({ id, firstName, lastName, cpfCnpj, email1, phone1, createdAt }) => {
+      ({ cuid, firstName, lastName, cpfCnpj, email1, phone1, createdAt }) => {
         return {
-          id,
+          id: cuid,
           firstName,
           lastName,
           cpfCnpj,
@@ -56,11 +64,20 @@ export const PendingCustomerTable = () => {
 
   const loading = !data && !error;
 
+  const handleRowClick = async (e: GridRowParams) => {
+    await router.push(`/admin/customers/${e.id}`);
+  };
+
   return (
     <MainCard title="Pending Token Holders">
-      <div style={{ height: "400px" }}>
+      <div style={{ height: "70vh" }}>
         <div style={{ display: "flex", height: "100%" }}>
-          <DataGrid rows={tableRows} columns={columns} loading={loading} />
+          <DataGrid
+            rows={tableRows}
+            columns={columns}
+            loading={loading}
+            onRowClick={handleRowClick}
+          />
         </div>
       </div>
     </MainCard>

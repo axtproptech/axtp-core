@@ -1,11 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { NotificationType } from "@/types/notificationType";
+
 interface NotificationsState {
   notifications: NotificationType[];
+  menuBadges: { [key: string]: string };
 }
 
 const initialState: NotificationsState = {
   notifications: [],
+  menuBadges: {
+    "manage-pending-customers": "4",
+  },
 };
 
 export const notificationsSlice = createSlice({
@@ -14,6 +19,13 @@ export const notificationsSlice = createSlice({
   reducers: {
     setNotifications: (state, action: PayloadAction<NotificationType[]>) => {
       state.notifications = [...action.payload];
+    },
+    setMenuBadge: (
+      state,
+      action: PayloadAction<{ itemId: string; value: string }>
+    ) => {
+      const { itemId, value } = action.payload;
+      state.menuBadges[itemId] = value;
     },
   },
 });

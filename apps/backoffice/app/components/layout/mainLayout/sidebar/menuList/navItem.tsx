@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "@mui/material/styles";
 import {
   Avatar,
+  Badge,
   Chip,
   ListItemButton,
   ListItemIcon,
@@ -17,6 +18,24 @@ import { useAppSelector } from "@/states/hooks";
 import { selectIsLeftDrawerOpened } from "@/app/states/appState";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { selectMenuBadge } from "@/app/states/notificationsState";
+import { ChildrenProps } from "@/types/childrenProps";
+
+interface BadgedProps {
+  value: string;
+}
+
+const Badged: FC<BadgedProps & ChildrenProps> = ({ value, children }) => {
+  if (!value) {
+    return <>{children}</>;
+  }
+
+  return (
+    <Badge badgeContent={value} color="warning">
+      {children}
+    </Badge>
+  );
+};
 
 interface Props {
   item: any;
@@ -28,7 +47,7 @@ export const NavItem: FC<Props> = ({ item, level }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const isLeftDrawerOpen = useAppSelector(selectIsLeftDrawerOpened);
-  // const customization = useSelector((state) => state.customization);
+  const menuBadge = useSelector(selectMenuBadge(item.id));
   const matchesSM = useMediaQuery(theme.breakpoints.down("lg"));
 
   const isActive = router.asPath === item.url;
@@ -67,38 +86,40 @@ export const NavItem: FC<Props> = ({ item, level }) => {
         }}
         selected={isActive}
       >
-        <ListItemIcon sx={{ my: "auto", minWidth: !item?.icon ? 18 : 36 }}>
-          {itemIcon}
-        </ListItemIcon>
-        <ListItemText
-          primary={
-            <Typography variant={isActive ? "h5" : "body1"} color="inherit">
-              {item.title}
-            </Typography>
-          }
-          secondary={
-            item.caption && (
-              <Typography
-                variant="caption"
-                // @ts-ignore
-                sx={{ ...theme.typography.subMenuCaption }}
-                display="block"
-                gutterBottom
-              >
-                {item.caption}
+        <Badged value={menuBadge}>
+          <ListItemIcon sx={{ my: "auto", minWidth: !item?.icon ? 18 : 36 }}>
+            {itemIcon}
+          </ListItemIcon>
+          <ListItemText
+            primary={
+              <Typography variant={isActive ? "h5" : "body1"} color="inherit">
+                {item.title}
               </Typography>
-            )
-          }
-        />
-        {item.chip && (
-          <Chip
-            color={item.chip.color}
-            variant={item.chip.variant}
-            size={item.chip.size}
-            label={item.chip.label}
-            avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
+            }
+            secondary={
+              item.caption && (
+                <Typography
+                  variant="caption"
+                  // @ts-ignore
+                  sx={{ ...theme.typography.subMenuCaption }}
+                  display="block"
+                  gutterBottom
+                >
+                  {item.caption}
+                </Typography>
+              )
+            }
           />
-        )}
+          {item.chip && (
+            <Chip
+              color={item.chip.color}
+              variant={item.chip.variant}
+              size={item.chip.size}
+              label={item.chip.label}
+              avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
+            />
+          )}
+        </Badged>
       </ListItemButton>
     </Link>
   );
