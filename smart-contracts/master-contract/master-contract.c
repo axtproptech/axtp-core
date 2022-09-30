@@ -1,22 +1,21 @@
-#program name RestMasterContract
+#define VERSION 1
+#define SIMULATOR
+// #define TESTNET
+// #define MAINNET
+
+#program name AXTMasterContract
 #program activationAmount .25
 #pragma optimizationLevel 3
 
-#define VERSION 1
-// #define SIMULATOR
-#define TESTNET
-// #define MAINNET
-
-
 #ifdef SIMULATOR
-    #define TOKEN_NAME "SIMRESTC"
+    #define TOKEN_NAME "SIMAXTC"
     #define APPROVER_1 1
     #define APPROVER_2 2
     #define APPROVER_3 3
     #define APPROVER_4 4
 #endif
 #ifdef TESTNET
-    #define TOKEN_NAME "TRESTC"
+    #define TOKEN_NAME "TAXTC"
     #define APPROVER_1 3549690777743760998
     #define APPROVER_2 7473730462792140210
     #define APPROVER_3 5757380649245251466
@@ -24,7 +23,7 @@
 #endif
 #ifdef MAINNET
     // TO DO
-    #define TOKEN_NAME "RESTC"
+    #define TOKEN_NAME "AXTC"
     #define APPROVER_1 1
     #define APPROVER_2 2
     #define APPROVER_3 3
@@ -32,26 +31,23 @@
 #endif
 
 // Set public functions magic numbers
-#define REQUEST_MINT_STC 0x2ad2251e2c50bb44
-#define APPROVE_MINT_STC 0xd29baa091c36518c
-#define REQUEST_BURN_STC 0xc71ee27abd19dcf5
-#define APPROVE_BURN_STC 0x8b089aff194be58c
+#define REQUEST_MINT_AXTC 0x2ad2251e2c50bb44
+#define APPROVE_MINT_AXTC 0xd29baa091c36518c
+#define REQUEST_BURN_AXTC 0xc71ee27abd19dcf5
+#define APPROVE_BURN_AXTC 0x8b089aff194be58c
 #define REQUEST_SEND_TO_POOL 0xacb080bf3498cfb5
 #define APPROVE_SEND_TO_POOL 0xe3d9426f20c5859b
-
 
 // global variables, will be available in all functions
 // external/loadable variables
 
-
 // internal values, i.e. set during execution
-long stcTokenId;
-long pendingMintSTC;
-long pendingBurnSTC;
-long pendingPoolSendSTC;
+long axtcTokenId;
+long pendingMintAXTC;
+long pendingBurnAXTC;
+long pendingPoolSendAXTC;
 long requestedPoolSendAddress;
 long messageBuffer[4];
-
 
 struct APPROVAL {
   long account,
@@ -60,15 +56,13 @@ struct APPROVAL {
     poolSendApproved;
 } approvals[4];
 
-
-
 const long MinimumApproval = 3;
 
 struct TXINFO {
     long txId,
         timestamp,
         sender,
-        quantitySTC,
+        quantityAXTC,
         message[4];
 } currentTX;
 
@@ -80,17 +74,17 @@ void main(void) {
         readMessage(currentTX.txId, 0, currentTX.message);
 
         switch (currentTX.message[0]) {
-            case REQUEST_MINT_STC:
-                RequestMintSTC(currentTX.message[1]);
+            case REQUEST_MINT_AXTC:
+                RequestMintAXTC(currentTX.message[1]);
                 break;
-            case APPROVE_MINT_STC:
-                ApproveMintSTC();
+            case APPROVE_MINT_AXTC:
+                ApproveMintAXTC();
             break;
-            case REQUEST_BURN_STC:
-                RequestBurnSTC(currentTX.message[1]);
+            case REQUEST_BURN_AXTC:
+                RequestBurnAXTC(currentTX.message[1]);
                 break;
-            case APPROVE_BURN_STC:
-                ApproveBurnSTC();
+            case APPROVE_BURN_AXTC:
+                ApproveBurnAXTC();
             break;
             case REQUEST_SEND_TO_POOL:
                 RequestSendToPool(currentTX.message[1], currentTX.message[2]);
@@ -108,7 +102,7 @@ void main(void) {
 // ---------------- PRIVATE ---------------------------
 
 void constructor() {
-    stcTokenId = issueAsset(TOKEN_NAME, "", 2);
+    axtcTokenId = issueAsset(TOKEN_NAME, "", 2);
     approvals[0].account = APPROVER_1;
     approvals[1].account = APPROVER_2;
     approvals[2].account = APPROVER_3;
@@ -191,7 +185,6 @@ long approveBurnAction() {
 
 }
 
-
 long approveSendPoolAction() {
     if( approvals[0].account == currentTX.sender ) {
         approvals[0].poolSendApproved = 1;
@@ -232,13 +225,13 @@ long isAuthorized() {
 // ---------------- PUBLIC ---------------------------
 
 
-void RequestSendToPool(long quantitySTC, long poolAddress) {
+void RequestSendToPool(long quantityAXTC, long poolAddress) {
     if(!isAuthorized()){
         return;
     }
 
     requestedPoolSendAddress = poolAddress;
-    pendingPoolSendSTC = quantitySTC;
+    pendingPoolSendAXTC = quantityAXTC;
     resetMintActionApproval();
 }
 
@@ -248,49 +241,49 @@ void ApproveSendToPool(){
     }
 
     if(approveSendPoolAction()){
-        sendQuantity(pendingPoolSendSTC, stcTokenId, requestedPoolSendAddress);
+        sendQuantity(pendingPoolSendAXTC, axtcTokenId, requestedPoolSendAddress);
         requestedPoolSendAddress = 0;
-        pendingPoolSendSTC = 0;
+        pendingPoolSendAXTC = 0;
         resetPoolSendActionApproval();
     }
 }
 
-void RequestMintSTC(long quantitySTC) {
+void RequestMintAXTC(long quantityAXTC) {
     if(!isAuthorized()){
         return;
     }
-    pendingMintSTC = quantitySTC;
+    pendingMintAXTC = quantityAXTC;
     resetMintActionApproval();
 }
 
-void ApproveMintSTC(){
+void ApproveMintAXTC(){
     if(!isAuthorized()){
         return;
     }
 
     if(approveMintAction()){
-        mintAsset(pendingMintSTC, stcTokenId);
-        pendingMintSTC = 0;
+        mintAsset(pendingMintAXTC, axtcTokenId);
+        pendingMintAXTC = 0;
         resetMintActionApproval();
     }
 }
 
-void RequestBurnSTC(long quantitySTC) {
+void RequestBurnAXTC(long quantityAXTC) {
     if(!isAuthorized()){
         return;
     }
-    pendingBurnSTC = quantitySTC;
+    pendingBurnAXTC = quantityAXTC;
     resetBurnActionApproval();
 }
 
-void ApproveBurnSTC(){
+void ApproveBurnAXTC(){
     if(!isAuthorized()){
         return;
     }
 
     if(approveBurnAction()){
-        sendQuantity(pendingBurnSTC, stcTokenId, 0);
-        pendingBurnSTC = 0;
+        sendQuantity(pendingBurnAXTC, axtcTokenId, 0);
+        pendingBurnAXTC = 0;
         resetBurnActionApproval();
     }
 }

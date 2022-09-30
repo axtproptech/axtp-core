@@ -21,12 +21,7 @@ export const Config = {
     TickerSymbol: process.env.NEXT_PUBLIC_SIGNUM_TICKER_SYMBOL || "TSIGNA",
   },
   Platform: {
-    Name: process.env.NEXT_PUBLIC_PLATFORM_NAME || "signumswap.io",
-    DocumentationUrl:
-      process.env.NEXT_PUBLIC_PLATFORM_DOCUMENTATION_URL ||
-      "https://docs.signum.network/defiportal",
-    CanonicalUrl:
-      process.env.NEXT_PUBLIC_PLATFORM_CANONICAL_URL || "https://signumswap.io",
+    Name: process.env.NEXT_PUBLIC_PLATFORM_NAME || "AXT PropTech Backoffice",
   },
   MasterContract: {
     LowBalanceThreshold: Amount.fromSigna(2),
@@ -68,7 +63,7 @@ export const Config = {
       process.env.NEXT_PUBLIC_CONTRACT_POOL_CODEHASH || "17139226199807531405",
     CreationCosts:
       process.env.NEXT_PUBLIC_CONTRACT_POOL_CREATION_COSTS || "0.06",
-    Basename: process.env.NEXT_PUBLIC_CONTRACT_POOL_NAME || "RESTPOOL",
+    Basename: process.env.NEXT_PUBLIC_CONTRACT_POOL_NAME || "AXTPoolContract",
     ApprovalAccounts: toArray(
       process.env.NEXT_PUBLIC_CONTRACT_POOL_APPROVAL_ACCOUNTS || ""
     ),
@@ -84,6 +79,9 @@ export const Config = {
       ApproveDistribution:
         process.env.NEXT_PUBLIC_CONTRACT_POOL_METHOD_APPROVE_DISTRIBUTE ||
         "4257520191800449546",
+      UpdateGrossMarketValue:
+        process.env.NEXT_PUBLIC_CONTRACT_POOL_METHOD_UPDATE_GMV ||
+        "14491337967399442445",
     },
   },
   Layout: {

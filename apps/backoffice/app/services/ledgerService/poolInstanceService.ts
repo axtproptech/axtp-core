@@ -65,4 +65,12 @@ export class PoolInstanceService extends GenericContractService {
       quantity
     );
   }
+
+  public async updateGrossMarketValue(gmvQuantity: number) {
+    InputValidationService.assertNumberGreaterOrEqualThan(0, gmvQuantity);
+    return this.callMethod(
+      Config.PoolContract.Methods.UpdateGrossMarketValue,
+      gmvQuantity
+    );
+  }
 }

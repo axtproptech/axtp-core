@@ -2,12 +2,12 @@
 
 Use this scenarios to test the contract with the [SmartC Simulator](https://deleterium.info/sc-simulator/)
 
-`REQUEST_MINT_STC = 44bb502c1e25d22a`
-`APPROVE_MINT_STC = 8c51361c09aa9bd2`
+`REQUEST_MINTAXTC = 44bb502c1e25d22a`
+`APPROVE_MINTAXTC = 8c51361c09aa9bd2`
 `REQUEST_SEND_TO_POOL = b5cf9834bf80b0ac`
 `APPROVE_SEND_TO_POOL = 094ac265e934bd10`
-`REQUEST_BURN_STC = f5dc19bd7ae21ec7`
-`APPROVE_BURN_STC = 8ce54b19ff9a088b`
+`REQUEST_BURNAXTC = f5dc19bd7ae21ec7`
+`APPROVE_BURNAXTC = 8ce54b19ff9a088b`
 
 
 ```json
