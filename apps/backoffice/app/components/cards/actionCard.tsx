@@ -1,9 +1,13 @@
 import { MainCard } from "@/app/components/cards";
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { FC, ReactNode } from "react";
 import { ChildrenProps } from "@/types/childrenProps";
+import {
+  ActionButton,
+  ActionButtonProps,
+} from "@/app/components/buttons/actionButton";
 
-interface Props {
+interface Props extends ActionButtonProps {
   title: string;
   description: string;
   actionLabel: string;
@@ -14,35 +18,9 @@ interface Props {
   isLoading?: boolean;
 }
 
-const Action: FC<Props> = ({
-  actionLabel,
-  actionIcon,
-  color = "primary",
-  onClick,
-  isLoading = false,
-  disabled = false,
-}) => (
+const Action: FC<Props> = (props) => (
   <Box sx={{ display: "flex", flexDirection: "row" }}>
-    {isLoading ? (
-      <Button
-        variant="contained"
-        color={color}
-        onClick={onClick}
-        disabled={true}
-      >
-        <CircularProgress size={24} />
-        &nbsp;{actionLabel}
-      </Button>
-    ) : (
-      <Button
-        variant="contained"
-        color={color}
-        onClick={onClick}
-        disabled={disabled}
-      >
-        {actionIcon}&nbsp;{actionLabel}
-      </Button>
-    )}
+    <ActionButton {...props} />
   </Box>
 );
 

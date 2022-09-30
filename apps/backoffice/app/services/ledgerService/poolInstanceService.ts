@@ -49,6 +49,7 @@ export class PoolInstanceService extends GenericContractService {
         maxShareQuantity: contractDataView.getPoolTokenMaxQuantity(),
         nominalLiquidity: contractDataView.getNominalLiquidity(),
         tokenRate: contractDataView.getPoolTokenRate(),
+        grossMarketValue: contractDataView.getGrossMarketValue(),
       };
     });
   }

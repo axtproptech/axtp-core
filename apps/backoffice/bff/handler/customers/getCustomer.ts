@@ -10,8 +10,6 @@ export const getCustomer: ApiHandler = async ({ req, res }) => {
   try {
     const query = req.query;
 
-    console.log("cuid", query.cuid);
-
     const { cuid } = customerRequestSchema.validateSync(query);
     const customer = await prisma.customer.findUnique({
       where: { cuid },

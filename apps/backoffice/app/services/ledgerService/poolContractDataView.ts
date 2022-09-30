@@ -8,8 +8,10 @@ enum PoolContractDataIndex {
   PoolTokenQuantity,
   NominalLiquidity,
   PoolTokenId,
-  PendingDistributionRESTC,
-  PaidRESTC,
+  PendingDistributionAXTC,
+  PaidAXTC,
+  GrossMarketValue,
+  // TODO: set approval account to 13 - when new version is deployed
   ApprovalAccount1 = 12,
   ApprovalApprovedDistribution1,
   ApprovalAccount2,
@@ -54,6 +56,13 @@ export class PoolContractDataView {
     return parseFloat(toStableCoinAmount(qnt));
   }
 
+  getGrossMarketValue(): number {
+    const qnt = this.view.getVariableAsDecimal(
+      PoolContractDataIndex.GrossMarketValue
+    );
+    return parseFloat(toStableCoinAmount(qnt));
+  }
+
   getPoolTokenMaxQuantity(): number {
     return parseInt(
       this.view.getVariableAsDecimal(PoolContractDataIndex.PoolTokenQuantity),
@@ -73,13 +82,13 @@ export class PoolContractDataView {
   }
 
   getDistributedStableCoins(): number {
-    const qnt = this.view.getVariableAsDecimal(PoolContractDataIndex.PaidRESTC);
+    const qnt = this.view.getVariableAsDecimal(PoolContractDataIndex.PaidAXTC);
     return parseFloat(toStableCoinAmount(qnt));
   }
 
   getAccumulatedStableCoinsForDistribution(): number {
     const qnt = this.view.getVariableAsDecimal(
-      PoolContractDataIndex.PendingDistributionRESTC
+      PoolContractDataIndex.PendingDistributionAXTC
     );
     return parseFloat(toStableCoinAmount(qnt));
   }

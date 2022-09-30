@@ -45,7 +45,7 @@ export const CreateActionCard = () => {
   } = useForm<FormValues>({
     mode: "onChange",
     defaultValues: {
-      name: "PST0001",
+      name: "AXTP0001",
       description: "Write a description here...",
       rate: 0.0,
       tokenCount: 0,
@@ -112,9 +112,9 @@ export const CreateActionCard = () => {
             variant="outlined"
             rules={{
               pattern: {
-                value: /^PST\d{4}$/,
+                value: /^AXTP\d{4}$/,
                 message:
-                  "Name must be like PST0002 - It's the name of the token",
+                  "Name must be like AXTP0002 - It's the name of the token",
               },
               required,
             }}
