@@ -8,7 +8,7 @@ import Logo from "common/components/UIElements/Logo";
 import Container from "common/components/UI/Container";
 import FooterWrapper, { List, ListItem } from "./footer.style";
 
-import LogoImage from "common/assets/image/cryptoModern/logo-white.png";
+import LogoImage from "common/assets/image/cryptoModern/logo-light.svg";
 
 import { Footer_Data } from "common/data/CryptoModern";
 
