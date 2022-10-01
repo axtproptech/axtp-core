@@ -7,5 +7,5 @@ This is the back office app
 First, run the development server:
 
 ```bash
-pnpm dev
+yarn dev
 ```
