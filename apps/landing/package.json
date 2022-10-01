@@ -1,5 +1,5 @@
 {
-  "name": "@act/landingpage-app",
+  "name": "@axt/landingpage-app",
   "version": "1.0.0",
   "private": true,
   "main": "firebaseFunctions.js",
