@@ -54,10 +54,8 @@ export const registerCustomer: HandlerFunction = async (req, res) => {
         profession: answers.occupation,
         documents: {
           createMany: {
-            data: {
-              type: "ProofOfAddress",
-              url: "SomeUrl",
-            },
+            // @ts-ignore
+            data: documents,
           },
         },
         addresses: {
