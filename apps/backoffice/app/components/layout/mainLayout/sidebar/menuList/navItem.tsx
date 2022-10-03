@@ -1,5 +1,4 @@
-import PropTypes from "prop-types";
-import { FC, forwardRef, useEffect } from "react";
+import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "@mui/material/styles";
 import {

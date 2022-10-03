@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Chip,
   CircularProgress,
   Divider,
@@ -10,20 +9,16 @@ import {
 import { Config } from "@/app/config";
 import { FC, useMemo } from "react";
 import { customerService } from "@/app/services/customerService/customerService";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { MainCard } from "@/app/components/cards";
 import {
   CustomerActions,
   CustomerActionType,
 } from "./components/customerActions";
-import { CustomerResponse } from "@/bff/types/customerResponse";
-import { ChildrenProps } from "@/types/childrenProps";
-import { DetailSection } from "@/app/components/sections/detailSection";
 import { LabeledTextField } from "@/app/components/labeledTextField";
 import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
 import { ExternalLink } from "@/app/components/externalLink";
 import { VerificationChip } from "@/app/components/chips/verificationChip";
-import { useAppContext } from "@/app/hooks/useAppContext";
 import { useExplorerLink } from "@/app/hooks/useExplorerLink";
 
 const gridSpacing = Config.Layout.GridSpacing;
@@ -34,16 +29,39 @@ interface Props {
 
 export const SingleCustomer: FC<Props> = ({ cuid }) => {
   const { getAccountLink } = useExplorerLink();
-
+  const { mutate } = useSWRConfig();
   const { data: customer, error } = useSWR(`getCustomer/${cuid}`, () => {
     return customerService.fetchCustomer(cuid);
   });
 
+  const verifyCustomer = async () => {
+    try {
+      await customerService.verifyCustomer({
+        cuid,
+        verificationLevel: "Level1",
+      });
+      await Promise.all([
+        mutate(`getCustomer/${cuid}`),
+        mutate("getPendingTokenHolders"),
+      ]);
+    } catch (e) {
+      console.error("Some error", e);
+    }
+  };
+
   const handleCustomerAction = async (action: CustomerActionType) => {
-    // TODO:
-    return new Promise<void>((resolve) => {
-      setTimeout(() => resolve(), 2000);
-    });
+    switch (action) {
+      case "verify":
+        return verifyCustomer();
+      case "activate":
+      case "block":
+      case "deactivate":
+      case "unblock":
+      default:
+        return new Promise<void>((resolve) => {
+          setTimeout(() => resolve(), 2000);
+        });
+    }
   };
   const availableActions = useMemo(() => {
     const actions = new Set<CustomerActionType>();

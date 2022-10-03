@@ -105,7 +105,7 @@ export const NotificationsHandler = () => {
       dispatch(
         actions.setMenuBadge({
           itemId: "manage-pending-customers",
-          value: pending.length.toString(),
+          value: pending.length ? String(pending.length) : "",
         })
       );
     },
@@ -127,7 +127,7 @@ export const NotificationsHandler = () => {
     }
 
     dispatch(actions.setNotifications(notifications));
-  }, [masterContract, pools]);
+  }, [dispatch, masterContract, pools]);
 
   return null;
 };

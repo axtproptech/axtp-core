@@ -11,6 +11,11 @@ interface FetchPendingCustomersArgs {
   blocked?: Troolean;
 }
 
+interface VerifyCustomerArgs {
+  cuid: string;
+  verificationLevel: "Level1" | "Level2";
+}
+
 export class CustomerService {
   private http: Http;
 
@@ -32,6 +37,14 @@ export class CustomerService {
 
   async fetchCustomer(cuid: string) {
     const { response } = await this.http.get(`/customers/${cuid}`);
+    return response as CustomerFullResponse;
+  }
+
+  async verifyCustomer(args: VerifyCustomerArgs) {
+    const { verificationLevel, cuid } = args;
+    const { response } = await this.http.put(`/customers/${cuid}`, {
+      verificationLevel,
+    });
     return response as CustomerFullResponse;
   }
 }
