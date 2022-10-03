@@ -9,6 +9,7 @@ import {
   GridRowParams,
 } from "@mui/x-data-grid";
 import { useRouter } from "next/router";
+import { cpf } from "cpf-cnpj-validator";
 
 const Days = 1000 * 60 * 60 * 24;
 
@@ -53,7 +54,7 @@ export const PendingCustomerTable = () => {
           id: cuid,
           firstName,
           lastName,
-          cpfCnpj,
+          cpfCnpj: cpf.format(cpfCnpj),
           email1,
           phone1,
           createdAt,

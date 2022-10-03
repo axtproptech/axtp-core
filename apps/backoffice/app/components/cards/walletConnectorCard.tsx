@@ -14,7 +14,7 @@ import {
   requestWalletConnection,
   requestWalletDisconnection,
 } from "@/app/requestWalletConnection";
-import { ExternalLink } from "@/app/components/externalLink";
+import { ExternalLink } from "@/app/components/links/externalLink";
 
 const CardStyle = styled(Card)(({ theme, ...props }) => {
   // @ts-ignore

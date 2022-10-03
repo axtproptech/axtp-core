@@ -1,22 +1,20 @@
 import { MainCard } from "@/app/components/cards";
 import useSWR from "swr";
 import { customerService } from "@/app/services/customerService/customerService";
-import { useMemo } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import {
   DataGrid,
   GridColDef,
-  GridEvents,
-  GridEventsStr,
   GridRenderCellParams,
   GridRowParams,
 } from "@mui/x-data-grid";
-import { Chip } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useRouter } from "next/router";
 import { VerificationChip } from "@/app/components/chips/verificationChip";
 import { ActivationChip } from "@/app/components/chips/activationChip";
 import { BlockingChip } from "@/app/components/chips/blockingChip";
-
-const Days = 1000 * 60 * 60 * 24;
+import { TextInput } from "@/app/components/inputs";
+import { cpf } from "cpf-cnpj-validator";
 
 const renderCreatedAt = (params: GridRenderCellParams<string>) => {
   const createdAt = params.value;
@@ -69,6 +67,8 @@ const columns: GridColDef[] = [
 export const CustomerTable = () => {
   const router = useRouter();
 
+  const [searchValue, setSearchValue] = useState("");
+
   const { data, error } = useSWR("getAllTokenHolders", () => {
     return customerService.fetchCustomers({ verified: true });
   });
@@ -94,7 +94,7 @@ export const CustomerTable = () => {
           id: cuid,
           firstName,
           lastName,
-          cpfCnpj,
+          cpfCnpj: cpf.format(cpfCnpj),
           email1,
           phone1,
           createdAt,
@@ -106,18 +106,46 @@ export const CustomerTable = () => {
     );
   }, [data]);
 
+  const filteredRows = useMemo(() => {
+    if (!searchValue) return tableRows;
+
+    const isLike = (a: string, b: string) => a.toLowerCase().indexOf(b) !== -1;
+
+    return tableRows.filter(({ email1, cpfCnpj, firstName, lastName }) => {
+      return (
+        isLike(email1, searchValue) ||
+        isLike(cpfCnpj, searchValue) ||
+        isLike(firstName, searchValue) ||
+        isLike(lastName, searchValue)
+      );
+    });
+  }, [tableRows, searchValue]);
+
   const loading = !data && !error;
 
   const handleRowClick = async (e: GridRowParams) => {
     await router.push(`/admin/customers/${e.id}`);
   };
 
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
   return (
     <MainCard title="Token Holders">
+      <Grid container>
+        <Grid item md={4}>
+          <TextInput
+            label="Search"
+            onChange={handleSearch}
+            value={searchValue}
+          />
+        </Grid>
+      </Grid>
       <div style={{ height: "70vh" }}>
         <div style={{ display: "flex", height: "100%" }}>
           <DataGrid
-            rows={tableRows}
+            rows={filteredRows}
             columns={columns}
             loading={loading}
             onRowClick={handleRowClick}

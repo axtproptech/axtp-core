@@ -10,6 +10,7 @@ import { Amount } from "@signumjs/util";
 import { Config } from "@/app/config";
 import useSWR from "swr";
 import { customerService } from "@/app/services/customerService/customerService";
+import { CustomerResponse } from "@/bff/types/customerResponse";
 
 const isApprovalRequested = (status: ApprovalStatus) =>
   parseInt(status.quantity, 10) > 0;
@@ -91,6 +92,20 @@ function getPoolContractNotifications(
   return notifications;
 }
 
+function getPendingCustomerNotification(
+  pendingCount: number
+): NotificationType {
+  return {
+    icon: "pending-customer",
+    link: `/admin/customers/pending`,
+    title: pendingCount > 1 ? "🎉 New Customers" : "🎉 New Customer",
+    message:
+      pendingCount > 1
+        ? `${pendingCount} new customers are waiting for verification`
+        : `A new customer is waiting for verification`,
+  };
+}
+
 const Minutes = 1000 * 60;
 
 export const NotificationsHandler = () => {
@@ -98,16 +113,19 @@ export const NotificationsHandler = () => {
   const pools = useAppSelector((rootState) => rootState.poolsState.pools);
   const dispatch = useAppDispatch();
 
-  useSWR(
+  const { data: pendingCustomers } = useSWR(
     "getPendingTokenHolders",
     async () => {
       const pending = await customerService.fetchPendingCustomers();
+
       dispatch(
         actions.setMenuBadge({
           itemId: "manage-pending-customers",
           value: pending.length ? String(pending.length) : "",
         })
       );
+
+      return pending;
     },
     {
       refreshInterval: 5 * Minutes,
@@ -119,6 +137,7 @@ export const NotificationsHandler = () => {
     if (masterContract) {
       notifications.push(...getMasterContractNotifications(masterContract));
     }
+
     if (pools) {
       notifications.push(
         // @ts-ignore
@@ -126,8 +145,14 @@ export const NotificationsHandler = () => {
       );
     }
 
+    if (pendingCustomers?.length) {
+      notifications.push(
+        getPendingCustomerNotification(pendingCustomers.length)
+      );
+    }
+
     dispatch(actions.setNotifications(notifications));
-  }, [dispatch, masterContract, pools]);
+  }, [dispatch, masterContract, pools, pendingCustomers]);
 
   return null;
 };

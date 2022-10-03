@@ -4,8 +4,13 @@ import {
   CircularProgress,
   Divider,
   Grid,
+  Tooltip,
   Typography,
 } from "@mui/material";
+import {
+  Check as CheckIcon,
+  ErrorOutline as ErrorIcon,
+} from "@mui/icons-material";
 import { Config } from "@/app/config";
 import { FC, useMemo } from "react";
 import { customerService } from "@/app/services/customerService/customerService";
@@ -17,10 +22,11 @@ import {
 } from "./components/customerActions";
 import { LabeledTextField } from "@/app/components/labeledTextField";
 import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
-import { ExternalLink } from "@/app/components/externalLink";
+import { ExternalLink } from "@/app/components/links/externalLink";
 import { VerificationChip } from "@/app/components/chips/verificationChip";
 import { useExplorerLink } from "@/app/hooks/useExplorerLink";
-
+import { DownloadButton } from "@/app/components/buttons/downloadButton";
+import { cpf } from "cpf-cnpj-validator";
 const gridSpacing = Config.Layout.GridSpacing;
 
 interface Props {
@@ -169,12 +175,40 @@ const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
   const address = customer.addresses[0];
   const documents = customer.documents;
 
+  const cpfValid = useMemo(() => {
+    return cpf.isValid(customer.cpfCnpj);
+  }, [customer.cpfCnpj]);
+
   return (
     <Grid container spacing={gridSpacing} direction="column">
       <Grid item xs={12} md={6}>
         <Grid container spacing={gridSpacing}>
-          <Grid item xs={12} md={3}>
-            <LabeledTextField label="CPF" text={customer.cpfCnpj} />
+          <Grid item xs={12} md={6} lg={4}>
+            <LabeledTextField label="CPF">
+              <Grid container columnSpacing={1} direction="row">
+                <Grid item>{cpf.format(customer.cpfCnpj)}</Grid>
+                <Grid item>
+                  {cpfValid ? (
+                    <Tooltip title="Valid Format">
+                      <CheckIcon color="success" />
+                    </Tooltip>
+                  ) : (
+                    <Tooltip title="Format Incorrect">
+                      <ErrorIcon color="error" />
+                    </Tooltip>
+                  )}
+                </Grid>
+                <Grid item>
+                  <ExternalLink
+                    href={
+                      "https://servicos.receita.fazenda.gov.br/servicos/cpf/consultasituacao/consultapublica.asp"
+                    }
+                  >
+                    Validate CPF
+                  </ExternalLink>
+                </Grid>
+              </Grid>
+            </LabeledTextField>
             <LabeledTextField label="Phone Number" text={customer.phone1} />
             <LabeledTextField label="Email" text={customer.email1} />
             <LabeledTextField
@@ -190,7 +224,7 @@ const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
               text={new Date(customer.createdAt).toLocaleDateString()}
             />
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={6} lg={4}>
             {address ? (
               <>
                 <LabeledTextField label="Street" text={address.line1} />
@@ -216,26 +250,18 @@ const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
         </Grid>
       </Grid>
       <Divider />
-      <Grid item xs={12} md={6} lg={3}>
+      <Grid item xs={12} md={6} lg={4}>
         <Typography variant="h4">Documents</Typography>
         <Grid container spacing={gridSpacing} direction="row">
           {documents.map((d, index) => {
             return (
               <Grid item xs={12} lg={3} sx={{ my: 2 }} key={index}>
                 <LabeledTextField label="Type" text={d.type} />
-                <LabeledTextField label="URL">
-                  {d.url ? (
-                    <ExternalLink href={d.url}>Document Link</ExternalLink>
-                  ) : (
-                    <Typography variant="h4" color="error">
-                      Invalid URL
-                    </Typography>
-                  )}
-                </LabeledTextField>
                 <LabeledTextField
                   label="Upload Date"
                   text={new Date(d.createdAt).toLocaleDateString()}
                 />
+                <DownloadButton url={d.url} />
               </Grid>
             );
           })}

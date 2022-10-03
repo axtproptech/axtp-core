@@ -149,11 +149,11 @@ export const NotificationSection = () => {
                         <Grid item>
                           <Stack direction="row" spacing={2}>
                             <Typography variant="subtitle1">
-                              All Notification
+                              All Notifications
                             </Typography>
                             <Chip
                               size="small"
-                              label="01"
+                              label={notifications.length}
                               sx={{
                                 color: theme.palette.background.default,
                                 bgcolor: theme.palette.warning.dark,

@@ -1,4 +1,4 @@
-import { FC, forwardRef, HtmlHTMLAttributes } from "react";
+import { forwardRef, HTMLAttributes } from "react";
 import {
   FormControl,
   FormHelperText,
@@ -7,12 +7,14 @@ import {
   useTheme,
 } from "@mui/material";
 
-interface Props extends HtmlHTMLAttributes<HTMLInputElement> {
+interface Props extends HTMLAttributes<HTMLInputElement> {
   error?: string;
   label: string;
+  value?: string;
 }
 
-export const TextInput: FC<Props> = forwardRef((props: Props, ref) => {
+// eslint-disable-next-line react/display-name
+export const TextInput = forwardRef((props: Props, ref) => {
   const theme = useTheme();
   const { error, label, ...args } = props;
 

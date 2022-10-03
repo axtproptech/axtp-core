@@ -4,6 +4,7 @@ import { notFound, badRequest } from "@hapi/boom";
 
 import { object, string, ValidationError } from "yup";
 import { sanitizeUrl } from "@braintree/sanitize-url";
+import { asFullCustomerResponse } from "../../../pages/api/admin/customers/asFullCustomerResponse";
 
 let customerRequestSchema = object({ cuid: string() });
 
@@ -27,16 +28,7 @@ export const getCustomer: ApiHandler = async ({ req, res }) => {
       throw notFound();
     }
 
-    customer.documents.forEach((d) => {
-      try {
-        const sanitized = sanitizeUrl(d.url);
-        d.url = new URL(sanitized).toString();
-      } catch (e) {
-        d.url = "";
-      }
-    });
-
-    return res.status(200).json(customer);
+    return res.status(200).json(asFullCustomerResponse(customer));
   } catch (e: any) {
     if (e instanceof ValidationError) {
       throw badRequest(e.errors.join(","));

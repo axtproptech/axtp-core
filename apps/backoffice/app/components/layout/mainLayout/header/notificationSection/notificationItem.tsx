@@ -11,17 +11,19 @@ import {
 import { NotificationType } from "@/types/notificationType";
 import { ListItemWrapper } from "./listItemWrapper";
 import Link from "next/link";
-import { IconUserCheck } from "@tabler/icons";
+import { IconUserCheck, IconUserPlus } from "@tabler/icons";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 
 interface Props {
   notification: NotificationType;
 }
 
+// eslint-disable-next-line react/display-name
 export const NotificationItem: FC<Props> = memo(({ notification }) => {
   const icon = {
     approval: <IconUserCheck />,
     "low-balance": <WarningAmberRoundedIcon color="warning" />,
+    "pending-customer": <IconUserPlus />,
   };
 
   return (
@@ -43,7 +45,7 @@ export const NotificationItem: FC<Props> = memo(({ notification }) => {
           </Grid>
         </ListItemWrapper>
       </Link>
-      <Divider />;
+      <Divider />
     </>
   );
 });

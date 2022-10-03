@@ -1,4 +1,4 @@
-import { ExternalLink } from "@/app/components/externalLink";
+import { ExternalLink } from "@/app/components/links/externalLink";
 import { Config } from "@/app/config";
 import { Button } from "@mui/material";
 import { IconLink } from "@tabler/icons";
