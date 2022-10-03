@@ -1,6 +1,7 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { jsonToQueryString } from "@/app/jsonToQueryString";
 import { CustomerResponse } from "@/bff/types/customerResponse";
+import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
 
 type Troolean = "all" | "true" | "false" | boolean;
 
@@ -31,7 +32,7 @@ export class CustomerService {
 
   async fetchCustomer(cuid: string) {
     const { response } = await this.http.get(`/customers/${cuid}`);
-    return response as CustomerResponse;
+    return response as CustomerFullResponse;
   }
 }
 
