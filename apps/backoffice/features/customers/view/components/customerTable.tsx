@@ -13,6 +13,8 @@ import {
 import { Chip } from "@mui/material";
 import { useRouter } from "next/router";
 import { VerificationChip } from "@/app/components/chips/verificationChip";
+import { ActivationChip } from "@/app/components/chips/activationChip";
+import { BlockingChip } from "@/app/components/chips/blockingChip";
 
 const Days = 1000 * 60 * 60 * 24;
 
@@ -29,6 +31,14 @@ const renderVerificationLevel = (params: GridRenderCellParams<string>) => {
   return <VerificationChip level={verification} />;
 };
 
+const renderActive = (params: GridRenderCellParams<boolean>) => {
+  return <ActivationChip isActive={Boolean(params.value)} />;
+};
+
+const renderBlocked = (params: GridRenderCellParams<boolean>) => {
+  return <BlockingChip isBlocked={Boolean(params.value)} alwaysShow />;
+};
+
 const columns: GridColDef[] = [
   { field: "createdAt", headerName: "Applied On", renderCell: renderCreatedAt },
   { field: "firstName", headerName: "First Name", flex: 1 },
@@ -41,6 +51,18 @@ const columns: GridColDef[] = [
     headerName: "Verification",
     flex: 1,
     renderCell: renderVerificationLevel,
+  },
+  {
+    field: "isActive",
+    headerName: "Active",
+    flex: 1,
+    renderCell: renderActive,
+  },
+  {
+    field: "isBlocked",
+    headerName: "Blocked",
+    flex: 1,
+    renderCell: renderBlocked,
   },
 ];
 
@@ -65,6 +87,8 @@ export const CustomerTable = () => {
         phone1,
         createdAt,
         verificationLevel,
+        isBlocked,
+        isActive,
       }) => {
         return {
           id: cuid,
@@ -75,6 +99,8 @@ export const CustomerTable = () => {
           phone1,
           createdAt,
           verificationLevel,
+          isBlocked,
+          isActive,
         };
       }
     );
