@@ -12,6 +12,7 @@ import {
 } from "@mui/x-data-grid";
 import { Chip } from "@mui/material";
 import { useRouter } from "next/router";
+import { VerificationChip } from "@/app/components/chips/verificationChip";
 
 const Days = 1000 * 60 * 60 * 24;
 
@@ -22,19 +23,10 @@ const renderCreatedAt = (params: GridRenderCellParams<string>) => {
   return <div>{applied}</div>;
 };
 
-const VerificationColors = {
-  Level1: "success",
-  Level2: "info",
-  Pending: "warning",
-  NotVerified: "",
-};
-
 const renderVerificationLevel = (params: GridRenderCellParams<string>) => {
   const verification = params.value;
   if (!verification) return null;
-  // @ts-ignore
-  const color = VerificationColors[verification];
-  return <Chip label={verification} color={color} />;
+  return <VerificationChip level={verification} />;
 };
 
 const columns: GridColDef[] = [

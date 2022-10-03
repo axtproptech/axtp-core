@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@axt/db-package": "^1.0.6",
+    "@braintree/sanitize-url": "^6.0.0",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^5.8.4",

@@ -3,6 +3,7 @@ import { ApiHandler } from "@/bff/types/apiHandler";
 import { notFound, badRequest } from "@hapi/boom";
 
 import { object, string, ValidationError } from "yup";
+import { sanitizeUrl } from "@braintree/sanitize-url";
 
 let customerRequestSchema = object({ cuid: string() });
 
@@ -25,6 +26,15 @@ export const getCustomer: ApiHandler = async ({ req, res }) => {
     if (!customer) {
       throw notFound();
     }
+
+    customer.documents.forEach((d) => {
+      try {
+        const sanitized = sanitizeUrl(d.url);
+        d.url = new URL(sanitized).toString();
+      } catch (e) {
+        d.url = "";
+      }
+    });
 
     return res.status(200).json(customer);
   } catch (e: any) {

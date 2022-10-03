@@ -15,6 +15,7 @@ export interface AppContextType {
   Ledger: {
     IsTestnet: boolean;
     Network: string;
+    ExploreBaseUrl: string;
   };
   Platform: typeof Config.Platform;
 }
@@ -30,6 +31,9 @@ const config: AppContextType = {
   Ledger: {
     IsTestnet: Config.Signum.IsTestnet,
     Network: Config.Signum.Network,
+    ExploreBaseUrl: Config.Signum.IsTestnet
+      ? "https://t-chain.signum.network"
+      : "https://chain.signum.network",
   },
 };
 

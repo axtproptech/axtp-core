@@ -1,4 +1,12 @@
-import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { Config } from "@/app/config";
 import { FC, useMemo } from "react";
 import { customerService } from "@/app/services/customerService/customerService";
@@ -13,6 +21,10 @@ import { ChildrenProps } from "@/types/childrenProps";
 import { DetailSection } from "@/app/components/sections/detailSection";
 import { LabeledTextField } from "@/app/components/labeledTextField";
 import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
+import { ExternalLink } from "@/app/components/externalLink";
+import { VerificationChip } from "@/app/components/chips/verificationChip";
+import { useAppContext } from "@/app/hooks/useAppContext";
+import { useExplorerLink } from "@/app/hooks/useExplorerLink";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
@@ -21,6 +33,8 @@ interface Props {
 }
 
 export const SingleCustomer: FC<Props> = ({ cuid }) => {
+  const { getAccountLink } = useExplorerLink();
+
   const { data: customer, error } = useSWR(`getCustomer/${cuid}`, () => {
     return customerService.fetchCustomer(cuid);
   });
@@ -47,15 +61,51 @@ export const SingleCustomer: FC<Props> = ({ cuid }) => {
   }, [customer]);
 
   const loading = !customer && !error;
-  const name = loading
-    ? "Loading..."
-    : `${customer?.firstName} ${customer?.lastName}`;
 
   // TODO: handle error
 
+  const title = useMemo(() => {
+    if (loading || !customer) return "Loading...";
+
+    const { blockchainAccounts, isActive, isBlocked, verificationLevel } =
+      customer;
+    return (
+      <Grid container spacing={gridSpacing} direction="row" alignItems="center">
+        <Grid item>
+          <Typography variant="h4">
+            {`${customer?.firstName} ${customer?.lastName}`}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <VerificationChip level={verificationLevel} />
+          {isActive ? (
+            <Chip sx={{ ml: 1 }} label="Active" color="success" />
+          ) : (
+            <Chip sx={{ ml: 1 }} label="Deactivated" color="warning" />
+          )}
+          {isBlocked && <Chip sx={{ ml: 1 }} label="Blocked" color="error" />}
+          {blockchainAccounts.length ? (
+            <ExternalLink
+              href={getAccountLink(blockchainAccounts[0].accountId)}
+            >
+              <Chip
+                sx={{ ml: 1 }}
+                label={blockchainAccounts[0].rsAddress}
+                color="info"
+                clickable
+              />
+            </ExternalLink>
+          ) : (
+            <Chip sx={{ ml: 1 }} label="No Blockchain Account" color="error" />
+          )}
+        </Grid>
+      </Grid>
+    );
+  }, [customer, loading]);
+
   return (
     <MainCard
-      title={name}
+      title={title}
       actions={
         <CustomerActions
           onAction={handleCustomerAction}
@@ -80,47 +130,82 @@ interface DetailsProps {
 
 const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
   const address = customer.addresses[0];
+  const documents = customer.documents;
 
   return (
-    <Grid container spacing={gridSpacing}>
+    <Grid container spacing={gridSpacing} direction="column">
       <Grid item xs={12} md={6}>
-        <LabeledTextField label="CPF" text={customer.cpfCnpj} />
-        <LabeledTextField label="Phone Number" text={customer.phone1} />
-        <LabeledTextField label="Email" text={customer.email1} />
-        <LabeledTextField
-          label="Date of Birth"
-          text={new Date(customer.dateOfBirth).toLocaleDateString()}
-        />
-        <LabeledTextField
-          label="Verification Level"
-          text={customer.verificationLevel}
-        />
-        <LabeledTextField
-          label="Applied on"
-          text={new Date(customer.createdAt).toLocaleDateString()}
-        />
+        <Grid container spacing={gridSpacing}>
+          <Grid item xs={12} md={3}>
+            <LabeledTextField label="CPF" text={customer.cpfCnpj} />
+            <LabeledTextField label="Phone Number" text={customer.phone1} />
+            <LabeledTextField label="Email" text={customer.email1} />
+            <LabeledTextField
+              label="Date of Birth"
+              text={new Date(customer.dateOfBirth).toLocaleDateString()}
+            />
+            <LabeledTextField
+              label="Verification Level"
+              text={customer.verificationLevel}
+            />
+            <LabeledTextField
+              label="Applied on"
+              text={new Date(customer.createdAt).toLocaleDateString()}
+            />
+          </Grid>
+          <Grid item xs={12} md={3}>
+            {address ? (
+              <>
+                <LabeledTextField label="Street" text={address.line1} />
+                <LabeledTextField label="Complement" text={address.line2} />
+                <LabeledTextField
+                  label="Annotation"
+                  text={`${address.line3} ${address.line4}`}
+                />
+                <LabeledTextField
+                  label="ZipCode"
+                  text={`${address.postCodeZip}`}
+                />
+                <LabeledTextField
+                  label="City, State"
+                  text={`${address.city}, ${address.state}`}
+                />
+                <LabeledTextField label="Country" text={`${address.country}`} />
+              </>
+            ) : (
+              <Typography variant="h4">No address provided</Typography>
+            )}
+          </Grid>
+        </Grid>
       </Grid>
-      {address && (
-        <Grid item xs={12} md={6}>
-          <LabeledTextField label="Street" text={address.line1} />
-          <LabeledTextField label="Complement" text={address.line2} />
-          <LabeledTextField
-            label="Annotation"
-            text={`${address.line3} ${address.line4}`}
-          />
-          <LabeledTextField label="ZipCode" text={`${address.postCodeZip}`} />
-          <LabeledTextField
-            label="City, State"
-            text={`${address.city}, ${address.state}`}
-          />
-          <LabeledTextField label="Country" text={`${address.country}`} />
+      <Divider />
+      <Grid item xs={12} md={6} lg={3}>
+        <Typography variant="h4">Documents</Typography>
+        <Grid container spacing={gridSpacing}>
+          <Grid item xs={12} lg={3}>
+            {documents.map((d, index) => {
+              return (
+                <Box sx={{ my: 2 }} key={index}>
+                  <LabeledTextField label="Type" text={d.type} />
+                  <LabeledTextField label="URL">
+                    {d.url ? (
+                      <ExternalLink href={d.url}>Document Link</ExternalLink>
+                    ) : (
+                      <Typography variant="h4" color="error">
+                        Invalid URL
+                      </Typography>
+                    )}
+                  </LabeledTextField>
+                  <LabeledTextField
+                    label="Upload Date"
+                    text={new Date(d.createdAt).toLocaleDateString()}
+                  />
+                </Box>
+              );
+            })}
+          </Grid>
         </Grid>
-      )}
-      {!address && (
-        <Grid item xs={12} md={6}>
-          <Typography variant="h4">No address provided</Typography>
-        </Grid>
-      )}
+      </Grid>
     </Grid>
   );
 };
