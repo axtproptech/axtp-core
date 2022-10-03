@@ -31,19 +31,34 @@ export const SingleCustomer: FC<Props> = ({ cuid }) => {
   const { getAccountLink } = useExplorerLink();
   const { mutate } = useSWRConfig();
   const { data: customer, error } = useSWR(`getCustomer/${cuid}`, () => {
-    return customerService.fetchCustomer(cuid);
+    return customerService.with(cuid).fetchCustomer();
   });
 
   const verifyCustomer = async () => {
     try {
-      await customerService.verifyCustomer({
-        cuid,
-        verificationLevel: "Level1",
-      });
+      await customerService.with(cuid).verifyCustomer("Level1");
       await Promise.all([
         mutate(`getCustomer/${cuid}`),
         mutate("getPendingTokenHolders"),
       ]);
+    } catch (e) {
+      console.error("Some error", e);
+    }
+  };
+
+  const activateCustomer = async (isActive: boolean) => {
+    try {
+      await customerService.with(cuid).setCustomerActivationState(isActive);
+      await mutate(`getCustomer/${cuid}`);
+    } catch (e) {
+      console.error("Some error", e);
+    }
+  };
+
+  const blockCustomer = async (isBlocked: boolean) => {
+    try {
+      await customerService.with(cuid).setCustomerBlockingState(isBlocked);
+      await mutate(`getCustomer/${cuid}`);
     } catch (e) {
       console.error("Some error", e);
     }
@@ -54,9 +69,13 @@ export const SingleCustomer: FC<Props> = ({ cuid }) => {
       case "verify":
         return verifyCustomer();
       case "activate":
-      case "block":
+        return activateCustomer(true);
       case "deactivate":
+        return activateCustomer(false);
+      case "block":
+        return blockCustomer(true);
       case "unblock":
+        return blockCustomer(false);
       default:
         return new Promise<void>((resolve) => {
           setTimeout(() => resolve(), 2000);

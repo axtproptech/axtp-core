@@ -1,7 +1,7 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { jsonToQueryString } from "@/app/jsonToQueryString";
 import { CustomerResponse } from "@/bff/types/customerResponse";
-import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
+import { CustomerInstanceService } from "./customerInstanceService";
 
 type Troolean = "all" | "true" | "false" | boolean;
 
@@ -9,11 +9,6 @@ interface FetchPendingCustomersArgs {
   verified?: Troolean;
   active?: Troolean;
   blocked?: Troolean;
-}
-
-interface VerifyCustomerArgs {
-  cuid: string;
-  verificationLevel: "Level1" | "Level2";
 }
 
 export class CustomerService {
@@ -35,17 +30,8 @@ export class CustomerService {
     return this.fetchCustomers({ verified: "false" });
   }
 
-  async fetchCustomer(cuid: string) {
-    const { response } = await this.http.get(`/customers/${cuid}`);
-    return response as CustomerFullResponse;
-  }
-
-  async verifyCustomer(args: VerifyCustomerArgs) {
-    const { verificationLevel, cuid } = args;
-    const { response } = await this.http.put(`/customers/${cuid}`, {
-      verificationLevel,
-    });
-    return response as CustomerFullResponse;
+  with(cuid: string): CustomerInstanceService {
+    return new CustomerInstanceService(cuid);
   }
 }
 
