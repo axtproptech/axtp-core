@@ -19,15 +19,6 @@ const Banner = () => {
     <BannerWrapper id="home">
       <Container>
         <BannerContent>
-          <Fade up>
-            <DiscountLabel>
-              <Text className="discountAmount" content="25% Discount" />
-              <Text
-                className="discountText"
-                content="on every first project "
-              />
-            </DiscountLabel>
-          </Fade>
           <Fade up delay={100}>
             <Heading
               as="h1"
