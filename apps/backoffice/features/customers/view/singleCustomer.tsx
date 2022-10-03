@@ -218,29 +218,27 @@ const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
       <Divider />
       <Grid item xs={12} md={6} lg={3}>
         <Typography variant="h4">Documents</Typography>
-        <Grid container spacing={gridSpacing}>
-          <Grid item xs={12} lg={3}>
-            {documents.map((d, index) => {
-              return (
-                <Box sx={{ my: 2 }} key={index}>
-                  <LabeledTextField label="Type" text={d.type} />
-                  <LabeledTextField label="URL">
-                    {d.url ? (
-                      <ExternalLink href={d.url}>Document Link</ExternalLink>
-                    ) : (
-                      <Typography variant="h4" color="error">
-                        Invalid URL
-                      </Typography>
-                    )}
-                  </LabeledTextField>
-                  <LabeledTextField
-                    label="Upload Date"
-                    text={new Date(d.createdAt).toLocaleDateString()}
-                  />
-                </Box>
-              );
-            })}
-          </Grid>
+        <Grid container spacing={gridSpacing} direction="row">
+          {documents.map((d, index) => {
+            return (
+              <Grid item xs={12} lg={3} sx={{ my: 2 }} key={index}>
+                <LabeledTextField label="Type" text={d.type} />
+                <LabeledTextField label="URL">
+                  {d.url ? (
+                    <ExternalLink href={d.url}>Document Link</ExternalLink>
+                  ) : (
+                    <Typography variant="h4" color="error">
+                      Invalid URL
+                    </Typography>
+                  )}
+                </LabeledTextField>
+                <LabeledTextField
+                  label="Upload Date"
+                  text={new Date(d.createdAt).toLocaleDateString()}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </Grid>
     </Grid>
