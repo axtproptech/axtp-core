@@ -13,9 +13,9 @@
   ],
   "scripts": {
     "push": "prisma db push",
-    "request-deploy:stage": "pscale dr create rest-core stage",
-    "request-deploy:prod": "pscale dr create rest-core stage --deploy-to main",
-    "deploy": "pscale dr deploy rest-core",
+    "request-deploy:stage": "pscale dr create axt-core stage",
+    "request-deploy:prod": "pscale dr create axt-core stage --deploy-to main",
+    "deploy": "pscale dr deploy axt-core",
     "generate": "prisma generate",
     "prebuild": "npm run generate",
     "build": "tsup",

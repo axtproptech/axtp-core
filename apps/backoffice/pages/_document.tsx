@@ -6,10 +6,10 @@ interface Props {}
 export default class MyDocument extends Document<Props> {
   render() {
     return (
-      <Html data-theme="luxury">
+      <Html>
         <Head>
           {/* PWA primary color */}
-          <meta name="theme-color" content="#000000" />
+          <meta name="theme-color" content="#FFFFFF" />
 
           <link
             rel="stylesheet"
@@ -17,7 +17,7 @@ export default class MyDocument extends Document<Props> {
           />
 
           {/* PWA SETUP */}
-          <meta name="application-name" content="AXT PropTech Wallet" />
+          <meta name="application-name" content="AXT PropTech Backoffice" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta
             name="apple-mobile-web-app-status-bar-style"
@@ -25,13 +25,13 @@ export default class MyDocument extends Document<Props> {
           />
           <meta
             name="apple-mobile-web-app-title"
-            content="AXT PropTech Wallet"
+            content="AXT PropTech Backoffice"
           />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
-          <meta name="msapplication-TileColor" content="#000000" />
+          <meta name="msapplication-TileColor" content="#FFFFFF" />
           <meta name="msapplication-tap-highlight" content="no" />
-          <meta name="theme-color" content="#000000" />
+          <meta name="theme-color" content="#FFFFFF" />
 
           <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
           <link
@@ -46,7 +46,6 @@ export default class MyDocument extends Document<Props> {
             sizes="16x16"
             href="/icons/favicon-16x16.png"
           />
-          <link rel="manifest" href="/manifest.json" />
           <link rel="shortcut icon" href="/favicon.ico" />
         </Head>
         <body>

@@ -3,7 +3,6 @@ import { ApiHandler } from "@/bff/types/apiHandler";
 import { notFound, badRequest } from "@hapi/boom";
 
 import { object, string, ValidationError } from "yup";
-import { sanitizeUrl } from "@braintree/sanitize-url";
 import { asFullCustomerResponse } from "../../../pages/api/admin/customers/asFullCustomerResponse";
 
 let customerRequestSchema = object({ cuid: string() });

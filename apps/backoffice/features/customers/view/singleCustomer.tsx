@@ -212,8 +212,18 @@ const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
             <LabeledTextField label="Phone Number" text={customer.phone1} />
             <LabeledTextField label="Email" text={customer.email1} />
             <LabeledTextField
-              label="Date of Birth"
-              text={new Date(customer.dateOfBirth).toLocaleDateString()}
+              label="Date and Place of Birth"
+              text={`${new Date(customer.dateOfBirth).toLocaleDateString()}, ${
+                customer.placeOfBirth
+              }`}
+            />
+            <LabeledTextField
+              label="Nationality"
+              text={`${customer.nationality}`}
+            />
+            <LabeledTextField
+              label="Mother's Name"
+              text={`${customer.firstNameMother} ${customer.lastNameMother}`}
             />
             <LabeledTextField
               label="Verification Level"

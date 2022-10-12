@@ -9,7 +9,6 @@ import {
 const AnswerIndex = {
   Name: 1,
   Email: 3,
-  Cpf: 4,
   BirthDate: 5,
   BirthPlace: 6,
   Occupation: 7,
@@ -18,6 +17,8 @@ const AnswerIndex = {
   DocumentType: 11,
   Documents: 12,
   Phone: 16,
+  MothersName: 17,
+  Cpf: 18,
 };
 
 export class JotFormSubmissionParser {
@@ -52,9 +53,15 @@ export class JotFormSubmissionParser {
     }) as AnswerFullname;
   }
 
+  get mothersName() {
+    return (this.answer(AnswerIndex.MothersName) || {
+      first: "",
+      last: "",
+    }) as AnswerFullname;
+  }
+
   get birthDate() {
     // validate and > 18
-
     const dateTime = this.answer(AnswerIndex.BirthDate) as AnswerDateTime;
     return dateTime ? new Date(dateTime.datetime) : new Date(0);
   }

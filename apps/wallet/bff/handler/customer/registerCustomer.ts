@@ -44,6 +44,8 @@ export const registerCustomer: HandlerFunction = async (req, res) => {
       data: {
         firstName: answers.fullName.first,
         lastName: answers.fullName.last,
+        firstNameMother: answers.mothersName.first,
+        lastNameMother: answers.mothersName.last,
         email1: answers.email,
         cpfCnpj: answers.cpf,
         dateOfBirth: answers.birthDate,

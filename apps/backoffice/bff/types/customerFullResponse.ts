@@ -48,6 +48,8 @@ export interface CustomerFullResponse {
   email1: string;
   email2: string | null;
   firstName: string;
+  firstNameMother: string;
+  lastNameMother: string;
   id: number;
   isActive: boolean;
   isBlocked: boolean;

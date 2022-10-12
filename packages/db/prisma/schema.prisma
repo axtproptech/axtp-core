@@ -27,6 +27,8 @@ model Customer {
   updatedAt          DateTime               @updatedAt
   firstName          String
   lastName           String
+  firstNameMother    String                 @default("")
+  lastNameMother     String                 @default("")
   dateOfBirth        DateTime
   placeOfBirth       String
   nationality        String?
