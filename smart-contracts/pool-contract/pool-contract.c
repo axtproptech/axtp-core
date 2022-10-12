@@ -1,6 +1,13 @@
+/**
+This contract must be pre-configured, before being deployed:
+
+1. Approver Account IDs
+2. AXTC_TOKEN_ID - i.e. the token must be issued before this contract can be deployed
+
+*/
 #define VERSION 1.0
-#define SIMULATOR
-// #define TESTNET
+// #define SIMULATOR
+#define TESTNET
 // #define MAINNET
 
 #program name AXTPoolContract
@@ -15,12 +22,11 @@
     #define AXTC_TOKEN_ID 100
 #endif
 #ifdef TESTNET
-// TO DO
     #define APPROVER_1 3549690777743760998
     #define APPROVER_2 7473730462792140210
     #define APPROVER_3 5757380649245251466
     #define APPROVER_4 10746331379201355428
-    #define AXTC_TOKEN_ID 9224329060507884640
+    #define AXTC_TOKEN_ID 3561373642152666581
 #endif
 #ifdef MAINNET
 // TO DO

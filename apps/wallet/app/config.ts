@@ -32,7 +32,7 @@ export const Config = {
     PoolContractIds: fromArray(process.env.NEXT_PUBLIC_AXTP_CONTRACT_IDS || ""),
   },
   Tokens: {
-    AXT: process.env.NEXT_PUBLIC_AXT_TOKEN_ID || "",
+    AXTC: process.env.NEXT_PUBLIC_AXTC_TOKEN_ID || "",
     AXTPs: fromArray(process.env.NEXT_PUBLIC_AXTP_TOKEN_IDS || ""),
   },
 };

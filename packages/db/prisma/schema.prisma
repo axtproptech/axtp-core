@@ -42,12 +42,30 @@ model Customer {
   isBlocked          Boolean                @default(false)
   documents          Document[]
   addresses          Address[]
+  bankInformation    BankInformation[]
   blockchainAccounts BlockchainAccount[]
   verificationLevel  VerificationLevel      @default(NotVerified)
   verificationResult VerificationResult?
   termsOfUse         TermsOfUseOnCustomer[]
 
   @@index([cuid, lastName, email1, cpfCnpj])
+}
+
+enum BankInformationType {
+    Pix
+    Iban
+}
+
+model BankInformation {
+    id           Int @id @default(autoincrement())
+    createdAt    DateTime               @default(now())
+    updatedAt    DateTime               @updatedAt
+    customer     Customer       @relation(fields: [customerId], references: [id])
+    customerId   Int
+    type         BankInformationType
+    identifier   String  @unique // can be pix or iban
+    isDefault    Boolean @default(true)
+    @@index([identifier])
 }
 
 model TermsOfUseOnCustomer {

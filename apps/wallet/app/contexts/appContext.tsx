@@ -29,7 +29,7 @@ export interface AppContextType {
 const config: AppContextType = {
   IsMobile: isMobile,
   IsClientSide: isClientSide(),
-  AXTTokenId: Config.Tokens.AXT,
+  AXTTokenId: Config.Tokens.AXTC,
   AXTPoolTokenIds: Config.Tokens.AXTPs,
   JotFormId: Config.JotForm.Id,
   KycService: new KycService(),

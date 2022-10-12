@@ -82,9 +82,9 @@ export class PoolContractService {
       const poolIds = await ledger.contract.getAllContractIds({
         machineCodeHash: Config.PoolContract.CodeHash,
       });
-      const promises = poolIds.atIds.map((poolId) =>
-        this.with(poolId).readContractData()
-      );
+      const promises = poolIds.atIds
+        .filter((poolId) => poolId !== Config.PoolContract.OriginId)
+        .map((poolId) => this.with(poolId).readContractData());
       return Promise.all(promises);
     });
   }

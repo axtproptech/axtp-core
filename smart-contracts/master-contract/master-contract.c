@@ -1,6 +1,6 @@
 #define VERSION 1
 #define SIMULATOR
-// #define TESTNET
+#define TESTNET
 // #define MAINNET
 
 #program name AXTMasterContract

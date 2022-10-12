@@ -13,7 +13,6 @@ export const useLedgerService = () => {
     if (!publicKey || !nodeHost || !wallet) {
       return null;
     }
-    console.debug("Using following Signum Host:", nodeHost);
     return new LedgerService(nodeHost, publicKey, wallet);
   }, [publicKey, nodeHost, wallet]);
 

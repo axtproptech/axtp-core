@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getSystemTheme } from "@/app/getSystemTheme";
+import { Config } from "@/app/config";
 
 export interface SnackBarState {
   label: string;
@@ -25,7 +26,7 @@ const initialState: AppState = {
   isOpenWalletWrongNetworkModal: false,
   isOpenSignTransactionModal: false,
   snackBar: { label: "", severity: "" },
-  nodeHost: "",
+  nodeHost: Config.Signum.DefaultNode,
   isWalletConnected: false,
   isLeftDrawerOpened: false,
 };

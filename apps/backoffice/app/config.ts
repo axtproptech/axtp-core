@@ -13,6 +13,9 @@ const toArray = (csv: string): string[] => csv.split(",");
 export const Config = {
   Signum: {
     IsTestnet: toBoolean(process.env.NEXT_PUBLIC_SIGNUM_IS_TESTNET || "false"),
+    DefaultNode:
+      process.env.NEXT_PUBLIC_SIGNUM_DEFAULT_HOST ||
+      "https://europe3.testnet.signum.network",
     Explorer:
       process.env.NEXT_PUBLIC_SIGNUM_EXPLORER ||
       "https://t-chain.signum.network/",
@@ -58,9 +61,10 @@ export const Config = {
   },
   PoolContract: {
     LowBalanceThreshold: Amount.fromSigna(2),
+    OriginId: process.env.NEXT_PUBLIC_CONTRACT_POOL_ORIGIN_ID || "",
     Reference: process.env.NEXT_PUBLIC_CONTRACT_POOL_REF || "",
     CodeHash:
-      process.env.NEXT_PUBLIC_CONTRACT_POOL_CODEHASH || "17139226199807531405",
+      process.env.NEXT_PUBLIC_CONTRACT_POOL_CODEHASH || "17934315410939870781",
     CreationCosts:
       process.env.NEXT_PUBLIC_CONTRACT_POOL_CREATION_COSTS || "0.06",
     Basename: process.env.NEXT_PUBLIC_CONTRACT_POOL_NAME || "AXTPoolContract",
