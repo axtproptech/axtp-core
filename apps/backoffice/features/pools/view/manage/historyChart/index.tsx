@@ -21,8 +21,8 @@ export const HistoryChart = () => {
   const data = useMemo(() => {
     if (!transactions.length) return [];
 
-    let currentBalanceQNT = toStableCoinQuantity(token.quantity);
-    let history: DataPoint[] = [[Date.now(), parseFloat(token.quantity)]];
+    let currentBalanceQNT = toStableCoinQuantity(token.balance);
+    let history: DataPoint[] = [[Date.now(), parseFloat(token.balance)]];
     for (let tx of transactions) {
       if (
         tx.type === TransactionType.Asset &&

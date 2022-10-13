@@ -1,37 +1,62 @@
-import { IconFlame } from "@tabler/icons";
-import { Box, Typography } from "@mui/material";
+import { ActionCard } from "@/app/components/cards";
+import { IconSend } from "@tabler/icons";
 import { Controller, useForm } from "react-hook-form";
+import { Box, Typography } from "@mui/material";
 import {
-  NumericFormat,
   NumberFormatValues,
+  NumericFormat,
   numericFormatter,
 } from "react-number-format";
-import { TextInput } from "@/app/components/inputs";
+import { TextInput, SelectInput, SelectOption } from "@/app/components/inputs";
+import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
+import { useEffect, useMemo, useState } from "react";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
+import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { toStableCoinQuantity } from "@/app/tokenQuantity";
 import { useTheme } from "@mui/material/styles";
-import { useMasterContract } from "@/app/hooks/useMasterContract";
-import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
-import { useEffect, useState } from "react";
-import { ActionCard } from "@/app/components/cards";
+import { useAppSelector } from "@/states/hooks";
+import { selectAllPools } from "@/app/states/poolsState";
 
 type FormValues = {
   amount: number;
+  pool: string;
 };
 
-export const BurnActionCard = () => {
+export const SendToPoolActionCard = () => {
   const theme = useTheme();
-  // @ts-ignore
-  const { control, reset } = useForm<FormValues>({ amount: 0 });
+  const { control, reset, watch } = useForm<FormValues>({
+    defaultValues: {
+      amount: 0,
+      pool: "0",
+    },
+  });
   const [error, setError] = useState("");
   const [floatAmount, setFloatAmount] = useState(0.0);
   const { execute, isExecuting, transactionId } = useLedgerAction();
+  const pools = useAppSelector(selectAllPools);
   const { token } = useMasterContract();
+  const tokenName = token.name.toUpperCase();
 
-  const handleOnBurnAction = () => {
+  const pool = watch("pool");
+
+  const handleOnSendAction = () => {
     const amountQuantity = toStableCoinQuantity(floatAmount.toString(10));
-    execute((service) => service.masterContract.requestBurn(amountQuantity));
+    const poolId = pools[Number(pool)].poolId;
+    execute((service) =>
+      service.masterContract.requestSendToPool(amountQuantity, poolId)
+    );
   };
+
+  const poolOptions = useMemo(() => {
+    if (!pools) return [];
+
+    return pools.map((p, index) => {
+      return {
+        value: index,
+        label: p.token.name,
+      } as SelectOption;
+    });
+  }, [pools]);
 
   useEffect(() => {
     if (!transactionId) return;
@@ -46,38 +71,49 @@ export const BurnActionCard = () => {
     if (values.floatValue !== undefined && values.floatValue <= MinimumValue) {
       return setError(`Value must be greater than ${MinimumValue}`);
     }
-
-    if (
-      values.floatValue !== undefined &&
-      values.floatValue > parseFloat(token.balance)
-    ) {
+    const maxBalance = parseFloat(token.balance);
+    if (values.floatValue !== undefined && values.floatValue > maxBalance) {
       return setError(
-        `Value must less than ${numericFormatter(token.balance, {
+        `Value must be less than ${numericFormatter(token.balance, {
           decimalScale: 2,
         })}`
       );
     }
+
     if (values.floatValue !== undefined) {
       setFloatAmount(values.floatValue);
     }
     setError("");
   };
+
+  const canSubmit = !error && Number(pool) < pools.length && floatAmount > 0;
+
   return (
     <ActionCard
-      title="Suggest Liquidity Burning"
-      description="This action allows to lower the liquidity, e.g. when an interest holder sold his shares."
-      actionIcon={<IconFlame />}
-      actionLabel="Suggest Burning"
-      color="warning"
-      onClick={handleOnBurnAction}
+      title={`Suggest Send ${tokenName}`}
+      description="This action sends liquidity to a selected pool. This has to be done to prepare a distribution to token holders. Pending approvals will be overwritten by this action."
+      actionLabel="Suggest Send To Pool"
+      color="success"
+      actionIcon={<IconSend />}
+      onClick={handleOnSendAction}
       isLoading={isExecuting}
-      disabled={!!error}
+      disabled={!canSubmit}
     >
       <Box sx={{ width: "100%" }}>
         <Controller
           render={({ field }) => (
+            <SelectInput label="Select Pool" options={poolOptions} {...field} />
+          )}
+          name="pool"
+          control={control}
+          // @ts-ignore
+          variant="outlined"
+        />
+        <Box sx={{ py: 1 }} />
+        <Controller
+          render={({ field }) => (
             <NumericFormat
-              label={`Amount ${token.name.toUpperCase()}`}
+              label={`Amount ${tokenName}`}
               color="primary"
               decimalScale={2}
               // @ts-ignore
@@ -100,7 +136,7 @@ export const BurnActionCard = () => {
             value={token.balance}
             displayType="text"
             decimalScale={2}
-            suffix={` ${token.name}`}
+            suffix={` ${tokenName}`}
             fixedDecimalScale
             thousandSeparator
           />

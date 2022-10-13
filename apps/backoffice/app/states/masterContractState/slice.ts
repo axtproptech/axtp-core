@@ -11,7 +11,7 @@ const DefaultApprovalStatus: ApprovalStatus = {
 const DefaultTokenData: BasicTokenInfo = {
   name: "",
   id: "",
-  quantity: "0",
+  balance: "0",
   supply: "0",
 };
 

@@ -19,22 +19,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { selectMenuBadge } from "@/app/states/notificationsState";
 import { ChildrenProps } from "@/types/childrenProps";
-
-interface BadgedProps {
-  value: string;
-}
-
-const Badged: FC<BadgedProps & ChildrenProps> = ({ value, children }) => {
-  if (!value) {
-    return <>{children}</>;
-  }
-
-  return (
-    <Badge badgeContent={value} color="warning">
-      {children}
-    </Badge>
-  );
-};
+import { WithBadge } from "@/app/components/withBadge";
 
 interface Props {
   item: any;
@@ -85,7 +70,7 @@ export const NavItem: FC<Props> = ({ item, level }) => {
         }}
         selected={isActive}
       >
-        <Badged value={menuBadge}>
+        <WithBadge value={menuBadge}>
           <ListItemIcon sx={{ my: "auto", minWidth: !item?.icon ? 18 : 36 }}>
             {itemIcon}
           </ListItemIcon>
@@ -118,7 +103,7 @@ export const NavItem: FC<Props> = ({ item, level }) => {
               avatar={item.chip.avatar && <Avatar>{item.chip.avatar}</Avatar>}
             />
           )}
-        </Badged>
+        </WithBadge>
       </ListItemButton>
     </Link>
   );

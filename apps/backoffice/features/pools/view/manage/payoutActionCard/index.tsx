@@ -1,8 +1,7 @@
 import { ActionCard } from "@/app/components/cards";
-import { IconSeeding } from "@tabler/icons";
 import { Controller, useForm } from "react-hook-form";
 import { Box, Typography } from "@mui/material";
-import NumberFormat, { NumberFormatValues } from "react-number-format";
+import { NumericFormat, NumberFormatValues } from "react-number-format";
 import { TextInput } from "@/app/components/inputs";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { FC, useEffect, useState } from "react";
@@ -41,7 +40,7 @@ export const PayoutActionCard: FC<Props> = ({ poolId }) => {
       setError("");
     }
     reset();
-  }, [transactionId]);
+  }, [error, reset, transactionId]);
 
   const handleValueChange = (values: NumberFormatValues) => {
     const MinimumValue = 1;
@@ -70,11 +69,10 @@ export const PayoutActionCard: FC<Props> = ({ poolId }) => {
       <Box sx={{ width: "100%" }}>
         <Controller
           render={({ field }) => (
-            <NumberFormat
+            <NumericFormat
               label={`Amount ${token.name.toUpperCase()}`}
               color="primary"
               decimalScale={2}
-              allowEmptyFormatting={false}
               // @ts-ignore
               control={control}
               fixedDecimalScale={true}

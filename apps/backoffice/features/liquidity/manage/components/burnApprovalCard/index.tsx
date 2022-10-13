@@ -3,7 +3,7 @@ import { IconFlame, IconUserCheck } from "@tabler/icons";
 import { Box } from "@mui/material";
 import { ApprovalStepper } from "@/app/components/approvalStepper";
 import { ApprovalStatus } from "@/types/approvalStatus";
-import NumberFormat from "react-number-format";
+import { NumericFormat } from "react-number-format";
 import { useMemo } from "react";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
@@ -20,7 +20,7 @@ const getApprovalState = (status: ApprovalStatus, token: BasicTokenInfo) => {
       label: isBurningRequested ? (
         <div>
           Burning{" "}
-          <NumberFormat
+          <NumericFormat
             value={status.quantity}
             displayType="text"
             thousandSeparator

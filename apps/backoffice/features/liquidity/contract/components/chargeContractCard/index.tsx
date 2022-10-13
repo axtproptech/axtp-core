@@ -1,7 +1,7 @@
 import { IconRecharging } from "@tabler/icons";
 import { Box } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import NumberFormat from "react-number-format";
+import { NumericFormat } from "react-number-format";
 import { TextInput } from "@/app/components/inputs";
 import { Config } from "@/app/config";
 import { useState } from "react";
@@ -59,11 +59,10 @@ export const ChargeContractCard = () => {
       <Box sx={{ width: "100%" }}>
         <Controller
           render={({ field }) => (
-            <NumberFormat
+            <NumericFormat
               label={`Amount ${Config.Signum.TickerSymbol}`}
               color="primary"
               decimalScale={2}
-              allowEmptyFormatting={false}
               // @ts-ignore
               control={control}
               fixedDecimalScale={true}

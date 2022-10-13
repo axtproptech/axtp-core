@@ -7,7 +7,7 @@ import { SkeletonEarningCard } from "./skeletonEarningCard";
 import Link from "next/link";
 import { Animate } from "@/app/components/animation";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
-import NumberFormat from "react-number-format";
+import { NumericFormat } from "react-number-format";
 
 export const StableCoinCard = () => {
   const theme = useTheme();
@@ -58,7 +58,7 @@ export const StableCoinCard = () => {
                               mb: 0.75,
                             }}
                           >
-                            <NumberFormat
+                            <NumericFormat
                               value={token.supply}
                               displayType="text"
                               decimalScale={2}

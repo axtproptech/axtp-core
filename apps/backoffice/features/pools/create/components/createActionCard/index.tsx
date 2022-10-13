@@ -1,8 +1,8 @@
 import { ActionCard } from "@/app/components/cards";
-import { IconFlame, IconNewSection } from "@tabler/icons";
-import { Box, Stack, Typography } from "@mui/material";
+import { IconNewSection } from "@tabler/icons";
+import { Box, Stack } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import NumberFormat, { NumberFormatValues } from "react-number-format";
+import { NumberFormatValues, NumericFormat } from "react-number-format";
 import { TextInput } from "@/app/components/inputs";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
 import { toStableCoinQuantity } from "@/app/tokenQuantity";
@@ -123,11 +123,10 @@ export const CreateActionCard = () => {
         <FullBox>
           <Controller
             render={({ field }) => (
-              <NumberFormat
+              <NumericFormat
                 label="Amount of Shares"
                 color="primary"
                 decimalScale={0}
-                allowEmptyFormatting={false}
                 fixedDecimalScale
                 thousandSeparator
                 // @ts-ignore
@@ -151,11 +150,10 @@ export const CreateActionCard = () => {
         <FullBox>
           <Controller
             render={({ field }) => (
-              <NumberFormat
+              <NumericFormat
                 label={`Price per Share in ${token.name}`}
                 color="primary"
                 decimalScale={2}
-                allowEmptyFormatting={false}
                 fixedDecimalScale
                 thousandSeparator
                 // @ts-ignore
@@ -175,11 +173,10 @@ export const CreateActionCard = () => {
           />
         </FullBox>
         <FullBox>
-          <NumberFormat
+          <NumericFormat
             label={`Nominal Liquidity in ${token.name}`}
             color="primary"
             decimalScale={2}
-            allowEmptyFormatting={false}
             fixedDecimalScale
             thousandSeparator
             customInput={TextInput}

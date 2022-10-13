@@ -10,7 +10,6 @@ import {
   convertHexStringToDecString,
   convertStringToHexString,
 } from "@signumjs/util";
-import { PoolContractData } from "@/types/poolContractData";
 
 interface CreatePoolInstanceArgs {
   documentationUrl: string;

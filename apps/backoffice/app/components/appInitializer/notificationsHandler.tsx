@@ -24,7 +24,16 @@ function getMasterContractNotifications(
       icon: "approval",
       link: "/admin/liquidity",
       title: "Pending Burn Approval",
-      message: `There is a pending Liquidity Burning approval of ${masterContract.approvalStatusBurning.quantity} ${masterContract.token.name}for the Master Contract`,
+      message: `There is a pending Liquidity Burning approval of ${masterContract.approvalStatusBurning.quantity} ${masterContract.token.name} for the Master Contract`,
+    });
+  }
+
+  if (isApprovalRequested(masterContract.approvalStatusSendToPool)) {
+    notifications.push({
+      icon: "approval",
+      link: "/admin/liquidity",
+      title: "Pending Send Pool Approval",
+      message: `There is a pending Send to Pool Burning approval of ${masterContract.approvalStatusBurning.quantity} ${masterContract.token.name} for the Master Contract`,
     });
   }
 

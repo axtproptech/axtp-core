@@ -7,7 +7,7 @@ import {
   People as IconPeople,
 } from "@mui/icons-material";
 import { CardWrapperBlue } from "@/app/components/cards";
-import NumberFormat from "react-number-format";
+import { NumericFormat } from "react-number-format";
 // @ts-ignore
 import hashicon from "hashicon";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
@@ -26,8 +26,7 @@ interface Props {
 
 export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
   const masterContract = useMasterContract();
-
-  const stcTokenSymbol = masterContract.token.name;
+  const masterTokenSymbol = masterContract.token.name;
 
   const { poolId, paidDistribution, token, nominalLiquidity, balance } = data;
 
@@ -47,7 +46,7 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
   const performancePercent =
     ((nominalLiquidity + paidDistribution) / nominalLiquidity) * 100;
   const occupationPercent =
-    (parseInt(token?.quantity || "0") / parseInt(token?.supply || "0")) * 100;
+    (parseInt(token?.balance || "0") / parseInt(token?.supply || "0")) * 100;
 
   const isBalanceLow = balanceAmount.less(
     Config.PoolContract.LowBalanceThreshold
@@ -120,7 +119,7 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                         mb: 0.75,
                       }}
                     >
-                      <NumberFormat
+                      <NumericFormat
                         value={nominalLiquidity}
                         displayType="text"
                         decimalScale={2}
@@ -129,7 +128,7 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                       />
                     </Typography>
                   </Tooltip>
-                  <Typography>{stcTokenSymbol}</Typography>
+                  <Typography>{masterTokenSymbol}</Typography>
                 </Stack>
                 <Stack
                   direction="row"
@@ -147,14 +146,14 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                     &nbsp;
                     <Tooltip arrow title="Paid Distribution">
                       <Typography>
-                        <NumberFormat
+                        <NumericFormat
                           value={paidDistribution}
                           displayType="text"
                           decimalScale={2}
                           fixedDecimalScale
                           thousandSeparator
                         />{" "}
-                        {stcTokenSymbol}
+                        {masterTokenSymbol}
                       </Typography>
                     </Tooltip>
                   </Stack>
@@ -167,7 +166,7 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                     &nbsp;
                     <Tooltip arrow title="Relative Valuation after Payouts">
                       <Typography>
-                        <NumberFormat
+                        <NumericFormat
                           value={performancePercent}
                           displayType="text"
                           decimalScale={2}
@@ -195,8 +194,8 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                     &nbsp;
                     <Tooltip arrow title="Token Holders and Token Maximum">
                       <Typography>
-                        {`${token.quantity}/${token.supply}`} (
-                        <NumberFormat
+                        {`${token.balance}/${token.supply}`} (
+                        <NumericFormat
                           value={occupationPercent}
                           displayType="text"
                           decimalScale={2}

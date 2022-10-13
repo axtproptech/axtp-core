@@ -18,7 +18,7 @@ export abstract class GenericContractService {
       return Promise.resolve({
         name: "",
         id: "0",
-        quantity: "0",
+        balance: "0",
         supply: "0",
       });
     }
@@ -35,17 +35,17 @@ export abstract class GenericContractService {
     const assetBalance =
       accountInfo.assetBalances &&
       accountInfo.assetBalances.find(({ asset }) => tokenId === asset);
-    let quantity = "0";
+    let balance = "0";
     if (assetBalance) {
-      quantity = fromQuantity(assetBalance.balanceQNT, assetInfo.decimals);
+      balance = fromQuantity(assetBalance.balanceQNT, assetInfo.decimals);
     }
     // TODO: adjust signumjs with new quantityCirculatingQNT
     // @ts-ignore
-    const { name, asset, quantityCirculatingQNT } = assetInfo;
+    const { name, asset: id, quantityCirculatingQNT } = assetInfo;
     return {
       name,
-      id: asset,
-      quantity,
+      id,
+      balance,
       supply: toStableCoinAmount(quantityCirculatingQNT),
     };
   }

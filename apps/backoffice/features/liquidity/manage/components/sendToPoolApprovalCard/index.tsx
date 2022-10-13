@@ -1,5 +1,5 @@
 import { ActionCard } from "@/app/components/cards";
-import { IconSeeding, IconUserCheck } from "@tabler/icons";
+import { IconSend, IconUserCheck } from "@tabler/icons";
 import { Box } from "@mui/material";
 import { ApprovalStepper } from "@/app/components/approvalStepper";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
@@ -11,14 +11,16 @@ import { SucceededTransactionSection } from "@/app/components/sections/succeeded
 import { asRSAddress } from "@/app/asRSAddress";
 import { useAccount } from "@/app/hooks/useAccount";
 import { BasicTokenInfo } from "@/types/basicTokenInfo";
+import { useAppSelector } from "@/states/hooks";
+import { selectPoolContractState } from "@/app/states/poolsState";
 
 const getApprovalState = (status: ApprovalStatus, token: BasicTokenInfo) => {
-  const isMintingRequested = parseInt(status.quantity, 10) > 0;
+  const isSendingRequested = parseInt(status.quantity, 10) > 0;
   return [
     {
-      label: isMintingRequested ? (
+      label: isSendingRequested ? (
         <div>
-          Minting{" "}
+          Sending{" "}
           <NumericFormat
             value={status.quantity}
             displayType="text"
@@ -31,8 +33,8 @@ const getApprovalState = (status: ApprovalStatus, token: BasicTokenInfo) => {
       ) : (
         "No Pending Request"
       ),
-      icon: <IconSeeding />,
-      completed: isMintingRequested,
+      icon: <IconSend />,
+      completed: isSendingRequested,
     },
     {
       label: status.approvedAccounts[0]
@@ -58,33 +60,40 @@ const getApprovalState = (status: ApprovalStatus, token: BasicTokenInfo) => {
   ];
 };
 
-export const MintApprovalCard = () => {
+export const SendToPoolApprovalCard = () => {
   const { accountId } = useAccount();
-  const { approvalStatusMinting, token } = useMasterContract();
+  const { approvalStatusSendToPool, token, currentSendPoolAddress } =
+    useMasterContract();
   const { execute, isExecuting, transactionId } = useLedgerAction();
+  const currentPool = useAppSelector(
+    selectPoolContractState(currentSendPoolAddress)
+  );
 
   const approvalState = useMemo(() => {
-    return getApprovalState(approvalStatusMinting, token);
-  }, [approvalStatusMinting, token]);
+    return getApprovalState(approvalStatusSendToPool, token);
+  }, [approvalStatusSendToPool, token]);
 
   const canApprove = useMemo(() => {
     if (!accountId) return false;
-    const isMintingRequested = parseInt(approvalStatusMinting.quantity, 10) > 0;
+    const isSendingRequested =
+      parseInt(approvalStatusSendToPool.quantity, 10) > 0;
     const hasApprovedAlready =
-      approvalStatusMinting.approvedAccounts.includes(accountId);
-    return isMintingRequested && !hasApprovedAlready;
-  }, [approvalStatusMinting, accountId]);
+      approvalStatusSendToPool.approvedAccounts.includes(accountId);
+    return isSendingRequested && !hasApprovedAlready;
+  }, [approvalStatusSendToPool, accountId]);
 
   const handleOnApproveAction = () => {
-    execute((service) => service.masterContract.approveMint());
+    execute((service) => service.masterContract.approveSendToPool());
   };
 
   return (
     <ActionCard
-      title="Approve Liquidity Minting"
-      description="Here you can see if there's a pending minting request and its current approval state"
+      title={`Approve Sending to Pool ${
+        currentPool ? currentPool.token.name : ""
+      }`}
+      description="Here you can see if there's a pending send request and its current approval state"
       actionIcon={<IconUserCheck />}
-      actionLabel="Approve Minting"
+      actionLabel="Approve Sending"
       onClick={handleOnApproveAction}
       isLoading={isExecuting}
       disabled={!canApprove}

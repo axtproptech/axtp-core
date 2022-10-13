@@ -33,6 +33,7 @@ export class MasterContractService extends GenericContractService {
         this.getTokenData(contractDataView.getTokenId()),
         ledger.account.getAccountTransactions({ accountId: this.contractId() }),
       ]);
+
       return {
         balance: Amount.fromPlanck(contract.balanceNQT).getSigna(),
         token,

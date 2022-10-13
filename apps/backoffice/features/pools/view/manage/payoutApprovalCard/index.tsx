@@ -5,7 +5,7 @@ import { ApprovalStepper } from "@/app/components/approvalStepper";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { useMemo } from "react";
 import { ApprovalStatus } from "@/types/approvalStatus";
-import NumberFormat from "react-number-format";
+import { NumericFormat } from "react-number-format";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { asRSAddress } from "@/app/asRSAddress";
@@ -20,7 +20,7 @@ const getApprovalState = (status: ApprovalStatus, token: BasicTokenInfo) => {
       label: isPayoutRequested ? (
         <div>
           Pending Payout{" "}
-          <NumberFormat
+          <NumericFormat
             value={status.quantity}
             displayType="text"
             thousandSeparator

@@ -6,7 +6,7 @@ import { Avatar, Box, Grid, Stack, Typography } from "@mui/material";
 import { IconCash, IconFlame, IconSeeding } from "@tabler/icons";
 import { CardWrapperDark } from "@/app/components/cards";
 import { SkeletonLiquidityCard } from "./skeletonLiquidityCard";
-import NumberFormat from "react-number-format";
+import { NumericFormat } from "react-number-format";
 
 interface Props {
   isLoading: boolean;
@@ -65,7 +65,7 @@ export const LiquidityCard: FC<Props> = ({
                           mb: 0.75,
                         }}
                       >
-                        <NumberFormat
+                        <NumericFormat
                           value={liquidity}
                           displayType="text"
                           decimalScale={2}
