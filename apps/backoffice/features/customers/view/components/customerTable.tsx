@@ -8,13 +8,18 @@ import {
   GridRenderCellParams,
   GridRowParams,
 } from "@mui/x-data-grid";
-import { Grid } from "@mui/material";
+import { Grid, Stack, Tooltip, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { VerificationChip } from "@/app/components/chips/verificationChip";
 import { ActivationChip } from "@/app/components/chips/activationChip";
 import { BlockingChip } from "@/app/components/chips/blockingChip";
 import { TextInput } from "@/app/components/inputs";
 import { cpf } from "cpf-cnpj-validator";
+import { ActionButton } from "@/app/components/buttons/actionButton";
+import { IconClipboard } from "@tabler/icons";
+import { useSnackbar } from "@/app/hooks/useSnackbar";
+import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
+import { Address } from "@signumjs/core";
 
 const renderCreatedAt = (params: GridRenderCellParams<string>) => {
   const createdAt = params.value;
@@ -36,6 +41,53 @@ const renderActive = (params: GridRenderCellParams<boolean>) => {
 const renderBlocked = (params: GridRenderCellParams<boolean>) => {
   return <BlockingChip isBlocked={Boolean(params.value)} alwaysShow />;
 };
+
+const AccountAction = ({ publicKey }: { publicKey: string }) => {
+  const { showSuccess } = useSnackbar();
+  const accountId = useMemo(() => {
+    if (!publicKey) return null;
+    try {
+      return Address.create(publicKey).getNumericId();
+    } catch (e) {
+      return null;
+    }
+  }, [publicKey]);
+
+  if (!accountId) {
+    return (
+      <Tooltip title={"This account has no blockchain account yet"}>
+        <Typography>Missing Key</Typography>
+      </Tooltip>
+    );
+  }
+
+  const handleOnCLick = async (e: React.SyntheticEvent) => {
+    try {
+      e.stopPropagation();
+      await navigator.clipboard.writeText(publicKey);
+      showSuccess("Copied Key successfully");
+    } catch (err: any) {}
+  };
+
+  return (
+    <Stack direction="row" alignItems="center">
+      <ActionButton
+        actionLabel={"Key"}
+        actionIcon={<IconClipboard />}
+        onClick={handleOnCLick}
+      />
+      <Tooltip title="Open Account in Blockchain Explorer">
+        <div>
+          <OpenExplorerButton id={accountId} type="address" label="" />
+        </div>
+      </Tooltip>
+    </Stack>
+  );
+};
+
+const renderAccount = (params: GridRenderCellParams<string>) => (
+  <AccountAction publicKey={params.value || ""} />
+);
 
 const columns: GridColDef[] = [
   { field: "createdAt", headerName: "Applied On", renderCell: renderCreatedAt },
@@ -61,6 +113,13 @@ const columns: GridColDef[] = [
     headerName: "Blocked",
     flex: 1,
     renderCell: renderBlocked,
+  },
+  {
+    field: "blockchainAccount",
+    headerName: "Public Key",
+    flex: 1,
+    sortable: false,
+    renderCell: renderAccount,
   },
 ];
 
@@ -89,6 +148,7 @@ export const CustomerTable = () => {
         verificationLevel,
         isBlocked,
         isActive,
+        blockchainAccounts,
       }) => {
         return {
           id: cuid,
@@ -101,6 +161,9 @@ export const CustomerTable = () => {
           verificationLevel,
           isBlocked,
           isActive,
+          blockchainAccount: blockchainAccounts.length
+            ? blockchainAccounts[0].publicKey
+            : null,
         };
       }
     );

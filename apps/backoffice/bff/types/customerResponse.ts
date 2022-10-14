@@ -1,3 +1,5 @@
+import { BlockchainAccountResponse } from "@/bff/types/blockchainAccountResponse";
+
 export interface CustomerResponse {
   cpfCnpj: string;
   createdAt: string;
@@ -17,4 +19,5 @@ export interface CustomerResponse {
   profession: string;
   updatedAt: string;
   verificationLevel: string;
+  blockchainAccounts: BlockchainAccountResponse[];
 }

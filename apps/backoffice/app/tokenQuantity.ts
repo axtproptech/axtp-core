@@ -14,5 +14,4 @@ export const toStableCoinQuantity = (qnt: string | number) =>
   toQuantity(qnt, 2);
 
 export const toPoolShareAmount = (qnt: string | number) => fromQuantity(qnt, 0);
-export const toPoolShareQuantity = (qnt: string | number) =>
-  fromQuantity(qnt, 0);
+export const toPoolShareQuantity = (qnt: string | number) => toQuantity(qnt, 0);

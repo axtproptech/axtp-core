@@ -1,13 +1,15 @@
-import { FC, ReactNode } from "react";
-import { Box, Button, CircularProgress } from "@mui/material";
+import { FC, ReactNode, MouseEvent } from "react";
+import { Box, Button, CircularProgress, SxProps } from "@mui/material";
 
 export interface ActionButtonProps {
   actionLabel: string;
   actionIcon?: ReactNode;
-  onClick: () => void;
+  onClick: (e: React.SyntheticEvent) => void;
   color?: any;
   disabled?: boolean;
   isLoading?: boolean;
+  sx?: SxProps;
+  sxButton?: SxProps;
 }
 
 export const ActionButton: FC<ActionButtonProps> = ({
@@ -17,14 +19,17 @@ export const ActionButton: FC<ActionButtonProps> = ({
   onClick,
   isLoading = false,
   disabled = false,
+  sx = {},
+  sxButton = {},
 }) => (
-  <Box sx={{ display: "flex", flexDirection: "row" }}>
+  <Box sx={{ display: "flex", flexDirection: "row", ...sx }}>
     {isLoading ? (
       <Button
         variant="contained"
         color={color}
         onClick={onClick}
         disabled={true}
+        sx={sxButton}
       >
         <CircularProgress size={24} />
         &nbsp;{actionLabel}
@@ -35,6 +40,7 @@ export const ActionButton: FC<ActionButtonProps> = ({
         color={color}
         onClick={onClick}
         disabled={disabled}
+        sx={sxButton}
       >
         {actionIcon}&nbsp;{actionLabel}
       </Button>

@@ -3,7 +3,11 @@ import { withError } from "./withError";
 import { Amount } from "@signumjs/util";
 import { InputValidationService } from "@/app/services/inputValidationService";
 import { ConfirmedTransaction } from "@signumjs/wallets";
-import { fromQuantity, toStableCoinAmount } from "@/app/tokenQuantity";
+import {
+  fromQuantity,
+  toQuantity,
+  toStableCoinAmount,
+} from "@/app/tokenQuantity";
 import { BasicTokenInfo } from "@/types/basicTokenInfo";
 
 export abstract class GenericContractService {
@@ -39,6 +43,7 @@ export abstract class GenericContractService {
     if (assetBalance) {
       balance = fromQuantity(assetBalance.balanceQNT, assetInfo.decimals);
     }
+
     // TODO: adjust signumjs with new quantityCirculatingQNT
     // @ts-ignore
     const { name, asset: id, quantityCirculatingQNT } = assetInfo;
@@ -46,7 +51,9 @@ export abstract class GenericContractService {
       name,
       id,
       balance,
-      supply: toStableCoinAmount(quantityCirculatingQNT),
+      supply: toQuantity(quantityCirculatingQNT, assetInfo.decimals).toString(
+        10
+      ),
     };
   }
 

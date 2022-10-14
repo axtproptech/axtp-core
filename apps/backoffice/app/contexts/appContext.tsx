@@ -16,6 +16,7 @@ export interface AppContextType {
     IsTestnet: boolean;
     Network: string;
     ExploreBaseUrl: string;
+    Prefix: string;
   };
   Platform: typeof Config.Platform;
 }
@@ -34,6 +35,7 @@ const config: AppContextType = {
     ExploreBaseUrl: Config.Signum.IsTestnet
       ? "https://t-chain.signum.network"
       : "https://chain.signum.network",
+    Prefix: Config.Signum.IsTestnet ? "TS" : "S",
   },
 };
 

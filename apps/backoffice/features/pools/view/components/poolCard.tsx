@@ -25,8 +25,6 @@ interface Props {
   showContractBalance?: boolean;
 }
 
-// FIXME: add pending/accumulated payout liquidity
-
 export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
   const masterContract = useMasterContract();
   const masterTokenSymbol = masterContract.token.name;
@@ -35,6 +33,7 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
     poolId,
     paidDistribution,
     token,
+    maxShareQuantity,
     nominalLiquidity,
     balance,
     masterToken,
@@ -54,10 +53,10 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
     }
   }, [balance]);
 
-  const performancePercent =
-    ((nominalLiquidity + paidDistribution) / nominalLiquidity) * 100;
+  const performanceAbsolute = grossMarketValue - nominalLiquidity;
+  const performancePercent = (grossMarketValue / nominalLiquidity) * 100 - 100;
   const occupationPercent =
-    (parseInt(token?.balance || "0") / parseInt(token?.supply || "0")) * 100;
+    (parseInt(token?.supply || "0") / (maxShareQuantity || 0)) * 100;
 
   const isBalanceLow = balanceAmount.less(
     Config.PoolContract.LowBalanceThreshold
@@ -66,8 +65,8 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
   return (
     <CardWrapperBlue border={false} content={false}>
       <Box sx={{ p: 2.25 }}>
-        <Grid container direction="column">
-          <Grid item>
+        <Grid container>
+          <Grid item style={{ width: "100%" }}>
             <Grid container justifyContent="space-between">
               <Grid item>
                 <Tooltip
@@ -115,18 +114,18 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                   </Tooltip>
                 )}
               </Grid>
-              <Grid item sx={{ zIndex: 1000 }}>
+              <Grid item>
                 <Tooltip arrow title="See Contract in blockchain explorer">
                   <div>
-                    <OpenExplorerButton id={poolId} type={"at"} label="" />
+                    <OpenExplorerButton id={poolId} type="address" label="" />
                   </div>
                 </Tooltip>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item>
+          <Grid item style={{ width: "100%" }}>
             <Grid container alignItems="center">
-              <Grid item>
+              <Grid item style={{ width: "100%" }}>
                 <Stack direction="row" spacing={2} alignItems="baseline">
                   <Tooltip arrow title="Current Balance">
                     <Typography
@@ -142,6 +141,40 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                   </Tooltip>
                   <Typography>{masterTokenSymbol}</Typography>
                 </Stack>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ mb: 1 }}
+                >
+                  <Tooltip arrow title="Valuation Initial X GMV">
+                    <Stack
+                      justifyContent="start"
+                      direction="row"
+                      alignItems="center"
+                    >
+                      <IconSpeed />
+                      &nbsp;
+                      <Typography
+                        color={performancePercent < 0 ? "error" : "lightgreen"}
+                        fontWeight="bold"
+                      >
+                        <Number value={performancePercent} suffix="%" />
+                      </Typography>
+                      &nbsp;
+                      <Typography>
+                        (
+                        <Number
+                          value={performanceAbsolute}
+                          suffix={masterTokenSymbol}
+                        />
+                        )
+                      </Typography>
+                    </Stack>
+                  </Tooltip>
+                </Stack>
+
                 <Stack
                   direction="row"
                   spacing={2}
@@ -181,19 +214,6 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                       </Typography>
                     </Tooltip>
                   </Stack>
-                  <Stack
-                    justifyContent="start"
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <IconSpeed />
-                    &nbsp;
-                    <Tooltip arrow title="Relative Valuation after Payouts">
-                      <Typography>
-                        <Number value={performancePercent} suffix="%" />
-                      </Typography>
-                    </Tooltip>
-                  </Stack>
                 </Stack>
                 <Stack
                   direction="row"
@@ -227,15 +247,13 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                     &nbsp;
                     <Tooltip arrow title="Token Holders and Token Maximum">
                       <Typography>
-                        {`${token.balance}/${token.supply}`} (
-                        <NumericFormat
+                        {`${token.supply}/${maxShareQuantity}`} (
+                        <Number
                           value={occupationPercent}
-                          displayType="text"
-                          decimalScale={2}
-                          fixedDecimalScale
-                          thousandSeparator
-                        />{" "}
-                        %)
+                          decimals={2}
+                          suffix="%"
+                        />
+                        )
                       </Typography>
                     </Tooltip>
                   </Stack>

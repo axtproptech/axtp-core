@@ -9,43 +9,11 @@ import { useSelector } from "react-redux";
 import { selectAllPools } from "@/app/states/poolsState";
 import { useAppSelector } from "@/states/hooks";
 
-// const mockedPools = [
-//   {
-//     id: "1",
-//     tokenSymbol: "PST0001",
-//     rate: 3000,
-//     maxTokenCount: 100,
-//     circulatingTokenCount: 32,
-//     pendingPayout: 15000,
-//     paid: 127500,
-//   },
-//   {
-//     id: "2",
-//     tokenSymbol: "PST0002",
-//     rate: 5000,
-//     maxTokenCount: 75,
-//     circulatingTokenCount: 73,
-//     pendingPayout: 0,
-//     paid: 87450,
-//   },
-//   {
-//     id: "3",
-//     tokenSymbol: "PST0003",
-//     rate: 12500,
-//     maxTokenCount: 15,
-//     circulatingTokenCount: 10,
-//     pendingPayout: 0,
-//     paid: 150000,
-//   },
-// ];
-
 const gridSpacing = Config.Layout.GridSpacing;
 
 export const AllPools = () => {
   const theme = useTheme();
   const pools = useAppSelector(selectAllPools);
-
-  console.log("AllPools", pools);
 
   return (
     <>

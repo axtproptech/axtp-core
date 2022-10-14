@@ -21,6 +21,7 @@ export interface MasterContractState {
 
 const initialState: MasterContractState = {
   masterContract: {
+    id: "",
     balance: "0",
     approvalStatusBurning: DefaultApprovalStatus,
     approvalStatusMinting: DefaultApprovalStatus,

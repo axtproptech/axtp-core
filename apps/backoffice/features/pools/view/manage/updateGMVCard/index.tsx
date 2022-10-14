@@ -1,47 +1,47 @@
-import { IconRecharging } from "@tabler/icons";
+import { IconRocket } from "@tabler/icons";
 import { Box, Typography, useTheme } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
 import { TextInput } from "@/app/components/inputs";
-import { Config } from "@/app/config";
 import { FC, useState } from "react";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
-import { Amount } from "@signumjs/util";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { ActionCard } from "@/app/components/cards";
 import { ConfirmedTransaction } from "@signumjs/wallets";
+import { useMasterContract } from "@/app/hooks/useMasterContract";
+import { toStableCoinQuantity } from "@/app/tokenQuantity";
 
 type FormValues = {
   amount: number;
 };
 
 interface Props {
-  onRecharge: (amount: Amount) => Promise<ConfirmedTransaction>;
+  onUpdate: (quantity: number) => Promise<ConfirmedTransaction>;
+  currentGMV: number;
 }
 
-export const ChargeContractCard: FC<Props> = ({ onRecharge }) => {
+export const UpdateGMVCard: FC<Props> = ({ onUpdate, currentGMV }) => {
   const theme = useTheme();
   const { ledgerService } = useLedgerService();
+  const { token } = useMasterContract();
   const { showError, showSuccess } = useSnackbar();
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [transactionId, setTransactionId] = useState("");
   const [floatAmount, setFloatAmount] = useState(0.0);
 
+  // @ts-ignore
   const { control, reset } = useForm<FormValues>({
     defaultValues: {
-      amount: 10,
+      amount: currentGMV,
     },
   });
 
   const handleValueChange = (values: NumberFormatValues) => {
-    const MinimumChargeValue = 1;
-    if (
-      values.floatValue !== undefined &&
-      values.floatValue <= MinimumChargeValue
-    ) {
-      return setError(`Value must be greater than ${MinimumChargeValue}`);
+    const MinimumValue = 1;
+    if (values.floatValue !== undefined && values.floatValue <= MinimumValue) {
+      return setError(`Value must be greater than ${MinimumValue}`);
     }
 
     if (values.floatValue !== undefined) {
@@ -49,19 +49,19 @@ export const ChargeContractCard: FC<Props> = ({ onRecharge }) => {
     }
   };
 
-  const handleOnRechargeAction = async () => {
+  const handleOnUpdateAction = async () => {
     if (!ledgerService) return;
 
     setIsSubmitting(true);
     setTransactionId("");
     try {
-      const value = Amount.fromSigna(floatAmount);
-      const tx = await onRecharge(value);
+      const value = toStableCoinQuantity(floatAmount);
+      const tx = await onUpdate(value);
       setTransactionId(tx.transactionId);
       reset();
-      showSuccess("Successfully charged contract");
+      showSuccess("Successfully updated GMV");
     } catch (e: any) {
-      showError(`Someting failed: ${e.message}`);
+      showError(`Something failed: ${e.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -69,18 +69,18 @@ export const ChargeContractCard: FC<Props> = ({ onRecharge }) => {
 
   return (
     <ActionCard
-      title="Charge Contract"
-      description="If a contract has not enough funds it stops during execution until it has sufficient funds again. With this action you can add more funds to the contract."
-      actionIcon={<IconRecharging />}
-      actionLabel="Charge Contract"
-      onClick={handleOnRechargeAction}
+      title="Update Gross Market Value (GMV)"
+      description="This action permits adjusting the Gross Market Value. This value expresses the value growth of the pools assets."
+      actionIcon={<IconRocket />}
+      actionLabel="Update GMV"
+      onClick={handleOnUpdateAction}
       isLoading={isSubmitting}
     >
       <Box sx={{ width: "100%" }}>
         <Controller
           render={({ field }) => (
             <NumericFormat
-              label={`Amount ${Config.Signum.TickerSymbol}`}
+              label={`Amount ${token.name}`}
               color="primary"
               decimalScale={2}
               // @ts-ignore

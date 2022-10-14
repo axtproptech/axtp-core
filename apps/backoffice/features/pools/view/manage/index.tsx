@@ -11,14 +11,17 @@ import { ChargeContractCard } from "@/app/components/cards";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { Amount } from "@signumjs/util";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { IconSend } from "@tabler/icons";
+import { IconRecharging, IconRocket, IconUsers } from "@tabler/icons";
 import { WithBadge } from "@/app/components/withBadge";
 import { useMemo, useState } from "react";
 import { Payments } from "@mui/icons-material";
-import { pools } from "@/app/components/layout/navigation/pools";
+import { UpdateGMVCard } from "@/features/pools/view/manage/updateGMVCard";
+import { SendShareToHolderCard } from "@/features/pools/view/manage/sendShareToHolderCard";
 
 enum PoolTabs {
   Payout = "payout",
+  UpdateGMV = "update-gmv",
+  SendToken = "send-token",
   Charge = "charge",
 }
 
@@ -32,12 +35,13 @@ export const ManagePool = () => {
   const poolData = useAppSelector(selectPoolContractState(poolId));
 
   const balanceAmount = useMemo(() => {
+    if (!poolData) return Amount.Zero();
     try {
       return Amount.fromSigna(poolData.balance);
     } catch (e) {
       return Amount.Zero();
     }
-  }, [poolData.balance]);
+  }, [poolData]);
 
   if (!poolData) return null;
 
@@ -56,6 +60,24 @@ export const ManagePool = () => {
       throw new Error("No Ledger Service instance available");
     }
     return ledgerService.poolContract.with(poolId).rechargeContract(amount);
+  }
+
+  function handleOnUpdateGMV(quantity: number) {
+    if (!ledgerService) {
+      throw new Error("No Ledger Service instance available");
+    }
+    return ledgerService.poolContract
+      .with(poolId)
+      .updateGrossMarketValue(quantity);
+  }
+
+  function handleOnSendToHolders(recipientId: string, quantity: number) {
+    if (!ledgerService) {
+      throw new Error("No Ledger Service instance available");
+    }
+    return ledgerService.poolContract
+      .with(poolId)
+      .sendShareToHolder(recipientId, quantity);
   }
 
   return (
@@ -87,7 +109,19 @@ export const ManagePool = () => {
               value={PoolTabs.Payout}
             />
             <Tab
-              icon={<IconSend />}
+              icon={<IconRocket />}
+              label="Update GMV"
+              iconPosition="start"
+              value={PoolTabs.UpdateGMV}
+            />
+            <Tab
+              icon={<IconUsers />}
+              label="Send Token"
+              iconPosition="start"
+              value={PoolTabs.SendToken}
+            />
+            <Tab
+              icon={<IconRecharging />}
               label={
                 <WithBadge color="error" value={needCharge ? " " : ""}>
                   Charge Contract
@@ -104,6 +138,26 @@ export const ManagePool = () => {
               </Grid>
               <Grid item xs={12} md={8}>
                 <PayoutApprovalCard poolId={poolId} />
+              </Grid>
+            </Grid>
+          </TabPanel>
+          <TabPanel value={PoolTabs.SendToken} sx={{ p: 0, pt: 1 }}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item xs={12} md={4}>
+                <SendShareToHolderCard
+                  onSend={handleOnSendToHolders}
+                  poolId={poolId}
+                />
+              </Grid>
+            </Grid>
+          </TabPanel>
+          <TabPanel value={PoolTabs.UpdateGMV} sx={{ p: 0, pt: 1 }}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item xs={12} md={4}>
+                <UpdateGMVCard
+                  onUpdate={handleOnUpdateGMV}
+                  currentGMV={poolData.grossMarketValue}
+                />
               </Grid>
             </Grid>
           </TabPanel>

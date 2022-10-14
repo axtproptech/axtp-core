@@ -84,7 +84,7 @@ export const LiquidityCard: FC<Props> = ({ isLoading }) => {
                     </Tooltip>
                   </Grid>
                   <Grid item sx={{ zIndex: 1000 }}>
-                    <OpenExplorerButton id={id} type={"at"} label="" />
+                    <OpenExplorerButton id={id} type="address" label="" />
                   </Grid>
                 </Grid>
               </Grid>

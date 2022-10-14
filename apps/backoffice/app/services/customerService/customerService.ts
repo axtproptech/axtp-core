@@ -18,6 +18,13 @@ export class CustomerService {
     this.http = HttpClientFactory.createHttpClient("/api/admin");
   }
 
+  async fetchCustomerByAccountId(accountId: string) {
+    const { response } = await this.http.get(
+      `/customers?accountId=${accountId}`
+    );
+    return response as CustomerResponse;
+  }
+
   async fetchCustomers(args?: FetchPendingCustomersArgs) {
     const params = args ? jsonToQueryString(args) : "";
     const { response } = await this.http.get(

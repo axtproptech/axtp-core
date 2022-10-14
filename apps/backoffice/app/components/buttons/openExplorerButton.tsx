@@ -6,7 +6,7 @@ import { FC } from "react";
 
 interface Props {
   id: string;
-  type: "tx" | "asset" | "at";
+  type: "tx" | "asset" | "at" | "address";
   label?: string;
 }
 

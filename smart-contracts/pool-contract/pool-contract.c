@@ -96,6 +96,10 @@ void main(void) {
         currentTX.quantityAXTP = getQuantity(currentTX.txId, poolTokenId);
         readMessage(currentTX.txId, 0, currentTX.message);
 
+        if(currentTX.quantityAXTP > 0){
+            // burn
+            sendQuantity(currentTX.quantityAXTP, poolTokenId, 0)
+        }
         switch (currentTX.message[0]) {
             case SEND_AXTP_TO_HOLDER:
                 SendAXTPToHolder(currentTX.message[1], currentTX.message[2]);
@@ -193,12 +197,12 @@ void SendAXTPToHolder(long holderId, long quantityAXTP) {
         return;
     }
 
-    if(getAssetBalance(poolTokenId) + quantityAXTP > poolTokenQuantity){
+    if(getAssetCirculating(poolTokenId) + quantityAXTP > poolTokenQuantity){
         messageBuffer[]="Not enough Pool Tokens left";
         sendMessage(messageBuffer, currentTX.sender);
         return;
     }
-    mintAsset(quantityAXTP, poolTokenId);
+    mintAsset(toMint, poolTokenId);
     sendQuantity(quantityAXTP, poolTokenId, holderId);
 }
 
