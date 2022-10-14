@@ -1,29 +1,53 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 import { useTheme } from "@mui/material/styles";
-import { Avatar, Box, Grid, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Chip,
+  Grid,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
-import { IconCash, IconFlame, IconSeeding } from "@tabler/icons";
+import { IconCash, IconFlame, IconSeeding, IconSend } from "@tabler/icons";
 import { CardWrapperDark } from "@/app/components/cards";
+import { Number } from "@/app/components/number";
 import { SkeletonLiquidityCard } from "./skeletonLiquidityCard";
-import { NumericFormat } from "react-number-format";
+import { useAppSelector } from "@/states/hooks";
+import { selectPoolContractState } from "@/app/states/poolsState";
+import { ExternalLink } from "@/app/components/links/externalLink";
+import { Config } from "@/app/config";
+import { useMasterContract } from "@/app/hooks/useMasterContract";
+// @ts-ignore
+import hashicon from "hashicon";
+import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
 
 interface Props {
   isLoading: boolean;
-  tokenSymbol: string;
-  liquidity: string;
-  burnLiquidity: string;
-  mintLiquidity: string;
 }
 
-export const LiquidityCard: FC<Props> = ({
-  burnLiquidity,
-  mintLiquidity,
-  liquidity,
-  tokenSymbol,
-  isLoading,
-}) => {
+export const LiquidityCard: FC<Props> = ({ isLoading }) => {
   const theme = useTheme();
+  const {
+    id,
+    approvalStatusMinting,
+    approvalStatusBurning,
+    approvalStatusSendToPool,
+    token,
+    currentSendPoolAddress,
+    balance,
+  } = useMasterContract();
+
+  const sendPool = useAppSelector(
+    selectPoolContractState(currentSendPoolAddress)
+  );
+
+  const iconUrl = useMemo(() => {
+    if (!token.id) return "";
+    return hashicon(token.id, { size: 32 }).toDataURL();
+  }, [token.id]);
 
   return (
     <>
@@ -36,20 +60,31 @@ export const LiquidityCard: FC<Props> = ({
               <Grid item>
                 <Grid container justifyContent="space-between">
                   <Grid item>
-                    <Avatar
-                      variant="rounded"
-                      sx={{
-                        // @ts-ignore
-                        ...theme.typography.commonAvatar,
-                        // @ts-ignore
-                        ...theme.typography.largeAvatar,
-                        // @ts-ignore
-                        backgroundColor: theme.palette.secondary[800],
-                        mt: 1,
-                      }}
+                    <Tooltip
+                      arrow
+                      title="AXTC Token - Click to open in blockchain explorer "
                     >
-                      <IconCash color={theme.palette.secondary.light} />
-                    </Avatar>
+                      <Chip
+                        sx={{ mr: 2 }}
+                        label={token.name.toUpperCase()}
+                        color="secondary"
+                        href={`${Config.Signum.Explorer}asset/${token.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        clickable
+                        component={"a"}
+                        avatar={
+                          <img
+                            src={iconUrl}
+                            alt={token.id}
+                            style={{ backgroundColor: "transparent" }}
+                          />
+                        }
+                      />
+                    </Tooltip>
+                  </Grid>
+                  <Grid item sx={{ zIndex: 1000 }}>
+                    <OpenExplorerButton id={id} type={"at"} label="" />
                   </Grid>
                 </Grid>
               </Grid>
@@ -65,15 +100,9 @@ export const LiquidityCard: FC<Props> = ({
                           mb: 0.75,
                         }}
                       >
-                        <NumericFormat
-                          value={liquidity}
-                          displayType="text"
-                          decimalScale={2}
-                          fixedDecimalScale
-                          thousandSeparator
-                        />
+                        <Number value={token.balance} />
                       </Typography>
-                      <Typography>{tokenSymbol.toUpperCase()}</Typography>
+                      <Typography>{token.name.toUpperCase()}</Typography>
                     </Stack>
                     <Stack
                       direction="row"
@@ -89,8 +118,23 @@ export const LiquidityCard: FC<Props> = ({
                       >
                         <IconSeeding />
                         &nbsp;
-                        <Typography>+ {mintLiquidity}</Typography>
+                        <Typography>
+                          <Number value={approvalStatusMinting.quantity} />
+                        </Typography>
                       </Stack>
+                      <Tooltip title={`Sending to Pool ${sendPool.token.name}`}>
+                        <Stack
+                          justifyContent="start"
+                          direction="row"
+                          alignItems="center"
+                        >
+                          <IconSend />
+                          &nbsp;
+                          <Typography>
+                            <Number value={approvalStatusSendToPool.quantity} />
+                          </Typography>
+                        </Stack>
+                      </Tooltip>
                       <Stack
                         justifyContent="start"
                         direction="row"
@@ -98,7 +142,11 @@ export const LiquidityCard: FC<Props> = ({
                       >
                         <IconFlame />
                         &nbsp;
-                        <Typography>- {burnLiquidity}</Typography>
+                        <Typography>
+                          <Number
+                            value={`-${approvalStatusBurning.quantity}`}
+                          />
+                        </Typography>
                       </Stack>
                     </Stack>
                   </Grid>

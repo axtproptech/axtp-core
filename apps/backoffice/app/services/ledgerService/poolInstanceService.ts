@@ -6,9 +6,14 @@ import { InputValidationService } from "../inputValidationService";
 import { PoolContractDataView } from "./poolContractDataView";
 import { GenericContractService } from "./genericContractService";
 import { PoolContractData } from "@/types/poolContractData";
+import { MasterContractService } from "@/app/services/ledgerService/masterContractService";
 
 export class PoolInstanceService extends GenericContractService {
-  constructor(context: ServiceContext, private poolId: string) {
+  constructor(
+    context: ServiceContext,
+    private masterContractService: MasterContractService,
+    private poolId: string
+  ) {
     super(context);
   }
 
@@ -27,11 +32,13 @@ export class PoolInstanceService extends GenericContractService {
   public readContractData() {
     return withError<PoolContractData>(async () => {
       const { ledger } = this.context;
+      const masterContractData =
+        await this.masterContractService.readContractData();
       const contract = await ledger.contract.getContract(this.poolId);
       const contractDataView = new PoolContractDataView(contract);
-
-      const [token, transactions] = await Promise.all([
+      const [token, masterToken, transactions] = await Promise.all([
         this.getTokenData(contractDataView.getPoolTokenId()),
+        this.getTokenData(masterContractData.token.id),
         ledger.account.getAccountTransactions({ accountId: this.contractId() }),
       ]);
 
@@ -40,6 +47,7 @@ export class PoolInstanceService extends GenericContractService {
         poolId: this.poolId,
         balance: Amount.fromPlanck(contract.balanceNQT).getSigna(),
         token,
+        masterToken,
         transactions: transactions.transactions,
         approvalStatusDistribution:
           contractDataView.getDistributionApprovalStatus(),

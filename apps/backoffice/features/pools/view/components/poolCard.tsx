@@ -16,6 +16,9 @@ import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import PriceCheckRoundedIcon from "@mui/icons-material/PriceCheckRounded";
 import { Amount } from "@signumjs/util";
 import { Config } from "@/app/config";
+import { Number } from "@/app/components/number";
+import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
+import { IconGrowth, IconRocket } from "@tabler/icons";
 
 interface Props {
   data: PoolContractData;
@@ -28,7 +31,15 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
   const masterContract = useMasterContract();
   const masterTokenSymbol = masterContract.token.name;
 
-  const { poolId, paidDistribution, token, nominalLiquidity, balance } = data;
+  const {
+    poolId,
+    paidDistribution,
+    token,
+    nominalLiquidity,
+    balance,
+    masterToken,
+    grossMarketValue,
+  } = data;
 
   const iconUrl = useMemo(() => {
     if (!poolId) return "";
@@ -104,13 +115,20 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                   </Tooltip>
                 )}
               </Grid>
+              <Grid item sx={{ zIndex: 1000 }}>
+                <Tooltip arrow title="See Contract in blockchain explorer">
+                  <div>
+                    <OpenExplorerButton id={poolId} type={"at"} label="" />
+                  </div>
+                </Tooltip>
+              </Grid>
             </Grid>
           </Grid>
           <Grid item>
             <Grid container alignItems="center">
               <Grid item>
                 <Stack direction="row" spacing={2} alignItems="baseline">
-                  <Tooltip arrow title="Initial Base Valuation">
+                  <Tooltip arrow title="Current Balance">
                     <Typography
                       sx={{
                         fontSize: "2.125rem",
@@ -119,16 +137,63 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                         mb: 0.75,
                       }}
                     >
-                      <NumericFormat
-                        value={nominalLiquidity}
-                        displayType="text"
-                        decimalScale={2}
-                        fixedDecimalScale
-                        thousandSeparator
-                      />
+                      <Number value={masterToken.balance} />
                     </Typography>
                   </Tooltip>
                   <Typography>{masterTokenSymbol}</Typography>
+                </Stack>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ mb: 1 }}
+                >
+                  <Stack
+                    justifyContent="start"
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <IconGrowth />
+                    &nbsp;
+                    <Tooltip arrow title="Initial Nominal Liquidity">
+                      <Typography>
+                        <Number
+                          value={nominalLiquidity}
+                          suffix={masterTokenSymbol}
+                        />
+                      </Typography>
+                    </Tooltip>
+                  </Stack>
+                  <Stack
+                    justifyContent="start"
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <IconRocket />
+                    &nbsp;
+                    <Tooltip arrow title="Gross Market Value">
+                      <Typography>
+                        <Number
+                          value={grossMarketValue}
+                          suffix={masterTokenSymbol}
+                        />
+                      </Typography>
+                    </Tooltip>
+                  </Stack>
+                  <Stack
+                    justifyContent="start"
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <IconSpeed />
+                    &nbsp;
+                    <Tooltip arrow title="Relative Valuation after Payouts">
+                      <Typography>
+                        <Number value={performancePercent} suffix="%" />
+                      </Typography>
+                    </Tooltip>
+                  </Stack>
                 </Stack>
                 <Stack
                   direction="row"
@@ -146,45 +211,13 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                     &nbsp;
                     <Tooltip arrow title="Paid Distribution">
                       <Typography>
-                        <NumericFormat
+                        <Number
                           value={paidDistribution}
-                          displayType="text"
-                          decimalScale={2}
-                          fixedDecimalScale
-                          thousandSeparator
-                        />{" "}
-                        {masterTokenSymbol}
+                          suffix={masterTokenSymbol}
+                        />
                       </Typography>
                     </Tooltip>
                   </Stack>
-                  <Stack
-                    justifyContent="start"
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <IconSpeed />
-                    &nbsp;
-                    <Tooltip arrow title="Relative Valuation after Payouts">
-                      <Typography>
-                        <NumericFormat
-                          value={performancePercent}
-                          displayType="text"
-                          decimalScale={2}
-                          fixedDecimalScale
-                          thousandSeparator
-                        />{" "}
-                        %
-                      </Typography>
-                    </Tooltip>
-                  </Stack>
-                </Stack>
-                <Stack
-                  direction="row"
-                  spacing={2}
-                  justifyContent="space-between"
-                  alignItems="center"
-                  sx={{ mb: 1 }}
-                >
                   <Stack
                     justifyContent="start"
                     direction="row"

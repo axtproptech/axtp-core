@@ -26,7 +26,10 @@ export class LedgerService {
     };
 
     this.masterContractService = new MasterContractService(context);
-    this.poolContractService = new PoolContractService(context);
+    this.poolContractService = new PoolContractService(
+      context,
+      this.masterContractService
+    );
   }
 
   get masterContract(): MasterContractService {

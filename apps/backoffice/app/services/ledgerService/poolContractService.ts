@@ -2,14 +2,15 @@ import { ServiceContext } from "./serviceContext";
 import { PoolInstanceService } from "./poolInstanceService";
 import { ConfirmedTransaction } from "@signumjs/wallets";
 import { Config } from "@/app/config";
-import { Amount } from "@signumjs/util";
-import { withError } from "./withError";
-import { InputValidationService } from "@/app/services/inputValidationService";
 import {
+  Amount,
   convertHexEndianess,
   convertHexStringToDecString,
   convertStringToHexString,
 } from "@signumjs/util";
+import { withError } from "./withError";
+import { InputValidationService } from "@/app/services/inputValidationService";
+import { MasterContractService } from "@/app/services/ledgerService/masterContractService";
 
 interface CreatePoolInstanceArgs {
   documentationUrl: string;
@@ -20,10 +21,17 @@ interface CreatePoolInstanceArgs {
 }
 
 export class PoolContractService {
-  constructor(private context: ServiceContext) {}
+  constructor(
+    private context: ServiceContext,
+    private masterContractService: MasterContractService
+  ) {}
 
   with(poolId: string): PoolInstanceService {
-    return new PoolInstanceService(this.context, poolId);
+    return new PoolInstanceService(
+      this.context,
+      this.masterContractService,
+      poolId
+    );
   }
 
   async createPoolInstance(args: CreatePoolInstanceArgs) {

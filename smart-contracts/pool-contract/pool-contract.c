@@ -13,6 +13,7 @@ This contract must be pre-configured, before being deployed:
 #program name AXTPoolContract
 #program activationAmount .25
 #pragma optimizationLevel 3
+#pragma maxAuxVars 4
 
 #ifdef SIMULATOR
     #define APPROVER_1 1
@@ -41,6 +42,7 @@ This contract must be pre-configured, before being deployed:
 #define SEND_AXTP_TO_HOLDER 0xe16029b76b056b6b
 #define APPROVE_DISTRIBUTION 0x3b15c00ea0519a0a
 #define UPDATE_GMV 0x0d98f95a1a931bc9
+#define DEACTIVATE 0x6a20a7b2b4abec85
 
 // global variables, will be available in all functions
 // external/loadable variables
@@ -67,7 +69,7 @@ struct APPROVAL {
   long account, distributionApproved;
 } approvals[4];
 
-
+long isDeactivated = false;
 const long MinimumApproval = 3;
 
 struct TXINFO {
@@ -85,6 +87,10 @@ constructor();
 
 void main(void) {
     while ((currentTX.txId = getNextTx()) != 0) {
+        if(isDeactivated){
+            continue;
+        }
+
         currentTX.sender = getSender(currentTX.txId);
         currentTX.quantityAXTC = getQuantity(currentTX.txId, AXTC_TOKEN_ID);
         currentTX.quantityAXTP = getQuantity(currentTX.txId, poolTokenId);
@@ -99,6 +105,9 @@ void main(void) {
                 break;
             case UPDATE_GMV:
                  UpdateGMV(currentTX.message[1]);
+                break;
+            case DEACTIVATE:
+                 Deactivate();
                 break;
             default:
                 txReceived();
@@ -142,26 +151,27 @@ long approveDistribution() {
         approvals[3].distributionApproved = 1;
     }
 
-    if ((approvals[0].distributionApproved +
-        approvals[1].distributionApproved +
-        approvals[2].distributionApproved +
-        approvals[3].distributionApproved) >= MinimumApproval){
-       return 1;
-   }
-   return 0;
+    return( approvals[0].distributionApproved +
+            approvals[1].distributionApproved +
+            approvals[2].distributionApproved +
+            approvals[3].distributionApproved >= MinimumApproval);
 }
 
 long isAuthorized() {
-    if(  (approvals[0].account == currentTX.sender) ||
-         (approvals[1].account == currentTX.sender) ||
+    return (approvals[0].account == currentTX.sender) ||
+           (approvals[1].account == currentTX.sender) ||
          (approvals[2].account == currentTX.sender) ||
-         (approvals[3].account == currentTX.sender) ) {
-        return 1;
-    }
-    return 0;
+         (approvals[3].account == currentTX.sender) ;
 }
 
 // ---------------- PUBLIC ---------------------------
+
+void Deactivate() {
+    if(currentTX.sender == getCreator()){
+        sendQuantityAndAmount(getAssetBalance(AXTC_TOKEN_ID), AXTC_TOKEN_ID, getCurrentBalance(), getCreator());
+        isDeactivated = true;
+    }
+}
 
 void ApproveDistribution() {
     if(approveDistribution()){

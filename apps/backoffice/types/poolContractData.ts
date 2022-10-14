@@ -5,6 +5,7 @@ import { ApprovalStatus } from "@/types/approvalStatus";
 export interface PoolContractData {
   balance: string;
   token: BasicTokenInfo;
+  masterToken: BasicTokenInfo;
   transactions: Transaction[];
   approvalStatusDistribution: ApprovalStatus;
   pendingDistribution: number;

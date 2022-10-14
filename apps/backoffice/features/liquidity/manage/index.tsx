@@ -8,7 +8,7 @@ import { BurnApprovalCard } from "./components/burnApprovalCard";
 import { HistoryChart } from "./components/historyChart";
 import { PieChart } from "./components/pieChart";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { IconFlame, IconSeeding, IconSend } from "@tabler/icons";
 import { TabContext, TabPanel, TabList } from "@mui/lab";
 import { WithBadge } from "@/app/components/withBadge";
@@ -48,13 +48,7 @@ export const ManageLiquidity = () => {
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={4} md={6} sm={6} xs={12}>
-            <LiquidityCard
-              isLoading={isLoading}
-              mintLiquidity={approvalStatusMinting.quantity}
-              burnLiquidity={approvalStatusBurning.quantity}
-              liquidity={token.supply}
-              tokenSymbol={token.name}
-            />
+            <LiquidityCard isLoading={isLoading} />
           </Grid>
           <Grid item lg={3} md={6} sm={6} xs={12}>
             <PieChart />

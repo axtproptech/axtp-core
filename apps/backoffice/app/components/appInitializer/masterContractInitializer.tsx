@@ -22,7 +22,7 @@ export const MasterContractInitializer = () => {
   useEffect(() => {
     if (!data) return;
     dispatch(actions.setMasterContractData(data));
-  }, [data]);
+  }, [data, dispatch]);
 
   return null;
 };

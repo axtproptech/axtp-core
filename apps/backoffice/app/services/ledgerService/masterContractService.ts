@@ -35,6 +35,7 @@ export class MasterContractService extends GenericContractService {
       ]);
 
       return {
+        id: this.contractId(),
         balance: Amount.fromPlanck(contract.balanceNQT).getSigna(),
         token,
         transactions: transactions.transactions,

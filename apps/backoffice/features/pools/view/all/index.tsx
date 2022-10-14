@@ -51,11 +51,11 @@ export const AllPools = () => {
     <>
       <Grid container spacing={gridSpacing}>
         <Grid item xs={12} sm={4}>
-          <CardWrapperDark>
-            <Typography variant="h2" color={theme.palette.primary.light}>
-              Overall performance card here
-            </Typography>
-          </CardWrapperDark>
+          {/*<CardWrapperDark>*/}
+          {/*  <Typography variant="h2" color={theme.palette.primary.light}>*/}
+          {/*    Overall performance card here*/}
+          {/*  </Typography>*/}
+          {/*</CardWrapperDark>*/}
         </Grid>
       </Grid>
       <Box sx={{ mt: 2 }}>

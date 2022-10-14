@@ -6,6 +6,7 @@
 #program name AXTMasterContract
 #program activationAmount .25
 #pragma optimizationLevel 3
+#pragma maxAuxVars 4
 
 #ifdef SIMULATOR
     #define TOKEN_NAME "SIMAXTC"
@@ -37,17 +38,19 @@
 #define APPROVE_BURN_AXTC 0x8b089aff194be58c
 #define REQUEST_SEND_TO_POOL 0xacb080bf3498cfb5
 #define APPROVE_SEND_TO_POOL 0xe3d9426f20c5859b
+#define DEACTIVATE 0x6a20a7b2b4abec85
 
 // global variables, will be available in all functions
 // external/loadable variables
+long axtcTokenId;
 
 // internal values, i.e. set during execution
-long axtcTokenId;
 long pendingMintAXTC;
 long pendingBurnAXTC;
 long pendingPoolSendAXTC;
 long requestedPoolSendAddress;
 long messageBuffer[4];
+long isDeactivated = false;
 
 struct APPROVAL {
   long account,
@@ -70,6 +73,10 @@ constructor();
 
 void main(void) {
     while ((currentTX.txId = getNextTx()) != 0) {
+        if(isDeactivated){
+            continue;
+        }
+
         currentTX.sender = getSender(currentTX.txId);
         readMessage(currentTX.txId, 0, currentTX.message);
 
@@ -91,6 +98,8 @@ void main(void) {
                 break;
             case APPROVE_SEND_TO_POOL:
                 ApproveSendToPool();
+            case DEACTIVATE:
+                Deactivate();
             break;
             default:
                 continue;
@@ -102,7 +111,9 @@ void main(void) {
 // ---------------- PRIVATE ---------------------------
 
 void constructor() {
-    axtcTokenId = issueAsset(TOKEN_NAME, "", 2);
+    if(!axtcTokenId){
+        axtcTokenId = issueAsset(TOKEN_NAME, "", 2);
+    }
     approvals[0].account = APPROVER_1;
     approvals[1].account = APPROVER_2;
     approvals[2].account = APPROVER_3;
@@ -148,13 +159,10 @@ long approveMintAction() {
         approvals[3].mintApproved = 1;
     }
 
-    if ((approvals[0].mintApproved +
+    return ((approvals[0].mintApproved +
         approvals[1].mintApproved +
         approvals[2].mintApproved +
-        approvals[3].mintApproved) >= MinimumApproval){
-       return 1;
-   }
-   return 0;
+        approvals[3].mintApproved) >= MinimumApproval);
 
 }
 
@@ -175,13 +183,10 @@ long approveBurnAction() {
         approvals[3].burnApproved = 1;
     }
 
-    if ((approvals[0].burnApproved +
+    return ((approvals[0].burnApproved +
         approvals[1].burnApproved +
         approvals[2].burnApproved +
-        approvals[3].burnApproved) >= MinimumApproval){
-       return 1;
-   }
-   return 0;
+        approvals[3].burnApproved) >= MinimumApproval);
 
 }
 
@@ -202,27 +207,27 @@ long approveSendPoolAction() {
         approvals[3].poolSendApproved = 1;
     }
 
-    if ((approvals[0].poolSendApproved +
+    return ((approvals[0].poolSendApproved +
         approvals[1].poolSendApproved +
         approvals[2].poolSendApproved +
-        approvals[3].poolSendApproved) >= MinimumApproval){
-       return 1;
-   }
-   return 0;
+        approvals[3].poolSendApproved) >= MinimumApproval);
 }
 
 
 long isAuthorized() {
-    if(  (approvals[0].account == currentTX.sender) ||
+    return (approvals[0].account == currentTX.sender) ||
          (approvals[1].account == currentTX.sender) ||
          (approvals[2].account == currentTX.sender) ||
-         (approvals[3].account == currentTX.sender) ) {
-        return 1;
-    }
-    return 0;
+         (approvals[3].account == currentTX.sender);
 }
 
 // ---------------- PUBLIC ---------------------------
+void Deactivate() {
+    if(currentTX.sender == getCreator()){
+        sendQuantityAndAmount(getAssetBalance(axtcTokenId), axtcTokenId, getCurrentBalance(), getCreator());
+        isDeactivated = true;
+    }
+}
 
 
 void RequestSendToPool(long quantityAXTC, long poolAddress) {
@@ -232,7 +237,7 @@ void RequestSendToPool(long quantityAXTC, long poolAddress) {
 
     requestedPoolSendAddress = poolAddress;
     pendingPoolSendAXTC = quantityAXTC;
-    resetMintActionApproval();
+    resetPoolSendActionApproval();
 }
 
 void ApproveSendToPool(){

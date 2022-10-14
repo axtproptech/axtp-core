@@ -3,7 +3,7 @@ import { IconSeeding, IconUserCheck } from "@tabler/icons";
 import { Box } from "@mui/material";
 import { ApprovalStepper } from "@/app/components/approvalStepper";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
-import { useMemo } from "react";
+import { FC, useMemo } from "react";
 import { ApprovalStatus } from "@/types/approvalStatus";
 import { NumericFormat } from "react-number-format";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
@@ -12,6 +12,7 @@ import { asRSAddress } from "@/app/asRSAddress";
 import { useAccount } from "@/app/hooks/useAccount";
 import { BasicTokenInfo } from "@/types/basicTokenInfo";
 import { Payments } from "@mui/icons-material";
+import { usePoolContract } from "@/app/hooks/usePoolContract";
 
 const getApprovalState = (status: ApprovalStatus, token: BasicTokenInfo) => {
   const isPayoutRequested = parseInt(status.quantity, 10) > 0;
@@ -59,27 +60,33 @@ const getApprovalState = (status: ApprovalStatus, token: BasicTokenInfo) => {
   ];
 };
 
-export const PayoutApprovalCard = () => {
+interface Props {
+  poolId: string;
+}
+
+export const PayoutApprovalCard: FC<Props> = ({ poolId }) => {
   const { accountId } = useAccount();
-  const { approvalStatusSendToPool, token } = useMasterContract();
+  const { approvalStatusDistribution, token } = usePoolContract(poolId);
   const { execute, isExecuting, transactionId } = useLedgerAction();
 
   const approvalState = useMemo(() => {
-    return getApprovalState(approvalStatusSendToPool, token);
-  }, [approvalStatusSendToPool, token]);
+    return getApprovalState(approvalStatusDistribution, token);
+  }, [approvalStatusDistribution, token]);
 
   const canApprove = useMemo(() => {
     if (!accountId) return false;
 
     const isPaymentRequested =
-      parseInt(approvalStatusSendToPool.quantity, 10) > 0;
+      parseInt(approvalStatusDistribution.quantity, 10) > 0;
     const hasApprovedAlready =
-      approvalStatusSendToPool.approvedAccounts.includes(accountId);
+      approvalStatusDistribution.approvedAccounts.includes(accountId);
     return isPaymentRequested && !hasApprovedAlready;
-  }, [approvalStatusSendToPool, accountId]);
+  }, [approvalStatusDistribution, accountId]);
 
   const handleOnApproveAction = () => {
-    execute((service) => service.masterContract.approveSendToPool());
+    execute((service) =>
+      service.poolContract.with(poolId).approveDistribution()
+    );
   };
 
   return (
