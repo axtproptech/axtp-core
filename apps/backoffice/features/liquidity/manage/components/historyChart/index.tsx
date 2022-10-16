@@ -35,8 +35,7 @@ export const HistoryChart = () => {
         ]);
       } else if (
         tx.type === TransactionType.Asset &&
-        tx.subtype === TransactionAssetSubtype.AssetTransfer &&
-        !tx.recipient
+        tx.subtype === TransactionAssetSubtype.AssetTransfer
       ) {
         currentBalanceQNT += parseInt(tx.attachment["quantityQNT"], 10);
         history.push([
@@ -46,7 +45,7 @@ export const HistoryChart = () => {
       }
     }
     return history.reverse();
-  }, [transactions]);
+  }, [token.balance, transactions]);
 
   return (
     <Card sx={{ p: 2 }}>

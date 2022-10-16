@@ -7,6 +7,7 @@ import { PoolContractDataView } from "./poolContractDataView";
 import { GenericContractService } from "./genericContractService";
 import { PoolContractData } from "@/types/poolContractData";
 import { MasterContractService } from "@/app/services/ledgerService/masterContractService";
+import { toStableCoinAmount } from "@/app/tokenQuantity";
 
 export class PoolInstanceService extends GenericContractService {
   constructor(
@@ -36,11 +37,21 @@ export class PoolInstanceService extends GenericContractService {
         await this.masterContractService.readContractData();
       const contract = await ledger.contract.getContract(this.poolId);
       const contractDataView = new PoolContractDataView(contract);
-      const [token, masterToken, transactions] = await Promise.all([
+      const [token, masterToken, transactions, account] = await Promise.all([
         this.getTokenData(contractDataView.getPoolTokenId()),
         this.getTokenData(masterContractData.token.id),
         ledger.account.getAccountTransactions({ accountId: this.contractId() }),
+        ledger.account.getAccount({ accountId: this.contractId() }),
       ]);
+
+      const pendingDistribution = toStableCoinAmount(
+        account.unconfirmedAssetBalances.find(
+          (a) => a.asset === masterContractData.token.id
+        )?.unconfirmedBalanceQNT || "0"
+      );
+      const approvalStatusDistribution =
+        contractDataView.getDistributionApprovalStatus();
+      approvalStatusDistribution.quantity = pendingDistribution;
 
       return {
         poolId: this.poolId,
@@ -48,10 +59,8 @@ export class PoolInstanceService extends GenericContractService {
         token,
         masterToken,
         transactions: transactions.transactions,
-        approvalStatusDistribution:
-          contractDataView.getDistributionApprovalStatus(),
-        pendingDistribution:
-          contractDataView.getAccumulatedStableCoinsForDistribution(),
+        approvalStatusDistribution,
+        pendingDistribution: Number(toStableCoinAmount(pendingDistribution)),
         paidDistribution: contractDataView.getDistributedStableCoins(),
         maxShareQuantity: contractDataView.getPoolTokenMaxQuantity(),
         nominalLiquidity: contractDataView.getNominalLiquidity(),

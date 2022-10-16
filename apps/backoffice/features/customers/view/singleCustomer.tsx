@@ -27,6 +27,7 @@ import { VerificationChip } from "@/app/components/chips/verificationChip";
 import { useExplorerLink } from "@/app/hooks/useExplorerLink";
 import { DownloadButton } from "@/app/components/buttons/downloadButton";
 import { cpf } from "cpf-cnpj-validator";
+import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
 const gridSpacing = Config.Layout.GridSpacing;
 
 interface Props {
@@ -172,7 +173,8 @@ interface DetailsProps {
 }
 
 const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
-  const address = customer.addresses[0];
+  const address = customer.addresses.length && customer.addresses[0];
+  const account = customer.addresses.length && customer.blockchainAccounts[0];
   const documents = customer.documents;
 
   const cpfValid = useMemo(() => {
@@ -255,6 +257,24 @@ const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
               </>
             ) : (
               <Typography variant="h4">No address provided</Typography>
+            )}
+          </Grid>
+          <Grid item xs={12} md={6} lg={4}>
+            {account ? (
+              <>
+                <LabeledTextField
+                  label="Account Address"
+                  text={account.rsAddress}
+                />
+                <LabeledTextField label="Account Id" text={account.accountId} />
+                <LabeledTextField
+                  label="Public Key"
+                  text={account.publicKey.toUpperCase()}
+                />
+                <OpenExplorerButton id={account.accountId} type="address" />
+              </>
+            ) : (
+              <Typography variant="h4">No Blockchain Account yet</Typography>
             )}
           </Grid>
         </Grid>

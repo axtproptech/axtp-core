@@ -10,8 +10,8 @@ export const SucceededTransactionSection: FC<Props> = ({ transactionId }) => {
     <>
       <Typography variant="subtitle2">
         The transaction was successfully broadcast to the network. It takes
-        about four minutes until it takes effect. You can trace the transaction
-        in the networks explorer.
+        about four to eight minutes until it takes effect. You can trace the
+        transaction in the networks explorer.
       </Typography>
       <OpenExplorerButton id={transactionId} type="tx" />
     </>

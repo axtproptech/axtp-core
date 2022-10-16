@@ -71,11 +71,16 @@ const AccountAction = ({ publicKey }: { publicKey: string }) => {
 
   return (
     <Stack direction="row" alignItems="center">
-      <ActionButton
-        actionLabel={"Key"}
-        actionIcon={<IconClipboard />}
-        onClick={handleOnCLick}
-      />
+      <Tooltip title="Copy Accounts Public Key into Clipboard">
+        <div>
+          <ActionButton
+            actionLabel={"Key"}
+            actionIcon={<IconClipboard />}
+            onClick={handleOnCLick}
+          />
+        </div>
+      </Tooltip>
+
       <Tooltip title="Open Account in Blockchain Explorer">
         <div>
           <OpenExplorerButton id={accountId} type="address" label="" />

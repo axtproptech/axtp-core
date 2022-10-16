@@ -13,7 +13,7 @@ export const LabeledTextField: FC<Props> = ({ label, text, children }) => {
       container
       direction="column"
       justifyContent="space-between"
-      sx={{ my: 1 }}
+      sx={{ my: 1, overflowWrap: "anywhere" }}
     >
       <Grid item>
         <Typography variant="caption" color="inherit">

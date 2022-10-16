@@ -51,9 +51,7 @@ export abstract class GenericContractService {
       name,
       id,
       balance,
-      supply: toQuantity(quantityCirculatingQNT, assetInfo.decimals).toString(
-        10
-      ),
+      supply: fromQuantity(quantityCirculatingQNT, assetInfo.decimals),
     };
   }
 

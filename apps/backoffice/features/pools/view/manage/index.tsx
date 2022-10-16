@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { PoolCard } from "@/features/pools/view/components/poolCard";
 import { useAppSelector } from "@/states/hooks";
 import { selectPoolContractState } from "@/app/states/poolsState";
-import { PayoutActionCard } from "./payoutActionCard";
 import { PayoutApprovalCard } from "./payoutApprovalCard";
 import { singleQueryArg } from "@/app/singleQueryArg";
 import { ChargeContractCard } from "@/app/components/cards";
@@ -133,9 +132,6 @@ export const ManagePool = () => {
           </TabList>
           <TabPanel value={PoolTabs.Payout} sx={{ p: 0, pt: 1 }}>
             <Grid container spacing={gridSpacing}>
-              <Grid item xs={12} md={4}>
-                <PayoutActionCard poolId={poolId} />
-              </Grid>
               <Grid item xs={12} md={8}>
                 <PayoutApprovalCard poolId={poolId} />
               </Grid>

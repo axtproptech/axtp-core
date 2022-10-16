@@ -61,7 +61,7 @@ long poolTokenQuantity;
 // internal values, i.e. set during execution
 long nominalValueAXTC;
 long poolTokenId;
-long pendingPayoutAXTC;
+// long pendingPayoutAXTC;
 long paidAXTC;
 long grossMarketValueAXTC;
 
@@ -72,11 +72,13 @@ struct APPROVAL {
 long isDeactivated = false;
 const long MinimumApproval = 3;
 
+// TODO: remove quantityAXTC as we can get the balance of the contract directly
+
 struct TXINFO {
     long txId,
         timestamp,
         sender,
-        quantityAXTC,
+//         quantityAXTC,
         quantityAXTP,
         message[4];
 } currentTX;
@@ -92,7 +94,7 @@ void main(void) {
         }
 
         currentTX.sender = getSender(currentTX.txId);
-        currentTX.quantityAXTC = getQuantity(currentTX.txId, AXTC_TOKEN_ID);
+//         currentTX.quantityAXTC = getQuantity(currentTX.txId, AXTC_TOKEN_ID);
         currentTX.quantityAXTP = getQuantity(currentTX.txId, poolTokenId);
         readMessage(currentTX.txId, 0, currentTX.message);
 
@@ -113,8 +115,8 @@ void main(void) {
             case DEACTIVATE:
                  Deactivate();
                 break;
-            default:
-                txReceived();
+//             default:
+//                 txReceived();
         }
     }
 }
@@ -138,7 +140,7 @@ void resetDistributionApproved() {
     approvals[3].distributionApproved = 0;
 }
 
-long approveDistribution() {
+long approveDistributionAction() {
     if( approvals[0].account == currentTX.sender ) {
         approvals[0].distributionApproved = 1;
     }
@@ -178,7 +180,7 @@ void Deactivate() {
 }
 
 void ApproveDistribution() {
-    if(approveDistribution()){
+    if(approveDistributionAction()){
         distributeToHolders(1, poolTokenId,0, pendingPayoutAXTC, AXTC_TOKEN_ID);
         paidAXTC += pendingPayoutAXTC;
         resetDistributionApproved();
@@ -206,8 +208,9 @@ void SendAXTPToHolder(long holderId, long quantityAXTP) {
     sendQuantity(quantityAXTP, poolTokenId, holderId);
 }
 
-void txReceived(void) {
-    if(currentTX.quantityAXTC > 0){
-        pendingPayoutAXTC += currentTX.quantityAXTC;
-    }
-}
+// TODO: we don't need it
+// void txReceived(void) {
+//     if(currentTX.quantityAXTC > 0){
+//         pendingPayoutAXTC += currentTX.quantityAXTC;
+//     }
+// }

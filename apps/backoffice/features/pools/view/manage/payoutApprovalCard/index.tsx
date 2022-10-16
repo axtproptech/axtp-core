@@ -1,11 +1,9 @@
 import { ActionCard } from "@/app/components/cards";
-import { IconSeeding, IconUserCheck } from "@tabler/icons";
+import { IconUserCheck } from "@tabler/icons";
 import { Box } from "@mui/material";
 import { ApprovalStepper } from "@/app/components/approvalStepper";
-import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { FC, useMemo } from "react";
 import { ApprovalStatus } from "@/types/approvalStatus";
-import { NumericFormat } from "react-number-format";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { asRSAddress } from "@/app/asRSAddress";
@@ -13,28 +11,23 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { BasicTokenInfo } from "@/types/basicTokenInfo";
 import { Payments } from "@mui/icons-material";
 import { usePoolContract } from "@/app/hooks/usePoolContract";
+import { useMasterContract } from "@/app/hooks/useMasterContract";
+import { Number } from "@/app/components/number";
 
 const getApprovalState = (status: ApprovalStatus, token: BasicTokenInfo) => {
-  const isPayoutRequested = parseInt(status.quantity, 10) > 0;
+  const hasPayoutBalance = parseInt(status.quantity, 10) > 0;
   return [
     {
-      label: isPayoutRequested ? (
+      label: hasPayoutBalance ? (
         <div>
-          Pending Payout{" "}
-          <NumericFormat
-            value={status.quantity}
-            displayType="text"
-            thousandSeparator
-            fixedDecimalScale
-            decimalScale={2}
-          />{" "}
-          {token.name.toUpperCase()}
+          Available for Payout&nbsp;
+          <Number value={status.quantity} decimals={2} suffix={token.name} />
         </div>
       ) : (
-        "No Pending Request"
+        `No ${token.name} balance`
       ),
       icon: <Payments />,
-      completed: isPayoutRequested,
+      completed: hasPayoutBalance,
     },
     {
       label: status.approvedAccounts[0]
@@ -66,7 +59,8 @@ interface Props {
 
 export const PayoutApprovalCard: FC<Props> = ({ poolId }) => {
   const { accountId } = useAccount();
-  const { approvalStatusDistribution, token } = usePoolContract(poolId);
+  const { token } = useMasterContract();
+  const { approvalStatusDistribution } = usePoolContract(poolId);
   const { execute, isExecuting, transactionId } = useLedgerAction();
 
   const approvalState = useMemo(() => {
@@ -76,11 +70,11 @@ export const PayoutApprovalCard: FC<Props> = ({ poolId }) => {
   const canApprove = useMemo(() => {
     if (!accountId) return false;
 
-    const isPaymentRequested =
-      parseInt(approvalStatusDistribution.quantity, 10) > 0;
+    const hasPayoutBalance =
+      parseFloat(approvalStatusDistribution.quantity) > 0;
     const hasApprovedAlready =
       approvalStatusDistribution.approvedAccounts.includes(accountId);
-    return isPaymentRequested && !hasApprovedAlready;
+    return hasPayoutBalance && !hasApprovedAlready;
   }, [approvalStatusDistribution, accountId]);
 
   const handleOnApproveAction = () => {
@@ -92,7 +86,7 @@ export const PayoutApprovalCard: FC<Props> = ({ poolId }) => {
   return (
     <ActionCard
       title="Approve Dividend Payout"
-      description="Here you can see if there's a pending dividend payout request and its current approval state"
+      description="A pool with positive balance is automatically eligible for dividend distribution."
       actionIcon={<IconUserCheck />}
       actionLabel="Approve Payout"
       onClick={handleOnApproveAction}

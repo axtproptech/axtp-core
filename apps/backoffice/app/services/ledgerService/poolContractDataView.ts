@@ -8,6 +8,7 @@ enum PoolContractDataIndex {
   PoolTokenQuantity,
   NominalLiquidity,
   PoolTokenId,
+  // TODO: can be removed as not needed
   PendingDistributionAXTC,
   PaidAXTC,
   GrossMarketValue,
@@ -85,13 +86,6 @@ export class PoolContractDataView {
     return parseFloat(toStableCoinAmount(qnt));
   }
 
-  getAccumulatedStableCoinsForDistribution(): number {
-    const qnt = this.view.getVariableAsDecimal(
-      PoolContractDataIndex.PendingDistributionAXTC
-    );
-    return parseFloat(toStableCoinAmount(qnt));
-  }
-
   getDistributionApprovalStatus(): ApprovalStatus {
     const approvedAccounts = [];
     const approved1 = this.getApprovedAccount(
@@ -116,12 +110,9 @@ export class PoolContractDataView {
     approved3 && approvedAccounts.push(approved3);
     approved4 && approvedAccounts.push(approved4);
 
-    const quantity =
-      this.getAccumulatedStableCoinsForDistribution().toString(10);
-
     return {
       approvedAccounts,
-      quantity: quantity,
+      quantity: "0", // this is the current contracts AXTC balance
     };
   }
 }

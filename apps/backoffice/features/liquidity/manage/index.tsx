@@ -1,6 +1,5 @@
 import { Grid, Tab } from "@mui/material";
 import { Config } from "@/app/config";
-import { LiquidityCard } from "./components/liquidityCard";
 import { MintActionCard } from "./components/mintActionCard";
 import { BurnActionCard } from "./components/burnActionCard";
 import { MintApprovalCard } from "./components/mintApprovalCard";
@@ -14,6 +13,7 @@ import { TabContext, TabPanel, TabList } from "@mui/lab";
 import { WithBadge } from "@/app/components/withBadge";
 import { SendToPoolActionCard } from "@/features/liquidity/manage/components/sendToPoolActionCard";
 import { SendToPoolApprovalCard } from "@/features/liquidity/manage/components/sendToPoolApprovalCard";
+import { LiquidityCard } from "@/app/components/cards/liquidityCard";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
