@@ -3,4 +3,4 @@ import { pools } from "./pools";
 import { liquidity } from "./liquidity";
 import { customers } from "./customers";
 
-export const menuItems = [dashboard, customers, pools, liquidity];
+export const navItems = [dashboard, customers, pools, liquidity];

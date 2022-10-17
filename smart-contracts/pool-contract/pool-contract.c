@@ -6,7 +6,7 @@ This contract must be pre-configured, before being deployed:
 
 */
 #define VERSION 1.0
-// #define SIMULATOR
+//  #define SIMULATOR
 #define TESTNET
 // #define MAINNET
 
@@ -27,7 +27,7 @@ This contract must be pre-configured, before being deployed:
     #define APPROVER_2 7473730462792140210
     #define APPROVER_3 5757380649245251466
     #define APPROVER_4 10746331379201355428
-    #define AXTC_TOKEN_ID 3561373642152666581
+    #define AXTC_TOKEN_ID 17364735717996724982
 #endif
 #ifdef MAINNET
 // TO DO
@@ -61,25 +61,23 @@ long poolTokenQuantity;
 // internal values, i.e. set during execution
 long nominalValueAXTC;
 long poolTokenId;
-// long pendingPayoutAXTC;
 long paidAXTC;
 long grossMarketValueAXTC;
 
 struct APPROVAL {
-  long account, distributionApproved;
+  long account,
+    distributionApproved;
 } approvals[4];
 
 long isDeactivated = false;
 const long MinimumApproval = 3;
 
-// TODO: remove quantityAXTC as we can get the balance of the contract directly
-
 struct TXINFO {
     long txId,
         timestamp,
         sender,
-//         quantityAXTC,
         quantityAXTP,
+        quantityAXTC,
         message[4];
 } currentTX;
 
@@ -89,18 +87,19 @@ constructor();
 
 void main(void) {
     while ((currentTX.txId = getNextTx()) != 0) {
+
+        currentTX.sender = getSender(currentTX.txId);
+        currentTX.quantityAXTP = getQuantity(currentTX.txId, poolTokenId);
+
         if(isDeactivated){
+            refund();
             continue;
         }
 
-        currentTX.sender = getSender(currentTX.txId);
-//         currentTX.quantityAXTC = getQuantity(currentTX.txId, AXTC_TOKEN_ID);
-        currentTX.quantityAXTP = getQuantity(currentTX.txId, poolTokenId);
         readMessage(currentTX.txId, 0, currentTX.message);
-
         if(currentTX.quantityAXTP > 0){
             // burn
-            sendQuantity(currentTX.quantityAXTP, poolTokenId, 0)
+            sendQuantity(currentTX.quantityAXTP, poolTokenId, 0);
         }
         switch (currentTX.message[0]) {
             case SEND_AXTP_TO_HOLDER:
@@ -115,8 +114,6 @@ void main(void) {
             case DEACTIVATE:
                  Deactivate();
                 break;
-//             default:
-//                 txReceived();
         }
     }
 }
@@ -167,24 +164,32 @@ long isAuthorized() {
     return (approvals[0].account == currentTX.sender) ||
            (approvals[1].account == currentTX.sender) ||
          (approvals[2].account == currentTX.sender) ||
-         (approvals[3].account == currentTX.sender) ;
+         (approvals[3].account == currentTX.sender);
+}
+
+long refund(){
+   sendAmount(getAmount(currentTX.txId), currentTX.sender);
+   sendQuantity(currentTX.quantityAXTP, poolTokenId, currentTX.sender);
+   sendQuantity(getQuantity(currentTX.txId, AXTC_TOKEN_ID), AXTC_TOKEN_ID, currentTX.sender);
+   sendBalance(getCreator());
 }
 
 // ---------------- PUBLIC ---------------------------
 
 void Deactivate() {
     if(currentTX.sender == getCreator()){
-        sendQuantityAndAmount(getAssetBalance(AXTC_TOKEN_ID), AXTC_TOKEN_ID, getCurrentBalance(), getCreator());
         isDeactivated = true;
+        sendQuantityAndAmount(getAssetBalance(AXTC_TOKEN_ID), AXTC_TOKEN_ID, getCurrentBalance(), getCreator());
+
     }
 }
 
 void ApproveDistribution() {
     if(approveDistributionAction()){
-        distributeToHolders(1, poolTokenId,0, pendingPayoutAXTC, AXTC_TOKEN_ID);
-        paidAXTC += pendingPayoutAXTC;
+        long payout = getAssetBalance(AXTC_TOKEN_ID);
+        distributeToHolders(1, poolTokenId,0, payout, AXTC_TOKEN_ID);
+        paidAXTC += payout;
         resetDistributionApproved();
-        pendingPayoutAXTC=0;
     }
 }
 
@@ -204,13 +209,6 @@ void SendAXTPToHolder(long holderId, long quantityAXTP) {
         sendMessage(messageBuffer, currentTX.sender);
         return;
     }
-    mintAsset(toMint, poolTokenId);
+    mintAsset(quantityAXTP, poolTokenId);
     sendQuantity(quantityAXTP, poolTokenId, holderId);
 }
-
-// TODO: we don't need it
-// void txReceived(void) {
-//     if(currentTX.quantityAXTC > 0){
-//         pendingPayoutAXTC += currentTX.quantityAXTC;
-//     }
-// }

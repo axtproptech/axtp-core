@@ -8,6 +8,7 @@ import { GenericContractService } from "./genericContractService";
 import { PoolContractData } from "@/types/poolContractData";
 import { MasterContractService } from "@/app/services/ledgerService/masterContractService";
 import { toStableCoinAmount } from "@/app/tokenQuantity";
+import { Account } from "@signumjs/core";
 
 export class PoolInstanceService extends GenericContractService {
   constructor(
@@ -37,23 +38,27 @@ export class PoolInstanceService extends GenericContractService {
         await this.masterContractService.readContractData();
       const contract = await ledger.contract.getContract(this.poolId);
       const contractDataView = new PoolContractDataView(contract);
-      const [token, masterToken, transactions, account] = await Promise.all([
-        this.getTokenData(contractDataView.getPoolTokenId()),
-        this.getTokenData(masterContractData.token.id),
-        ledger.account.getAccountTransactions({ accountId: this.contractId() }),
-        ledger.account.getAccount({ accountId: this.contractId() }),
-      ]);
+      const [token, masterToken, transactions, tokenBalances] =
+        await Promise.all([
+          this.getTokenData(contractDataView.getPoolTokenId()),
+          this.getTokenData(masterContractData.token.id),
+          ledger.account.getAccountTransactions({
+            accountId: this.contractId(),
+          }),
+          this.getTokenBalances(),
+        ]);
 
       const pendingDistribution = toStableCoinAmount(
-        account.unconfirmedAssetBalances.find(
-          (a) => a.asset === masterContractData.token.id
-        )?.unconfirmedBalanceQNT || "0"
+        tokenBalances.find((a) => a.asset === masterContractData.token.id)
+          ?.unconfirmedBalanceQNT || "0"
       );
+
       const approvalStatusDistribution =
         contractDataView.getDistributionApprovalStatus();
       approvalStatusDistribution.quantity = pendingDistribution;
 
       return {
+        isDeactivated: contractDataView.getIsDeactivated(),
         poolId: this.poolId,
         balance: Amount.fromPlanck(contract.balanceNQT).getSigna(),
         token,

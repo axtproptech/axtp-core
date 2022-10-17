@@ -75,7 +75,7 @@ export class PoolContractService {
     const name = convertHexStringToDecString(
       convertHexEndianess(convertStringToHexString(args.name))
     );
-    return [0, 0, 0, 0, name, args.rate, args.quantity];
+    return [0, 0, 0, 0, 0, name, args.rate, args.quantity];
   }
 
   private static assertCreationArguments(args: CreatePoolInstanceArgs) {
@@ -92,7 +92,8 @@ export class PoolContractService {
       const promises = poolIds.atIds
         .filter((poolId) => poolId !== Config.PoolContract.OriginId)
         .map((poolId) => this.with(poolId).readContractData());
-      return Promise.all(promises);
+      const allContracts = await Promise.all(promises);
+      return allContracts.filter((c) => !c.isDeactivated);
     });
   }
 }

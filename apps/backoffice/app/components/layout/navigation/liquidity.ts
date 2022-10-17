@@ -1,6 +1,7 @@
 import { IconAffiliate, IconBuildingBank } from "@tabler/icons";
+import { NavigationItem } from "@/types/navigationItem";
 
-export const liquidity = {
+export const liquidity: NavigationItem = {
   id: "liquidity",
   title: "Liquidity",
   type: "group",

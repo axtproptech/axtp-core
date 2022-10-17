@@ -3,12 +3,13 @@ import { toStableCoinAmount } from "@/app/tokenQuantity";
 import { ApprovalStatus } from "@/types/approvalStatus";
 
 enum MasterContractDataIndex {
-  TokenId = 4,
+  TokenId = 5,
   PendingMintToken,
   PendingBurnToken,
   PendingSendToPoolToken,
   RequestedSendToPoolAddress,
-  ApprovalAccount1 = 15,
+  IsDeactivated = 15,
+  ApprovalAccount1 = 17,
   ApprovalApprovedMint1,
   ApprovalApprovedBurn1,
   ApprovalApprovedSendToPool1,
@@ -53,6 +54,14 @@ export class MasterContractDataView {
 
   getTokenId(): string {
     return this.view.getVariableAsDecimal(MasterContractDataIndex.TokenId);
+  }
+
+  getIsDeactivated(): boolean {
+    return (
+      Number(
+        this.view.getVariableAsDecimal(MasterContractDataIndex.IsDeactivated)
+      ) === 1
+    );
   }
 
   getCurrentPoolAddress(): string {

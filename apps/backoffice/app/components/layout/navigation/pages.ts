@@ -1,10 +1,11 @@
 import { IconKey } from "@tabler/icons";
+import { NavigationItem } from "@/types/navigationItem";
 
 const icons = {
   IconKey,
 };
 
-export const pages = {
+export const pages: NavigationItem = {
   id: "pages",
   title: "Pages",
   caption: "Pages Caption",

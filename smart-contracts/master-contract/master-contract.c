@@ -1,5 +1,5 @@
 #define VERSION 1
-#define SIMULATOR
+// #define SIMULATOR
 #define TESTNET
 // #define MAINNET
 
@@ -42,7 +42,7 @@
 
 // global variables, will be available in all functions
 // external/loadable variables
-long axtcTokenId;
+long tokenIdAXTC;
 
 // internal values, i.e. set during execution
 long pendingMintAXTC;
@@ -73,11 +73,12 @@ constructor();
 
 void main(void) {
     while ((currentTX.txId = getNextTx()) != 0) {
+        currentTX.sender = getSender(currentTX.txId);      
         if(isDeactivated){
+            refund();
             continue;
         }
 
-        currentTX.sender = getSender(currentTX.txId);
         readMessage(currentTX.txId, 0, currentTX.message);
 
         switch (currentTX.message[0]) {
@@ -111,8 +112,8 @@ void main(void) {
 // ---------------- PRIVATE ---------------------------
 
 void constructor() {
-    if(!axtcTokenId){
-        axtcTokenId = issueAsset(TOKEN_NAME, "", 2);
+    if(!tokenIdAXTC){
+        tokenIdAXTC = issueAsset(TOKEN_NAME, "", 2);
     }
     approvals[0].account = APPROVER_1;
     approvals[1].account = APPROVER_2;
@@ -221,14 +222,21 @@ long isAuthorized() {
          (approvals[3].account == currentTX.sender);
 }
 
-// ---------------- PUBLIC ---------------------------
-void Deactivate() {
-    if(currentTX.sender == getCreator()){
-        sendQuantityAndAmount(getAssetBalance(axtcTokenId), axtcTokenId, getCurrentBalance(), getCreator());
-        isDeactivated = true;
-    }
+long refund(){
+   sendAmount(getAmount(currentTX.txId), currentTX.sender);
+   sendQuantity(getQuantity(currentTX.txId, tokenIdAXTC), tokenIdAXTC, currentTX.sender);
+   sendBalance(getCreator());
 }
 
+// ---------------- PUBLIC ---------------------------
+
+void Deactivate() {
+    if(currentTX.sender == getCreator()){
+        isDeactivated = true;
+        sendQuantityAndAmount(getAssetBalance(tokenIdAXTC), tokenIdAXTC, getCurrentBalance(), getCreator());
+
+    }
+}
 
 void RequestSendToPool(long quantityAXTC, long poolAddress) {
     if(!isAuthorized()){
@@ -246,7 +254,7 @@ void ApproveSendToPool(){
     }
 
     if(approveSendPoolAction()){
-        sendQuantity(pendingPoolSendAXTC, axtcTokenId, requestedPoolSendAddress);
+        sendQuantity(pendingPoolSendAXTC, tokenIdAXTC, requestedPoolSendAddress);
         requestedPoolSendAddress = 0;
         pendingPoolSendAXTC = 0;
         resetPoolSendActionApproval();
@@ -267,7 +275,7 @@ void ApproveMintAXTC(){
     }
 
     if(approveMintAction()){
-        mintAsset(pendingMintAXTC, axtcTokenId);
+        mintAsset(pendingMintAXTC, tokenIdAXTC);
         pendingMintAXTC = 0;
         resetMintActionApproval();
     }
@@ -287,7 +295,7 @@ void ApproveBurnAXTC(){
     }
 
     if(approveBurnAction()){
-        sendQuantity(pendingBurnAXTC, axtcTokenId, 0);
+        sendQuantity(pendingBurnAXTC, tokenIdAXTC, 0);
         pendingBurnAXTC = 0;
         resetBurnActionApproval();
     }

@@ -1,10 +1,10 @@
 import { Typography } from "@mui/material";
 import { NavGroup } from "./navGroup";
-import { menuItems } from "../../../navigation";
+import { navItems } from "../../../navigation";
 
 export const MenuList = () => (
   <>
-    {menuItems.map((item) => {
+    {navItems.map((item) => {
       if (item.type === "group") {
         return <NavGroup key={item.id} item={item} />;
       } else {

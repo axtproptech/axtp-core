@@ -1,6 +1,7 @@
 import { IconUsers, IconUserPlus } from "@tabler/icons";
+import { NavigationItem } from "@/types/navigationItem";
 
-export const customers = {
+export const customers: NavigationItem = {
   id: "customers",
   title: "Token Holders",
   type: "group",

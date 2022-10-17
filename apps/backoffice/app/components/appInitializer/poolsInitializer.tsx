@@ -3,6 +3,8 @@ import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { useEffect } from "react";
 import { useAppDispatch } from "@/states/hooks";
 import { actions } from "@/app/states/poolsState";
+import { actions as appActions } from "@/app/states/appState";
+import { IconNewSection } from "@tabler/icons";
 
 export const PoolsInitializer = () => {
   const { ledgerService } = useLedgerService();

@@ -3,13 +3,11 @@ import { toStableCoinAmount } from "@/app/tokenQuantity";
 import { ApprovalStatus } from "@/types/approvalStatus";
 
 enum PoolContractDataIndex {
-  PoolName = 4,
+  PoolName = 5,
   PoolRate,
   PoolTokenQuantity,
   NominalLiquidity,
   PoolTokenId,
-  // TODO: can be removed as not needed
-  PendingDistributionAXTC,
   PaidAXTC,
   GrossMarketValue,
   ApprovalAccount1 = 13,
@@ -20,7 +18,7 @@ enum PoolContractDataIndex {
   ApprovalApprovedDistribution3,
   ApprovalAccount4,
   ApprovalApprovedDistribution4,
-  MiniumApprovalCount,
+  IsDeactivated,
 }
 
 export class PoolContractDataView {
@@ -49,6 +47,14 @@ export class PoolContractDataView {
 
   getPoolTokenName(): string {
     return this.view.getVariableAsDecimal(PoolContractDataIndex.PoolName);
+  }
+
+  getIsDeactivated(): boolean {
+    return (
+      Number(
+        this.view.getVariableAsDecimal(PoolContractDataIndex.IsDeactivated)
+      ) === 1
+    );
   }
 
   getPoolTokenRate(): number {

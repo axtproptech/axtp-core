@@ -4,6 +4,7 @@ import {
   IconShadow,
   IconWindmill,
 } from "@tabler/icons";
+import { NavigationItem } from "@/types/navigationItem";
 
 const icons = {
   IconTypography,
@@ -12,7 +13,7 @@ const icons = {
   IconWindmill,
 };
 
-export const utilities = {
+export const utilities: NavigationItem = {
   id: "utilities",
   title: "Utilities",
   type: "group",

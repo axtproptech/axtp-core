@@ -3,6 +3,7 @@ import { BasicTokenInfo } from "@/types/basicTokenInfo";
 import { ApprovalStatus } from "@/types/approvalStatus";
 
 export interface PoolContractData {
+  isDeactivated: boolean;
   balance: string;
   token: BasicTokenInfo;
   masterToken: BasicTokenInfo;

@@ -9,6 +9,7 @@ import {
   toStableCoinAmount,
 } from "@/app/tokenQuantity";
 import { BasicTokenInfo } from "@/types/basicTokenInfo";
+import { UnconfirmedAssetBalance } from "@signumjs/core/out/typings/unconfirmedAssetBalance";
 
 export abstract class GenericContractService {
   protected constructor(protected context: ServiceContext) {}
@@ -16,6 +17,24 @@ export abstract class GenericContractService {
   public abstract contractId(): string;
   public abstract activationCosts(): Amount;
   public abstract interactionFee(): Amount;
+
+  protected async getTokenBalances(): Promise<UnconfirmedAssetBalance[]> {
+    try {
+      const { ledger } = this.context;
+      const account = await ledger.account.getAccount({
+        accountId: this.contractId(),
+        includeCommittedAmount: false,
+        includeEstimatedCommitment: false,
+      });
+
+      if (account) {
+        return account.unconfirmedAssetBalances || [];
+      }
+    } catch (e) {
+      // when a contract is not initialized, it's possible that this call fails...we ignore it
+    }
+    return [];
+  }
 
   protected async getTokenData(tokenId: string): Promise<BasicTokenInfo> {
     if (!tokenId || tokenId === "0") {
@@ -27,21 +46,18 @@ export abstract class GenericContractService {
       });
     }
     const { ledger } = this.context;
-    const [assetInfo, accountInfo] = await Promise.all([
+    const [assetInfo, tokenBalances] = await Promise.all([
       ledger.asset.getAsset(tokenId),
-      ledger.account.getAccount({
-        accountId: this.contractId(),
-        includeCommittedAmount: false,
-        includeEstimatedCommitment: false,
-      }),
+      this.getTokenBalances(),
     ]);
 
-    const assetBalance =
-      accountInfo.assetBalances &&
-      accountInfo.assetBalances.find(({ asset }) => tokenId === asset);
+    const tokenBalance = tokenBalances.find(({ asset }) => tokenId === asset);
     let balance = "0";
-    if (assetBalance) {
-      balance = fromQuantity(assetBalance.balanceQNT, assetInfo.decimals);
+    if (tokenBalance) {
+      balance = fromQuantity(
+        tokenBalance.unconfirmedBalanceQNT,
+        assetInfo.decimals
+      );
     }
 
     // TODO: adjust signumjs with new quantityCirculatingQNT

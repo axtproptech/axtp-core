@@ -25,10 +25,10 @@ import hashicon from "hashicon";
 import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
 
 interface Props {
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
-export const LiquidityCard: FC<Props> = ({ isLoading }) => {
+export const LiquidityCard: FC<Props> = ({ isLoading = false }) => {
   const theme = useTheme();
   const {
     id,
@@ -122,7 +122,13 @@ export const LiquidityCard: FC<Props> = ({ isLoading }) => {
                           <Number value={approvalStatusMinting.quantity} />
                         </Typography>
                       </Stack>
-                      <Tooltip title={`Sending to Pool ${sendPool.token.name}`}>
+                      <Tooltip
+                        title={
+                          sendPool
+                            ? `Sending to Pool ${sendPool.token.name}`
+                            : "No Pool Sending pending"
+                        }
+                      >
                         <Stack
                           justifyContent="start"
                           direction="row"

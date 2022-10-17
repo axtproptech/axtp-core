@@ -99,5 +99,39 @@ Use this scenarios to test the contract with the [SmartC Simulator](https://dele
     "amount": "2500_0000n",
     "messageHex": "8ce54b19ff9a088b"
   },
+  {
+    // malicicious deactivate trial
+    "blockheight": 18,
+    "sender": "11n", // not creator
+    "recipient": "999n",
+    "amount": "2500_0000n",
+    "messageHex": "85ecabb4b2a7206a"
+  },
+  {
+    // deactivate contract
+    "blockheight": 20,
+    "sender": "555n",
+    "recipient": "999n",
+    "amount": "2500_0000n",
+    "messageHex": "85ecabb4b2a7206a"
+  },
+  {
+    // refunding as deactivated
+    "blockheight": 22,
+    "sender": "4n",
+    "recipient": "999n",
+    "amount": "100_0000_0000n",
+    "messageHex": "0a9a51a00ec0153b"
+  },
+  {
+    // refunding as deactivated
+    "blockheight": 24,
+    "sender": "66n",
+    "recipient": "999n",
+    "amount": "2500_0000n",
+    "tokens": [
+      {"asset": 100, "quantity": 1000000}
+    ]
+  }
 ]
 ```

@@ -1,7 +1,7 @@
 import { IconDashboard } from "@tabler/icons";
-const icons = { IconDashboard };
+import { NavigationItem } from "@/types/navigationItem";
 
-export const dashboard = {
+export const dashboard: NavigationItem = {
   id: "dashboard",
   title: "Dashboard",
   type: "group",
@@ -11,7 +11,7 @@ export const dashboard = {
       title: "Dashboard",
       type: "item",
       url: "/admin",
-      icon: icons.IconDashboard,
+      icon: IconDashboard,
       breadcrumbs: false,
     },
   ],

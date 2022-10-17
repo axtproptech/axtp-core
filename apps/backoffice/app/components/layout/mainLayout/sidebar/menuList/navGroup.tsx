@@ -2,29 +2,53 @@ import { useTheme } from "@mui/material/styles";
 import { Divider, List, Typography } from "@mui/material";
 import { NavItem } from "./navItem";
 import { NavCollapse } from "./navCollapse";
-import { FC } from "react";
+import { FC, useMemo } from "react";
+import { useAppDispatch, useAppSelector } from "@/states/hooks";
+import { selectAllPools } from "@/app/states/poolsState";
+import { NavigationGroupItem } from "@/types/navigationItem";
+import { IconBuilding } from "@tabler/icons";
 
 interface Props {
-  item: any;
+  item: NavigationGroupItem;
 }
 
 export const NavGroup: FC<Props> = ({ item }) => {
   const theme = useTheme();
 
-  const items = item.children?.map((menu: any) => {
-    switch (menu.type) {
-      case "collapse":
-        return <NavCollapse key={menu.id} menu={menu} level={1} />;
-      case "item":
-        return <NavItem key={menu.id} item={menu} level={1} />;
-      default:
-        return (
-          <Typography key={menu.id} variant="h6" color="error" align="center">
-            Menu Items Error
-          </Typography>
-        );
+  // This is not nice, but works
+  const pools = useAppSelector(selectAllPools);
+
+  const items = useMemo(() => {
+    if (item.id === "pools" && item.children) {
+      for (let pool of pools) {
+        const itemId = `pool-${pool.poolId}`;
+        if (!item.children.find(({ id }) => id === itemId)) {
+          item.children.push({
+            id: itemId,
+            type: "item",
+            url: `/admin/pools/${pool.poolId}`,
+            title: `Pool ${pool.token.name}`,
+            icon: IconBuilding,
+            breadcrumbs: true,
+          });
+        }
+      }
     }
-  });
+    return item.children?.map((menu: any) => {
+      switch (menu.type) {
+        case "collapse":
+          return <NavCollapse key={menu.id} menu={menu} level={1} />;
+        case "item":
+          return <NavItem key={menu.id} item={menu} level={1} />;
+        default:
+          return (
+            <Typography key={menu.id} variant="h6" color="error" align="center">
+              Menu Items Error
+            </Typography>
+          );
+      }
+    });
+  }, [item.children, pools]);
 
   return (
     <>

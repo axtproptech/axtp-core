@@ -1,7 +1,9 @@
 import { IconBrandChrome, IconHelp } from "@tabler/icons";
+import { NavigationItem } from "@/types/navigationItem";
 const icons = { IconBrandChrome, IconHelp };
-export const other = {
+export const other: NavigationItem = {
   id: "sample-docs-roadmap",
+  title: "Sample Page",
   type: "group",
   children: [
     {
