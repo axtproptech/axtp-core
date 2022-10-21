@@ -1,6 +1,8 @@
 import { createGlobalStyle } from "styled-components";
+import { themeGet } from "@styled-system/theme-get";
 
 const ResetCSS = createGlobalStyle`
+  
   ::selection {
     background: #333333;
     color: #ffffff;
@@ -21,8 +23,49 @@ const ResetCSS = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
   *:focus {
     outline: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${themeGet("colors.yellow")};
+    border-radius: 50px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${themeGet("colors.yellowHover")};
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background: ${themeGet("colors.yellowHover")};
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 0;
+  }
+
+  ::-webkit-scrollbar-track:hover {
+    background: #666666;
+  }
+
+  ::-webkit-scrollbar-track:active {
+    background: #333333;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
   }
 
   html,
@@ -74,9 +117,11 @@ const ResetCSS = createGlobalStyle`
 
   .reuseModalHolder {
     padding: 0 !important;
+
     &.demo_switcher_modal {
       border: 0 !important;
       background-color: rgba(16, 30, 77, 0.9) !important;
+
       .innerRndComponent {
         border-radius: 8px !important;
       }
@@ -92,6 +137,7 @@ const ResetCSS = createGlobalStyle`
     min-width: 34px !important;
     min-height: 34px !important;
     padding: 0 !important;
+
     span.btn-icon {
       font-size: 22px !important;
       transform: rotate(45deg) !important;
