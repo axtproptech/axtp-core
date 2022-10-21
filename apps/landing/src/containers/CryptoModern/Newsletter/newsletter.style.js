@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import BannerBG from "common/assets/image/cryptoModern/get-start.png";
+import { themeGet } from "@styled-system/theme-get";
 
 const NewsletterWrapper = styled.div`
   position: relative;
@@ -101,8 +102,13 @@ export const ContactFormWrapper = styled.div`
     }
   }
   .reusecore__button {
-    background-color: #ffffff;
-    color: #03103b;
+    background-image: linear-gradient(
+      to right,
+      ${themeGet("colors.yellow")},
+      ${themeGet("colors.brown")} 95%
+    );
+
+    color: ${themeGet("colors.white")};
     font-size: 14px;
     letter-spacing: -0.1px;
     border-radius: 5px;
@@ -110,7 +116,7 @@ export const ContactFormWrapper = styled.div`
     padding-right: 16px;
     text-transform: uppercase;
     &:hover {
-      box-shadow: #ffffff 0px 7px 18px -10px;
+      box-shadow: ${themeGet("colors.yellow")} 0px 12px 24px -10px;
     }
   }
 `;

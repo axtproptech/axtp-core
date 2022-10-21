@@ -21,7 +21,7 @@ const FaqSectionWrapper = styled.section`
     .accordion__item {
       border-top: 0;
       background-color: ${themeGet("colors.paragraph")};
-      color: #fff;
+      color: ${themeGet("colors.yellow")};
       border-radius: 5px;
       transition: all 0.3s ease;
       cursor: pointer;

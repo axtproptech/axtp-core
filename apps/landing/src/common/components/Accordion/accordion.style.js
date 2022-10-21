@@ -19,7 +19,9 @@ const fadeIn = keyframes`
 
 export const AccordionWrapper = styled(Accordion)``;
 
-export const AccordionItemWrapper = styled(AccordionItem)``;
+export const AccordionItemWrapper = styled(AccordionItem)`
+  margin: 0.5rem;
+`;
 
 export const OpenIcon = styled.div``;
 
