@@ -8,7 +8,7 @@ const BannerWrapper = styled.div`
   background-image: linear-gradient(
     200deg,
     rgb(157, 116, 35) 0%,
-    rgba(3, 16, 59, 0.15) 35%
+    rgba(0, 0, 0, 0) 35%
   );
   @media only screen and (min-width: 1201px) and (max-width: 1440px) {
     min-height: 100%;

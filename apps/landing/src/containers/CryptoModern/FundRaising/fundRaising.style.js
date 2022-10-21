@@ -12,14 +12,14 @@ const SectionWrapper = styled.div`
     position: absolute;
     width: 700px;
     height: 700px;
-    opacity: 0.16;
-    right: -15%;
+    opacity: 0.15;
+    right: -350px;
     bottom: -40%;
     border-radius: 50%;
     background: radial-gradient(
       circle closest-side,
-      rgb(109, 140, 243),
-      rgb(3, 16, 59)
+      ${themeGet("colors.yellow")},
+      rgba(3, 16, 59, 0)
     );
     @media only screen and (max-width: 1600px) {
       display: none;

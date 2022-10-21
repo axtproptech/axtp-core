@@ -88,7 +88,11 @@ const CounterUpArea = styled.div`
     justify-content: center;
     align-items: center;
     transition: all 0.2s ease-in-out;
-    background-color: rgba(123, 86, 72, 0.8);
+    background-image: linear-gradient(
+      to right,
+      ${themeGet("colors.yellowTrans")},
+      ${themeGet("colors.brownTrans")} 95%
+    );
     cursor: pointer;
     @media (max-width: 767px) {
       width: calc(50% - 13px);
@@ -98,6 +102,7 @@ const CounterUpArea = styled.div`
     }
 
     &:hover {
+      opacity: 1;
       background-image: linear-gradient(
         to right,
         ${themeGet("colors.yellow")},
