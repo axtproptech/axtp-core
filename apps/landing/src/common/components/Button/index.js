@@ -39,7 +39,7 @@ const Button = ({
   const buttonIcon =
     isLoading !== false ? (
       <Fragment>
-        {loader ? loader : <Loader loaderColor={loaderColor || "#30C56D"} />}
+        {loader || <Loader loaderColor={loaderColor || "#30C56D"} />}
       </Fragment>
     ) : (
       icon && <span className="btn-icon">{icon}</span>

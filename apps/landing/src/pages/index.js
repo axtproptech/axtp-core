@@ -72,7 +72,7 @@ const CryptoModern = () => {
           </Sticky>
           <ContentWrapper>
             <Banner />
-            <CountDown />
+            {/*<CountDown />*/}
             <Features />
             <WorkHistory />
             <Investment />

@@ -11,6 +11,7 @@ import FooterWrapper, { List, ListItem } from "./footer.style";
 import LogoImage from "common/assets/image/cryptoModern/logo-light.svg";
 
 import { Footer_Data } from "common/data/CryptoModern";
+import colors from "common/theme/cryptoModern/colors";
 
 const Footer = ({
   row,
@@ -32,7 +33,7 @@ const Footer = ({
               title="Hosting"
               logoStyle={logoStyle}
             />
-            <Text content="hello@redq.io" {...textStyle} />
+            <Text content="contact@axtp.com" {...textStyle} />
             <Text content="+479-443-9334" {...textStyle} />
           </Box>
           {/* End of footer logo column */}
@@ -102,7 +103,7 @@ Footer.defaultProps = {
   },
   // widget title default style
   titleStyle: {
-    color: "#fff",
+    color: colors.textColor,
     fontSize: "16px",
     fontWeight: "700",
     mb: "30px",
@@ -114,7 +115,7 @@ Footer.defaultProps = {
   },
   // widget text default style
   textStyle: {
-    color: "#8ec7ff",
+    color: colors.textColor,
     fontSize: "16px",
     mb: "10px",
     fontWeight: "300",

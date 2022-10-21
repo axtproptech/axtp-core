@@ -6,8 +6,8 @@ const BannerWrapper = styled.div`
   min-height: 802px;
   overflow: hidden;
   background-image: linear-gradient(
-    135deg,
-    rgba(64, 219, 216, 0.15) 0%,
+    200deg,
+    rgb(157, 116, 35) 0%,
     rgba(3, 16, 59, 0.15) 35%
   );
   @media only screen and (min-width: 1201px) and (max-width: 1440px) {
@@ -21,6 +21,7 @@ const BannerWrapper = styled.div`
     padding-top: 120px;
     min-height: 100%;
   }
+
   > div.container {
     display: flex;
     align-items: center;
@@ -61,7 +62,7 @@ export const BannerContent = styled.div`
   }
 
   p {
-    color: ${themeGet("colors.paragraph", "#496b96")};
+    color: ${themeGet("colors.paragraph")};
     font-size: 16px;
     line-height: 33px;
     font-weight: 400;
@@ -114,7 +115,6 @@ export const ButtonGroup = styled.div`
   margin-top: 35px;
 
   .reusecore__button {
-    text-transform: inherit;
     border-radius: 5px;
     padding-left: 16px;
     padding-right: 16px;
@@ -123,9 +123,13 @@ export const ButtonGroup = styled.div`
     text-transform: uppercase;
 
     &.primary {
-      background-image: linear-gradient(to right, #4ba1d8, #4464bd 95%);
+      background-image: linear-gradient(
+        to right,
+        ${themeGet("colors.yellow")},
+        ${themeGet("colors.brown")} 95%
+      );
       &:hover {
-        box-shadow: rgba(75, 109, 235, 0.78) 0px 12px 24px -10px;
+        box-shadow: ${themeGet("colors.brown")} 0px 12px 24px -10px;
       }
     }
 

@@ -12,34 +12,40 @@ const NavbarWrapper = styled.nav`
   @media only screen and (max-width: 1366px) {
     padding: 20px 0 21px;
   }
+
   > div.container {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     .main-logo {
       img {
         width: 128px;
         height: auto;
       }
     }
+
     .logo-alt {
       width: 128px;
       height: auto;
       display: none;
     }
   }
+
   ul {
     li {
       a {
-        color: ${themeGet("colors.menu", "#fff")};
+        color: ${themeGet("colors.menu")};
         font-size: 16px;
         font-weight: 400;
         transition: all 0.3s ease;
+
         &:hover {
           font-weight: 700;
         }
       }
+
       &.is-current {
         a {
           font-weight: 700;
@@ -52,6 +58,7 @@ const NavbarWrapper = styled.nav`
 export const MenuArea = styled.div`
   display: flex;
   align-items: center;
+
   .menu {
     display: flex;
     align-items: center;
@@ -65,29 +72,35 @@ export const MenuArea = styled.div`
     @media only screen and (max-width: 991px) {
       display: none;
     }
+
     li {
       margin: 0 19px;
       @media only screen and (max-width: 1366px) {
         margin: 0 17px;
       }
+
       &:first-child {
         margin-left: 0;
       }
+
       &:last-child {
         margin-right: 0;
       }
     }
   }
+
   &.active {
     .menu {
       opacity: 0;
       visibility: hidden;
     }
+
     .search {
       form {
         opacity: 1;
         visibility: visible;
       }
+
       input {
         width: 320px;
         @media only screen and (min-width: 1367px) {
@@ -99,6 +112,7 @@ export const MenuArea = styled.div`
       }
     }
   }
+
   .reusecore__button {
     border-radius: 5px;
     font-weight: 500;
@@ -111,6 +125,7 @@ export const MenuArea = styled.div`
       padding: 0;
       margin-right: 28px;
       cursor: pointer;
+
       .btn-icon {
         svg {
           width: 22px;
@@ -121,6 +136,7 @@ export const MenuArea = styled.div`
           }
         }
       }
+
       @media only screen and (max-width: 1366px) {
         margin-right: 20px;
       }
@@ -128,16 +144,29 @@ export const MenuArea = styled.div`
         margin-right: 0;
       }
     }
+
     &.trail {
       border-radius: 4px;
-      background-image: linear-gradient(to right, #4ba1d8, #4464bd 95%);
+      background-image: linear-gradient(
+        to right,
+        ${themeGet("colors.yellow")},
+        ${themeGet("colors.brown")} 95%
+      );
+
       &:hover {
-        box-shadow: rgba(75, 109, 235, 0.78) 0px 12px 24px -10px;
+        box-shadow: ${themeGet("colors.brown")} 0px 12px 24px -10px;
       }
+
       @media only screen and (max-width: 991px) {
         display: none;
       }
     }
+
+    &.primary {
+      &:hover {
+      }
+    }
+
     &.menubar {
       display: none;
       @media only screen and (max-width: 991px) {
@@ -159,12 +188,14 @@ export const Search = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+
   form {
     opacity: 0;
     visibility: hidden;
     position: absolute;
     right: 100%;
   }
+
   input {
     width: 0px;
     height: 46px;
@@ -180,9 +211,11 @@ export const Search = styled.div`
     background-size: 16px;
     z-index: 1;
     transition: all 0.3s ease 0.1s;
+
     &::placeholder {
       color: ${themeGet("colors.textColor", "rgba(52, 61, 72, 0.8)")};
     }
+
     &:focus {
       border-color: ${themeGet("colors.primary", "#2563FF")};
     }
@@ -210,6 +243,7 @@ export const MobileMenu = styled.div`
       box-shadow: 0 3px 12px
         ${themeGet("colors.shadow", "rgba(38, 78, 118, 0.1)")};
     }
+
     .container {
       width: 100%;
       height: 100%;
@@ -217,8 +251,10 @@ export const MobileMenu = styled.div`
       flex-direction: column;
       justify-content: space-between;
     }
+
     ul {
       padding-bottom: 20px;
+
       li {
         a {
           display: block;
@@ -227,6 +263,7 @@ export const MobileMenu = styled.div`
           transition: all 0.3s ease;
           color: ${themeGet("colors.secondary", "#000")};
         }
+
         &:hover {
           a {
             padding: 13px 15px;
@@ -235,6 +272,7 @@ export const MobileMenu = styled.div`
         }
       }
     }
+
     .reusecore__button {
       width: 100%;
       border-radius: 4px;

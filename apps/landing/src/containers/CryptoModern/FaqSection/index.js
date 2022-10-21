@@ -19,6 +19,7 @@ import { thinRight } from "react-icons-kit/entypo/thinRight";
 import FaqSectionWrapper from "./faqSection.style";
 
 import { Faq } from "common/data/CryptoModern";
+import colors from "common/theme/cryptoModern/colors";
 
 const FaqSection = ({
   sectionHeader,
@@ -104,7 +105,7 @@ FaqSection.defaultProps = {
     textAlign: "center",
     fontSize: ["14px", "16px"],
     fontWeight: "400",
-    color: "#496b96",
+    color: colors.textColor,
     mb: "0",
     maxWidth: "420px",
     lineHeight: "1.5",
@@ -120,7 +121,7 @@ FaqSection.defaultProps = {
   // accordion description default style
   descriptionStyle: {
     fontSize: "15px",
-    color: "#496b96",
+    color: colors.textColor,
     lineHeight: "1.75",
     mb: "0",
   },

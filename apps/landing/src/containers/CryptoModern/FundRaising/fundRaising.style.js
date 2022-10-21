@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { themeGet } from "@styled-system/theme-get";
+import colors from "../../../common/theme/cryptoModern/colors";
 
 const SectionWrapper = styled.div`
   padding: 75px 0;
@@ -84,7 +85,7 @@ export const ContentWrapper = styled.div`
     p {
       font-size: 16px;
       line-height: 28px;
-      color: #496b96;
+      color: ${themeGet("colors.paragraph")};
       max-width: 400px;
       @media only screen and (max-width: 768px) {
         max-width: 100%;

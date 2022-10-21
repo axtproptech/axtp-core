@@ -57,7 +57,7 @@ export const SectionHeader = styled.header`
   p {
     font-size: 16px;
     line-height: 28px;
-    color: #496b96;
+    color: ${themeGet("colors.paragraph")};
     max-width: 400px;
     @media only screen and (max-width: 768px) {
       max-width: 100%;

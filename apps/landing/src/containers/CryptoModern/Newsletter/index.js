@@ -18,7 +18,7 @@ const Newsletter = ({
   description,
 }) => {
   return (
-    <Box {...sectionWrapper} as="section">
+    <Box id="access" {...sectionWrapper} as="section">
       <Container>
         <NewsletterWrapper>
           <Box {...textArea}>

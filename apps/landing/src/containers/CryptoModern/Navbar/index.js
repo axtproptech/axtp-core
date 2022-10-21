@@ -122,8 +122,8 @@ const Navbar = () => {
           </Search>
           {/* end of search */}
 
-          <AnchorLink href="#trail" offset={84}>
-            <Button className="trail" title="Try for Free" />
+          <AnchorLink href="#access" offset={84}>
+            <Button className="trail" title="GET ACCESS" />
           </AnchorLink>
 
           <Button

@@ -43,11 +43,12 @@ const WorkHistoryWrapper = styled.section`
       }
     }
     p {
-      color: #496b96;
+      color: ${themeGet("colors.paragraph")};
       font-size: 16px;
       line-height: 33px;
       font-weight: 400;
     }
+
     .reusecore__button {
       transition: all 0.3s ease;
       color: #fff;
@@ -77,6 +78,7 @@ const CounterUpArea = styled.div`
     margin-top: 50px;
     margin-bottom: 30px;
   }
+
   .card {
     width: calc(50% - 25px);
     margin-left: 25px;
@@ -85,8 +87,8 @@ const CounterUpArea = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: all 0.3s ease-in-out;
-    background-color: #152149;
+    transition: all 0.2s ease-in-out;
+    background-color: rgba(123, 86, 72, 0.8);
     cursor: pointer;
     @media (max-width: 767px) {
       width: calc(50% - 13px);
@@ -96,22 +98,26 @@ const CounterUpArea = styled.div`
     }
 
     &:hover {
-      background-image: linear-gradient(to right, #1d7ccb 30%, #1951b8 100%);
-      box-shadow: 0px 16px 57px 0px rgba(22, 53, 76, 0.7);
+      background-image: linear-gradient(
+        to right,
+        ${themeGet("colors.yellow")},
+        ${themeGet("colors.brown")} 95%
+      );
+      box-shadow: ${themeGet("colors.brown")} 0px 16px 57px 0px;
     }
 
     h3 {
       font-size: 30px;
       font-weight: 400;
       margin: 30px 0 10px;
-      color: ${themeGet("colors.white", "#fff")};
+      color: ${themeGet("colors.yellow")};
       @media (max-width: 767px) {
         margin-bottom: 10px;
       }
     }
 
     p {
-      color: rgba(142, 199, 255, 0.502);
+      color: ${themeGet("colors.textColor")};
       font-size: 16px;
       font-weight: 500;
       margin-bottom: 7px;

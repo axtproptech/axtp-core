@@ -3,7 +3,7 @@ import BannerBG from "common/assets/image/cryptoModern/get-start.png";
 
 const NewsletterWrapper = styled.div`
   position: relative;
-  background-image: url(${BannerBG?.src});
+  //background-image: url(${BannerBG?.src});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

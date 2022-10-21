@@ -7,6 +7,7 @@ import FeatureBlock from "common/components/FeatureBlock";
 import { Features } from "common/data/CryptoModern";
 import Container from "common/components/UI/Container";
 import FeatureSectionWrapper from "./featureSection.style";
+import colors from "common/theme/cryptoModern/colors";
 
 const FeatureSection = ({
   row,
@@ -86,7 +87,7 @@ FeatureSection.defaultProps = {
     textAlign: "center",
     fontSize: ["14px", "16px"],
     fontWeight: "400",
-    color: "#496b96",
+    color: colors.textColor,
     mb: "0",
     maxWidth: "420px",
     lineHeight: "1.5",
@@ -123,7 +124,7 @@ FeatureSection.defaultProps = {
   featureDescription: {
     fontSize: "15px",
     lineHeight: "1.6",
-    color: "rgba(142, 199, 255, 0.502)",
+    color: colors.textColor,
   },
 };
 

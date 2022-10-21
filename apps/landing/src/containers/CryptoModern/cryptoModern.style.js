@@ -4,15 +4,18 @@ import { themeGet } from "@styled-system/theme-get";
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Roboto', sans-serif;
-    background:#03103b;
+    background: #222222;
   }
+
   .reuseModalParentWrapper,
   .reuseModalOverlay {
     z-index: 99999;
-    .reuseModalHolder{
+
+    .reuseModalHolder {
       border: 0;
     }
   }
+
   h1,
   h2,
   h3,
@@ -22,23 +25,28 @@ const GlobalStyle = createGlobalStyle`
   p {
     font-family: 'Roboto', sans-serif;
   }
+
   section {
     position: relative;
   }
+
   .reusecore__button {
     font-weight: 500;
   }
+
   @media only screen and (max-width: 667px) {
     .container {
       width: 100%;
     }
   }
+
   @media only screen and (max-width: 667px) {
     .container {
       padding-left: 20px;
       padding-right: 20px;
     }
   }
+
   @media only screen and (width: 320px) {
     .container {
       padding-left: 15px;
@@ -56,7 +64,7 @@ export const CryptoWrapper = styled.div`
   .sticky-active {
     .navbar {
       padding: 20px 0 21px;
-      background-color: ${themeGet("colors.white", "#ffffff")};
+      background-color: ${themeGet("colors.navbar")};
       background-image: none;
       box-shadow: 0px 3px 8px 0px rgba(43, 83, 135, 0.08);
       @media only screen and (max-width: 1366px) {
