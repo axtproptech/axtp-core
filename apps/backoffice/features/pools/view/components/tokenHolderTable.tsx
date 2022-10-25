@@ -25,9 +25,19 @@ import { CustomerResponse } from "@/bff/types/customerResponse";
 import { selectMasterContractState } from "@/app/states/masterContractState";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { Number } from "@/app/components/number";
+import { Config } from "@/app/config";
+import { ExternalLink } from "@/app/components/links/externalLink";
 
 const renderAsNumber = (params: GridRenderCellParams<string>) => (
   <Number value={parseFloat(params.value || "0")} />
+);
+
+const renderAccount = (params: GridRenderCellParams<string>) => (
+  <ExternalLink
+    href={`${Config.Signum.Explorer}address/${params.row["account"]}`}
+  >
+    {params.value}
+  </ExternalLink>
 );
 
 const renderBlockedOrInactive = (params: GridRenderCellParams<boolean>) => {
@@ -86,9 +96,11 @@ const renderAXTP = (params: GridRenderCellParams<string>) => {
   return (
     <Stack direction="row">
       <Typography>{params.value}</Typography>
-      <Typography sx={{ ml: 1 }} variant="caption">{`${
-        params.row["axtpShare"] || 0
-      } %`}</Typography>
+      <Tooltip title={"Percentual Share amongst all token holders"}>
+        <Typography sx={{ ml: 1 }} variant="caption">{`${
+          params.row["axtpShare"] || 0
+        } %`}</Typography>
+      </Tooltip>
     </Stack>
   );
 };
@@ -101,7 +113,12 @@ interface GetColumnsArgs {
 
 const getColumns = (args: GetColumnsArgs): GridColDef[] => [
   { field: "name", headerName: "Name" },
-  { field: "accountRS", headerName: "Account", flex: 1 },
+  {
+    field: "accountRS",
+    headerName: "Account",
+    flex: 1,
+    renderCell: renderAccount,
+  },
   {
     field: "axtp",
     headerName: `Balance ${args.symbolAXTP}`,
@@ -198,6 +215,11 @@ export const TokenHolderTable: FC<Props> = ({ poolId }) => {
     if (!data) {
       return [];
     }
+    const totalMintedTokens = data.reduce(
+      (p, c) => p + parseInt(c.balanceAXTP),
+      0
+    );
+
     return data.map(
       ({
         customer,
@@ -216,8 +238,7 @@ export const TokenHolderTable: FC<Props> = ({ poolId }) => {
           : false;
 
         const axtpShare = (
-          (parseFloat(balanceAXTP || "0") /
-            poolContractState.maxShareQuantity) *
+          (parseFloat(balanceAXTP || "0") / totalMintedTokens) *
           100
         ).toFixed(2);
         return {
@@ -226,6 +247,7 @@ export const TokenHolderTable: FC<Props> = ({ poolId }) => {
           name,
           isBlockedOrNotActive,
           accountRS,
+          account,
           signa: balanceSigna,
           axtc: balanceAXTC,
           axtp: balanceAXTP,
@@ -234,6 +256,11 @@ export const TokenHolderTable: FC<Props> = ({ poolId }) => {
       }
     );
   }, [data]);
+
+  const overallTokensMinted = useMemo(
+    () => tableRows.reduce((p, c) => p + parseInt(c.axtp), 0),
+    [tableRows]
+  );
 
   const filteredRows = useMemo(() => {
     if (!searchValue) return tableRows;
@@ -268,16 +295,24 @@ export const TokenHolderTable: FC<Props> = ({ poolId }) => {
   };
 
   return (
-    <MainCard
-      title={`Token Holders ${tableRows.length}/${poolContractState.maxShareQuantity}`}
-    >
-      <Grid container>
+    <MainCard title={"Token Holders"}>
+      <Grid
+        container
+        direction="row"
+        alignItems="center"
+        spacing={Config.Layout.GridSpacing}
+      >
         <Grid item md={4}>
           <TextInput
             label="Search"
             onChange={handleSearch}
             value={searchValue}
           />
+        </Grid>
+        <Grid item md={4}>
+          <Typography>
+            {`${tableRows.length} Token Holders holding ${overallTokensMinted} of at max. ${poolContractState.maxShareQuantity} shares`}
+          </Typography>
         </Grid>
       </Grid>
       <div style={{ height: "70vh" }}>
