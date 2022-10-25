@@ -3,11 +3,8 @@ import { chartData, DataPoint } from "./chartData";
 import dynamic from "next/dynamic";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { useMemo } from "react";
-import {
-  ChainTime,
-  TransactionAssetSubtype,
-  TransactionType,
-} from "@signumjs/core";
+import { TransactionAssetSubtype, TransactionType } from "@signumjs/core";
+import { ChainTime } from "@signumjs/util";
 import { toStableCoinAmount, toStableCoinQuantity } from "@/app/tokenQuantity";
 
 const DynamicChart = dynamic(() => import("react-apexcharts"), {
