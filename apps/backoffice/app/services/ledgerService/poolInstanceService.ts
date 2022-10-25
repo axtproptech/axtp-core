@@ -8,7 +8,6 @@ import { GenericContractService } from "./genericContractService";
 import { PoolContractData } from "@/types/poolContractData";
 import { MasterContractService } from "@/app/services/ledgerService/masterContractService";
 import { toStableCoinAmount } from "@/app/tokenQuantity";
-import { Account } from "@signumjs/core";
 
 export class PoolInstanceService extends GenericContractService {
   constructor(
@@ -94,5 +93,63 @@ export class PoolInstanceService extends GenericContractService {
       Config.PoolContract.Methods.UpdateGrossMarketValue,
       gmvQuantity
     );
+  }
+
+  public async getAllTokenHolders(
+    tokenId: string,
+    firstIndex?: number,
+    lastIndex?: number
+  ) {
+    return withError(async () => {
+      const { ledger } = this.context;
+      const [{ accountAssets }, masterContractData] = await Promise.all([
+        ledger.asset.getAssetHolders({
+          assetId: tokenId,
+          ignoreTreasuryAccount: true,
+          firstIndex,
+          lastIndex,
+        }),
+        this.masterContractService.readContractData(),
+      ]);
+      const accountRequests = accountAssets.map(({ account }) =>
+        ledger.account.getAccount({
+          accountId: account,
+          includeEstimatedCommitment: false,
+          includeCommittedAmount: false,
+        })
+      );
+      const axtcTokenId = masterContractData.token.id;
+      const accounts = await Promise.all(accountRequests);
+
+      return accounts.map(
+        ({
+          unconfirmedAssetBalances,
+          unconfirmedBalanceNQT,
+          publicKey,
+          account,
+          accountRS,
+        }) => {
+          const relevantAssets = unconfirmedAssetBalances
+            .filter(({ asset }) => asset === tokenId || asset === axtcTokenId)
+            .reduce(
+              (res, { asset, unconfirmedBalanceQNT }) => ({
+                ...res,
+                [asset]: unconfirmedBalanceQNT,
+              }),
+              {}
+            );
+          return {
+            publicKey,
+            account,
+            accountRS,
+            balanceSigna: Amount.fromPlanck(unconfirmedBalanceNQT).getSigna(),
+            // @ts-ignore
+            balanceAXTC: toStableCoinAmount(relevantAssets[axtcTokenId] || 0),
+            // @ts-ignore
+            balanceAXTP: relevantAssets[tokenId] || "0",
+          };
+        }
+      );
+    });
   }
 }

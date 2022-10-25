@@ -10,18 +10,25 @@ import { ChargeContractCard } from "@/app/components/cards";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { Amount } from "@signumjs/util";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { IconRecharging, IconRocket, IconUsers } from "@tabler/icons";
+import {
+  IconRecharging,
+  IconRocket,
+  IconUserPlus,
+  IconUsers,
+} from "@tabler/icons";
 import { WithBadge } from "@/app/components/withBadge";
 import { useMemo, useState } from "react";
 import { Payments } from "@mui/icons-material";
 import { UpdateGMVCard } from "@/features/pools/view/manage/updateGMVCard";
 import { SendShareToHolderCard } from "@/features/pools/view/manage/sendShareToHolderCard";
+import { ShowTokenHolders } from "@/features/pools/view/manage/showTokenHolders";
 
 enum PoolTabs {
   Payout = "payout",
   UpdateGMV = "update-gmv",
   SendToken = "send-token",
   Charge = "charge",
+  Holders = "holders",
 }
 
 const gridSpacing = Config.Layout.GridSpacing;
@@ -114,10 +121,20 @@ export const ManagePool = () => {
               value={PoolTabs.UpdateGMV}
             />
             <Tab
-              icon={<IconUsers />}
+              icon={<IconUserPlus />}
               label="Send Token"
               iconPosition="start"
               value={PoolTabs.SendToken}
+            />
+            <Tab
+              icon={<IconUsers />}
+              label={
+                <WithBadge color="error" value={needCharge ? " " : ""}>
+                  Token Holders
+                </WithBadge>
+              }
+              iconPosition="start"
+              value={PoolTabs.Holders}
             />
             <Tab
               icon={<IconRecharging />}
@@ -154,6 +171,13 @@ export const ManagePool = () => {
                   onUpdate={handleOnUpdateGMV}
                   currentGMV={poolData.grossMarketValue}
                 />
+              </Grid>
+            </Grid>
+          </TabPanel>
+          <TabPanel value={PoolTabs.Holders} sx={{ p: 0, pt: 1 }}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item xs={12}>
+                <ShowTokenHolders poolId={poolId} />
               </Grid>
             </Grid>
           </TabPanel>

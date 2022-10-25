@@ -3,12 +3,14 @@ import { Wallet } from "@signumjs/wallets";
 import { MasterContractService } from "./masterContractService";
 import { ServiceContext } from "./serviceContext";
 import { WalletDecorator } from "./walletDecorator";
-import { PoolContractService } from "@/app/services/ledgerService/poolContractService";
+import { PoolContractService } from "./poolContractService";
+import { AccountService } from "./accountService";
 
 export class LedgerService {
   private readonly ledger: Ledger;
   private readonly masterContractService: MasterContractService;
   private readonly poolContractService: PoolContractService;
+  private readonly accountService: AccountService;
 
   constructor(
     private nodeHost: string,
@@ -25,6 +27,7 @@ export class LedgerService {
       wallet: new WalletDecorator(wallet),
     };
 
+    this.accountService = new AccountService(context);
     this.masterContractService = new MasterContractService(context);
     this.poolContractService = new PoolContractService(
       context,
@@ -38,5 +41,9 @@ export class LedgerService {
 
   get poolContract(): PoolContractService {
     return this.poolContractService;
+  }
+
+  get account() {
+    return this.accountService;
   }
 }

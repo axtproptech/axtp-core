@@ -47,7 +47,7 @@ export abstract class GenericContractService {
     }
     const { ledger } = this.context;
     const [assetInfo, tokenBalances] = await Promise.all([
-      ledger.asset.getAsset(tokenId),
+      ledger.asset.getAsset({ assetId: tokenId }),
       this.getTokenBalances(),
     ]);
 
