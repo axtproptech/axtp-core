@@ -126,6 +126,7 @@ const Navbar = () => {
             className="text"
             variant="textButton"
             title="Área Exclusiva"
+            style={{ marginLeft: "2rem" }}
           />
 
           <Button

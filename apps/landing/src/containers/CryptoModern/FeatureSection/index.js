@@ -16,6 +16,7 @@ const FeatureSection = ({
   sectionTitle,
   sectionSubTitle,
   featureTitle,
+  featureIcon,
   featureDescription,
   iconStyle,
   contentStyle,
@@ -35,7 +36,7 @@ const FeatureSection = ({
           {Features.map((feature, index) => (
             <Box className="col" {...col} key={index}>
               <FeatureBlock
-                icon={<img src={feature?.icon?.src} />}
+                icon={<img src={feature?.icon?.src} {...featureIcon} />}
                 wrapperStyle={blockWrapperStyle}
                 contentStyle={contentStyle}
                 title={<Heading content={feature.title} {...featureTitle} />}
@@ -60,6 +61,7 @@ FeatureSection.propTypes = {
   sectionTitle: PropTypes.object,
   sectionSubTitle: PropTypes.object,
   featureTitle: PropTypes.object,
+  featureIcon: PropTypes.object,
   featureDescription: PropTypes.object,
 };
 
@@ -119,6 +121,9 @@ FeatureSection.defaultProps = {
     mb: ["10px", "10px", "10px", "15px"],
     letterSpacing: "-0.025em",
     mt: ["15px", "15px", "15px", "25px"],
+  },
+  featureIcon: {
+    height: "92px",
   },
   // feature description default style
   featureDescription: {

@@ -16,6 +16,14 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  a {
+    color: #7b5648;
+  }
+
+  a:hover { 
+    color: rgba(203,149,120,0.8);
+  }
+  
   h1,
   h2,
   h3,
@@ -70,15 +78,23 @@ export const CryptoWrapper = styled.div`
       @media only screen and (max-width: 1366px) {
         padding: 15px 0 16px;
       }
+
       .main-logo {
         display: none;
       }
+
       .logo-alt {
         display: block;
       }
+
+      .exclusive-alt {
+        display: block;
+      }
+
       .mobile-menu {
         top: 72px;
       }
+
       ul {
         li {
           a {
@@ -86,10 +102,12 @@ export const CryptoWrapper = styled.div`
             font-size: 16px;
             font-weight: 400;
             transition: all 0.3s ease;
+
             &:hover {
               color: ${themeGet("colors.menuHoverColor", "#03103b")};
             }
           }
+
           &.is-current {
             a {
               color: ${themeGet("colors.menuHoverColor", "#03103b")};
@@ -97,17 +115,22 @@ export const CryptoWrapper = styled.div`
           }
         }
       }
+
       .reusecore__button {
         &.menubar {
           color: ${themeGet("colors.secondary", "#000")};
         }
+
         &.text {
           color: ${themeGet("colors.secondary", "#000")};
+          border: 1px solid rgba(0, 0, 0, 0.5);
+
           .btn-icon {
             svg {
               stroke: ${themeGet("colors.secondary", "#000")};
             }
           }
+
           @media only screen and (max-width: 991px) {
           }
         }

@@ -42,10 +42,10 @@ export const navbar = {
 /* ------------------------------------ */
 // Features data section
 /* ------------------------------------ */
-import featureIcon1 from "common/assets/image/cryptoModern/feature-1.png";
-import featureIcon2 from "common/assets/image/cryptoModern/feature-2.png";
-import featureIcon3 from "common/assets/image/cryptoModern/feature-3.png";
-import featureIcon4 from "common/assets/image/cryptoModern/feature-4.png";
+import featureIcon1 from "common/assets/image/cryptoModern/icons/008-property.png";
+import featureIcon2 from "common/assets/image/cryptoModern/icons/011-access.png";
+import featureIcon3 from "common/assets/image/cryptoModern/icons/001-blockchain.png";
+import featureIcon4 from "common/assets/image/cryptoModern/icons/013-participation.png";
 
 export const Features = [
   {
@@ -228,6 +228,10 @@ export const Footer_Data = [
       {
         url: "#",
         text: "Unwanted software policy",
+      },
+      {
+        url: "#",
+        text: "Responsible supply chain",
       },
       {
         url: "#",

@@ -23,12 +23,14 @@ import {
 const FeatureBlockWrapper = styled.div`
   &.icon_left {
     display: flex;
+    filter: invert(1);
     .icon__wrapper {
       flex-shrink: 0;
     }
   }
   &.icon_right {
     display: flex;
+    filter: invert(1);
     flex-direction: row-reverse;
     .content__wrapper {
       text-align: right;

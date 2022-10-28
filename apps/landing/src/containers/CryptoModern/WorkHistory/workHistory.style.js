@@ -109,12 +109,20 @@ const CounterUpArea = styled.div`
         ${themeGet("colors.brown")} 95%
       );
       box-shadow: ${themeGet("colors.brown")} 0px 16px 57px 0px;
+      img {
+        opacity: 1;
+        filter: saturate(1) drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
+      }
+      h2,
+      p {
+        color: ${themeGet("colors.secondary")};
+      }
     }
 
-    h3 {
-      font-size: 30px;
+    h2 {
+      font-size: 24px;
       font-weight: 400;
-      margin: 30px 0 10px;
+      margin: 0.5rem 0 0;
       color: ${themeGet("colors.yellow")};
       @media (max-width: 767px) {
         margin-bottom: 10px;
@@ -134,6 +142,8 @@ const CounterUpArea = styled.div`
 
     img {
       opacity: 0.2;
+      filter: saturate(0.2);
+      border-radius: 24px;
     }
 
     &:nth-child(even) {

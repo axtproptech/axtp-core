@@ -128,8 +128,11 @@ export const MenuArea = styled.div`
       margin-right: 28px;
       cursor: pointer;
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.302);
-
+      border-radius: 4px;
+      border: 1px solid #fff;
+      &:hover {
+        box-shadow: ${themeGet("colors.yellow")} 0px 12px 24px -10px;
+      }
       .btn-icon {
         svg {
           width: 22px;

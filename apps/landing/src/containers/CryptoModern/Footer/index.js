@@ -12,6 +12,7 @@ import LogoImage from "common/assets/image/cryptoModern/logo-light.svg";
 
 import { Footer_Data } from "common/data/CryptoModern";
 import colors from "common/theme/cryptoModern/colors";
+import Tooltip from "../../../common/components/Tooltip";
 
 const Footer = ({
   row,
@@ -21,6 +22,7 @@ const Footer = ({
   titleStyle,
   logoStyle,
   textStyle,
+  creditsStyle,
 }) => {
   return (
     <FooterWrapper>
@@ -54,6 +56,65 @@ const Footer = ({
             ))}
           </Box>
           {/* End of footer List column */}
+        </Box>
+        <Box {...creditsStyle}>
+          <div>
+            Icons made by{" "}
+            <a
+              href="https://www.flaticon.com/authors/icongeek26"
+              title="Icongeek26"
+            >
+              Icongeek26
+            </a>
+            {", "}
+            <a href="https://www.flaticon.com/authors/rean-me" title="Rean-me">
+              Rean-me
+            </a>
+            {", "}
+            <a href="https://www.freepik.com" title="Freepik">
+              Freepik
+            </a>
+            {", "}
+            <a
+              href="https://www.flaticon.com/authors/ahmad-roaayala"
+              title="Ahmad Roaayala"
+            >
+              Ahmad Roaayala
+            </a>
+            {", "}
+            <a href="https://www.flaticon.com/authors/luke-vo" title="Luke Vo">
+              Luke Vo
+            </a>
+            {", "}
+            <a href="https://www.flaticon.com/authors/mj" title="mj">
+              mj
+            </a>
+            {", "}
+            <a
+              href="https://www.flaticon.com/authors/juicy-fish"
+              title="juicy_fish"
+            >
+              juicy_fish
+            </a>
+            {", "}
+            <a
+              href="https://www.flaticon.com/authors/parzival-1997"
+              title="Parzival’ 1997"
+            >
+              Parzival’ 1997
+            </a>
+            {", "}
+            <a
+              href="https://www.flaticon.com/authors/bima-pamungkas"
+              title="Bima Pamungkas"
+            >
+              Bima Pamungkas
+            </a>
+            {" from "}
+            <a href="https://www.flaticon.com/" title="Flaticon">
+              www.flaticon.com
+            </a>
+          </div>
         </Box>
       </Container>
     </FooterWrapper>
@@ -119,6 +180,10 @@ Footer.defaultProps = {
     fontSize: "16px",
     mb: "10px",
     fontWeight: "300",
+  },
+  creditsStyle: {
+    color: colors.textColor,
+    fontSize: "10px",
   },
 };
 
