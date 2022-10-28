@@ -23,6 +23,7 @@ const NavbarWrapper = styled.nav`
       img {
         width: 128px;
         height: auto;
+        //filter: drop-shadow(0px 0px 4px black);
       }
     }
 
@@ -30,6 +31,7 @@ const NavbarWrapper = styled.nav`
       width: 128px;
       height: auto;
       display: none;
+      filter: drop-shadow(0px 0px 10px #ffb343);
     }
   }
 
@@ -125,6 +127,8 @@ export const MenuArea = styled.div`
       padding: 0;
       margin-right: 28px;
       cursor: pointer;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.302);
 
       .btn-icon {
         svg {

@@ -25,9 +25,9 @@ const FeatureSection = ({
     <FeatureSectionWrapper id="key-features">
       <Container>
         <Box {...sectionHeader} className="sectionHeader">
-          <Text content="Why you choose TheCoin" {...sectionSubTitle} />
+          <Text content="O maior mercado do mundo" {...sectionSubTitle} />
           <Heading
-            content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiu Lorem ipsum dolor Lorem ipsum dolor"
+            content="O mercado imobiliário norte-americano, com 25 trilhões de dolares, é o maior do mundo"
             {...sectionTitle}
           />
         </Box>

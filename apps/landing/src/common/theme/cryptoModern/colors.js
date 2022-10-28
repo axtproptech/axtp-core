@@ -24,7 +24,7 @@ const colors = {
   menuHoverColor: "#0F2137",
   quoteText: "#343D48",
   menu: "rgba(255,255,255,0.8)",
-  navbar: "rgba(255,255,255,0.8)",
+  navbar: "rgba(255,255,255,0.95)",
   textColor: "rgba(255,179,67,0.8)",
   // textColor: "rgba(123,86,72,0.8)",
   linkColor: "#7b5648",

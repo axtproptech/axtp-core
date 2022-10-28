@@ -13,6 +13,7 @@ import BannerWrapper, {
 } from "./banner.style";
 
 import bannerImg from "common/assets/image/cryptoModern/banner-bg.png";
+import colors from "../../../common/theme/cryptoModern/colors";
 
 const Banner = () => {
   return (
@@ -20,25 +21,22 @@ const Banner = () => {
       <Container>
         <BannerContent>
           <Fade up delay={100}>
-            <Heading
-              as="h1"
-              content="Welcome next level  cryptocurrency token with faster transfer"
-            />
+            <Heading as="h1" content="Bem vindo ao mundo de ativos digitais" />
           </Fade>
           <Fade up delay={200}>
             <Text
-              content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiusmod tempor incididunt labore dolore magna
-          ipsum dolor sit amet consectetur."
+              content="Você sabia que é possível participar da disrupção de um mercado sólido e tradicional com segurança e lucratividade?"
+              style={{ color: colors.textColor }}
             />
           </Fade>
           <Fade up delay={300}>
             <ButtonGroup>
-              <Button className="primary" title="GET TOKEN" />
-              <Button
-                className="text"
-                variant="textButton"
-                title="WHITE PAPER"
-              />
+              <Button className="primary" title="SAIBA MAIS" />
+              {/*<Button*/}
+              {/*  className="text"*/}
+              {/*  variant="textButton"*/}
+              {/*  title="WHITE PAPER"*/}
+              {/*/>*/}
             </ButtonGroup>
           </Fade>
         </BannerContent>

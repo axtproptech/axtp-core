@@ -104,27 +104,29 @@ const Navbar = () => {
           <ScrollSpyMenu className="menu" menuItems={navMenu} offset={-84} />
           {/* end of main menu */}
 
-          <Search className="search" ref={searchRef}>
-            <form onSubmit={handleSearchForm}>
-              <input
-                type="text"
-                value={state.search}
-                placeholder="Enter your keyword"
-                onChange={handleOnChange}
-              />
-            </form>
-            <Button
-              className="text"
-              variant="textButton"
-              icon={<Icon icon={state.searchToggle ? x : search} />}
-              onClick={() => toggleHandler("search")}
-            />
-          </Search>
+          {/*<Search className="search" ref={searchRef}>*/}
+          {/*  <form onSubmit={handleSearchForm}>*/}
+          {/*    <input*/}
+          {/*      type="text"*/}
+          {/*      value={state.search}*/}
+          {/*      placeholder="Enter your keyword"*/}
+          {/*      onChange={handleOnChange}*/}
+          {/*    />*/}
+          {/*  </form>*/}
+          {/*  <Button*/}
+          {/*    className="text"*/}
+          {/*    variant="textButton"*/}
+          {/*    icon={<Icon icon={state.searchToggle ? x : search} />}*/}
+          {/*    onClick={() => toggleHandler("search")}*/}
+          {/*  />*/}
+          {/*</Search>*/}
           {/* end of search */}
 
-          <AnchorLink href="#access" offset={84}>
-            <Button className="trail" title="GET ACCESS" />
-          </AnchorLink>
+          <Button
+            className="text"
+            variant="textButton"
+            title="Área Exclusiva"
+          />
 
           <Button
             className="menubar"
@@ -165,7 +167,7 @@ const Navbar = () => {
               </li>
             ))}
           </Scrollspy>
-          <Button title="Try for Free" />
+          {/*<Button title="Try for Free" />*/}
         </Container>
       </MobileMenu>
       {/* end of mobile menu */}

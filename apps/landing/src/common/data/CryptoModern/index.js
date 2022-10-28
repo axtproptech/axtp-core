@@ -51,30 +51,30 @@ export const Features = [
   {
     id: 1,
     icon: featureIcon1,
-    title: "Great Market Value",
+    title: "Mercado Imobiliário",
     description:
-      "The leading digital currency by market capitalization, has grown in value by more than 10 times.",
+      "Maturidade, solidez e liquidez de uma economia bicentenária em moeda forte.",
   },
   {
     id: 2,
     icon: featureIcon2,
-    title: "Verified Mining",
+    title: "Acesso Simplificado",
     description:
-      "Your mining rigs are already set up and running. As soon as you set up your account.",
+      "Tenha acesso simplificado ao maior mercado imobiliário usando tecnologia inovadora.",
   },
   {
     id: 3,
     icon: featureIcon3,
-    title: "Fastest Miner",
+    title: "Tecnologia Disruptiva",
     description:
-      "Don’t wrestle with rig assembly and hot, noisy miners at home. We have the fastest bitcoin mining.",
+      "Alinhado com a ESG usamos uma blockchain sustentável garantindo transparência e segurança.",
   },
   {
     id: 4,
     icon: featureIcon4,
-    title: "Secure Transactions",
+    title: "Participe Agora",
     description:
-      "You can mine any cryptocurrency available in our catalogue! Switch your mining power.",
+      "Cadastre-se para receber mais informações sobre o mercado e a plataforma.",
   },
 ];
 

@@ -13,8 +13,8 @@ const PrivacyPortal = () => {
       <Container>
         <ContentWrapper>
           <div className="content">
-            <Heading content="Privacy Preserving  Anonymous Funds  Protocol" />
-            <Text content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiu Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiu" />
+            <Heading content="Compliance com todos os agentes regulatórios brasileiros" />
+            <Text content="A estrutura da AXT é concebida com foco no compliance com BACEN, CVM e CRECI. Aplicamos os conceitos de prevenção à lavagem de dinheiro e corrupção - KYC, AML. Todos os dados levantados são protegidos pela LGPD." />
           </div>
           <div className="image">
             <Fade up>
