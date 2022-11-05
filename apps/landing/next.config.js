@@ -1,10 +1,12 @@
-const withPlugins = require("next-compose-plugins");
+/** @type {import('next').NextConfig} */
+
+const path = require("path");
 
 const nextConfig = {
-  // distDir: '../../dist/functions/next'
-  // images: {
-  //   domains: ['pbs.twimg.com'],
+  reactStrictMode: true,
+  // sassOptions: {
+  //   includePaths: [path.join(__dirname, "styles/scss")],
   // },
 };
 
-module.exports = withPlugins([], nextConfig);
+module.exports = nextConfig;

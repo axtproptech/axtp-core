@@ -180,7 +180,6 @@ void Deactivate() {
     if(currentTX.sender == getCreator()){
         isDeactivated = true;
         sendQuantityAndAmount(getAssetBalance(AXTC_TOKEN_ID), AXTC_TOKEN_ID, getCurrentBalance(), getCreator());
-
     }
 }
 

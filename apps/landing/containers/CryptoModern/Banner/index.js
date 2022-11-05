@@ -12,7 +12,7 @@ import BannerWrapper, {
   ButtonGroup,
 } from "./banner.style";
 
-import bannerImg from "common/assets/image/cryptoModern/banner-bg.png";
+import bannerImg from "common/assets/image/cryptoModern/home-banner-2.webp";
 import colors from "../../../common/theme/cryptoModern/colors";
 
 const Banner = () => {

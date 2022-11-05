@@ -5,7 +5,7 @@ import NextImage from "common/components/NextImage";
 import Container from "common/components/UI/Container";
 import SectionWrapper, { ContentWrapper } from "./fundRaising.style";
 import FundGraphImg from "common/assets/image/cryptoModern/fund-graph.png";
-import GraphFeatureImg from "common/assets/image/cryptoModern/graph-feature.png";
+import { ScatterChart } from "common/components/ScatterChart";
 
 const DesignedAndBuilt = () => {
   return (
@@ -13,14 +13,14 @@ const DesignedAndBuilt = () => {
       <Container>
         <ContentWrapper>
           <div className="image">
-            <NextImage src={FundGraphImg} alt="Graph Image" />
+            <ScatterChart />
+            {/*<NextImage src={FundGraphImg} alt="Graph Image" />*/}
           </div>
           <div className="content">
             <Heading content="Fund raising allocation" />
             <Text content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiu Lorem ipsum dolor sit ." />
-            <NextImage src={GraphFeatureImg} alt="Graph Feature Image" />
           </div>
-          <div className="gradientDiv"> </div>
+          <div className="gradientDiv"></div>
         </ContentWrapper>
       </Container>
     </SectionWrapper>

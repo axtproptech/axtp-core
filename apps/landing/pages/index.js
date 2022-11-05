@@ -36,10 +36,7 @@ const CryptoModern = () => {
             name="keywords"
             content="blockchain, proptech, web3, signum, smart contracts"
           />
-          <link
-            href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
-            rel="stylesheet"
-          />
+
           <link
             rel="apple-touch-icon"
             sizes="180x180"

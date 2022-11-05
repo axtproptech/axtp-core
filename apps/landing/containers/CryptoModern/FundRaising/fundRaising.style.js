@@ -33,6 +33,7 @@ export const ContentWrapper = styled.div`
   align-items: center;
   .image {
     width: 50%;
+    height: 400px;
     padding: 70px;
     padding-right: 100px;
     @media only screen and (max-width: 991px) {

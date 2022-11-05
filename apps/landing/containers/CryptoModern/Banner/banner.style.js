@@ -98,10 +98,29 @@ export const DiscountLabel = styled.div`
 `;
 
 export const BannerImage = styled.div`
-  flex-shrink: 0;
-  width: calc(100% - 425px);
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  &:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(34, 34, 34, 1) 70%,
+      rgba(34, 34, 34, 1) 100%
+    );
+    border: 2px solid rgb(34, 34, 34);
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
   img {
-    margin-left: 80px;
+    height: 100%;
+    border-radius: 50%;
     @media only screen and (max-width: 1600px) {
       margin-left: 0;
     }
@@ -113,7 +132,6 @@ export const BannerImage = styled.div`
 
 export const ButtonGroup = styled.div`
   margin-top: 35px;
-
   .reusecore__button {
     border-radius: 5px;
     padding-left: 16px;
