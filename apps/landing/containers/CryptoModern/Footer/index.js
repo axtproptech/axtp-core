@@ -12,7 +12,6 @@ import LogoImage from "common/assets/image/cryptoModern/logo-light.svg";
 
 import { Footer_Data } from "common/data/CryptoModern";
 import colors from "common/theme/cryptoModern/colors";
-import Tooltip from "../../../common/components/Tooltip";
 
 const Footer = ({
   row,
@@ -44,8 +43,8 @@ const Footer = ({
               <Box className="col" {...col} key={`footer-widget-${index}`}>
                 <Heading content={widget.title} {...titleStyle} />
                 <List>
-                  {widget.menuItems.map((item, index) => (
-                    <ListItem key={`footer-list-item-${index}`}>
+                  {widget.menuItems.map((item, i) => (
+                    <ListItem key={`footer-list-item-${index}-${i}`}>
                       <Link href={item.url}>
                         <a className="ListItem">{item.text}</a>
                       </Link>
