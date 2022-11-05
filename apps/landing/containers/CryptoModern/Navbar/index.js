@@ -6,7 +6,6 @@ import AnchorLink from "react-anchor-link-smooth-scroll";
 import { Icon } from "react-icons-kit";
 import { menu } from "react-icons-kit/feather/menu";
 import { x } from "react-icons-kit/feather/x";
-import { search } from "react-icons-kit/feather/search";
 import Logo from "common/components/UIElements/Logo";
 import Button from "common/components/Button";
 import Container from "common/components/UI/Container";
@@ -14,6 +13,7 @@ import useOnClickOutside from "common/hooks/useOnClickOutside";
 import NavbarWrapper, { MenuArea, MobileMenu, Search } from "./navbar.style";
 import LogoImage from "common/assets/image/cryptoModern/logo-light.svg";
 import LogoImageAlt from "common/assets/image/cryptoModern/logo.svg";
+import { signIn } from "next-auth/react";
 
 import { navbar } from "common/data/CryptoModern";
 
@@ -83,6 +83,10 @@ const Navbar = () => {
     });
   };
 
+  const handleLogin = () => {
+    signIn("auth0");
+  };
+
   return (
     <NavbarWrapper className="navbar">
       <Container>
@@ -127,6 +131,7 @@ const Navbar = () => {
             variant="textButton"
             title="Área Exclusiva"
             style={{ marginLeft: "2rem" }}
+            onClick={handleLogin}
           />
 
           <Button
