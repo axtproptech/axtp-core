@@ -95,6 +95,13 @@ export const CryptoWrapper = styled.div`
         top: 72px;
       }
 
+      .user {
+        display: none;
+      }
+      .user-alt {
+        display: block;
+      }
+
       ul {
         li {
           a {

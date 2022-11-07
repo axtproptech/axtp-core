@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import Fade from "react-reveal/Fade";
 import ScrollSpyMenu from "common/components/ScrollSpyMenu";
 import Scrollspy from "react-scrollspy";
@@ -13,17 +13,28 @@ import useOnClickOutside from "common/hooks/useOnClickOutside";
 import NavbarWrapper, { MenuArea, MobileMenu, Search } from "./navbar.style";
 import LogoImage from "common/assets/image/cryptoModern/logo-light.svg";
 import LogoImageAlt from "common/assets/image/cryptoModern/logo.svg";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 import { navbar } from "common/data/CryptoModern";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   const { navMenu } = navbar;
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
   const [state, setState] = useState({
     search: "",
     searchToggle: false,
     mobileMenu: false,
   });
+
+  const userName = useMemo(() => {
+    if (!session) return "";
+    if (!session.user) return "";
+    return session.user.name[0].toUpperCase() + session.user.name.substring(1);
+  }, [session]);
 
   const searchRef = useRef(null);
   useOnClickOutside(searchRef, () =>
@@ -48,28 +59,6 @@ const Navbar = () => {
     }
   };
 
-  const handleOnChange = (event) => {
-    setState({
-      ...state,
-      search: event.target.value,
-    });
-  };
-
-  const handleSearchForm = (event) => {
-    event.preventDefault();
-
-    if (state.search !== "") {
-      console.log("search data: ", state.search);
-
-      setState({
-        ...state,
-        search: "",
-      });
-    } else {
-      console.log("Please fill this field.");
-    }
-  };
-
   const scrollItems = [];
 
   navMenu.forEach((item) => {
@@ -83,8 +72,16 @@ const Navbar = () => {
     });
   };
 
-  const handleLogin = () => {
-    signIn("auth0");
+  const handleLogin = async () => {
+    if (status === "unauthenticated") {
+      await signIn("auth0", {
+        callbackUrl: `${window.location.origin}/exclusive`,
+      });
+    }
+
+    if (status === "authenticated") {
+      await router.push("/exclusive");
+    }
   };
 
   return (
@@ -104,6 +101,18 @@ const Navbar = () => {
         />
         {/* end of logo */}
 
+        {session && (
+          <>
+            <div
+              className="user"
+              onClick={handleLogin}
+            >{`Bem vindo, ${userName}`}</div>
+            <div
+              className="user-alt"
+              onClick={handleLogin}
+            >{`Bem vindo, ${userName}`}</div>
+          </>
+        )}
         <MenuArea className={state.searchToggle ? "active" : ""}>
           <ScrollSpyMenu className="menu" menuItems={navMenu} offset={-84} />
           {/* end of main menu */}
@@ -155,6 +164,12 @@ const Navbar = () => {
       {/* start mobile menu */}
       <MobileMenu className={`mobile-menu ${state.mobileMenu ? "active" : ""}`}>
         <Container>
+          <Button
+            className="text"
+            variant="textButton"
+            title="Área Exclusiva"
+            onClick={handleLogin}
+          />
           <Scrollspy
             className="menu"
             items={scrollItems}
@@ -173,7 +188,6 @@ const Navbar = () => {
               </li>
             ))}
           </Scrollspy>
-          {/*<Button title="Try for Free" />*/}
         </Container>
       </MobileMenu>
       {/* end of mobile menu */}

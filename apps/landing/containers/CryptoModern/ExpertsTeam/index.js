@@ -9,7 +9,7 @@ import Heading from "common/components/Heading";
 import Button from "common/components/Button";
 import FeatureBlock from "common/components/FeatureBlock";
 import Container from "common/components/UI/Container";
-import WorkHistoryWrapper, { CounterUpArea } from "./workHistory.style";
+import ExpertsTeamWrapper, { CounterUpArea } from "./workHistory.style";
 import shape1 from "common/assets/image/cryptoModern/oliver-hager-colored.webp";
 
 const Items = {
@@ -21,7 +21,7 @@ const Items = {
   oliver: {
     title: "Oliver Hager, CTO",
     description:
-      "Oliver Hager é o especialista em blockchain, contratos inteligentes e tokenização. Ele possui um mestrado em Ciência da Computação, é membro da equipe central da Signum Blockchain, palestrante em conferências, defensor do código aberto e um desenvolvedor de software apaixonado.",
+      "Oliver Hager é o especialista em blockchain, contratos inteligentes e tokenização. Ele possui um amplo conhecimento na engenharia de software, tanto no desenvolvimento, quanto nos processos ágeis. Ele é Mestre em Ciência da Computação, palestrante em conferências, e um dos membros principais da comunidade internacional da Signum Network.",
     link: "https://www.linkedin.com/in/oliverhager",
   },
   osman: {
@@ -41,7 +41,7 @@ const Items = {
   },
 };
 
-const WorkHistory = ({ row, col, cardStyle, btnStyle }) => {
+const ExpertsTeam = ({ row, col, cardStyle, btnStyle }) => {
   const [selected, setSelected] = useState(Items.default);
 
   const handleSelect = (selection) => () => {
@@ -53,7 +53,7 @@ const WorkHistory = ({ row, col, cardStyle, btnStyle }) => {
   };
 
   return (
-    <WorkHistoryWrapper id="workHistorySection">
+    <ExpertsTeamWrapper id="experts">
       <Container>
         <Box className="row" {...row}>
           <Box className="col" {...col}>
@@ -126,12 +126,12 @@ const WorkHistory = ({ row, col, cardStyle, btnStyle }) => {
           </Box>
         </Box>
       </Container>
-    </WorkHistoryWrapper>
+    </ExpertsTeamWrapper>
   );
 };
 
 // WorkHistory style props
-WorkHistory.propTypes = {
+ExpertsTeam.propTypes = {
   sectionHeader: PropTypes.object,
   sectionTitle: PropTypes.object,
   sectionSubTitle: PropTypes.object,
@@ -141,7 +141,7 @@ WorkHistory.propTypes = {
 };
 
 // WorkHistory default style
-WorkHistory.defaultProps = {
+ExpertsTeam.defaultProps = {
   // WorkHistory section row default style
   row: {
     flexBox: true,
@@ -171,4 +171,4 @@ WorkHistory.defaultProps = {
   },
 };
 
-export default WorkHistory;
+export default ExpertsTeam;

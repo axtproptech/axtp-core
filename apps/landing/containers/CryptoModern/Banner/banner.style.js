@@ -6,9 +6,9 @@ const BannerWrapper = styled.div`
   min-height: 802px;
   overflow: hidden;
   background-image: linear-gradient(
-    200deg,
+    190deg,
     rgb(157, 116, 35) 0%,
-    rgba(0, 0, 0, 0) 35%
+    rgba(0, 0, 0, 0) 23%
   );
   @media only screen and (min-width: 1201px) and (max-width: 1440px) {
     min-height: 100%;
@@ -82,6 +82,7 @@ export const DiscountLabel = styled.div`
     padding: 7px 15px;
     width: 100%;
   }
+
   .discountAmount {
     font-size: 14px;
     color: rgb(64, 224, 219);
@@ -89,6 +90,7 @@ export const DiscountLabel = styled.div`
     margin-right: 0.6em;
     font-weight: 700;
   }
+
   .discountText {
     font-size: 14px;
     color: rgba(255, 255, 255, 0.902);
@@ -101,6 +103,7 @@ export const BannerImage = styled.div`
   border-radius: 50%;
   display: inline-block;
   position: relative;
+
   &:after {
     content: "";
     display: block;
@@ -112,12 +115,13 @@ export const BannerImage = styled.div`
       rgba(34, 34, 34, 1) 70%,
       rgba(34, 34, 34, 1) 100%
     );
-    border: 2px solid rgb(34, 34, 34);
+    transform: scale(1.01);
     border-radius: 50%;
     position: absolute;
     top: 0;
     left: 0;
   }
+
   img {
     height: 100%;
     border-radius: 50%;
@@ -132,6 +136,7 @@ export const BannerImage = styled.div`
 
 export const ButtonGroup = styled.div`
   margin-top: 35px;
+
   .reusecore__button {
     border-radius: 5px;
     padding-left: 16px;
@@ -146,6 +151,7 @@ export const ButtonGroup = styled.div`
         ${themeGet("colors.yellow")},
         ${themeGet("colors.brown")} 95%
       );
+
       &:hover {
         box-shadow: ${themeGet("colors.brown")} 0px 12px 24px -10px;
       }

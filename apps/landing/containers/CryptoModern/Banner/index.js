@@ -29,16 +29,16 @@ const Banner = () => {
               style={{ color: colors.textColor }}
             />
           </Fade>
-          <Fade up delay={300}>
-            <ButtonGroup>
-              <Button className="primary" title="SAIBA MAIS" />
-              {/*<Button*/}
-              {/*  className="text"*/}
-              {/*  variant="textButton"*/}
-              {/*  title="WHITE PAPER"*/}
-              {/*/>*/}
-            </ButtonGroup>
-          </Fade>
+          {/*<Fade up delay={300}>*/}
+          {/*  <ButtonGroup>*/}
+          {/*    <Button className="primary" title="SAIBA MAIS" />*/}
+          {/*    <Button*/}
+          {/*      className="text"*/}
+          {/*      variant="textButton"*/}
+          {/*      title="WHITE PAPER"*/}
+          {/*    />*/}
+          {/*  </ButtonGroup>*/}
+          {/*</Fade>*/}
         </BannerContent>
         <BannerImage>
           <Fade in delay={100}>

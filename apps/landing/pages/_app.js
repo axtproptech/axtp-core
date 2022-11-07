@@ -8,11 +8,14 @@ import "swiper/css/bundle";
 import "common/assets/css/react-slick.css";
 import "common/assets/css/rc-collapse.css";
 import "rc-collapse/assets/index.css";
+import { SessionProvider } from "next-auth/react";
 
 export default function CustomApp({ Component, pageProps }) {
   return (
     <Modal>
-      <Component {...pageProps} />
+      <SessionProvider session={pageProps.session}>
+        <Component {...pageProps} />
+      </SessionProvider>
     </Modal>
   );
 }

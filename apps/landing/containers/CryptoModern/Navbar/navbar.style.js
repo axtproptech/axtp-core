@@ -33,6 +33,26 @@ const NavbarWrapper = styled.nav`
       display: none;
       filter: drop-shadow(0px 0px 10px #ffb343);
     }
+
+    .user {
+      cursor: pointer;
+      display: block;
+      color: white;
+      font-size: 16px;
+      font-weight: 400;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0px 0px 10px #ffb343);
+    }
+
+    .user-alt {
+      cursor: pointer;
+      display: none;
+      color: black;
+      font-size: 16px;
+      font-weight: 400;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0px 0px 10px #ffb343);
+    }
   }
 
   ul {
@@ -130,9 +150,11 @@ export const MenuArea = styled.div`
       color: #fff;
       border-radius: 4px;
       border: 1px solid #fff;
+
       &:hover {
         box-shadow: ${themeGet("colors.yellow")} 0px 12px 24px -10px;
       }
+
       .btn-icon {
         svg {
           width: 22px;
@@ -149,6 +171,7 @@ export const MenuArea = styled.div`
       }
       @media only screen and (max-width: 991px) {
         margin-right: 0;
+        display: none;
       }
     }
 
@@ -253,7 +276,6 @@ export const MobileMenu = styled.div`
 
     .container {
       width: 100%;
-      height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -282,22 +304,8 @@ export const MobileMenu = styled.div`
 
     .reusecore__button {
       width: 100%;
+      border: 1px solid ${themeGet("colors.primary")};
       border-radius: 4px;
-      background-image: -moz-linear-gradient(
-        -31deg,
-        rgb(64, 219, 216) 0%,
-        rgb(44, 31, 132) 100%
-      );
-      background-image: -webkit-linear-gradient(
-        -31deg,
-        rgb(64, 219, 216) 0%,
-        rgb(44, 31, 132) 100%
-      );
-      background-image: -ms-linear-gradient(
-        -31deg,
-        rgb(64, 219, 216) 0%,
-        rgb(44, 31, 132) 100%
-      );
       @media only screen and (max-width: 480px) {
         margin-top: 20px;
       }

@@ -8,9 +8,9 @@ import SectionWrapper, { ContentWrapper } from "./investment.style";
 import GraphImg from "common/assets/image/cryptoModern/graph.png";
 import dummyImg from "common/assets/image/cryptoModern/pattern.png";
 
-const InvestmentPortal = () => {
+const MarketsPortal = () => {
   return (
-    <SectionWrapper>
+    <SectionWrapper id="markets">
       <Container>
         <ContentWrapper>
           <div className="content">
@@ -27,4 +27,4 @@ const InvestmentPortal = () => {
   );
 };
 
-export default InvestmentPortal;
+export default MarketsPortal;

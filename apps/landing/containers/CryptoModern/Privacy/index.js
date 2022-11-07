@@ -9,7 +9,7 @@ import Illustration from "common/assets/image/cryptoModern/illustration1.png";
 
 const PrivacyPortal = () => {
   return (
-    <SectionWrapper>
+    <SectionWrapper id="compliance">
       <Container>
         <ContentWrapper>
           <div className="content">

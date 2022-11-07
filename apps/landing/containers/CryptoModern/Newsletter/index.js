@@ -22,9 +22,12 @@ const Newsletter = ({
       <Container>
         <NewsletterWrapper>
           <Box {...textArea}>
-            <Heading content="Get Started Mining now!" {...title} />
+            <Heading
+              content="Interessado? Solicite mais informações"
+              {...title}
+            />
             <Text
-              content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiusmod tempor incididunt labore dolore"
+              content="Você gostaria de saber mais sobre nossas atividades? Basta deixar seu e-mail. Nós entraremos em contato com você."
               {...description}
             />
           </Box>
@@ -32,12 +35,12 @@ const Newsletter = ({
             <ContactFormWrapper>
               <Input
                 inputType="email"
-                label="Email address"
+                label="Endereço de email"
                 iconPosition="right"
                 isMaterial={true}
                 className="email_input"
               />
-              <Button {...buttonStyle} title="Get access" />
+              <Button {...buttonStyle} title="Solicitar" />
             </ContactFormWrapper>
           </Box>
         </NewsletterWrapper>

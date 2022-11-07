@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { themeGet } from "@styled-system/theme-get";
 
-const WorkHistoryWrapper = styled.section`
+const ExpertsTeamWrapper = styled.section`
   padding: 70px 0 80px;
   overflow: hidden;
   @media (max-width: 990px) {
@@ -154,4 +154,4 @@ const CounterUpArea = styled.div`
 `;
 
 export { CounterUpArea };
-export default WorkHistoryWrapper;
+export default ExpertsTeamWrapper;

@@ -5,14 +5,11 @@ import ResetCSS from "common/assets/css/style";
 import Sticky from "react-stickynode";
 import Navbar from "containers/CryptoModern/Navbar";
 import Banner from "containers/CryptoModern/Banner";
-import CountDown from "containers/CryptoModern/CountDown";
 import Features from "containers/CryptoModern/FeatureSection";
-import WorkHistory from "containers/CryptoModern/WorkHistory";
-import Investment from "containers/CryptoModern/Investment";
+import ExpertsTeam from "containers/CryptoModern/ExpertsTeam";
+import MarketsPortal from "containers/CryptoModern/Markets";
 import FundRaising from "containers/CryptoModern/FundRaising";
 import Privacypolicy from "containers/CryptoModern/Privacy";
-import WalletSection from "containers/CryptoModern/WalletSection";
-import MapSection from "containers/CryptoModern/MapSection";
 import FaqSection from "containers/CryptoModern/FaqSection";
 import Newsletter from "containers/CryptoModern/Newsletter";
 import Footer from "containers/CryptoModern/Footer";
@@ -71,8 +68,8 @@ const CryptoModern = () => {
             <Banner />
             {/*<CountDown />*/}
             <Features />
-            <WorkHistory />
-            <Investment />
+            <ExpertsTeam />
+            <MarketsPortal />
             <FundRaising />
             <Privacypolicy />
             {/*<WalletSection />*/}
