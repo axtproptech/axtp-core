@@ -7,13 +7,20 @@ import { BurnApprovalCard } from "./components/burnApprovalCard";
 import { HistoryChart } from "./components/historyChart";
 import { PieChart } from "./components/pieChart";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
-import { useState } from "react";
-import { IconFlame, IconSeeding, IconSend } from "@tabler/icons";
+import { useMemo, useState } from "react";
+import {
+  IconFlame,
+  IconRecharging,
+  IconSeeding,
+  IconSend,
+} from "@tabler/icons";
 import { TabContext, TabPanel, TabList } from "@mui/lab";
 import { WithBadge } from "@/app/components/withBadge";
 import { SendToPoolActionCard } from "@/features/liquidity/manage/components/sendToPoolActionCard";
 import { SendToPoolApprovalCard } from "@/features/liquidity/manage/components/sendToPoolApprovalCard";
 import { LiquidityCard } from "@/app/components/cards/liquidityCard";
+import { ChargeContractCard } from "@/features/liquidity/manage/components/chargeContractCard";
+import { Amount } from "@signumjs/util";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
@@ -21,6 +28,7 @@ enum Tabs {
   Mint = "mint",
   Send = "send",
   Burn = "burn",
+  Charge = "charge",
 }
 
 export const ManageLiquidity = () => {
@@ -29,6 +37,7 @@ export const ManageLiquidity = () => {
     approvalStatusBurning,
     approvalStatusSendToPool,
     token,
+    balance,
   } = useMasterContract();
   const [currentTab, setCurrentTab] = useState(Tabs.Mint);
   const tokenName = token.name.toUpperCase();
@@ -37,10 +46,21 @@ export const ManageLiquidity = () => {
     setCurrentTab(tab);
   };
 
+  const balanceAmount = useMemo(() => {
+    try {
+      return Amount.fromSigna(balance);
+    } catch (e) {
+      return Amount.Zero();
+    }
+  }, [balance]);
+
   const isMintingRequested = parseInt(approvalStatusMinting.quantity, 10) > 0;
   const isSendingRequested =
     parseInt(approvalStatusSendToPool.quantity, 10) > 0;
   const isBurningRequested = parseInt(approvalStatusBurning.quantity, 10) > 0;
+  const needCharge = balanceAmount.less(
+    Config.MasterContract.LowBalanceThreshold
+  );
 
   const isLoading = false;
   return (
@@ -91,6 +111,16 @@ export const ManageLiquidity = () => {
               iconPosition="start"
               value={Tabs.Burn}
             />
+            <Tab
+              icon={<IconRecharging />}
+              label={
+                <WithBadge color="error" value={needCharge ? " " : ""}>
+                  Charge Contract
+                </WithBadge>
+              }
+              iconPosition="start"
+              value={Tabs.Charge}
+            />
           </TabList>
           <TabPanel value={Tabs.Mint} sx={{ p: 0, pt: 1 }}>
             <Grid container spacing={gridSpacing}>
@@ -119,6 +149,13 @@ export const ManageLiquidity = () => {
               </Grid>
               <Grid item xs={12} md={8}>
                 <BurnApprovalCard />
+              </Grid>
+            </Grid>
+          </TabPanel>
+          <TabPanel value={Tabs.Charge} sx={{ p: 0, pt: 1 }}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item xs={12} md={4}>
+                <ChargeContractCard />
               </Grid>
             </Grid>
           </TabPanel>

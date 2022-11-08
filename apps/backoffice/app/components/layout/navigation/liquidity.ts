@@ -14,13 +14,13 @@ export const liquidity: NavigationItem = {
       icon: IconBuildingBank,
       breadcrumbs: false,
     },
-    {
-      id: "view-contract",
-      title: "View Master Contract",
-      type: "item",
-      url: "/admin/liquidity/master-contract",
-      icon: IconAffiliate,
-      breadcrumbs: false,
-    },
+    // {
+    //   id: "view-contract",
+    //   title: "View Master Contract",
+    //   type: "item",
+    //   url: "/admin/liquidity/master-contract",
+    //   icon: IconAffiliate,
+    //   breadcrumbs: false,
+    // },
   ],
 };

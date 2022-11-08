@@ -23,6 +23,9 @@ import { useMasterContract } from "@/app/hooks/useMasterContract";
 // @ts-ignore
 import hashicon from "hashicon";
 import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
+import { Amount } from "@signumjs/util";
+import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
+import PriceCheckRoundedIcon from "@mui/icons-material/PriceCheckRounded";
 
 interface Props {
   isLoading?: boolean;
@@ -44,10 +47,22 @@ export const LiquidityCard: FC<Props> = ({ isLoading = false }) => {
     selectPoolContractState(currentSendPoolAddress)
   );
 
+  const balanceAmount = useMemo(() => {
+    try {
+      return Amount.fromSigna(balance);
+    } catch (e) {
+      return Amount.Zero();
+    }
+  }, [balance]);
+
   const iconUrl = useMemo(() => {
     if (!token.id) return "";
     return hashicon(token.id, { size: 32 }).toDataURL();
   }, [token.id]);
+
+  const isBalanceLow = balanceAmount.less(
+    Config.MasterContract.LowBalanceThreshold
+  );
 
   return (
     <>
@@ -79,6 +94,26 @@ export const LiquidityCard: FC<Props> = ({ isLoading = false }) => {
                             alt={token.id}
                             style={{ backgroundColor: "transparent" }}
                           />
+                        }
+                      />
+                    </Tooltip>
+                    <Tooltip
+                      arrow
+                      title={
+                        isBalanceLow
+                          ? "Low Balance: Please recharge contract!"
+                          : "Contract Balance is fine"
+                      }
+                    >
+                      <Chip
+                        label={`${balance} ${Config.Signum.TickerSymbol}`}
+                        color={isBalanceLow ? "warning" : "secondary"}
+                        avatar={
+                          isBalanceLow ? (
+                            <WarningAmberRoundedIcon color="warning" />
+                          ) : (
+                            <PriceCheckRoundedIcon color="success" />
+                          )
                         }
                       />
                     </Tooltip>
