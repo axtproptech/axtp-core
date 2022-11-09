@@ -1,5 +1,5 @@
 import { Stepper } from "@/app/components/stepper";
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import {
   RiArrowLeftCircleLine,
@@ -24,6 +24,7 @@ import {
 } from "@/features/account/components/steps";
 import { OnStepChangeArgs } from "@/features/account/types/onStepChangeArgs";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { KycService } from "@/app/services";
 
 enum Steps {
   DefinePin,
@@ -41,7 +42,7 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { Ledger } = useAppContext();
+  const { Ledger, KycService } = useAppContext();
   const { showSuccess, showError } = useNotification();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [seed, setSeed] = useState<string>("");
@@ -53,13 +54,13 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
   const nextStep = async () => {
     const newStep = Math.min(currentStep + 1, StepCount - 1);
     setCurrentStep(newStep);
-    router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
+    await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
   };
 
-  const previousStep = () => {
+  const previousStep = async () => {
     const newStep = Math.max(0, currentStep - 1);
     setCurrentStep(newStep);
-    router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
+    await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
   };
 
   useEffect(() => {
@@ -99,12 +100,42 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
     onStepChange({ steps: StepCount, currentStep, bottomNav });
   }, [currentStep, pin, isConfirmed, isCreating]);
 
+  const tryImportCustomer = useCallback(
+    async (publicKey: string) => {
+      try {
+        const data = await KycService.fetchCustomerDataByPublicKey(publicKey);
+        console.log("tryImportCustomer", data);
+        const { cuid, termsOfUse, verificationLevel, firstName } = data;
+        const customerId = cuid;
+        const acceptedTerms =
+          termsOfUse.length === 0
+            ? false
+            : termsOfUse[termsOfUse.length - 1].accepted;
+        if (data) {
+          dispatch(
+            accountActions.setCustomer({
+              acceptedTerms,
+              customerId,
+              verificationLevel,
+              firstName,
+            })
+          );
+        }
+      } catch (e: any) {
+        console.error(e);
+      }
+    },
+    [KycService, dispatch]
+  );
+
   async function createAccount() {
     try {
       setIsCreating(true);
       const keys = generateMasterKeys(seed);
       const { salt, key } = await stretchKey(pin);
       const securedKeys = await encrypt(key, JSON.stringify(keys));
+      await tryImportCustomer(keys.publicKey);
+
       dispatch(
         accountActions.setAccount({
           publicKey: keys.publicKey,

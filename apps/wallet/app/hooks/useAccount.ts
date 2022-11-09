@@ -9,10 +9,11 @@ import { Keys } from "@signumjs/crypto";
 import useSWR from "swr";
 import { mapLedgerTransaction } from "@/app/mapLedgerTransaction";
 import { AccountData, DefaultAccountData } from "@/types/accountData";
-import { toStableCoinAmount } from "@/app/tokenQuantity";
+import { toQuantity, toStableCoinAmount } from "@/app/tokenQuantity";
+import { TokenMetaData } from "@/types/tokenMetaData";
 
 export const useAccount = () => {
-  const { Ledger, AXTTokenId } = useAppContext();
+  const { Ledger, AXTTokenId, AXTPoolTokenIds } = useAppContext();
   const { publicKey, accountId, salt, securedKeys, customer } =
     useAppSelector<AccountState>((state) => state.accountState);
 
@@ -49,6 +50,31 @@ export const useAccount = () => {
         ({ asset }) => asset === AXTTokenId
       );
 
+      const poolBalances = account.assetBalances.filter(({ asset }) =>
+        AXTPoolTokenIds.includes(asset)
+      );
+      const poolTokenRequests = poolBalances.map(({ asset }) =>
+        Ledger.Client.asset.getAsset({ assetId: asset })
+      );
+      const poolTokens = await Promise.all(poolTokenRequests);
+
+      const balancesPools: (TokenMetaData & { quantity: string })[] = [];
+      for (let poolToken of poolTokens) {
+        const balance = poolBalances.find(
+          ({ asset }) => poolToken.asset === asset
+        );
+        if (!balance) continue;
+        balancesPools.push({
+          quantity: toQuantity(
+            balance.balanceQNT || 0,
+            poolToken.decimals
+          ).toString(10),
+          name: poolToken.name,
+          decimals: poolToken.decimals,
+          id: poolToken.asset,
+        });
+      }
+
       return {
         accountId,
         // @ts-ignore
@@ -62,11 +88,10 @@ export const useAccount = () => {
         balanceAxt: axtBalance
           ? toStableCoinAmount(axtBalance.balanceQNT)
           : "0",
-        // TODO: add AXTPxxxx balances
+        balancesPools,
       } as AccountData;
     },
     {
-      dedupingInterval: Ledger.PollingInterval - 1000,
       refreshInterval: Ledger.PollingInterval,
     }
   );

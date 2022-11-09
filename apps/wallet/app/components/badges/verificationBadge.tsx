@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Badge, Steps, Tooltip } from "react-daisyui";
+import { Badge } from "react-daisyui";
 import { useTranslation } from "next-i18next";
 import { VerificationLevelType } from "@/types/verificationLevelType";
 import { useRouter } from "next/router";

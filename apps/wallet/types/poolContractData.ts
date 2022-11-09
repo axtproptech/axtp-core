@@ -5,7 +5,6 @@ export interface PoolContractData {
   balance: string;
   token: TokenData;
   transactions: Transaction[];
-  pendingDistribution: number;
   paidDistribution: number;
   maxShareQuantity: number;
   nominalLiquidity: number;

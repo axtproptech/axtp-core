@@ -1,5 +1,5 @@
 import { useAccount } from "@/app/hooks/useAccount";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { DashboardHeader } from "@/features/account/dashboard/sections/dashboardHeader";
 import { Body } from "@/app/components/layout/body";

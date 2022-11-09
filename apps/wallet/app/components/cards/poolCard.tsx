@@ -97,7 +97,7 @@ export const PoolCard: FC<Props> = ({
             <div className="flex flex-row justify-between items-center">
               <progress
                 className="progress progress-info mr-1"
-                value={20}
+                value={poolData.token.numHolders}
                 max={poolData.maxShareQuantity}
               />
               <small>

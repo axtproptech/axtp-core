@@ -33,4 +33,13 @@ export class KycService {
       return response;
     });
   }
+
+  async fetchCustomerDataByPublicKey(publicKey: string) {
+    return retry(async () => {
+      const { response } = await this.httpClient.get(
+        `/customer?publicKey=${publicKey}`
+      );
+      return response;
+    });
+  }
 }
