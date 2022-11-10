@@ -29,9 +29,7 @@ export const getCustomerByPublicKey: HandlerFunction = async (req, res) => {
         blockchainAccounts: true,
         termsOfUse: {
           where: {
-            termsOfUseId: Number(
-              process.env.ACTIVE_TERMS_OF_USE_ID || ("1" as string)
-            ),
+            termsOfUseId: Number(process.env.ACTIVE_TERMS_OF_USE_ID || "1"),
           },
         },
       },

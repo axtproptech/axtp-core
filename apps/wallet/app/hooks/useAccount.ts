@@ -14,8 +14,14 @@ import { TokenMetaData } from "@/types/tokenMetaData";
 
 export const useAccount = () => {
   const { Ledger, AXTTokenId, AXTPoolTokenIds } = useAppContext();
-  const { publicKey, accountId, salt, securedKeys, customer } =
-    useAppSelector<AccountState>((state) => state.accountState);
+  const {
+    publicKey,
+    accountId,
+    salt,
+    securedKeys,
+    customer,
+    showVerificationStatus,
+  } = useAppSelector<AccountState>((state) => state.accountState);
 
   const { data } = useSWR(
     `/fetchAccount/${accountId}`,
@@ -132,5 +138,6 @@ export const useAccount = () => {
     accountId,
     customer,
     getKeys,
+    showVerificationStatus,
   };
 };

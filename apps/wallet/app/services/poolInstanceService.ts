@@ -35,6 +35,7 @@ export class PoolInstanceService extends GenericContractService {
         },
         transactions: transactions.transactions,
         paidDistribution: contractDataView.getDistributedStableCoins(),
+        grossMarketValue: contractDataView.getGrossMarketValue(),
         maxShareQuantity: contractDataView.getPoolTokenMaxQuantity(),
         nominalLiquidity: contractDataView.getNominalLiquidity(),
         tokenRate: contractDataView.getPoolTokenRate(),

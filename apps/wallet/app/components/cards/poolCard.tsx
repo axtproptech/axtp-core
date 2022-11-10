@@ -34,27 +34,22 @@ export const PoolCard: FC<Props> = ({
 
   const accountShares = useMemo(() => {
     if (!accountData) return 0;
-    return 4;
-    // FIXME: use the real balance
-    // if (!accountData.balancesPools) return 0;
-    //
-    // const index = accountData.balancesPools.findIndex(
-    //   (balance) => balance.id === poolData.poolId
-    // );
-    // if (index === -1) return 0;
-    //
-    // return parseInt(accountData.balancesPools[index].quantity);
+    if (!accountData.balancesPools) return 0;
+
+    const index = accountData.balancesPools.findIndex(
+      (balance) => balance.id === poolData.token.id
+    );
+    return index === -1
+      ? 0
+      : parseInt(accountData.balancesPools[index].quantity);
   }, [accountData, poolData]);
 
   const freeSeats = Math.max(
     poolData.maxShareQuantity - poolData.token.numHolders,
     0
   );
-  const performance = (
-    ((poolData.paidDistribution + poolData.nominalLiquidity) /
-      poolData.nominalLiquidity) *
-    100
-  ).toFixed(2);
+  const performance =
+    (poolData.grossMarketValue / poolData.nominalLiquidity) * 100 - 100;
 
   const randomDelay = useMemo(() => {
     return 2_000 + Math.floor(Math.random() * 3_000);
@@ -79,17 +74,26 @@ export const PoolCard: FC<Props> = ({
         <div className="card-body">
           <div className="flex flex-row justify-between items-start">
             <h2 className="card-title mr-2">{poolData.token.name}</h2>
-            <h2 className="card-title text-green-400">
-              <Number value={performance} suffix="%" />
+            <h2
+              className={`card-title ${
+                performance > 0 ? "text-green-400" : "text-red-500"
+              }`}
+            >
+              <Number
+                value={performance}
+                prefix={performance > 0 ? "+" : "-"}
+                suffix="%"
+                decimals={2}
+              />
             </h2>
           </div>
           <div>
             <div className="flex flex-col justify-between items-start lg:items-end">
               <h2 className="text-lg font-bold">
-                <Number value={poolData.nominalLiquidity} suffix={name} />
+                <Number value={poolData.grossMarketValue} suffix={name} />
               </h2>
               <Number
-                value={poolData.paidDistribution}
+                value={poolData.grossMarketValue - poolData.nominalLiquidity}
                 prefix="+"
                 suffix={name}
               />

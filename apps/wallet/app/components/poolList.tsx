@@ -19,8 +19,10 @@ export const PoolList: FC<Props> = ({ accountData }) => {
   const relevantPools = useMemo(() => {
     if (!accountData) return pools;
     if (accountData && !accountData.balancesPools) return [];
-    const accountPoolIds = new Set(accountData.balancesPools.map((p) => p.id));
-    return pools.filter((p) => accountPoolIds.has(p.poolId));
+    const accountPoolTokenIds = new Set(
+      accountData.balancesPools.map((p) => p.id)
+    );
+    return pools.filter((p) => accountPoolTokenIds.has(p.token.id));
   }, [pools, accountData]);
 
   const hasPools = relevantPools.length > 0;

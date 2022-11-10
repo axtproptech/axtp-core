@@ -36,7 +36,8 @@
   "settings": "Configurações",
   "disconnect": "Desconectar",
   "disconnect_hint": "Desconectar sua conta é como deslogar. Para fazer login novamente, você precisa importar sua conta usando a Frase de Recuperação",
-  "you_own_n_shares": "Possui {{count}} ações",
+  "you_own_n_shares_one": "Possui uma ação",
+  "you_own_n_shares_other": "Possui {{count}} ações",
   "account_unregistered": "Conta não registrada",
   "no_pool_joined_hint": "Aqui você normalmente veria as pools cujas ações você detém. Mas não há nada aqui. Que pena!",
   "404_title": "Ooops, isto vem sem intenção",
@@ -61,5 +62,8 @@
   "kyc-accepted-hint": "Parabéns. Você é verificado e faz parte de um clube de investimento exclusivo",
   "kyc-current-verification": "Este é o seu status atual de verificação. Uma vez verificado, você pode começar a investir.",
   "import_account_hint": "Escolha isso se você já tiver uma conta e quiser importar usando a Frase de Recuperação",
-  "create_account_hint": "Escolha isso se você não tiver uma conta Signum e quiser criar uma"
+  "create_account_hint": "Escolha isso se você não tiver uma conta Signum e quiser criar uma",
+  "kyc_verified_got_it": "Legal! Vamos la!",
+  "free": "livre",
+  "reserved": "investido"
 }

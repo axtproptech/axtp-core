@@ -55,7 +55,13 @@ export const DashboardHeader: FC<Props> = ({
   accountData,
   verificationLevel,
 }) => {
-  const { signaBalance, axtBalance, fiatBalance } = usePortfolioBalance();
+  const {
+    signaBalance,
+    axtcBalance,
+    fiatBalance,
+    axtcReservedBalance,
+    axtcTotalBalance,
+  } = usePortfolioBalance();
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -135,14 +141,23 @@ export const DashboardHeader: FC<Props> = ({
       <div className="absolute top-0 p-4 w-full">
         <div className="flex flex-row justify-between items-start">
           <div className="flex flex-col">
-            <h1 className={"text-3xl"}>{axtBalance.formatted}</h1>
+            <h1 className={"text-3xl"}>{axtcTotalBalance.formatted}</h1>
+            <div className="flex flex-row">
+              <h3 className={"text-sm opacity-80"}>
+                {axtcBalance.formatted}&nbsp;{t("free")}&nbsp;
+              </h3>
+              •
+              <h3 className={"text-sm opacity-80"}>
+                &nbsp;{axtcReservedBalance.formatted}&nbsp;{t("reserved")}
+              </h3>
+            </div>
             <h3 className={"text-lg opacity-80"}>{signaBalance.formatted}</h3>
             <h5 className={"text-sm opacity-60"}>~ {fiatBalance.formatted}</h5>
           </div>
           <div className="flex flex-col">
             {!accountData.isActive && (
               <Badge
-                className="mt-1 cursor-pointer"
+                className="my-1 cursor-pointer"
                 color="warning"
                 onClick={handleOnClickInactive}
               >

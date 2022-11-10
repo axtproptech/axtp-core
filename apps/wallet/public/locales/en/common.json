@@ -26,7 +26,8 @@
   "home": "Home",
   "account_stored_success": "Your account is now stored on this device",
   "severe_error": "Oh, no. Something went terribly wrong: {{reason}}",
-  "free_pool_seats": "Only {{freeSeats}} shares left!",
+  "free_pool_seats_one": "Only one share left!",
+  "free_pool_seats_other": "Only {{freeSeats}} shares left!",
   "pool_full": "This pool has no shares left anymore",
   "joined": "Joined",
   "join_club": "Join the Club!",
@@ -38,7 +39,8 @@
   "settings": "Settings",
   "disconnect": "Disconnect",
   "disconnect_hint": "Disconnecting your account is like logging out. To log in again you need to import your account using the Recovery Phrase",
-  "you_own_n_shares": "You own {{count}} shares",
+  "you_own_n_shares_one": "You own one share",
+  "you_own_n_shares_other": "You own {{count}} shares",
   "account_unregistered": "Inactive Account",
   "no_pool_joined_hint": "Here you would normally see the pools whose shares you hold. But here is nothing. Too bad!",
   "404_title": "Oooops, that comes unintentionally",
@@ -61,5 +63,8 @@
   "kyc-registered-hint": "Your personal information was recorded successfully",
   "kyc-analyzing-hint": "Your registration is being analyzed",
   "kyc-accepted-hint": "Congratulations. You are verified and part of an exclusive investment club",
-  "kyc-current-verification": "This is your current verification status. Once verified you can start investing."
+  "kyc-current-verification": "This is your current verification status. Once verified you can start investing.",
+  "kyc_verified_got_it": "Great! I got it",
+  "free": "free",
+  "reserved": "invested"
 }

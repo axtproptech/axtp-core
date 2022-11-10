@@ -15,6 +15,7 @@ export interface AccountState {
   customer?: CustomerState;
   securedKeys: string;
   salt: string;
+  showVerificationStatus: boolean;
 }
 
 const initialState: AccountState = {
@@ -23,6 +24,7 @@ const initialState: AccountState = {
   securedKeys: "",
   salt: "",
   customer: undefined,
+  showVerificationStatus: true,
 };
 
 export const accountSlice = createSlice({
@@ -48,6 +50,9 @@ export const accountSlice = createSlice({
       state.customer = { ...action.payload };
     },
     resetAccount: (_) => initialState,
+    setShowVerificationStatus: (state, action: PayloadAction<boolean>) => {
+      state.showVerificationStatus = action.payload;
+    },
   },
 });
 
