@@ -22,6 +22,7 @@ interface Props {
 export const PoolHeader: FC<Props> = ({ poolData }) => {
   const account = useAccount();
   const { t } = useTranslation();
+
   const axtcToken = useAppSelector(selectAXTToken);
 
   const stats = useMemo(() => {
@@ -45,7 +46,7 @@ export const PoolHeader: FC<Props> = ({ poolData }) => {
 
   return (
     <div className="relative w-full">
-      <section className="p-4 flex-row flex mx-auto justify-center">
+      <section className="p-8 flex-row flex mx-auto justify-center">
         <figure className="w-[64px] flex-col relative mr-8">
           <AttentionSeeker effect="rubberBand" delay={randomDelay}>
             <img src={iconUrl} alt={poolData.token.name} />
@@ -101,21 +102,6 @@ export const PoolHeader: FC<Props> = ({ poolData }) => {
                 />
               </Stat.Item>
             </Stat>
-            {/*<Stat className="place-items-center">*/}
-            {/*  <Stat.Item variant="title">{t("total_paid_divs")}</Stat.Item>*/}
-            {/*  <Stat.Item variant="value">*/}
-            {/*    {compactFormatter.format(stats.paidDividends)}*/}
-            {/*  </Stat.Item>*/}
-            {/*  <Stat.Item variant="desc">*/}
-            {/*    {t("to_n_holders", { count: stats.shareholderCount })}*/}
-            {/*  </Stat.Item>*/}
-            {/*</Stat>*/}
-            {/*<Stat className="place-items-center">*/}
-            {/*  <Stat.Item variant="title">{t("overall_performance")}</Stat.Item>*/}
-            {/*  <Stat.Item variant="value" className="text-success">*/}
-            {/*    {performance.toFixed(2)} %{" "}*/}
-            {/*  </Stat.Item>*/}
-            {/*</Stat>*/}
           </Stats>
         </div>
       </section>

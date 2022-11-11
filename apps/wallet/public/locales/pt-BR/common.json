@@ -81,5 +81,7 @@
   "details_soldShares": "Ações vendidas",
   "details_numShareHolders": "Número de acionistas",
   "details_paidDistribution": "Total de dividendos pagos",
-  "open_explorer": "Abrir Explorador"
+  "open_explorer": "Abrir Explorador",
+  "show_doc": "White Paper",
+  "buy_token": "Comprar"
 }

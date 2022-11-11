@@ -19,7 +19,7 @@ interface DetailItemProps {
 }
 
 const DetailItem: FC<DetailItemProps> = ({ label, value }) => (
-  <div className="mb-1 flex flex-col justify-center">
+  <div className="mb-1">
     <div className="text-xs opacity-80">
       <T i18nKey={label} />
     </div>
@@ -113,7 +113,7 @@ export const PoolData: FC<Props> = ({ poolData }) => {
   }, [Ledger.AddressPrefix, Ledger.ExplorerUrl, axtcToken.name, poolData]);
 
   return (
-    <div className="relative w-full">
+    <div className="relative md:mx-auto md:w-1/2">
       {detailItems.map(({ label, value }, index) => (
         <DetailItem key={index} label={label} value={value} />
       ))}

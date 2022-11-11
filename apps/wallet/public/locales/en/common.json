@@ -81,5 +81,7 @@
   "details_soldShares": "Sold Shares",
   "details_numShareHolders": "Number of Shareholders",
   "details_paidDistribution": "Total Paid Dividends",
-  "open_explorer": "Open Explorer"
+  "open_explorer": "Open Explorer",
+  "show_doc": "White Paper",
+  "buy_token": "Buy Token"
 }
