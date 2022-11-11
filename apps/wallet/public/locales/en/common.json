@@ -66,5 +66,20 @@
   "kyc-current-verification": "This is your current verification status. Once verified you can start investing.",
   "kyc_verified_got_it": "Great! I got it",
   "free": "free",
-  "reserved": "invested"
+  "reserved": "invested",
+  "gmv": "Gross Market Value",
+  "performance": "Performance",
+  "started_at": "Started at",
+  "established_on": "Established on",
+  "details": "Details",
+  "details_initial": "Initial Pool Value",
+  "details_gmv": "Current Gross Market Value",
+  "details_token": "Linked Token",
+  "details_contract": "Linked Smart Contract",
+  "details_priceToken": "Initial Token Price",
+  "details_maxShares": "Max. Available Shares",
+  "details_soldShares": "Sold Shares",
+  "details_numShareHolders": "Number of Shareholders",
+  "details_paidDistribution": "Total Paid Dividends",
+  "open_explorer": "Open Explorer"
 }

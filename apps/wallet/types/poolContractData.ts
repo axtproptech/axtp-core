@@ -2,6 +2,7 @@ import { Transaction } from "@signumjs/core";
 import { TokenData } from "@/types/tokenData";
 
 export interface PoolContractData {
+  created: string;
   balance: string;
   token: TokenData;
   transactions: Transaction[];

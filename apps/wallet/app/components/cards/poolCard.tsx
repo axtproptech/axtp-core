@@ -15,7 +15,6 @@ import { useRouter } from "next/router";
 interface Props {
   poolData: PoolContractData;
   accountData?: AccountData;
-  // onClick?: (pool: PoolContractData) => void;
   className?: string;
 }
 

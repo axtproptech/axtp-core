@@ -8,17 +8,15 @@ import { Config } from "@/app/config";
 import { PoolDetails } from "@/features/pool";
 
 export async function getStaticPaths({ locales }: any) {
-  const paths = Config.Contracts.PoolContractIds.flatMap((poolId) => {
-    return locales.map((locale: string) => {
-      return {
-        params: { poolId },
-        locale,
-      };
-    });
-  });
+  const paths = Config.Contracts.PoolContractIds.flatMap((poolId) =>
+    locales.map((locale: string) => ({
+      params: { poolId },
+      locale,
+    }))
+  );
   return {
     paths,
-    fallback: true,
+    fallback: false,
   };
 }
 
@@ -36,8 +34,6 @@ export async function getStaticProps({ locale, params }: any) {
 
 export default function Page({ poolId }: any) {
   const { t } = useTranslation();
-
-  console.log("Page", poolId);
 
   const bottomNav: BottomNavigationItem[] = [
     {

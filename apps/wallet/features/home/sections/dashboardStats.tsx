@@ -1,6 +1,8 @@
 import { Stats } from "react-daisyui";
 import { FC, useMemo } from "react";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
+import { getCompactFormatter } from "@/app/getCompactFormatter";
 
 const Stat = Stats.Stat;
 
@@ -15,10 +17,13 @@ interface Props {
   stats: StatsType;
 }
 
-const compactFormatter = Intl.NumberFormat("en", { notation: "compact" });
-
 export const DashboardStats: FC<Props> = ({ stats }) => {
   const { t } = useTranslation();
+  const { locale } = useRouter();
+  const compactFormatter = useMemo(
+    () => getCompactFormatter(locale || "en"),
+    [locale]
+  );
 
   const performance = stats.initialShareholderValue
     ? ((stats.initialShareholderValue + stats.paidDividends) /

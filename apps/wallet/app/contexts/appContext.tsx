@@ -23,6 +23,7 @@ export interface AppContextType {
     SignaPrefix: SignaPrefixType;
     Hosts: string[];
     PollingInterval: number;
+    ExplorerUrl: string;
   };
 }
 
@@ -42,6 +43,7 @@ const config: AppContextType = {
     SignaPrefix: Config.Ledger.IsTestNet ? "TSIGNA" : "SIGNA",
     Hosts: Config.Ledger.Hosts,
     PollingInterval: Config.Ledger.PollingInterval,
+    ExplorerUrl: Config.Ledger.ExplorerUrl,
   },
 };
 

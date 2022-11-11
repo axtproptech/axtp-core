@@ -1,6 +1,6 @@
 import { ServiceContext } from "./serviceContext";
 import { withError } from "./withError";
-import { Amount } from "@signumjs/util";
+import { Amount, ChainTime } from "@signumjs/util";
 import { PoolContractDataView } from "./poolContractDataView";
 import { GenericContractService } from "./genericContractService";
 import { PoolContractData } from "@/types/poolContractData";
@@ -17,7 +17,10 @@ export class PoolInstanceService extends GenericContractService {
   public readContractData() {
     return withError<PoolContractData>(async () => {
       const { ledger } = this.context;
-      const contract = await ledger.contract.getContract(this.poolId);
+      const [contract, tx] = await Promise.all([
+        ledger.contract.getContract(this.poolId),
+        ledger.transaction.getTransaction(this.poolId),
+      ]);
       const contractDataView = new PoolContractDataView(contract);
 
       const [token, transactions] = await Promise.all([
@@ -25,14 +28,13 @@ export class PoolInstanceService extends GenericContractService {
         ledger.account.getAccountTransactions({ accountId: this.contractId() }),
       ]);
 
-      const supply = contractDataView.getPoolTokenMaxQuantity().toString(10);
       return {
+        created: ChainTime.fromChainTimestamp(tx.timestamp)
+          .getDate()
+          .toISOString(),
         poolId: this.poolId,
         balance: Amount.fromPlanck(contract.balanceNQT).getSigna(),
-        token: {
-          ...token,
-          supply,
-        },
+        token,
         transactions: transactions.transactions,
         paidDistribution: contractDataView.getDistributedStableCoins(),
         grossMarketValue: contractDataView.getGrossMarketValue(),

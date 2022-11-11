@@ -1,45 +1,49 @@
 import { useAppSelector } from "@/states/hooks";
-import { TextLogo } from "@/app/components/logo/textLogo";
-import { Fade, Slide } from "react-awesome-reveal";
-import { selectAllPools } from "@/app/states/poolsState";
-import { FC, useMemo } from "react";
+import { selectPoolContractState } from "@/app/states/poolsState";
+import { FC } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
-import { PoolCard } from "@/app/components/cards/poolCard";
 import { useRouter } from "next/router";
+import { PoolHeader } from "./sections/poolHeader";
+import { PoolData } from "./sections/poolData";
+import { useTranslation } from "next-i18next";
+import { Body } from "@/app/components/layout/body";
+import { Fade, Slide } from "react-awesome-reveal";
 
 interface Props {
   poolId: string;
 }
 
 export const PoolDetails: FC<Props> = ({ poolId }) => {
+  const { t } = useTranslation();
   const router = useRouter();
-  const pools = useAppSelector(selectAllPools);
+  const pool = useAppSelector(selectPoolContractState(poolId));
   const { customer } = useAccount();
-
-  const pool = useMemo(
-    () => pools.find((p) => p.poolId === poolId),
-    [poolId, pools]
-  );
 
   if (!pool) return null;
 
   return (
-    <div>
-      <section className="relative">
+    <div className="overflow-hidden h-[100vh]">
+      <section>
         <Slide direction="down">
           <Fade>
-            <TextLogo className="py-4 mx-auto w-[50%] lg:w-[33%]" />
+            <PoolHeader poolData={pool} />
           </Fade>
         </Slide>
       </section>
-      <div className="relative">
-        <div className="absolute z-10 top-[-1px] bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
-      </div>
-      <div className="relative overflow-x-hidden h-[calc(100vh_-_140px_-_64px)] lg:h-[calc(100vh_-_180px_-_64px)]">
-        <section className="w-full">
-          <PoolCard poolData={pool} />
-        </section>
-      </div>
+      <Slide direction="up">
+        <Fade>
+          <div className="divider">{t("details")}</div>
+          <div className="relative">
+            <div className="absolute z-10 top-[-1px] bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
+          </div>
+          <Body className="overflow-x-auto h-[calc(100vh_-_420px)]">
+            <PoolData poolData={pool} />
+          </Body>
+        </Fade>
+      </Slide>
+
+      <section>{/*<PoolChart poolData={pool} />*/}</section>
+      <section>{/*<PoolActions poolData={pool} />*/}</section>
     </div>
   );
 };

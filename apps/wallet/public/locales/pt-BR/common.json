@@ -66,5 +66,20 @@
   "create_account_hint": "Escolha isso se você não tiver uma conta Signum e quiser criar uma",
   "kyc_verified_got_it": "Legal! Vamos la!",
   "free": "livre",
-  "reserved": "investido"
+  "reserved": "investido",
+  "gmv": "Valor Bruto de Mercado",
+  "performance": "Desempenho",
+  "started_at": "Inicicou em",
+  "established_on": "Estabelecido em",
+  "details": "Detalhes",
+  "details_initial": "Valor Inicial",
+  "details_gmv": "Valor Bruto de Mercado atual",
+  "details_token": "Ação digital vinculado",
+  "details_contract": "Contrato inteligente vinculado",
+  "details_priceToken": "Preço inicial da ação digital",
+  "details_maxShares": "Suporte máximo de ações ",
+  "details_soldShares": "Ações vendidas",
+  "details_numShareHolders": "Número de acionistas",
+  "details_paidDistribution": "Total de dividendos pagos",
+  "open_explorer": "Abrir Explorador"
 }
