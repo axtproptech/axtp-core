@@ -8,23 +8,24 @@ import { useTranslation } from "next-i18next";
 // @ts-ignore
 import hashicon from "hashicon";
 import { Badge } from "react-daisyui";
-import { AttentionSeeker, Zoom } from "react-awesome-reveal";
+import { AttentionSeeker } from "react-awesome-reveal";
 import { AccountData } from "@/types/accountData";
+import { useRouter } from "next/router";
 
 interface Props {
   poolData: PoolContractData;
   accountData?: AccountData;
-  onClick?: (pool: PoolContractData) => void;
+  // onClick?: (pool: PoolContractData) => void;
   className?: string;
 }
 
 export const PoolCard: FC<Props> = ({
-  onClick = voidFn,
   className = "",
   poolData,
   accountData,
 }) => {
   const { t } = useTranslation();
+  const router = useRouter();
   const { name } = useAppSelector(selectAXTToken);
 
   const iconUrl = useMemo(() => {
@@ -59,7 +60,7 @@ export const PoolCard: FC<Props> = ({
     <div className={className}>
       <div
         className="relative card card-side w-full glass cursor-pointer h-full"
-        onClick={() => onClick(poolData)}
+        onClick={() => router.push(`/pool/${poolData.poolId}`)}
       >
         <figure className="ml-8 mt-14 w-[64px] flex-col relative">
           <AttentionSeeker effect="rubberBand" delay={randomDelay}>
@@ -109,7 +110,9 @@ export const PoolCard: FC<Props> = ({
               </small>
             </div>
             <small>
-              {freeSeats ? t("free_pool_seats", { freeSeats }) : t("pool_full")}
+              {freeSeats
+                ? t("free_pool_seats", { count: freeSeats })
+                : t("pool_full")}
             </small>
             {accountShares > 0 && (
               <Badge color="secondary" className="absolute bottom-2 right-2">

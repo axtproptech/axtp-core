@@ -27,7 +27,7 @@
   "account_stored_success": "Your account is now stored on this device",
   "severe_error": "Oh, no. Something went terribly wrong: {{reason}}",
   "free_pool_seats_one": "Only one share left!",
-  "free_pool_seats_other": "Only {{freeSeats}} shares left!",
+  "free_pool_seats_other": "Only {{count}} shares left!",
   "pool_full": "This pool has no shares left anymore",
   "joined": "Joined",
   "join_club": "Join the Club!",
