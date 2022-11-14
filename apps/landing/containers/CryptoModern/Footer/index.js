@@ -31,11 +31,10 @@ const Footer = ({
             <Logo
               href="#"
               logoSrc={LogoImage}
-              title="Hosting"
+              title="AXT Proptech Company S/A"
               logoStyle={logoStyle}
             />
-            <Text content="contact@axtp.com" {...textStyle} />
-            <Text content="+479-443-9334" {...textStyle} />
+            <Text content="contact@axtp.com.br" {...textStyle} />
           </Box>
           {/* End of footer logo column */}
           <Box {...colTwo}>
