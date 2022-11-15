@@ -16,12 +16,14 @@ import {
 import { Transition } from "@/app/components/animation";
 import { MainCard, WalletConnectorCard } from "@/app/components/cards";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { IconLogout, IconSettings, IconUser } from "@tabler/icons";
+import { IconLogout, IconSettings, IconUser, IconRecycle } from "@tabler/icons";
 import React, { FC, useState } from "react";
 import { VirtualElement } from "@popperjs/core";
 import { useTheme } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
+import { adminService } from "@/app/services/adminService";
+import { useSnackbar } from "@/app/hooks/useSnackbar";
 
 interface Props {
   anchorElement: VirtualElement;
@@ -38,7 +40,17 @@ export const ProfileMenu: FC<Props> = ({
 }) => {
   const theme = useTheme();
   const router = useRouter();
+  const { showError, showSuccess } = useSnackbar();
   const [selectedIndex, setSelectedIndex] = useState(-1);
+
+  const handlePasswordResetRequest = async () => {
+    try {
+      await adminService.requestPasswordReset();
+      showSuccess("Reset requested successfully. Check your email inbox.");
+    } catch (e: any) {
+      showError("Request failed");
+    }
+  };
 
   const handleListItemClick = (
     event: React.MouseEvent,
@@ -51,6 +63,7 @@ export const ProfileMenu: FC<Props> = ({
       router.push(route);
     }
   };
+
   return (
     <Popper
       placement="bottom-end"
@@ -129,6 +142,22 @@ export const ProfileMenu: FC<Props> = ({
                         <ListItemText
                           primary={
                             <Typography variant="body2">Logout</Typography>
+                          }
+                        />
+                      </ListItemButton>
+                      <ListItemButton
+                        sx={{ borderRadius: `12px` }}
+                        selected={selectedIndex === 4}
+                        onClick={handlePasswordResetRequest}
+                      >
+                        <ListItemIcon>
+                          <IconRecycle stroke={1.5} size="1.3rem" />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Typography variant="body2">
+                              Request Password Reset
+                            </Typography>
                           }
                         />
                       </ListItemButton>
