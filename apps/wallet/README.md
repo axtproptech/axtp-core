@@ -1,3 +1,3 @@
 ## Getting Started
 
-some test
+The AXT Wallet
