@@ -6,19 +6,20 @@ import {
 } from "@/bff/handler/customer/jotFormSubmissionResponse";
 
 // Current KYC responses as order
+// Use  https://api.jotform.com/submission/5443436762481459856?apiKey=<apikey>
 const AnswerIndex = {
   Name: 1,
+  Cpf: 2,
   Email: 3,
-  BirthDate: 5,
-  BirthPlace: 6,
-  Occupation: 7,
-  Address: 9,
-  ResidentProof: 10,
-  DocumentType: 11,
-  Documents: 12,
-  Phone: 16,
-  MothersName: 17,
-  Cpf: 18,
+  Phone: 5,
+  BirthDate: 6,
+  BirthPlace: 7,
+  MothersName: 8,
+  Occupation: 9,
+  Address: 10,
+  ResidentProof: 11,
+  DocumentType: 12,
+  Documents: 13,
 };
 
 export class JotFormSubmissionParser {
