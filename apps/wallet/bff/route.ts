@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import Boom from "@hapi/boom";
 
 export type HandlerFunction = (
   req: NextApiRequest,
@@ -16,13 +17,28 @@ interface RouteArgs {
   options?: HandlerFunction;
 }
 
-// TODO: restrict calls to own server only
+const toArray = (csv: string): string[] => csv.split(",");
+const AcceptedHosts = toArray(
+  (process.env.NEXT_SERVER_ACCEPTED_HOSTS || "").toLowerCase()
+);
+
 export function route(routeArgs: RouteArgs): Promise<unknown> {
   const { req, res } = routeArgs;
+  const referrer = new URL(req.headers.referer || "http://localhost:3000");
   const handlerFunction = req.method
     ? // @ts-ignore
       routeArgs[req.method.toLowerCase()]
     : undefined;
+
+  if (
+    !(
+      AcceptedHosts.length &&
+      (AcceptedHosts[0] === "*" || AcceptedHosts.includes(referrer.host))
+    )
+  ) {
+    throw Boom.unauthorized();
+  }
+
   try {
     if (handlerFunction) {
       return handlerFunction(req, res);

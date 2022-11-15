@@ -2,6 +2,7 @@ import { HandlerFunction } from "@/bff/route";
 import { prisma } from "@axt/db-package";
 import { notFound } from "@hapi/boom";
 import { handleError } from "@/bff/handler/handleError";
+import { toCustomerResponse } from "@/bff/handler/customer/toCustomerResponse";
 
 export const getCustomer: HandlerFunction = async (req, res) => {
   try {
@@ -28,7 +29,7 @@ export const getCustomer: HandlerFunction = async (req, res) => {
       return res.status(output.statusCode).json(output.payload);
     }
 
-    return res.status(200).json(customer);
+    return res.status(200).json(toCustomerResponse(customer));
   } catch (e: any) {
     handleError({ e, res });
   }
