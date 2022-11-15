@@ -1,5 +1,6 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import retry from "p-retry";
+import { CustomerSafeData } from "@/types/customerSafeData";
 
 export class KycService {
   private readonly httpClient: Http;
@@ -9,8 +10,11 @@ export class KycService {
   }
 
   acceptTermsOfUse(customerId: string) {
-    return retry(() => {
-      this.httpClient.put("/termsOfUse", { customerId });
+    return retry(async () => {
+      const { response } = await this.httpClient.put("/termsOfUse", {
+        customerId,
+      });
+      return response;
     });
   }
 
@@ -19,18 +23,22 @@ export class KycService {
     publicKey: string,
     isTestnet: boolean
   ) {
-    return retry(() => {
-      this.httpClient.post(`/customer/${customerId}/publicKey`, {
-        publicKey,
-        isTestnet,
-      });
+    return retry(async () => {
+      const { response } = await this.httpClient.post(
+        `/customer/${customerId}/publicKey`,
+        {
+          publicKey,
+          isTestnet,
+        }
+      );
+      return response;
     });
   }
 
   async fetchCustomerData(customerId: string) {
     return retry(async () => {
       const { response } = await this.httpClient.get(`/customer/${customerId}`);
-      return response;
+      return response as CustomerSafeData;
     });
   }
 
@@ -39,7 +47,7 @@ export class KycService {
       const { response } = await this.httpClient.get(
         `/customer?publicKey=${publicKey}`
       );
-      return response;
+      return response as CustomerSafeData;
     });
   }
 }

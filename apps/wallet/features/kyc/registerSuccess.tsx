@@ -1,5 +1,4 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
-import { CustomerData } from "@/types/customerData";
 import { HintBox } from "@/app/components/hintBox";
 import { useTranslation } from "next-i18next";
 import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
@@ -8,11 +7,11 @@ import { Button, Checkbox } from "react-daisyui";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useAppDispatch } from "@/states/hooks";
 import { accountActions } from "@/app/states/accountState";
-import { VerificationLevelType } from "@/types/verificationLevelType";
 import { useRouter } from "next/router";
+import { CustomerSafeData } from "@/types/customerSafeData";
 
 interface Props {
-  customer: CustomerData;
+  customer: CustomerSafeData;
 }
 
 export const RegisterSuccess: FC<Props> = ({ customer }) => {
@@ -26,14 +25,7 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
   useEffect(() => {
     if (!customer) return;
 
-    dispatch(
-      accountActions.setCustomer({
-        customerId: customer.cuid,
-        firstName: customer.firstName,
-        verificationLevel: customer.verificationLevel as VerificationLevelType,
-        acceptedTerms: false,
-      })
-    );
+    dispatch(accountActions.setCustomer(customer));
   }, [customer, dispatch]);
 
   const handleChecked = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +33,7 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
       setAccepted(e.target.checked);
       if (!e.target.checked) return;
       setSubmitting(true);
-      await KycService.acceptTermsOfUse(customer.cuid);
+      await KycService.acceptTermsOfUse(customer.customerId);
     } catch (err: any) {
       console.error(err);
     } finally {

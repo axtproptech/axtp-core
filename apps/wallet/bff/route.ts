@@ -36,6 +36,7 @@ export function route(routeArgs: RouteArgs): Promise<unknown> {
       (AcceptedHosts[0] === "*" || AcceptedHosts.includes(referrer.host))
     )
   ) {
+    console.error("Someone unauthorized tried to call this API", referrer);
     throw Boom.unauthorized();
   }
 

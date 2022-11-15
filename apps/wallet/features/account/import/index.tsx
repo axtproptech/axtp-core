@@ -104,22 +104,8 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
     async (publicKey: string) => {
       try {
         const data = await KycService.fetchCustomerDataByPublicKey(publicKey);
-        console.log("tryImportCustomer", data);
-        const { cuid, termsOfUse, verificationLevel, firstName } = data;
-        const customerId = cuid;
-        const acceptedTerms =
-          termsOfUse.length === 0
-            ? false
-            : termsOfUse[termsOfUse.length - 1].accepted;
         if (data) {
-          dispatch(
-            accountActions.setCustomer({
-              acceptedTerms,
-              customerId,
-              verificationLevel,
-              firstName,
-            })
-          );
+          dispatch(accountActions.setCustomer(data));
         }
       } catch (e: any) {
         console.error(e);

@@ -4,12 +4,13 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BackendForFrontendService } from "@/bff/backendForFrontendService";
 import useSWR, { SWRConfig } from "swr";
 import { RegisterSuccess } from "@/features/kyc/registerSuccess";
+import { CustomerSafeData } from "@/types/customerSafeData";
 
 export async function getServerSideProps(ctx: any) {
   const { query, locale, req } = ctx;
   const queryURL = `/customer/${query.cuid}`;
   const service = new BackendForFrontendService(req);
-  const data = await service.get(queryURL);
+  const data = await service.get<CustomerSafeData>(queryURL);
   return {
     notFound: !data,
     props: {

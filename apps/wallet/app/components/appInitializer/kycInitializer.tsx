@@ -14,21 +14,8 @@ export const KycInitializer = () => {
     async () => {
       try {
         const data = await KycService.fetchCustomerData(customer.customerId);
-        const { cuid, termsOfUse, verificationLevel, firstName } = data;
-        const customerId = cuid;
-        const acceptedTerms =
-          termsOfUse.length === 0
-            ? false
-            : termsOfUse[termsOfUse.length - 1].accepted;
         if (data) {
-          dispatch(
-            accountActions.setCustomer({
-              acceptedTerms,
-              customerId,
-              verificationLevel,
-              firstName,
-            })
-          );
+          dispatch(accountActions.setCustomer(data));
         }
       } catch (e: any) {
         console.error(e);

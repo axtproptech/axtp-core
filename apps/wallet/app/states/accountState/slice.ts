@@ -1,18 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Address } from "@signumjs/core";
 import { VerificationLevelType } from "@/types/verificationLevelType";
-
-export interface CustomerState {
-  customerId: string;
-  firstName: string;
-  verificationLevel: VerificationLevelType;
-  acceptedTerms: boolean;
-}
+import { CustomerSafeData } from "@/types/customerSafeData";
 
 export interface AccountState {
   publicKey: string;
   accountId: string;
-  customer?: CustomerState;
+  customer?: CustomerSafeData;
   securedKeys: string;
   salt: string;
   showVerificationStatus: boolean;
@@ -46,7 +40,7 @@ export const accountSlice = createSlice({
       state.securedKeys = action.payload.securedKeys;
       state.salt = action.payload.salt;
     },
-    setCustomer: (state, action: PayloadAction<CustomerState>) => {
+    setCustomer: (state, action: PayloadAction<CustomerSafeData>) => {
       state.customer = { ...action.payload };
     },
     resetAccount: (_) => initialState,
