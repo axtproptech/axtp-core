@@ -8,10 +8,9 @@ import Banner from "containers/CryptoModern/Banner";
 import Features from "containers/CryptoModern/FeatureSection";
 import ExpertsTeam from "containers/CryptoModern/ExpertsTeam";
 import MarketsPortal from "containers/CryptoModern/Markets";
-import WealthStats from "containers/CryptoModern/WealthStats";
 import Privacypolicy from "containers/CryptoModern/Privacy";
 import FaqSection from "containers/CryptoModern/FaqSection";
-import Newsletter from "containers/CryptoModern/Newsletter";
+import Register from "containers/CryptoModern/Newsletter";
 import Footer from "containers/CryptoModern/Footer";
 import GlobalStyle, {
   CryptoWrapper,
@@ -23,15 +22,15 @@ const CryptoModern = () => {
     <ThemeProvider theme={theme}>
       <>
         <Head>
-          <title>AXT PropTech Company S/A - Landing</title>
+          <title>AXT PropTech Company S/A</title>
           <meta
             name="Description"
-            content="AXT PropTech Company S/A - Landing"
+            content="Welcome to the world of digital assets"
           />
           <meta name="theme-color" content="#2563FF" />
           <meta
             name="keywords"
-            content="blockchain, proptech, web3, signum, smart contracts"
+            content="blockchain, proptech, web3, signum, smart contracts, reit, real estate"
           />
 
           <link
@@ -52,6 +51,28 @@ const CryptoModern = () => {
             href="/favicon-16x16.png"
           />
           <link rel="manifest" href="/site.webmanifest" />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://www.axtp.com.br/" />
+          <meta property="og:title" content="AXTP PropTech Company S/A" />
+          <meta
+            property="og:description"
+            content="Welcome to the world of digital assets"
+          />
+          <meta
+            property="og:image"
+            content="https://www.axtp.com.br/axtp-seo.jpg"
+          />
+          <meta property="twitter:card" content="summary_large_image" />
+          <meta property="twitter:url" content="https://www.axtp.com.br/" />
+          <meta property="twitter:title" content="AXTP PropTech Company S/A" />
+          <meta
+            property="twitter:description"
+            content="Welcome to the world of digital assets"
+          />
+          <meta
+            property="twitter:image"
+            content="https://www.axtp.com.br/axtp-seo.jpg"
+          />
         </Head>
         {/* end of head */}
 
@@ -75,7 +96,7 @@ const CryptoModern = () => {
             {/*<WalletSection />*/}
             {/*<MapSection />*/}
             <FaqSection />
-            <Newsletter />
+            <Register />
           </ContentWrapper>
           <Footer />
         </CryptoWrapper>

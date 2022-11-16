@@ -25,19 +25,16 @@ export default class CustomDocument extends Document {
       sheet.seal();
     }
   }
+
   render() {
     return (
-      <Html lang="en">
+      <Html lang="pt-BR">
         <Head>
           <link
             href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
             rel="stylesheet"
           />
           <link rel="icon" href="/favicon.png" />
-          {/* <link
-            rel="icon"
-            href="https://react-next-landing.redq.io/_next/static/images/favicon-ec2551afb2782a53fb493269d1ba4efe.png"
-          /> */}
         </Head>
         <body>
           <Main />

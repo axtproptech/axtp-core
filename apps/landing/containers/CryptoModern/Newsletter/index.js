@@ -7,9 +7,14 @@ import Button from "common/components/Button";
 import Input from "common/components/Input";
 import Container from "common/components/UI/Container";
 
-import NewsletterWrapper, { ContactFormWrapper } from "./newsletter.style";
+import NewsletterWrapper, {
+  ModalFormWrapper,
+  StyledButton,
+} from "./newsletter.style";
+import { RegisterForm } from "common/components/RegisterForm";
+import Popup from "reactjs-popup";
 
-const Newsletter = ({
+const Register = ({
   sectionWrapper,
   textArea,
   buttonArea,
@@ -32,16 +37,23 @@ const Newsletter = ({
             />
           </Box>
           <Box {...buttonArea}>
-            <ContactFormWrapper>
-              <Input
-                inputType="email"
-                label="Endereço de email"
-                iconPosition="right"
-                isMaterial={true}
-                className="email_input"
-              />
-              <Button {...buttonStyle} title="Solicitar" />
-            </ContactFormWrapper>
+            <Popup
+              trigger={
+                <StyledButton>
+                  <Button {...buttonStyle} title="Solicitar" />
+                </StyledButton>
+              }
+              modal
+            >
+              {(close) => (
+                <ModalFormWrapper>
+                  <div className="close" onClick={close}>
+                    ✕
+                  </div>
+                  <RegisterForm />
+                </ModalFormWrapper>
+              )}
+            </Popup>
           </Box>
         </NewsletterWrapper>
       </Container>
@@ -49,7 +61,7 @@ const Newsletter = ({
   );
 };
 
-Newsletter.propTypes = {
+Register.propTypes = {
   sectionWrapper: PropTypes.object,
   textArea: PropTypes.object,
   buttonArea: PropTypes.object,
@@ -58,7 +70,7 @@ Newsletter.propTypes = {
   description: PropTypes.object,
 };
 
-Newsletter.defaultProps = {
+Register.defaultProps = {
   sectionWrapper: {},
   textArea: {
     mb: ["40px", "40px", "40px", "0", "0"],
@@ -95,4 +107,4 @@ Newsletter.defaultProps = {
   },
 };
 
-export default Newsletter;
+export default Register;

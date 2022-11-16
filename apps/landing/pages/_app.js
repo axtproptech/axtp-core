@@ -1,6 +1,5 @@
-import { Modal } from "@redq/reuse-modal";
-import "@redq/reuse-modal/es/index.css";
 import "common/assets/css/flaticon.css";
+// import "reactjs-popup/dist/index.css";
 import "../containers/CryptoModern/CountDown/timer.css";
 import "common/assets/css/icon-example-page.css";
 // swiper bundle styles
@@ -12,10 +11,8 @@ import { SessionProvider } from "next-auth/react";
 
 export default function CustomApp({ Component, pageProps }) {
   return (
-    <Modal>
-      <SessionProvider session={pageProps.session}>
-        <Component {...pageProps} />
-      </SessionProvider>
-    </Modal>
+    <SessionProvider session={pageProps.session}>
+      <Component {...pageProps} />
+    </SessionProvider>
   );
 }
