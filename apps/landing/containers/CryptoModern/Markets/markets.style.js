@@ -61,14 +61,14 @@ export const ContentWrapper = styled.div`
   align-items: center;
   .chart {
     width: 50%;
+    margin: 0 0 40px;
+    padding: 0;
     height: 400px;
-    //padding: 70px 100px 70px 70px;
     @media only screen and (max-width: 991px) {
       width: 50%;
     }
     @media only screen and (max-width: 768px) {
       width: 100%;
-      margin-bottom: 40px;
     }
   }
   .content {

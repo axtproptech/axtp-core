@@ -17,7 +17,7 @@ const MarketsPortal = () => {
       <Container>
         <ContentWrapper>
           <div className="content">
-            <Heading content="77,8% do ativo total mundial são bens imobiliários" />
+            <Heading content="77,8% da riqueza mundial está alocada em bens imóveis" />
             <Text content="Você sabia que a riqueza mundial é estimada em 360,6 trilhões de dólares? Desse total, 280,6 trilhões de dólares (quase 78%) estão em imóveis, dos quais 22% estão nos EUA. Isto equivale a cerca de 61,7 trilhões de dólares." />
             <a
               href="https://www.visualcapitalist.com/all-of-the-worlds-money-and-markets-in-one-visualization-2020"

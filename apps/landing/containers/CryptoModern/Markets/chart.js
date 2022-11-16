@@ -99,20 +99,18 @@ const Title = styled.div`
 export const Chart = () => (
   <>
     <Title>
-      360.6T
+      360.6T USD
       <br />
-      USD
+      <small>Total Global Wealth</small>
     </Title>
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer>
       <PieChart>
         <Tooltip content={<CustomTooltip />} />
         <Pie
           data={dataInner}
           dataKey="value"
-          cx="50%"
-          cy="50%"
-          outerRadius={100}
-          innerRadius={50}
+          outerRadius={160}
+          innerRadius={100}
           stroke="none"
         >
           {dataInner.map((entry, index) => (
@@ -123,10 +121,8 @@ export const Chart = () => (
         <Pie
           data={dataOuter}
           dataKey="value"
-          cx="50%"
-          cy="50%"
-          innerRadius={110}
-          outerRadius={120}
+          innerRadius={170}
+          outerRadius={180}
           // fill="#82ca9d"
           stroke="none"
           label
