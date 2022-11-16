@@ -13,13 +13,44 @@ const SectionWrapper = styled.div`
   @media only screen and (max-width: 667px) {
     padding: 30px 0 0;
   }
-  .patternImg {
+`;
+
+export const ImageMask = styled.div`
+  @media only screen and (max-width: 1440px) {
+    display: none;
+  }
+
+  border-radius: 50%;
+  position: absolute;
+  top: 50px;
+  left: -25%;
+  opacity: 0.5;
+  &:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(34, 34, 34, 1) 70%,
+      rgba(34, 34, 34, 1) 100%
+    );
+    transform: scale(1.01);
+    border-radius: 50%;
     position: absolute;
-    left: -28%;
-    top: -100%;
-    width: 50%;
-    @media only screen and (max-width: 1440px) {
-      display: none;
+    top: 0;
+    left: 0;
+  }
+
+  img {
+    height: 100%;
+    border-radius: 50%;
+    @media only screen and (max-width: 1600px) {
+      margin-left: 0;
+    }
+    @media only screen and (max-width: 480px) {
+      max-width: 70%;
     }
   }
 `;
@@ -28,18 +59,16 @@ export const ContentWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  .image {
+  .chart {
     width: 50%;
+    height: 400px;
+    //padding: 70px 100px 70px 70px;
     @media only screen and (max-width: 991px) {
       width: 50%;
     }
     @media only screen and (max-width: 768px) {
       width: 100%;
       margin-bottom: 40px;
-    }
-    img {
-      width: 100%;
-      object-fit: cover;
     }
   }
   .content {
@@ -73,7 +102,7 @@ export const ContentWrapper = styled.div`
     p {
       font-size: 16px;
       line-height: 28px;
-      color: ${themeGet("colors.paragraph")};
+      color: ${themeGet("colors.textColor")};
       max-width: 400px;
       @media only screen and (max-width: 768px) {
         max-width: 100%;

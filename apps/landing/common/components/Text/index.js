@@ -7,6 +7,7 @@ import {
   textAlign,
   lineHeight,
   letterSpacing,
+  color,
 } from "styled-system";
 import { base, themed } from "../base";
 

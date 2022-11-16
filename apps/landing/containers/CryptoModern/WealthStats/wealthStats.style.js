@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { themeGet } from "@styled-system/theme-get";
-import colors from "../../../common/theme/cryptoModern/colors";
 
 const SectionWrapper = styled.div`
   padding: 75px 0;
@@ -31,11 +30,11 @@ export const ContentWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+
   .image {
     width: 50%;
     height: 400px;
-    padding: 70px;
-    padding-right: 100px;
+    padding: 70px 100px 70px 70px;
     @media only screen and (max-width: 991px) {
       width: 50%;
     }
@@ -49,11 +48,13 @@ export const ContentWrapper = styled.div`
       padding: 25px;
       margin-bottom: 30px;
     }
+
     img {
       width: 100%;
       object-fit: cover;
     }
   }
+
   .content {
     width: 50%;
     @media only screen and (max-width: 991px) {
@@ -63,6 +64,7 @@ export const ContentWrapper = styled.div`
       width: 100%;
       margin-bottom: 50px;
     }
+
     h2 {
       color: ${themeGet("colors.white", "fff")};
       font-size: 48px;
@@ -83,6 +85,7 @@ export const ContentWrapper = styled.div`
         font-size: 30px;
       }
     }
+
     p {
       font-size: 16px;
       line-height: 28px;
@@ -93,6 +96,7 @@ export const ContentWrapper = styled.div`
         text-align: center;
       }
     }
+
     img {
       margin-top: 50px;
       object-fit: cover;

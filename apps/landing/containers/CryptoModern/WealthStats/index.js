@@ -1,24 +1,20 @@
 import React from "react";
 import Text from "common/components/Text";
 import Heading from "common/components/Heading";
-import NextImage from "common/components/NextImage";
 import Container from "common/components/UI/Container";
-import SectionWrapper, { ContentWrapper } from "./fundRaising.style";
-import FundGraphImg from "common/assets/image/cryptoModern/fund-graph.png";
-import { ScatterChart } from "common/components/ScatterChart";
+import SectionWrapper, { ContentWrapper } from "./wealthStats.style";
 
-const DesignedAndBuilt = () => {
+const WealthStats = () => {
   return (
     <SectionWrapper id="fund">
       <Container>
         <ContentWrapper>
           <div className="image">
-            <ScatterChart />
             {/*<NextImage src={FundGraphImg} alt="Graph Image" />*/}
           </div>
           <div className="content">
             <Heading content="Fund raising allocation" />
-            <Text content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiu Lorem ipsum dolor sit ." />
+            <Text content="..." />
           </div>
           <div className="gradientDiv"></div>
         </ContentWrapper>
@@ -26,5 +22,4 @@ const DesignedAndBuilt = () => {
     </SectionWrapper>
   );
 };
-
-export default DesignedAndBuilt;
+export default WealthStats;
