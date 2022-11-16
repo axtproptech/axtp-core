@@ -40,10 +40,11 @@ const Register = ({
             <Popup
               trigger={
                 <StyledButton>
-                  <Button {...buttonStyle} title="Solicitar" />
+                  <Button {...buttonStyle} title="Quero saber mais!" />
                 </StyledButton>
               }
               modal
+              overlayStyle={{ background: "rgba(0,0,0,0.8)" }}
             >
               {(close) => (
                 <ModalFormWrapper>

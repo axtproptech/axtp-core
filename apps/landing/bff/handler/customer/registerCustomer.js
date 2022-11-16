@@ -12,6 +12,8 @@ export const registerCustomer = async (req, res) => {
   try {
     const { submission_id } = req.body;
     const submission = await jotform.getSubmission(submission_id);
+    console.log("Submission", submission);
+
     const answers = new JotFormSubmissionParser(submission);
 
     const existingCustomer = await prisma.customer.find({

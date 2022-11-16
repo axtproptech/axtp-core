@@ -208,6 +208,12 @@ export const StyledButton = styled.div`
     &:hover {
       box-shadow: ${themeGet("colors.yellow")} 0px 12px 24px -10px;
     }
+
+    @media (max-width: 575px) {
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
   }
 
   text-align: center;
