@@ -19,11 +19,11 @@ export const ImageMask = styled.div`
   @media only screen and (max-width: 1440px) {
     display: none;
   }
-
+  user-select: none;
   border-radius: 50%;
   position: absolute;
-  top: 50px;
-  left: -25%;
+  top: -50px;
+  right: -25%;
   opacity: 0.5;
   &:after {
     content: "";
@@ -107,6 +107,20 @@ export const ContentWrapper = styled.div`
       @media only screen and (max-width: 768px) {
         max-width: 100%;
         text-align: center;
+      }
+    }
+    a {
+      color: ${themeGet("colors.linkColor")};
+      font-size: 14px;
+      line-height: 36px;
+      transition: all 0.2s ease;
+      font-weight: 300;
+      cursor: pointer;
+      &:hover,
+      &:focus {
+        outline: 0;
+        text-decoration: none;
+        color: ${themeGet("colors.linkColorHover")};
       }
     }
   }
