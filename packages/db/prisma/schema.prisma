@@ -29,10 +29,10 @@ model Customer {
   lastName           String
   firstNameMother    String                 @default("")
   lastNameMother     String                 @default("")
-  dateOfBirth        DateTime
-  placeOfBirth       String
+  dateOfBirth        DateTime?
+  placeOfBirth       String?
   nationality        String?
-  profession         String
+  profession         String?
   cpfCnpj            String                 @unique
   phone1             String
   phone2             String?

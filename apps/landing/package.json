@@ -9,13 +9,15 @@
     "export": "next build && next export"
   },
   "dependencies": {
-    "@axt/db-package": "^1.0.6",
-    "@hapi/boom": "^10.0.0",
+    "@axt/db-package": "1",
     "@glidejs/glide": "^3.4.1",
+    "@hapi/boom": "^10.0.0",
     "@styled-system/theme-get": "^5.1.2",
+    "cuid": "^2.1.8",
     "firebase-functions": "^3.13.2",
     "next": "^12.3.2",
     "next-auth": "^4.15.1",
+    "p-retry": "^5.1.1",
     "prop-types": "^15.7.2",
     "rc-collapse": "^3.1.1",
     "rc-drawer": "^4.1.0",

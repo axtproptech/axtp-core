@@ -2,8 +2,8 @@
 // Use  https://api.jotform.com/submission/5444259092483314503?apiKey=<apikey>
 const AnswerIndex = {
   Name: 1,
-  Phone: 14,
-  Email: 5,
+  Phone: 5,
+  Email: 14,
 };
 
 export class JotFormSubmissionParser {
