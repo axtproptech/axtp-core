@@ -28,7 +28,7 @@ const FeatureSection = ({
         <Box {...sectionHeader} className="sectionHeader">
           <Text content="O maior mercado do mundo" {...sectionSubTitle} />
           <Heading
-            content="O mercado imobiliário norte-americano, com 25 trilhões de dolares, é o maior do mundo"
+            content="O mercado imobiliário norte-americano, com mais de 60 trilhões de dolares, é o maior do mundo"
             {...sectionTitle}
           />
         </Box>
