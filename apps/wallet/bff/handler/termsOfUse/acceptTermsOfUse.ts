@@ -1,5 +1,5 @@
 import { HandlerFunction } from "@/bff/route";
-import { prisma } from "@axtp/db-package";
+import { prisma } from "@axtp/db";
 import { handleError } from "@/bff/handler/handleError";
 import { notFound } from "@hapi/boom";
 

@@ -1,4 +1,4 @@
-import { prisma } from "@axtp/db-package";
+import { prisma } from "@axtp/db";
 import { ApiHandler } from "@/bff/types/apiHandler";
 import { notFound, badRequest } from "@hapi/boom";
 

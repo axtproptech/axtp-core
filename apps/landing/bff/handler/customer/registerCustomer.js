@@ -1,4 +1,4 @@
-import { prisma } from "@axtp/db-package";
+import { prisma } from "@axtp/db";
 import jotform from "jotform";
 import { JotFormSubmissionParser } from "./jotFormSubmissionParser";
 import cuid from "cuid";

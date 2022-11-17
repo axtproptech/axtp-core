@@ -1,5 +1,5 @@
 import { HandlerFunction } from "@/bff/route";
-import { prisma } from "@axtp/db-package";
+import { prisma } from "@axtp/db";
 // @ts-ignore
 import jotform from "jotform";
 import { JotFormSubmissionContent } from "@/bff/handler/customer/jotFormSubmissionResponse";
