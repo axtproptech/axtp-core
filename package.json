@@ -1,7 +1,7 @@
 {
   "name": "axt",
   "version": "1.0.0",
-  "description": "This is the mono repo for the R.Est project",
+  "description": "This is the mono repo for AXT Proptech Company S/A",
   "private": true,
   "scripts": {
     "prepare": "husky install",
