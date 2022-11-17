@@ -1,5 +1,5 @@
 {
-  "name": "@axt/wallet-app",
+  "name": "@axtp/wallet-app",
   "description": "The wallet for this very cool project",
   "authors": [
     "ohager"
@@ -16,7 +16,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@axt/db-package": "1",
+    "@axtp/db-package": "1",
     "@emotion/react": "^11.10.0",
     "@hapi/boom": "^10.0.0",
     "@headlessui/react": "^1.6.6",

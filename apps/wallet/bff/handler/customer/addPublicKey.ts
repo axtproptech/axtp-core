@@ -1,5 +1,5 @@
 import { HandlerFunction } from "@/bff/route";
-import { prisma } from "@axt/db-package";
+import { prisma } from "@axtp/db-package";
 import { Address } from "@signumjs/core";
 import { handleError } from "@/bff/handler/handleError";
 

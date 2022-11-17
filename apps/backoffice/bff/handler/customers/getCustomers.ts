@@ -1,4 +1,4 @@
-import { prisma } from "@axt/db-package";
+import { prisma } from "@axtp/db-package";
 import { ApiHandler } from "@/bff/types/apiHandler";
 import { badRequest } from "@hapi/boom";
 
