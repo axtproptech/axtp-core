@@ -15,7 +15,7 @@
     "@styled-system/theme-get": "^5.1.2",
     "cuid": "^2.1.8",
     "firebase-functions": "^3.13.2",
-    "next": "^12.3.2",
+    "next": "12.2.6",
     "next-auth": "^4.15.1",
     "p-retry": "^5.1.1",
     "prop-types": "^15.7.2",
