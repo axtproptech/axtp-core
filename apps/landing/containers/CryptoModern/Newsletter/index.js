@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Box from "common/components/Box";
 import Text from "common/components/Text";
@@ -7,12 +7,9 @@ import Button from "common/components/Button";
 import Input from "common/components/Input";
 import Container from "common/components/UI/Container";
 
-import NewsletterWrapper, {
-  ModalFormWrapper,
-  StyledButton,
-} from "./newsletter.style";
+import NewsletterWrapper, { StyledButton } from "./newsletter.style";
 import { RegisterForm } from "common/components/RegisterForm";
-import Popup from "reactjs-popup";
+import { Modal } from "common/components/Modal";
 
 const Register = ({
   sectionWrapper,
@@ -22,6 +19,7 @@ const Register = ({
   title,
   description,
 }) => {
+  const [formOpen, setFormOpen] = useState(false);
   return (
     <Box id="access" {...sectionWrapper} as="section">
       <Container>
@@ -37,24 +35,16 @@ const Register = ({
             />
           </Box>
           <Box {...buttonArea}>
-            <Popup
-              trigger={
-                <StyledButton>
-                  <Button {...buttonStyle} title="Quero saber mais!" />
-                </StyledButton>
-              }
-              modal
-              overlayStyle={{ background: "rgba(0,0,0,0.8)" }}
-            >
-              {(close) => (
-                <ModalFormWrapper>
-                  <div className="close" onClick={close}>
-                    ✕
-                  </div>
-                  <RegisterForm />
-                </ModalFormWrapper>
-              )}
-            </Popup>
+            <StyledButton>
+              <Button
+                {...buttonStyle}
+                title="Quero saber mais!"
+                onClick={() => setFormOpen(true)}
+              />
+            </StyledButton>
+            <Modal open={formOpen}>
+              <RegisterForm />
+            </Modal>
           </Box>
         </NewsletterWrapper>
       </Container>

@@ -11,8 +11,11 @@ jotform.options({
 
 const fetchSubmissionData = async (submissionId) => {
   const submission = await jotform.getSubmission(submissionId);
-  console.log("Submission", submission);
-  return new JotFormSubmissionParser(submission);
+  const answers = new JotFormSubmissionParser(submission);
+  if (!answers.email) {
+    return Promise.reject();
+  }
+  return answers;
 };
 
 export const registerCustomer = async (req, res) => {

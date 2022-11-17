@@ -68,7 +68,6 @@ ErrorSec.defaultProps = {
     lineHeight: "1.31",
     textAlign: "center",
     fontFamily: "poppins",
-    fontWeight: "600",
   },
   text: {
     fontSize: ["15px", "16px", "16px", "16px", "16px"],

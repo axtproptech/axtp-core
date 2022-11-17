@@ -16,6 +16,7 @@ import GlobalStyle, {
   CryptoWrapper,
   ContentWrapper,
 } from "containers/CryptoModern/cryptoModern.style";
+import { MessageBox } from "containers/CryptoModern/MessageBox";
 
 const CryptoModern = () => {
   return (
@@ -82,6 +83,7 @@ const CryptoModern = () => {
 
         {/* start app classic landing */}
         <CryptoWrapper>
+          <MessageBox />
           <Sticky top={0} innerZ={9999} activeClass="sticky-active">
             <Navbar />
           </Sticky>
