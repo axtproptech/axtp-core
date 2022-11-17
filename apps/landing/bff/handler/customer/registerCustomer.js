@@ -12,6 +12,8 @@ jotform.options({
 const fetchSubmissionData = async (submissionId) => {
   const submission = await jotform.getSubmission(submissionId);
   const answers = new JotFormSubmissionParser(submission);
+  // this might happen if jotform hasn't the answers ready yet...
+  // we force a retry, hoping that the submission object will have the answers then
   if (!answers.email) {
     return Promise.reject();
   }
