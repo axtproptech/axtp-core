@@ -5,20 +5,16 @@
   "author": "ohager",
   "license": "MIT",
   "private": true,
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist/**"
-  ],
+  "main": "./index.ts",
+  "types": "./index.ts",
   "scripts": {
-    "push": "prisma db push",
+    "push-db": "prisma db push --skip-generate",
     "request-deploy:prod": "pscale dr create axt-core stage --deploy-to main",
     "deploy": "pscale dr deploy axt-core",
-    "generate": "prisma generate",
-    "prebuild": "npm run generate",
+    "generate-db": "prisma generate",
+    "prebuild": "npm run generate-db",
     "build": "tsup",
-    "predev": "npm run generate",
+    "predev": "npm run generate-db",
     "dev": "tsup --dev"
   },
   "prisma": {},
