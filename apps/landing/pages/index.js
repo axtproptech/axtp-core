@@ -17,6 +17,7 @@ import GlobalStyle, {
   ContentWrapper,
 } from "containers/CryptoModern/cryptoModern.style";
 import { MessageBox } from "containers/CryptoModern/MessageBox";
+import WealthStats from "containers/CryptoModern/WealthStats";
 
 const CryptoModern = () => {
   return (
@@ -93,7 +94,8 @@ const CryptoModern = () => {
             <Features />
             <ExpertsTeam />
             <MarketsPortal />
-            {/*<WealthStats />*/}
+            <WealthStats />
+            {/* TODO: add tokenization graphics*/}
             <Privacypolicy />
             {/*<WalletSection />*/}
             {/*<MapSection />*/}

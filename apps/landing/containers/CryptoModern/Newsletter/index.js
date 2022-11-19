@@ -4,7 +4,6 @@ import Box from "common/components/Box";
 import Text from "common/components/Text";
 import Heading from "common/components/Heading";
 import Button from "common/components/Button";
-import Input from "common/components/Input";
 import Container from "common/components/UI/Container";
 
 import NewsletterWrapper, { StyledButton } from "./newsletter.style";
@@ -68,13 +67,11 @@ Register.defaultProps = {
     pr: ["0", "0", "0", "80px", "100px"],
   },
   title: {
-    fontSize: ["18px", "20px", "22px", "24px", "26px"],
-    fontWeight: "500",
+    fontSize: ["20px", "22px", "24px", "26px"],
     color: "#fff",
     lineHeight: "1.34",
     mb: ["14px", "14px", "14px", "14px", "13px"],
     textAlign: ["center", "center", "center", "left", "left"],
-    letterSpacing: "-0.025em",
   },
   description: {
     fontSize: ["14px", "14px"],

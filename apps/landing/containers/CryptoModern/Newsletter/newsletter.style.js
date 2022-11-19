@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import BannerBG from "common/assets/image/cryptoModern/get-start.png";
 import { themeGet } from "@styled-system/theme-get";
 
 const NewsletterWrapper = styled.div`
   position: relative;
-  //background-image: url(${BannerBG?.src});
+  background-color: ${themeGet("colors.yellowTrans")};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

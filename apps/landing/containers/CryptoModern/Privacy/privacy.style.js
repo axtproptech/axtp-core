@@ -20,7 +20,7 @@ export const ContentWrapper = styled.div`
     width: 50%;
     padding-left: 50px;
     @media only screen and (max-width: 1440px) {
-      padding-left: 0px;
+      padding-left: 0;
     }
     @media only screen and (max-width: 991px) {
       width: 50%;
@@ -29,13 +29,6 @@ export const ContentWrapper = styled.div`
       width: 100%;
       margin-bottom: 40px;
       padding-left: 100px;
-    }
-    img {
-      width: 100%;
-      object-fit: cover;
-      @media only screen and (max-width: 1440px) {
-        width: 80%;
-      }
     }
   }
   .content {

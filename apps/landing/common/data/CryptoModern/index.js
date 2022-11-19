@@ -116,29 +116,28 @@ export const WalletFeatures = [
 export const Faq = [
   {
     id: 1,
-    expend: true,
-    title: "How to contact with Customer Service?",
+    title: "O que a AXT faz?",
     description:
-      "Our Customer Experience Team is available 7 days a week and we offer 2 ways to get in contact.Email and Chat . We try to reply quickly, so you need not to wait too long for a response!. ",
+      "Somos uma empresa de tecnologia especializada em blockchain e à aplicando de forma inovadora na construção de patrimônio.",
   },
   {
     id: 2,
-    title: "App installation failed, how to update system information?",
+    title: "Porque usar blockchain?",
     description:
-      "Please read the documentation carefully . We also have some online  video tutorials regarding this issue . If the problem remains, Please Open a ticket in the support forum . ",
+      "As transações são armazenadas em centenas de servidores em todo o mundo (absolutamente decentralizadas) e estão, portanto, sempre disponíveis. Os dados são protegidos por métodos criptográficos e ficam imutáveis (é um livro registro permanente). Todas as transações são passíveis de auditoria pública e, portanto, garantem total transparência.",
   },
   {
     id: 3,
-    title: "Website reponse taking time, how to improve?",
+    title: "Porque o mercado americano?",
     description:
-      "At first, Please check your internet connection . We also have some online  video tutorials regarding this issue . If the problem remains, Please Open a ticket in the support forum .",
+      "Como maior mercado imobiliário do mundo temos diversas oportunidades únicas e economicamente vantajosas. Além disso, possui maturidade e solidez suficientes para nos garantir segurança patrimonial.",
   },
-  {
-    id: 4,
-    title: "New update fixed all bug and issues?",
-    description:
-      "We are giving the update of this theme continuously . You will receive an email Notification when we push an update. Always try to be updated with us .",
-  },
+  // {
+  //   id: 4,
+  //   title: "New update fixed all bug and issues?",
+  //   description:
+  //     "We are giving the update of this theme continuously . You will receive an email Notification when we push an update. Always try to be updated with us .",
+  // },
 ];
 
 /* ------------------------------------ */
@@ -149,99 +148,26 @@ export const Footer_Data = [
     title: "About Us",
     menuItems: [
       {
-        url: "#",
-        text: "Support Center",
+        url: "mailto:support@axtp.com.br",
+        text: "Suporte",
       },
       {
-        url: "#",
-        text: "Customer Support",
-      },
-      {
-        url: "#",
+        url: "#experts",
         text: "About Us",
       },
-      {
-        url: "#",
-        text: "Copyright",
-      },
-      {
-        url: "#",
-        text: "Popular Campaign",
-      },
+
+      // {
+      //   url: "#",
+      //   text: "Copyright",
+      // },
     ],
   },
   {
-    title: "Our Information",
+    title: "Políticas",
     menuItems: [
       {
         url: "#",
-        text: "Return Policy",
-      },
-      {
-        url: "#",
-        text: "Privacy Policy",
-      },
-      {
-        url: "#",
-        text: "Terms & Conditions",
-      },
-      {
-        url: "#",
-        text: "Site Map",
-      },
-      {
-        url: "#",
-        text: "Store Hours",
-      },
-    ],
-  },
-  {
-    title: "My Account",
-    menuItems: [
-      {
-        url: "#",
-        text: "Press inquiries",
-      },
-      {
-        url: "#",
-        text: "Social media directories",
-      },
-      {
-        url: "#",
-        text: "Images & B-roll",
-      },
-      {
-        url: "#",
-        text: "Permissions",
-      },
-      {
-        url: "#",
-        text: "Speaker requests",
-      },
-    ],
-  },
-  {
-    title: "Policy",
-    menuItems: [
-      {
-        url: "#",
-        text: "Application security",
-      },
-      {
-        url: "#",
-        text: "Software principles",
-      },
-      {
-        url: "#",
-        text: "Unwanted software policy",
-      },
-      {
-        url: "#",
-        text: "Responsible supply chain",
-      },
-      {
-        url: "#",
-        text: "Responsible supply chain",
+        text: "Política de Privacidade",
       },
     ],
   },

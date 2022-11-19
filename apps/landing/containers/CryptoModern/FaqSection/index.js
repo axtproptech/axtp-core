@@ -32,7 +32,7 @@ const FaqSection = ({
     <FaqSectionWrapper id="faqSection">
       <Container>
         <Box {...sectionHeader} className="sectionHeader">
-          <Text content="Have Any Question ?" {...sectionSubTitle} />
+          <Text content="Tem alguma pergunta?" {...sectionSubTitle} />
           <Heading
             content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiu Lorem ipsum dolor Lorem ipsum dolor"
             {...sectionTitle}
