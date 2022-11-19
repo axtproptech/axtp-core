@@ -90,6 +90,7 @@ export const Features = [
 import walletIcon1 from "common/assets/image/cryptoModern/wallet1.png";
 import walletIcon2 from "common/assets/image/cryptoModern/wallet2.png";
 import walletIcon3 from "common/assets/image/cryptoModern/wallet3.png";
+import colors from "common/theme/cryptoModern/colors";
 
 export const WalletFeatures = [
   {
@@ -125,6 +126,28 @@ export const Faq = [
     title: "Porque usar blockchain?",
     description:
       "As transações são armazenadas em centenas de servidores em todo o mundo (absolutamente decentralizadas) e estão, portanto, sempre disponíveis. Os dados são protegidos por métodos criptográficos e ficam imutáveis (é um livro registro permanente). Todas as transações são passíveis de auditoria pública e, portanto, garantem total transparência.",
+  },
+  {
+    id: 2,
+    title: "Qual blockchain a AXT usa?",
+    description: (
+      <>
+        Contamos com a{" "}
+        <a
+          href="https://signum.network"
+          target="_blank"
+          rel="noreferrer noopener"
+          style={{ color: colors.textColor, textDecoration: "underline" }}
+        >
+          Signum Network
+        </a>
+        . Esta é uma plataforma de blockchain pública com um enorme conjunto de
+        características. Os custos de transação são muito baixos e a Signum
+        também utiliza uma forma de mineração muito eficiente em termos
+        energéticos. No decorrer de nossa política do ESG, esta é a escolha
+        ideal.
+      </>
+    ),
   },
   {
     id: 3,

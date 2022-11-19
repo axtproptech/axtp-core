@@ -28,7 +28,7 @@ export const ContentWrapper = styled.div`
     @media only screen and (max-width: 768px) {
       width: 100%;
       margin-bottom: 40px;
-      padding-left: 100px;
+      text-align: center;
     }
   }
   .content {

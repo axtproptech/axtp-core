@@ -34,7 +34,7 @@ const FaqSection = ({
         <Box {...sectionHeader} className="sectionHeader">
           <Text content="Tem alguma pergunta?" {...sectionSubTitle} />
           <Heading
-            content="Lorem ipsum dolor sit amet consectetur adipisicing elit sed eiu Lorem ipsum dolor Lorem ipsum dolor"
+            content="Para informações detalhadas e/ou outras perguntas, favor entrar em contato conosco sem hesitação. Temos o prazer de responder a perguntas construtivas."
             {...sectionTitle}
           />
         </Box>

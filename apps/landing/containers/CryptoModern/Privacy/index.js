@@ -18,7 +18,12 @@ const PrivacyPortal = () => {
           </div>
           <div className="image">
             <Fade up>
-              <NextImage src={Illustration} alt="Illustration Image" />
+              <NextImage
+                src={Illustration}
+                height={300}
+                width={300}
+                alt="Illustration Image"
+              />
             </Fade>
           </div>
         </ContentWrapper>
