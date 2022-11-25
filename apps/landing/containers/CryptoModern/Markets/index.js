@@ -1,5 +1,4 @@
 import React from "react";
-import Zoom from "react-reveal/Zoom";
 import Text from "common/components/Text";
 import Heading from "common/components/Heading";
 import Image from "common/components/Image";
@@ -7,6 +6,7 @@ import Container from "common/components/UI/Container";
 import SectionWrapper, { ContentWrapper, ImageMask } from "./markets.style";
 import pattern from "common/assets/image/cryptoModern/stockchart.svg";
 import { Chart } from "./chart";
+import Zoom from "react-reveal/Zoom";
 
 const MarketsPortal = () => {
   return (

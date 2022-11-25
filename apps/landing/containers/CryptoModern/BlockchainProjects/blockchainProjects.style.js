@@ -7,6 +7,7 @@ const SectionWrapper = styled.div`
   @media only screen and (max-width: 667px) {
     padding: 30px 0 0;
   }
+
   .gradientDiv {
     position: absolute;
     width: 700px;
@@ -31,10 +32,14 @@ export const ContentWrapper = styled.div`
   flex-wrap: wrap;
   align-items: center;
 
-  .image {
+  @media only screen and (max-width: 480px) {
+    flex-direction: column-reverse;
+  }
+
+  .chart {
     width: 50%;
     height: 400px;
-    padding: 70px 100px 70px 70px;
+    padding: 2rem 2rem 2rem 0.5rem;
     @media only screen and (max-width: 991px) {
       width: 50%;
     }
@@ -42,7 +47,6 @@ export const ContentWrapper = styled.div`
       width: 100%;
       padding: 100px;
       margin-bottom: 0;
-      padding-top: 0;
     }
     @media only screen and (max-width: 480px) {
       padding: 25px;
@@ -89,7 +93,7 @@ export const ContentWrapper = styled.div`
     p {
       font-size: 16px;
       line-height: 28px;
-      color: ${themeGet("colors.paragraph")};
+      color: ${themeGet("colors.textColor")};
       max-width: 400px;
       @media only screen and (max-width: 768px) {
         max-width: 100%;
@@ -106,6 +110,22 @@ export const ContentWrapper = styled.div`
       }
       @media only screen and (max-width: 1099px) {
         margin-top: 50px;
+      }
+    }
+
+    a {
+      color: ${themeGet("colors.linkColor")};
+      font-size: 14px;
+      line-height: 36px;
+      transition: all 0.2s ease;
+      font-weight: 300;
+      cursor: pointer;
+
+      &:hover,
+      &:focus {
+        outline: 0;
+        text-decoration: none;
+        color: ${themeGet("colors.linkColorHover")};
       }
     }
   }
