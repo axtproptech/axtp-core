@@ -103,7 +103,6 @@ export const ContentWrapper = styled.div`
       font-size: 16px;
       line-height: 28px;
       color: ${themeGet("colors.textColor")};
-      max-width: 400px;
       @media only screen and (max-width: 768px) {
         max-width: 100%;
         text-align: center;
