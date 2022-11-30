@@ -9,7 +9,7 @@ import {
 } from "react-icons/ri";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { Config } from "@/app/config";
-import { PoolDetails } from "@/features/pool";
+import { PoolShareAcquisition } from "@/features/pool";
 import { useMemo } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
 
@@ -75,7 +75,7 @@ export default function Page({ poolId }: any) {
         // imgUrl={some image url}
         keywords="tokenomics, real estate, blockchain, signum, sustainable"
       />
-      <PoolDetails poolId={poolId} />
+      <PoolShareAcquisition poolId={poolId} />
     </Layout>
   );
 }

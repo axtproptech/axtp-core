@@ -113,7 +113,7 @@ export const PoolData: FC<Props> = ({ poolData }) => {
   }, [Ledger.AddressPrefix, Ledger.ExplorerUrl, axtcToken.name, poolData]);
 
   return (
-    <div className="relative md:mx-auto md:w-1/2">
+    <div className="relative md:mx-auto md:w-2/3">
       {detailItems.map(({ label, value }, index) => (
         <DetailItem key={index} label={label} value={value} />
       ))}
