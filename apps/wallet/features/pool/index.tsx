@@ -1,2 +1,2 @@
-export * from "./poolDetails";
-export * from "./poolShareAcquisition";
+export * from "./details/poolDetails";
+export * from "./acquisition/poolShareAcquisition";

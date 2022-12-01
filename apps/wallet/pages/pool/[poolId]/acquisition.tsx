@@ -10,8 +10,9 @@ import {
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { Config } from "@/app/config";
 import { PoolShareAcquisition } from "@/features/pool";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
+import { OnStepChangeArgs } from "@/features/account";
 
 export async function getStaticPaths({ locales }: any) {
   const paths = Config.Contracts.PoolContractIds.flatMap((poolId) =>
@@ -41,30 +42,37 @@ export async function getStaticProps({ locale, params }: any) {
 export default function Page({ poolId }: any) {
   const { t } = useTranslation();
   const account = useAccount();
-  const bottomNav: BottomNavigationItem[] = useMemo(() => {
-    const nav = [
-      {
-        label: t("back"),
-        back: true,
-        icon: <RiArrowLeftCircleLine />,
-      },
-      {
-        label: t("home"),
-        route: "/",
-        icon: <RiHome6Line />,
-      },
-    ];
 
-    if (account) {
-      nav.push({
-        route: "/account",
-        label: t("account"),
-        icon: <RiAccountBoxLine />,
-      });
-    }
+  const [bottomNav, setBottomNav] = useState<BottomNavigationItem[]>([]);
 
-    return nav;
-  }, [account, t]);
+  const handleStepChange = (args: OnStepChangeArgs) => {
+    setBottomNav(args.bottomNav);
+  };
+
+  // const bottomNav: BottomNavigationItem[] = useMemo(() => {
+  //   const nav = [
+  //     {
+  //       label: t("back"),
+  //       back: true,
+  //       icon: <RiArrowLeftCircleLine />,
+  //     },
+  //     {
+  //       label: t("home"),
+  //       route: "/",
+  //       icon: <RiHome6Line />,
+  //     },
+  //   ];
+  //
+  //   if (account) {
+  //     nav.push({
+  //       route: "/account",
+  //       label: t("account"),
+  //       icon: <RiAccountBoxLine />,
+  //     });
+  //   }
+  //
+  //   return nav;
+  // }, [account, t]);
 
   return (
     <Layout noBody bottomNav={bottomNav}>
@@ -75,7 +83,7 @@ export default function Page({ poolId }: any) {
         // imgUrl={some image url}
         keywords="tokenomics, real estate, blockchain, signum, sustainable"
       />
-      <PoolShareAcquisition poolId={poolId} />
+      <PoolShareAcquisition poolId={poolId} onStepChange={handleStepChange} />
     </Layout>
   );
 }

@@ -1,14 +1,12 @@
 import { useAppSelector } from "@/states/hooks";
 import { selectPoolContractState } from "@/app/states/poolsState";
 import { FC } from "react";
-import { useAccount } from "@/app/hooks/useAccount";
-import { useRouter } from "next/router";
-import { PoolHeader } from "./sections/poolHeader";
-import { PoolData } from "./sections/poolData";
+import { PoolHeader } from "../components/poolHeader";
+import { PoolData } from "../components/poolData";
+import { PoolActions } from "../components/poolActions";
 import { useTranslation } from "next-i18next";
 import { Body } from "@/app/components/layout/body";
 import { Fade, Slide, Zoom } from "react-awesome-reveal";
-import { PoolActions } from "@/features/pool/sections/poolActions";
 
 interface Props {
   poolId: string;
@@ -24,7 +22,7 @@ export const PoolDetails: FC<Props> = ({ poolId }) => {
     <div className="overflow-hidden h-[100vh]">
       <Slide direction="down">
         <Fade>
-          <PoolHeader poolData={pool} />
+          <PoolHeader poolData={pool} showStats />
         </Fade>
       </Slide>
       <Zoom>

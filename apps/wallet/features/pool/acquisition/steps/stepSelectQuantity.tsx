@@ -1,0 +1,79 @@
+import { useTranslation } from "next-i18next";
+import { FC, useMemo, useState } from "react";
+import { HintBox } from "@/app/components/hintBox";
+import { useAppSelector } from "@/states/hooks";
+import { selectAXTToken } from "@/app/states/tokenState";
+import { Number } from "@/app/components/number";
+import { selectBrlUsdMarketData } from "@/app/states/marketState";
+import { useAppContext } from "@/app/hooks/useAppContext";
+
+interface Props {
+  maxAllowedShares: number;
+  priceAXTC: number;
+  onQuantityChange: (quantity: number) => void;
+}
+
+export const StepSelectQuantity: FC<Props> = ({
+  maxAllowedShares,
+  onQuantityChange,
+  priceAXTC,
+}) => {
+  const { t } = useTranslation();
+  const { Market } = useAppContext();
+  const { name } = useAppSelector(selectAXTToken);
+  const brlUsdMarket = useAppSelector(selectBrlUsdMarketData);
+  const [quantity, setQuantity] = useState(1);
+
+  const handleQuantityChange = (q: number) => () => {
+    setQuantity(q);
+    onQuantityChange(q);
+  };
+
+  const items = useMemo(() => {
+    const a = [];
+    for (let i = 1; i <= maxAllowedShares; ++i) {
+      a.push(i);
+    }
+    return a;
+  }, [maxAllowedShares]);
+
+  const adjustedBrlUsdPrice =
+    brlUsdMarket.current_price + Market.BrlUsdAdjustment;
+
+  const totalAXTC = priceAXTC * quantity;
+
+  return (
+    <div className="flex flex-col justify-between h-[50vh] text-center relative prose w-full mx-auto">
+      <section className="mt-8">
+        <h2 className="my-1">{t("acquire_token")}</h2>
+        <h4 className="mb-8">{t("acquire_how_many")}</h4>
+      </section>
+      <section>
+        <div className="relative flex flex-col mx-auto">
+          <div className="btn-group mx-auto">
+            {items.map((i) => (
+              <button
+                key={`btn-${i}`}
+                className={`btn ${i === quantity ? "btn-active" : ""}`}
+                onClick={handleQuantityChange(i)}
+              >
+                {i}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section>
+        <HintBox>
+          <div className="text-lg text-center">
+            <h4 className="m-0 mb-1">{t("acquire_currentPrice")}</h4>
+            <h4>
+              <Number value={totalAXTC} suffix={name} /> ≈{" "}
+              <Number value={totalAXTC * adjustedBrlUsdPrice} suffix="BRL" />
+            </h4>
+          </div>
+        </HintBox>
+      </section>
+    </div>
+  );
+};

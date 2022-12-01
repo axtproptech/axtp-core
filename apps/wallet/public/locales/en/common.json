@@ -83,5 +83,15 @@
   "details_paidDistribution": "Total Paid Dividends",
   "open_explorer": "Open Explorer",
   "show_doc": "White Paper",
-  "buy_token": "Buy Token"
+  "buy_token": "Buy Token",
+  "buy_token_not_verified": "You are not verified",
+  "buy_token_not_active": "Your account is not active",
+  "buy_token_blocked": "Your account is blocked",
+  "buy_token_no_account": "It seems you have no blockchain account yet",
+  "buy_token_not_registered": "It seems you are not registered yet",
+  "setup_account": "Set up Account",
+  "acquire_token": "Acquire Token",
+  "acquire_how_many": "How many tokens you like to acquire?",
+  "acquire_currentPrice": "Acquisition costs per token ",
+  "acquire_totalPrice": "Total acquisition costs"
 }

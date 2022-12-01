@@ -1,7 +1,14 @@
 import { CustomerSafeData } from "@/types/customerSafeData";
 
 export const toCustomerResponse = (customer: any): CustomerSafeData => {
-  const { firstName, verificationLevel, cuid, termsOfUse } = customer;
+  const {
+    firstName,
+    verificationLevel,
+    cuid,
+    termsOfUse,
+    isActive,
+    isBlocked,
+  } = customer;
   const acceptedTerms =
     termsOfUse.length === 0
       ? false
@@ -11,5 +18,7 @@ export const toCustomerResponse = (customer: any): CustomerSafeData => {
     verificationLevel,
     customerId: cuid,
     acceptedTerms,
+    isActive,
+    isBlocked,
   };
 };

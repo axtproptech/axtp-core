@@ -15,7 +15,11 @@ export const Config = {
   JotForm: {
     Id: process.env.NEXT_PUBLIC_JOTFORM_ID || "",
   },
-
+  Market: {
+    BrlUsdAdjustment: toNumber(
+      process.env.NEXT_PUBLIC_BRLUSD_ADJUSTMENT || 0.05
+    ),
+  },
   Ledger: {
     IsTestNet: isTestNet,
     PollingInterval:

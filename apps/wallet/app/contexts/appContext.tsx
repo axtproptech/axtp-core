@@ -25,6 +25,9 @@ export interface AppContextType {
     PollingInterval: number;
     ExplorerUrl: string;
   };
+  Market: {
+    BrlUsdAdjustment: number;
+  };
 }
 
 const config: AppContextType = {
@@ -34,6 +37,9 @@ const config: AppContextType = {
   AXTPoolTokenIds: Config.Tokens.AXTPs,
   JotFormId: Config.JotForm.Id,
   KycService: new KycService(),
+  Market: {
+    BrlUsdAdjustment: Config.Market.BrlUsdAdjustment,
+  },
   Ledger: {
     IsTestNet: Config.Ledger.IsTestNet,
     Client: LedgerClientFactory.createClient({
