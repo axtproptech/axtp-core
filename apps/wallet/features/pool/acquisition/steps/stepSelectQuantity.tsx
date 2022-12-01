@@ -66,9 +66,9 @@ export const StepSelectQuantity: FC<Props> = ({
       <section>
         <HintBox>
           <div className="text-lg text-center">
-            <h4 className="m-0 mb-1">{t("acquire_currentPrice")}</h4>
+            <h4 className="m-0 mb-1">{t("acquire_totalPrice")}</h4>
             <h4>
-              <Number value={totalAXTC} suffix={name} /> ≈{" "}
+              <Number value={totalAXTC} suffix={name} /> ={" "}
               <Number value={totalAXTC * adjustedBrlUsdPrice} suffix="BRL" />
             </h4>
           </div>

@@ -23,10 +23,10 @@ interface Props {
 }
 
 export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
+  const StepCount = 2;
   const { t } = useTranslation();
   const router = useRouter();
   const pool = useAppSelector(selectPoolContractState(poolId));
-  const StepCount = 2;
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
   const [paid, setPaid] = useState<boolean>(false);
@@ -87,17 +87,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
       },
     ];
     onStepChange({ steps: StepCount, currentStep, bottomNav });
-  }, [
-    currentStep,
-    maxAllowedShares,
-    nextStep,
-    onStepChange,
-    paid,
-    previousStep,
-    quantity,
-    routeBack,
-    t,
-  ]);
+  }, [currentStep, maxAllowedShares, paid, quantity]); // keep this, or you have a dead loop here
 
   if (!pool) return null;
 

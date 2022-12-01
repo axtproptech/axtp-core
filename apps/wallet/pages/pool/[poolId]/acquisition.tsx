@@ -40,39 +40,11 @@ export async function getStaticProps({ locale, params }: any) {
 }
 
 export default function Page({ poolId }: any) {
-  const { t } = useTranslation();
-  const account = useAccount();
-
   const [bottomNav, setBottomNav] = useState<BottomNavigationItem[]>([]);
 
   const handleStepChange = (args: OnStepChangeArgs) => {
     setBottomNav(args.bottomNav);
   };
-
-  // const bottomNav: BottomNavigationItem[] = useMemo(() => {
-  //   const nav = [
-  //     {
-  //       label: t("back"),
-  //       back: true,
-  //       icon: <RiArrowLeftCircleLine />,
-  //     },
-  //     {
-  //       label: t("home"),
-  //       route: "/",
-  //       icon: <RiHome6Line />,
-  //     },
-  //   ];
-  //
-  //   if (account) {
-  //     nav.push({
-  //       route: "/account",
-  //       label: t("account"),
-  //       icon: <RiAccountBoxLine />,
-  //     });
-  //   }
-  //
-  //   return nav;
-  // }, [account, t]);
 
   return (
     <Layout noBody bottomNav={bottomNav}>
