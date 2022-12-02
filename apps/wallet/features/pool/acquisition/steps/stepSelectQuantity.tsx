@@ -5,6 +5,7 @@ import { useAppSelector } from "@/states/hooks";
 import { selectAXTToken } from "@/app/states/tokenState";
 import { Number } from "@/app/components/number";
 import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePaymentCalculator";
+import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 
 interface Props {
   maxAllowedShares: number;
@@ -58,6 +59,9 @@ export const StepSelectQuantity: FC<Props> = ({
       </section>
       <section>
         <HintBox>
+          <div className="absolute w-[64px] top-[-48px] bg-base-100">
+            <AnimatedIconCoins loopDelay={5000} touchable />
+          </div>
           <div className="text-lg text-center">
             <h4 className="m-0 mb-1">{t("acquire_totalPrice")}</h4>
             <h4>

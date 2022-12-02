@@ -5,15 +5,15 @@ import { useTranslation } from "next-i18next";
 import { FC } from "react";
 
 interface Props {
-  text: string;
+  textToCopy: string;
 }
-export const CopyButton: FC<Props> = ({ text }) => {
+export const CopyButton: FC<Props> = ({ textToCopy }) => {
   const { t } = useTranslation();
   const { showInfo, showWarning } = useNotification();
 
   const handleOnCLick = async () => {
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(textToCopy);
       showInfo(t("copy_clipboard_success"));
     } catch (e) {
       showWarning(t("copy_clipboard_failure"));

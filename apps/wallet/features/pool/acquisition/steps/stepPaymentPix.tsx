@@ -4,10 +4,8 @@ import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePayme
 import { Number } from "@/app/components/number";
 import { HintBox } from "@/app/components/hintBox";
 import QRCode from "react-qr-code";
-import { useNotification } from "@/app/hooks/useNotification";
-import { Button } from "react-daisyui";
-import { RiClipboardLine } from "react-icons/ri";
 import { CopyButton } from "@/app/components/buttons/copyButton";
+import { AnimatedIconQrCode } from "@/app/components/animatedIcons/animatedIconQrCode";
 
 interface Props {
   onStatusChange: (status: "pending" | "paid") => void;
@@ -30,6 +28,9 @@ export const StepPaymentPix: FC<Props> = ({
     <div className="flex flex-col justify-between text-center h-[75vh] relative prose w-full mx-auto">
       <section className="mt-8">
         <HintBox className="my-0">
+          <div className="absolute w-[64px] bottom-[-40px] right-[12px] bg-base-100">
+            <AnimatedIconQrCode loopDelay={5000} touchable />
+          </div>
           <div className="text-center">
             <h3 className="my-1">
               {t("acquire_about_to_buy", { count: quantity })}
@@ -42,7 +43,7 @@ export const StepPaymentPix: FC<Props> = ({
         </HintBox>
       </section>
       <section className="w-[300px] mx-auto">
-        <div className="bg-white rounded p-2 max-w-[200px] mx-auto">
+        <div className="bg-white rounded p-2 max-w-[200px] lg:max-w-[240px] mx-auto">
           <img
             className="m-0 pb-1 h-[28px] mx-auto"
             src="/assets/img/pix-logo.svg"
@@ -54,7 +55,7 @@ export const StepPaymentPix: FC<Props> = ({
             viewBox={`0 0 256 256`}
           />
         </div>
-        <CopyButton text={TestPayload} />
+        <CopyButton textToCopy={TestPayload} />
       </section>
       <section></section>
     </div>
