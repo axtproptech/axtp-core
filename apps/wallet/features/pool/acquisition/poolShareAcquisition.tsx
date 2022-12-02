@@ -100,14 +100,14 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
           <StepSelectQuantity
             onQuantityChange={(q) => setQuantity(q)}
             maxAllowedShares={maxAllowedShares}
-            priceAXTC={pool.tokenRate}
+            poolId={pool.poolId}
           />
         </div>
         <div id="step1" className="carousel-item relative w-full">
           <StepPaymentPix
             onStatusChange={() => {}}
             quantity={quantity}
-            priceAXTC={pool.tokenRate}
+            poolId={pool.poolId}
           />
         </div>
       </div>

@@ -9,19 +9,19 @@ import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCo
 
 interface Props {
   maxAllowedShares: number;
-  priceAXTC: number;
+  poolId: string;
   onQuantityChange: (quantity: number) => void;
 }
 
 export const StepSelectQuantity: FC<Props> = ({
   maxAllowedShares,
   onQuantityChange,
-  priceAXTC,
+  poolId,
 }) => {
   const { t } = useTranslation();
   const { name } = useAppSelector(selectAXTToken);
   const [quantity, setQuantity] = useState(1);
-  const { totalAXTC, totalBRL } = usePaymentCalculator(quantity, priceAXTC);
+  const { totalAXTC, totalBRL } = usePaymentCalculator(quantity, poolId);
 
   const handleQuantityChange = (q: number) => () => {
     setQuantity(q);

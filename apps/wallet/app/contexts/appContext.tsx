@@ -5,6 +5,7 @@ import { ChildrenProps } from "@/types/childrenProps";
 import { Config } from "@/app/config";
 import { Ledger, LedgerClientFactory } from "@signumjs/core";
 import { KycService } from "@/app/services/kycService";
+import { PaymentService } from "@/app/services/paymentService";
 
 type AddressPrefixType = "TS" | "S";
 type SignaPrefixType = "TSIGNA" | "SIGNA";
@@ -16,6 +17,7 @@ export interface AppContextType {
   AXTPoolTokenIds: string[];
   JotFormId: string;
   KycService: KycService;
+  PaymentService: PaymentService;
   Ledger: {
     IsTestNet: boolean;
     Client: Ledger;
@@ -37,6 +39,7 @@ const config: AppContextType = {
   AXTPoolTokenIds: Config.Tokens.AXTPs,
   JotFormId: Config.JotForm.Id,
   KycService: new KycService(),
+  PaymentService: new PaymentService(),
   Market: {
     BrlUsdAdjustment: Config.Market.BrlUsdAdjustment,
   },

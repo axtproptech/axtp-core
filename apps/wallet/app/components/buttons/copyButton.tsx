@@ -6,8 +6,9 @@ import { FC } from "react";
 
 interface Props {
   textToCopy: string;
+  disabled?: boolean;
 }
-export const CopyButton: FC<Props> = ({ textToCopy }) => {
+export const CopyButton: FC<Props> = ({ textToCopy, disabled = false }) => {
   const { t } = useTranslation();
   const { showInfo, showWarning } = useNotification();
 
@@ -22,7 +23,7 @@ export const CopyButton: FC<Props> = ({ textToCopy }) => {
 
   return (
     <div className="w-full my-2">
-      <Button color="secondary" onClick={handleOnCLick}>
+      <Button color="secondary" onClick={handleOnCLick} disabled={disabled}>
         <RiClipboardLine className="mr-2" />
         {t("copy")}
       </Button>
