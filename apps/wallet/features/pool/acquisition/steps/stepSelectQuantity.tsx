@@ -4,8 +4,7 @@ import { HintBox } from "@/app/components/hintBox";
 import { useAppSelector } from "@/states/hooks";
 import { selectAXTToken } from "@/app/states/tokenState";
 import { Number } from "@/app/components/number";
-import { selectBrlUsdMarketData } from "@/app/states/marketState";
-import { useAppContext } from "@/app/hooks/useAppContext";
+import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePaymentCalculator";
 
 interface Props {
   maxAllowedShares: number;
@@ -19,10 +18,9 @@ export const StepSelectQuantity: FC<Props> = ({
   priceAXTC,
 }) => {
   const { t } = useTranslation();
-  const { Market } = useAppContext();
   const { name } = useAppSelector(selectAXTToken);
-  const brlUsdMarket = useAppSelector(selectBrlUsdMarketData);
   const [quantity, setQuantity] = useState(1);
+  const { totalAXTC, totalBRL } = usePaymentCalculator(quantity, priceAXTC);
 
   const handleQuantityChange = (q: number) => () => {
     setQuantity(q);
@@ -36,11 +34,6 @@ export const StepSelectQuantity: FC<Props> = ({
     }
     return a;
   }, [maxAllowedShares]);
-
-  const adjustedBrlUsdPrice =
-    brlUsdMarket.current_price + Market.BrlUsdAdjustment;
-
-  const totalAXTC = priceAXTC * quantity;
 
   return (
     <div className="flex flex-col justify-between h-[50vh] text-center relative prose w-full mx-auto">
@@ -69,7 +62,7 @@ export const StepSelectQuantity: FC<Props> = ({
             <h4 className="m-0 mb-1">{t("acquire_totalPrice")}</h4>
             <h4>
               <Number value={totalAXTC} suffix={name} /> ={" "}
-              <Number value={totalAXTC * adjustedBrlUsdPrice} suffix="BRL" />
+              <Number value={totalBRL} suffix="BRL" />
             </h4>
           </div>
         </HintBox>

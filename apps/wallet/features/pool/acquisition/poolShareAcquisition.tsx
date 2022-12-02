@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { PoolHeader } from "../components/poolHeader";
 import { useTranslation } from "next-i18next";
 import { Stepper } from "@/app/components/stepper";
-import { StepDefinePin, StepSelectQuantity } from "./steps";
+import { StepPaymentPix, StepSelectQuantity } from "./steps";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { voidFn } from "@/app/voidFn";
 import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
@@ -104,7 +104,11 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
           />
         </div>
         <div id="step1" className="carousel-item relative w-full">
-          {/*<StepSeeNewAccount account={accountAddress} />*/}
+          <StepPaymentPix
+            onStatusChange={() => {}}
+            quantity={quantity}
+            priceAXTC={pool.tokenRate}
+          />
         </div>
       </div>
     </div>

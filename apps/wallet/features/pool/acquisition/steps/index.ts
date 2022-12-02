@@ -1,2 +1,2 @@
 export * from "./stepSelectQuantity";
-export * from "./stepDefinePin";
+export * from "./stepPaymentPix";
