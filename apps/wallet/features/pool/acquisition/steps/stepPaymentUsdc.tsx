@@ -26,7 +26,7 @@ interface Props {
 const DummyPayload =
   "00020126830014br.gov.bcb.pix2561api.pagseguro.com/pix/v2/210387E0-A6BF-45D1-80B5-CFEB9BBCEE2F5204899953039865802BR5921Pagseguro Internet SA6009SAO PAULO62070503***63047E6D";
 
-export const StepPaymentPix: FC<Props> = ({
+export const StepPaymentUsdc: FC<Props> = ({
   onStatusChange,
   quantity,
   poolId,
@@ -34,7 +34,7 @@ export const StepPaymentPix: FC<Props> = ({
   const { t } = useTranslation();
   const { PaymentService } = useAppContext();
   const { accountId, customer } = useAccount();
-  const { totalBRL } = usePaymentCalculator(quantity, poolId);
+  const { totalBRL, totalAXTC } = usePaymentCalculator(quantity, poolId);
   const [isFetching, setIsFetching] = useState(false);
   const { showError, showSuccess } = useNotification();
   const [paymentCharge, setPaymentCharge] = useState<NewChargeResponse | null>(
@@ -110,26 +110,17 @@ export const StepPaymentPix: FC<Props> = ({
               {t("acquire_about_to_buy", { count: quantity })}
             </h3>
             <h3>
-              <Number value={totalBRL} suffix="BRL" />
+              <Number value={totalAXTC} suffix="USDC" />
             </h3>
             <small>{t("pix_payments_description")}</small>
           </div>
         </HintBox>
       </section>
       <section className="w-[300px] mx-auto">
-        {paymentCharge && (
-          <div className="flex justify-center">
-            <Countdown
-              seconds={5 * 60}
-              onTimeout={handleTimeout}
-              className={"font-mono text-xl"}
-            />
-          </div>
-        )}
         <div className="bg-white rounded p-2 max-w-[200px] lg:max-w-[240px] mx-auto relative">
           <img
             className="m-0 pb-1 h-[28px] mx-auto"
-            src="/assets/img/pix-logo.svg"
+            src="/assets/img/usd-coin-logo.svg"
           />
           <div className={`${!paymentCharge ? "blur-sm" : ""}`}>
             <QRCode

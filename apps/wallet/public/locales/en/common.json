@@ -95,7 +95,10 @@
   "acquire_totalPrice": "Total acquisition costs",
   "acquire_about_to_buy_one": "You are about to acquire {{count}} share for",
   "acquire_about_to_buy_other": "You are about to acquire {{count}} shares for",
-  "pix_payments_only": "PIX payment is the most convenient way. If you cannot use PIX, please contact us. We offer you alternative payment methods then.",
+  "acquire_select_method": "Select your payment method",
+  "acquire_method_pix": "PIX is a convenient way to pay with Brazilian Real. Our PIX payments are powered by PagSeguro.",
+  "acquire_method_usdc": "USDC is a transparent and regulated stable coin fixed at one US Dollar. We support USDC on Ethereum, Solana and Algorand blockchains.",
+  "pix_payments_description": "Click the button to generate a payment code and scan it with your favorite banking app. The payment status is being verified at real time.",
   "pix_error_creating_charge": "Oh no! It was not possible to generate the payment information. Try again and eventually reload the page.",
   "pix_success": "Yay \uD83C\uDF89, Payment successfully executed.",
   "pix_generate": "Generate"

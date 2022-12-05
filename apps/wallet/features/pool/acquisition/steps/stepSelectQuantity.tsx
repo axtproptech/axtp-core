@@ -66,6 +66,7 @@ export const StepSelectQuantity: FC<Props> = ({
             <h4 className="m-0 mb-1">{t("acquire_totalPrice")}</h4>
             <h4>
               <Number value={totalAXTC} suffix={name} /> ={" "}
+              <Number value={totalAXTC} suffix="USD" /> ={" "}
               <Number value={totalBRL} suffix="BRL" />
             </h4>
           </div>

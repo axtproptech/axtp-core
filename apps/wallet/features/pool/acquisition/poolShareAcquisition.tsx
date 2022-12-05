@@ -5,19 +5,19 @@ import { useRouter } from "next/router";
 import { PoolHeader } from "../components/poolHeader";
 import { useTranslation } from "next-i18next";
 import { Stepper } from "@/app/components/stepper";
-import { StepPaymentPix, StepSelectQuantity } from "./steps";
+import {
+  StepPaymentPix,
+  StepSelectQuantity,
+  PaymentMethod,
+  StepSelectPaymentMethod,
+  StepPaymentUsdc,
+} from "./steps";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { voidFn } from "@/app/voidFn";
 import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
 import { OnStepChangeArgs } from "@/features/account";
-import { StepSelectPaymentMethod } from "@/features/pool/acquisition/steps/stepSelectPaymentMethod";
 
-enum Steps {
-  SelectQuantity,
-  PaymentChoice,
-  Payment,
-  Confirmation,
-}
+const StepRoutes = ["quantity", "paymentMethod", "payment"];
 
 interface Props {
   poolId: string;
@@ -25,26 +25,32 @@ interface Props {
 }
 
 export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
-  const StepCount = 3;
   const { t } = useTranslation();
   const router = useRouter();
   const pool = useAppSelector(selectPoolContractState(poolId));
+  const [stepCount, setStepCount] = useState<number>(3);
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
   const [paid, setPaid] = useState<boolean>(false);
 
   const routeBack = async () => router.back();
 
+  const routeStep = async (nextStep: number) => {
+    let newRoute = StepRoutes[nextStep];
+    await router.push(`#${newRoute}`, `#${newRoute}`, { shallow: true });
+  };
+
   const nextStep = async () => {
-    const newStep = Math.min(currentStep + 1, StepCount - 1);
+    const newStep = Math.min(currentStep + 1, stepCount - 1);
+    await routeStep(newStep);
     setCurrentStep(newStep);
-    await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
   };
 
   const previousStep = async () => {
     const newStep = Math.max(0, currentStep - 1);
+    await routeStep(newStep);
     setCurrentStep(newStep);
-    await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
   };
 
   const availableShares = Math.max(
@@ -63,14 +69,12 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
 
     let canProceed = true;
 
-    if (currentStep === Steps.SelectQuantity) {
+    if (StepRoutes[currentStep] === "quantity") {
       canProceed = quantity > 0 && quantity <= maxAllowedShares;
-    } else if (currentStep === Steps.Payment) {
-      canProceed = paid;
     }
     //
     const isFirstStep = currentStep === 0;
-    const isLastStep = currentStep === StepCount - 1;
+    const isLastStep = currentStep === stepCount - 1;
 
     const bottomNav: BottomNavigationItem[] = [
       {
@@ -88,32 +92,43 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
         icon: <RiArrowRightCircleLine />,
       },
     ];
-    onStepChange({ steps: StepCount, currentStep, bottomNav });
-  }, [currentStep, maxAllowedShares, paid, quantity]); // keep this, or you have a dead loop here
+    onStepChange({ steps: stepCount, currentStep, bottomNav });
+  }, [currentStep, maxAllowedShares, paid, quantity, stepCount]); // keep this, or you have a dead loop here
 
   if (!pool) return null;
 
   return (
     <div className="overflow-hidden">
       <PoolHeader poolData={pool} />
-      <Stepper currentStep={currentStep} steps={StepCount} />
+      <Stepper currentStep={currentStep} steps={stepCount} />
       <div className="carousel w-full touch-none">
-        <div id="step0" className="carousel-item relative w-full">
+        <div id="quantity" className="carousel-item relative w-full">
           <StepSelectQuantity
             onQuantityChange={(q) => setQuantity(q)}
             maxAllowedShares={maxAllowedShares}
             poolId={pool.poolId}
           />
         </div>
-        <div id="step1" className="carousel-item relative w-full">
-          <StepSelectPaymentMethod onMethodChange={() => {}} />
-        </div>
-        <div id="step2" className="carousel-item relative w-full">
-          <StepPaymentPix
-            onStatusChange={() => {}}
-            quantity={quantity}
-            poolId={pool.poolId}
+        <div id="paymentMethod" className="carousel-item relative w-full">
+          <StepSelectPaymentMethod
+            onMethodChange={(m) => setPaymentMethod(m)}
           />
+        </div>
+        <div id="payment" className="carousel-item relative w-full">
+          {paymentMethod === "pix" && (
+            <StepPaymentPix
+              onStatusChange={() => {}}
+              quantity={quantity}
+              poolId={pool.poolId}
+            />
+          )}
+          {paymentMethod === "usdc" && (
+            <StepPaymentUsdc
+              onStatusChange={() => {}}
+              quantity={quantity}
+              poolId={pool.poolId}
+            />
+          )}
         </div>
       </div>
     </div>
