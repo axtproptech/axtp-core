@@ -11,6 +11,11 @@ import { useNotification } from "@/app/hooks/useNotification";
 import { NewChargeResponse } from "@/bff/types/newChargeResponse";
 import { useAccount } from "@/app/hooks/useAccount";
 import useSWR from "swr";
+import { Button } from "react-daisyui";
+import { RiClipboardLine, RiQrCodeFill } from "react-icons/ri";
+import { AttentionSeeker } from "react-awesome-reveal";
+import * as React from "react";
+import { Countdown } from "@/app/components/countdown";
 
 interface Props {
   onStatusChange: (status: "pending" | "paid") => void;
@@ -54,9 +59,8 @@ export const StepPaymentPix: FC<Props> = ({
     }
   );
 
-  useEffect(() => {
+  const handleCreatePixPaymentUrl = async () => {
     if (!customer) return;
-    if (isFetching) return;
 
     setIsFetching(true);
     PaymentService.createPaymentUrl({
@@ -76,13 +80,21 @@ export const StepPaymentPix: FC<Props> = ({
       .finally(() => {
         setIsFetching(false);
       });
-  }, [quantity, poolId, customer, totalBRL, accountId]);
+  };
 
   useEffect(() => {
     if (paymentStatus && paymentStatus.status === "paid") {
       showSuccess(t("pix_success"));
     }
   }, [paymentStatus, showSuccess, t]);
+
+  useEffect(() => {
+    setPaymentCharge(null);
+  }, [totalBRL]);
+
+  const handleTimeout = () => {
+    setPaymentCharge(null);
+  };
 
   // TODO: Success when payment is done successfully
 
@@ -105,26 +117,44 @@ export const StepPaymentPix: FC<Props> = ({
         </HintBox>
       </section>
       <section className="w-[300px] mx-auto">
-        <div className="bg-white rounded p-2 max-w-[200px] lg:max-w-[240px] mx-auto">
+        {paymentCharge && (
+          <div className="flex justify-center">
+            <Countdown
+              seconds={5 * 60}
+              onTimeout={handleTimeout}
+              className={"font-mono text-xl"}
+            />
+          </div>
+        )}
+        <div className="bg-white rounded p-2 max-w-[200px] lg:max-w-[240px] mx-auto relative">
           <img
             className="m-0 pb-1 h-[28px] mx-auto"
             src="/assets/img/pix-logo.svg"
           />
-          <div className={`${isFetching ? "blur-sm animate-pulse" : ""}`}>
+          <div className={`${!paymentCharge ? "blur-sm" : ""}`}>
             <QRCode
               size={256}
               style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-              value={paymentCharge ? paymentCharge.txId : DummyPayload}
+              value={paymentCharge ? paymentCharge.pixUrl : DummyPayload}
               viewBox={`0 0 256 256`}
             />
           </div>
+          {!paymentCharge && (
+            <div className="absolute top-1/2 lg:left-[64px] left-[38px] drop-shadow">
+              <Button color="primary" onClick={handleCreatePixPaymentUrl}>
+                <AttentionSeeker delay={4000} effect="heartBeat">
+                  <RiQrCodeFill className="mr-2" />
+                </AttentionSeeker>
+                {t("pix_generate")}
+              </Button>
+            </div>
+          )}
         </div>
         <CopyButton
           textToCopy={paymentCharge ? paymentCharge.txId : ""}
           disabled={!paymentCharge}
         />
       </section>
-      <section></section>
     </div>
   );
 };

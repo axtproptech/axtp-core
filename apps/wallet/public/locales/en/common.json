@@ -97,5 +97,6 @@
   "acquire_about_to_buy_other": "You are about to acquire {{count}} shares for",
   "pix_payments_only": "PIX payment is the most convenient way. If you cannot use PIX, please contact us. We offer you alternative payment methods then.",
   "pix_error_creating_charge": "Oh no! It was not possible to generate the payment information. Try again and eventually reload the page.",
-  "pix_success": "Yay \uD83C\uDF89, Payment successfully executed."
+  "pix_success": "Yay \uD83C\uDF89, Payment successfully executed.",
+  "pix_generate": "Generate"
 }

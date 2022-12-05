@@ -10,9 +10,11 @@ import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigati
 import { voidFn } from "@/app/voidFn";
 import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
 import { OnStepChangeArgs } from "@/features/account";
+import { StepSelectPaymentMethod } from "@/features/pool/acquisition/steps/stepSelectPaymentMethod";
 
 enum Steps {
   SelectQuantity,
+  PaymentChoice,
   Payment,
   Confirmation,
 }
@@ -23,7 +25,7 @@ interface Props {
 }
 
 export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
-  const StepCount = 2;
+  const StepCount = 3;
   const { t } = useTranslation();
   const router = useRouter();
   const pool = useAppSelector(selectPoolContractState(poolId));
@@ -104,6 +106,9 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
           />
         </div>
         <div id="step1" className="carousel-item relative w-full">
+          <StepSelectPaymentMethod onMethodChange={() => {}} />
+        </div>
+        <div id="step2" className="carousel-item relative w-full">
           <StepPaymentPix
             onStatusChange={() => {}}
             quantity={quantity}
