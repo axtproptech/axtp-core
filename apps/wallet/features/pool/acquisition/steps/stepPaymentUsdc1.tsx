@@ -32,23 +32,13 @@ export const StepPaymentUsdc1: FC<Props> = ({
   poolId,
 }) => {
   const { t } = useTranslation();
-  const {
-    PaymentService,
-    Payment: { Usdc },
-  } = useAppContext();
-  const { accountId, customer } = useAccount();
-  const { totalBRL, totalAXTC } = usePaymentCalculator(quantity, poolId);
   const [network, setNetwork] = useState<NetworkType>("eth");
-  const { showError, showSuccess } = useNotification();
-  const [depositAddress, setDepositAddress] = useState<string>(
-    Usdc.DepositAccountEth
-  );
 
   const handleNetworkChange = (e: FormEvent) => {
     // @ts-ignore
     const method = e.target.name;
     setNetwork(method);
-    onNetworkChange(network);
+    onNetworkChange(method);
   };
 
   return (

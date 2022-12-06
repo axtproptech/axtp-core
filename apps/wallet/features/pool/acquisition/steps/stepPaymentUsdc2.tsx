@@ -1,5 +1,5 @@
 import { useTranslation } from "next-i18next";
-import { FC, FormEvent, useEffect, useState } from "react";
+import { FC, FormEvent, useEffect, useMemo, useState } from "react";
 import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePaymentCalculator";
 import { Number } from "@/app/components/number";
 import { HintBox } from "@/app/components/hintBox";
@@ -17,6 +17,23 @@ import { AttentionSeeker } from "react-awesome-reveal";
 import * as React from "react";
 import { Countdown } from "@/app/components/countdown";
 import { NetworkType } from "./stepPaymentUsdc1";
+import { formatNumber } from "@/app/formatNumber";
+import { shortenAddress } from "@/app/shortenAddress";
+
+const NetworkResourceMap = {
+  eth: {
+    img: "/assets/img/ethereum-logo.svg",
+    label: "Ethereum",
+  },
+  algo: {
+    img: "/assets/img/algorand-logo.svg",
+    label: "Algorand",
+  },
+  sol: {
+    img: "/assets/img/solanaLogoMark.svg",
+    label: "Solana",
+  },
+};
 
 interface Props {
   onStatusChange: (status: "pending" | "paid") => void;
@@ -33,12 +50,9 @@ export const StepPaymentUsdc2: FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const {
-    PaymentService,
     Payment: { Usdc },
   } = useAppContext();
-  const { accountId, customer } = useAccount();
-  const { totalBRL, totalAXTC } = usePaymentCalculator(quantity, poolId);
-  const { showError, showSuccess } = useNotification();
+  const { totalAXTC } = usePaymentCalculator(quantity, poolId);
   const [depositAddress, setDepositAddress] = useState<string>(
     Usdc.DepositAccountEth
   );
@@ -53,7 +67,7 @@ export const StepPaymentUsdc2: FC<Props> = ({
       default:
         return setDepositAddress(Usdc.DepositAccountEth);
     }
-  }, [network, showSuccess, t]);
+  }, [network]);
 
   return (
     <div className="flex flex-col justify-between text-center h-[75vh] relative prose w-full mx-auto">
@@ -63,21 +77,25 @@ export const StepPaymentUsdc2: FC<Props> = ({
             <AnimatedIconQrCode loopDelay={5000} touchable />
           </div>
           <div className="text-center">
-            <h3 className="my-1">
-              {t("acquire_about_to_buy", { count: quantity })}
-            </h3>
-            <h3>
-              <Number value={totalAXTC} suffix="USDC" />
-            </h3>
+            <h4 className="my-1">
+              {t("acquire_about_to_buy", {
+                count: quantity,
+                amount: formatNumber({ value: totalAXTC, suffix: "USDC" }),
+              })}
+            </h4>
+            <small>{t("usdc_payments_description")}</small>
           </div>
         </HintBox>
       </section>
-      <section className="w-[300px] mx-auto">
-        <div className="bg-white rounded p-2 max-w-[200px] lg:max-w-[240px] mx-auto relative">
-          <img
-            className="m-0 pb-1 h-[28px] mx-auto"
-            src="/assets/img/usd-coin-logo.svg"
-          />
+      <section className="w-[400px] mx-auto">
+        <div className="bg-white rounded p-2 max-w-[140px] lg:max-w-[180px] mx-auto relative">
+          <div className="flex flex-row items-center justify-center text-base-100">
+            <img
+              className="m-0 mr-1 pb-1 h-[20px]"
+              src={NetworkResourceMap[network].img}
+            />
+            <small>{NetworkResourceMap[network].label}</small>
+          </div>
           <div className={`${!depositAddress ? "blur-sm" : ""}`}>
             <QRCode
               size={256}
@@ -87,6 +105,7 @@ export const StepPaymentUsdc2: FC<Props> = ({
             />
           </div>
         </div>
+        <small className="mt-0.5">{shortenAddress(depositAddress, 20)}</small>
         <CopyButton textToCopy={depositAddress} />
       </section>
       <section></section>

@@ -93,8 +93,8 @@
   "acquire_token": "Acquire Share",
   "acquire_how_many": "How many shares you like to acquire?",
   "acquire_totalPrice": "Total acquisition costs",
-  "acquire_about_to_buy_one": "You are about to acquire {{count}} share for",
-  "acquire_about_to_buy_other": "You are about to acquire {{count}} shares for",
+  "acquire_about_to_buy_one": "You are about to acquire {{count}} share for {{amount}}",
+  "acquire_about_to_buy_other": "You are about to acquire {{count}} shares for {{amount}}",
   "acquire_select_method": "Select your payment method",
   "acquire_method_pix": "PIX is a convenient way to pay with Brazilian Real. Our PIX payments are powered by PagSeguro.",
   "acquire_method_usdc": "USDC is a transparent and regulated stable coin fixed at one US Dollar. We support USDC on Ethereum, Solana and Algorand blockchains.",
@@ -104,5 +104,6 @@
   "pix_generate": "Generate",
   "usdc_select_network": "Please, choose your USDC network",
   "usdc_select_network_description": "Choosing the right network is crucial, or your funds may be sent to nowhere. If you are unsure, please contact us.",
+  "usdc_payments_description": "Send the amount to the given blockchain address. If done, paste the resulting transaction hash in the next step to confirm the transfer.",
   "address_look_like": "Addresses look like"
 }

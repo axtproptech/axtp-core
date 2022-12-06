@@ -16,6 +16,7 @@ import { RiClipboardLine, RiQrCodeFill } from "react-icons/ri";
 import { AttentionSeeker } from "react-awesome-reveal";
 import * as React from "react";
 import { Countdown } from "@/app/components/countdown";
+import { formatNumber } from "@/app/formatNumber";
 
 interface Props {
   onStatusChange: (status: "pending" | "paid") => void;
@@ -107,10 +108,10 @@ export const StepPaymentPix: FC<Props> = ({
           </div>
           <div className="text-center">
             <h3 className="my-1">
-              {t("acquire_about_to_buy", { count: quantity })}
-            </h3>
-            <h3>
-              <Number value={totalBRL} suffix="BRL" />
+              {t("acquire_about_to_buy", {
+                count: quantity,
+                amount: formatNumber({ value: totalBRL, suffix: "BRL" }),
+              })}
             </h3>
             <small>{t("pix_payments_description")}</small>
           </div>
