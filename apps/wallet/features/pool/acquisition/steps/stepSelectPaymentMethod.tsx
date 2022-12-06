@@ -1,14 +1,8 @@
 import { useTranslation } from "next-i18next";
 import { FC, FormEvent, useMemo, useState } from "react";
 import { HintBox } from "@/app/components/hintBox";
-import { useAppSelector } from "@/states/hooks";
-import { selectAXTToken } from "@/app/states/tokenState";
-import { Number } from "@/app/components/number";
-import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePaymentCalculator";
-import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 import * as React from "react";
 import { AttentionSeeker } from "react-awesome-reveal";
-import { SafeExternalLink } from "@/app/components/navigation/externalLink";
 
 export type PaymentMethod = "pix" | "usdc";
 
@@ -18,7 +12,6 @@ interface Props {
 
 export const StepSelectPaymentMethod: FC<Props> = ({ onMethodChange }) => {
   const { t } = useTranslation();
-  const { name } = useAppSelector(selectAXTToken);
   const [method, setMethod] = useState<PaymentMethod>("pix");
 
   const handleMethodChange = (e: FormEvent) => {
@@ -32,16 +25,10 @@ export const StepSelectPaymentMethod: FC<Props> = ({ onMethodChange }) => {
     switch (method) {
       case "usdc":
         return (
-          <AttentionSeeker effect="heartBeat" delay={2000}>
-            <img className="m-2 h-[32px]" src="/assets/img/usd-coin-logo.svg" />
-          </AttentionSeeker>
+          <img className="m-2 h-[32px]" src="/assets/img/usd-coin-logo.svg" />
         );
       case "pix":
-        return (
-          <AttentionSeeker effect="heartBeat" delay={2000}>
-            <img className="m-2 h-[32px]" src="/assets/img/pix-logo.svg" />
-          </AttentionSeeker>
-        );
+        return <img className="m-2 h-[32px]" src="/assets/img/pix-logo.svg" />;
       default:
     }
   }, [method]);
@@ -55,7 +42,7 @@ export const StepSelectPaymentMethod: FC<Props> = ({ onMethodChange }) => {
         <div className="relative flex flex-col mx-auto w-1/4 mb-8">
           <div className="form-control">
             <label className="label cursor-pointer">
-              <span className="label-text">PIX</span>
+              <span className="text-lg">PIX</span>
               <input
                 type="radio"
                 className="radio"
@@ -67,7 +54,7 @@ export const StepSelectPaymentMethod: FC<Props> = ({ onMethodChange }) => {
           </div>
           <div className="form-control">
             <label className="label cursor-pointer">
-              <span className="label-text">USDC</span>
+              <span className="text-lg">USDC</span>
               <input
                 type="radio"
                 className="radio"
@@ -79,7 +66,11 @@ export const StepSelectPaymentMethod: FC<Props> = ({ onMethodChange }) => {
           </div>
         </div>
         <HintBox text={t(`acquire_method_${method}`)}>
-          <div className="absolute top-[-24px] bg-base-100">{icon}</div>
+          <div className="absolute top-[-24px] bg-base-100">
+            <AttentionSeeker effect="heartBeat" delay={2000}>
+              {icon}
+            </AttentionSeeker>
+          </div>
         </HintBox>
       </section>
       <section />

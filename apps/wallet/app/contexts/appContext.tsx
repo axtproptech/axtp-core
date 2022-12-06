@@ -30,6 +30,13 @@ export interface AppContextType {
   Market: {
     BrlUsdAdjustment: number;
   };
+  Payment: {
+    Usdc: {
+      DepositAccountEth: string;
+      DepositAccountAlgo: string;
+      DepositAccountSol: string;
+    };
+  };
 }
 
 const config: AppContextType = {
@@ -42,6 +49,13 @@ const config: AppContextType = {
   PaymentService: new PaymentService(),
   Market: {
     BrlUsdAdjustment: Config.Market.BrlUsdAdjustment,
+  },
+  Payment: {
+    Usdc: {
+      DepositAccountEth: Config.Payment.Usdc.DepositAccountEth,
+      DepositAccountAlgo: Config.Payment.Usdc.DepositAccountAlgo,
+      DepositAccountSol: Config.Payment.Usdc.DepositAccountSol,
+    },
   },
   Ledger: {
     IsTestNet: Config.Ledger.IsTestNet,

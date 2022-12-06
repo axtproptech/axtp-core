@@ -10,14 +10,19 @@ import {
   StepSelectQuantity,
   PaymentMethod,
   StepSelectPaymentMethod,
-  StepPaymentUsdc,
+  StepPaymentUsdc1,
+  StepPaymentUsdc2,
+  NetworkType,
 } from "./steps";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { voidFn } from "@/app/voidFn";
 import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
 import { OnStepChangeArgs } from "@/features/account";
 
-const StepRoutes = ["quantity", "paymentMethod", "payment"];
+const StepRoutes = {
+  pix: ["quantity", "paymentMethod", "paymentPix"],
+  usdc: ["quantity", "paymentMethod", "paymentUsdc-1", "paymentUsdc-2"],
+};
 
 interface Props {
   poolId: string;
@@ -32,25 +37,27 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
+  const [usdcNetwork, setUsdcNetwork] = useState<NetworkType>("eth");
   const [paid, setPaid] = useState<boolean>(false);
 
   const routeBack = async () => router.back();
 
-  const routeStep = async (nextStep: number) => {
-    let newRoute = StepRoutes[nextStep];
+  const routeStep = async (step: number) => {
+    let newRoute = StepRoutes[paymentMethod][step];
+    console.log("routeStep", newRoute);
     await router.push(`#${newRoute}`, `#${newRoute}`, { shallow: true });
   };
 
   const nextStep = async () => {
     const newStep = Math.min(currentStep + 1, stepCount - 1);
-    await routeStep(newStep);
     setCurrentStep(newStep);
+    await routeStep(newStep);
   };
 
   const previousStep = async () => {
     const newStep = Math.max(0, currentStep - 1);
-    await routeStep(newStep);
     setCurrentStep(newStep);
+    await routeStep(newStep);
   };
 
   const availableShares = Math.max(
@@ -69,7 +76,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
 
     let canProceed = true;
 
-    if (StepRoutes[currentStep] === "quantity") {
+    if (StepRoutes[paymentMethod][currentStep] === "quantity") {
       canProceed = quantity > 0 && quantity <= maxAllowedShares;
     }
     //
@@ -95,6 +102,10 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
     onStepChange({ steps: stepCount, currentStep, bottomNav });
   }, [currentStep, maxAllowedShares, paid, quantity, stepCount]); // keep this, or you have a dead loop here
 
+  useEffect(() => {
+    setStepCount(StepRoutes[paymentMethod].length);
+  }, [paymentMethod]);
+
   if (!pool) return null;
 
   return (
@@ -114,22 +125,34 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
             onMethodChange={(m) => setPaymentMethod(m)}
           />
         </div>
-        <div id="payment" className="carousel-item relative w-full">
-          {paymentMethod === "pix" && (
+        {paymentMethod === "pix" && (
+          <div id="paymentPix" className="carousel-item relative w-full">
             <StepPaymentPix
               onStatusChange={() => {}}
               quantity={quantity}
               poolId={pool.poolId}
             />
-          )}
-          {paymentMethod === "usdc" && (
-            <StepPaymentUsdc
-              onStatusChange={() => {}}
-              quantity={quantity}
-              poolId={pool.poolId}
-            />
-          )}
-        </div>
+          </div>
+        )}
+        {paymentMethod === "usdc" && (
+          <>
+            <div id="paymentUsdc-1" className="carousel-item relative w-full">
+              <StepPaymentUsdc1
+                onNetworkChange={(network) => setUsdcNetwork(network)}
+                quantity={quantity}
+                poolId={pool.poolId}
+              />
+            </div>
+            <div id="paymentUsdc-2" className="carousel-item relative w-full">
+              <StepPaymentUsdc2
+                onStatusChange={() => {}}
+                quantity={quantity}
+                poolId={pool.poolId}
+                network={usdcNetwork}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
