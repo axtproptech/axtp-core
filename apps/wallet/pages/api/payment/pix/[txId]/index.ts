@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { route } from "@/bff/route";
-import { getChargeStatus } from "@/bff/handler/payment/getChargeStatus";
+import { getChargeStatus } from "@/bff/handler/payment/pix/getChargeStatus";
 
 export default function handler(
   req: NextApiRequest,

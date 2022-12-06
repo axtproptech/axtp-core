@@ -17,28 +17,27 @@ import { AttentionSeeker } from "react-awesome-reveal";
 import * as React from "react";
 import { Countdown } from "@/app/components/countdown";
 import { AnimatedIconGlobe } from "@/app/components/animatedIcons/animatedIconGlobe";
-
-export type NetworkType = "eth" | "algo" | "sol";
+import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
 
 interface Props {
-  onNetworkChange: (network: NetworkType) => void;
+  onProtocolChange: (protocol: BlockchainProtocolType) => void;
   quantity: number;
   poolId: string;
 }
 
 export const StepPaymentUsdc1: FC<Props> = ({
-  onNetworkChange,
+  onProtocolChange,
   quantity,
   poolId,
 }) => {
   const { t } = useTranslation();
-  const [network, setNetwork] = useState<NetworkType>("eth");
+  const [protocol, setProtocol] = useState<BlockchainProtocolType>("eth");
 
-  const handleNetworkChange = (e: FormEvent) => {
+  const handleProtocolChange = (e: FormEvent) => {
     // @ts-ignore
     const method = e.target.name;
-    setNetwork(method);
-    onNetworkChange(method);
+    setProtocol(method);
+    onProtocolChange(method);
   };
 
   return (
@@ -76,8 +75,8 @@ export const StepPaymentUsdc1: FC<Props> = ({
                 type="radio"
                 className="radio"
                 name="eth"
-                checked={network === "eth"}
-                onChange={handleNetworkChange}
+                checked={protocol === "eth"}
+                onChange={handleProtocolChange}
               />
             </label>
           </div>
@@ -101,8 +100,8 @@ export const StepPaymentUsdc1: FC<Props> = ({
                 type="radio"
                 className="radio"
                 name="sol"
-                checked={network === "sol"}
-                onChange={handleNetworkChange}
+                checked={protocol === "sol"}
+                onChange={handleProtocolChange}
               />
             </label>
           </div>
@@ -126,8 +125,8 @@ export const StepPaymentUsdc1: FC<Props> = ({
                 type="radio"
                 className="radio"
                 name="algo"
-                checked={network === "algo"}
-                onChange={handleNetworkChange}
+                checked={protocol === "algo"}
+                onChange={handleProtocolChange}
               />
             </label>
           </div>

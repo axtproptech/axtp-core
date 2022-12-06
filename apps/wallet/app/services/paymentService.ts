@@ -1,10 +1,8 @@
-import { withError } from "./withError";
 import { Http, HttpClientFactory } from "@signumjs/http";
-import { MarketData } from "@/types/marketData";
-import { TickerSymbol } from "@/types/tickerSymbol";
 import retry from "p-retry";
 import { ChargeStatusResponse } from "@/bff/types/chargeStatusResponse";
 import { NewChargeResponse } from "@/bff/types/newChargeResponse";
+import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
 
 interface CreatePaymentUrlArgs {
   customerId: string;
@@ -21,16 +19,25 @@ export class PaymentService {
     this.httpClient = HttpClientFactory.createHttpClient("/api");
   }
 
-  getPaymentStatus(txId: string) {
+  getPixPaymentStatus(txId: string) {
     return retry(async () => {
-      const { response } = await this.httpClient.get(`/payment/${txId}`);
+      const { response } = await this.httpClient.get(`/payment/pix/${txId}`);
       return response as ChargeStatusResponse;
     });
   }
 
-  createPaymentUrl(args: CreatePaymentUrlArgs) {
+  getUsdcPaymentStatus(txId: string, protocol: BlockchainProtocolType) {
     return retry(async () => {
-      const { response } = await this.httpClient.post(`/payment`, {
+      const { response } = await this.httpClient.get(
+        `/payment/usdc/${txId}?protocol=${protocol}`
+      );
+      return response as ChargeStatusResponse;
+    });
+  }
+
+  createPixPaymentUrl(args: CreatePaymentUrlArgs) {
+    return retry(async () => {
+      const { response } = await this.httpClient.post(`/payment/pix`, {
         ...args,
       });
       return response as NewChargeResponse;

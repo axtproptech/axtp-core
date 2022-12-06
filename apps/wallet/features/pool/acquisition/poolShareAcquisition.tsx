@@ -12,16 +12,23 @@ import {
   StepSelectPaymentMethod,
   StepPaymentUsdc1,
   StepPaymentUsdc2,
-  NetworkType,
+  StepPaymentUsdc3,
 } from "./steps";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { voidFn } from "@/app/voidFn";
 import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
 import { OnStepChangeArgs } from "@/features/account";
+import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
 
 const StepRoutes = {
   pix: ["quantity", "paymentMethod", "paymentPix"],
-  usdc: ["quantity", "paymentMethod", "paymentUsdc-1", "paymentUsdc-2"],
+  usdc: [
+    "quantity",
+    "paymentMethod",
+    "paymentUsdc-1",
+    "paymentUsdc-2",
+    "paymentUsdc-3",
+  ],
 };
 
 interface Props {
@@ -37,14 +44,14 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
-  const [usdcNetwork, setUsdcNetwork] = useState<NetworkType>("eth");
+  const [usdcProtocol, setUsdcProtocol] =
+    useState<BlockchainProtocolType>("eth");
   const [paid, setPaid] = useState<boolean>(false);
 
   const routeBack = async () => router.back();
 
   const routeStep = async (step: number) => {
     let newRoute = StepRoutes[paymentMethod][step];
-    console.log("routeStep", newRoute);
     await router.push(`#${newRoute}`, `#${newRoute}`, { shallow: true });
   };
 
@@ -138,7 +145,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
           <>
             <div id="paymentUsdc-1" className="carousel-item relative w-full">
               <StepPaymentUsdc1
-                onNetworkChange={(network) => setUsdcNetwork(network)}
+                onProtocolChange={(network) => setUsdcProtocol(network)}
                 quantity={quantity}
                 poolId={pool.poolId}
               />
@@ -148,7 +155,15 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
                 onStatusChange={() => {}}
                 quantity={quantity}
                 poolId={pool.poolId}
-                network={usdcNetwork}
+                protocol={usdcProtocol}
+              />
+            </div>
+            <div id="paymentUsdc-3" className="carousel-item relative w-full">
+              <StepPaymentUsdc3
+                onStatusChange={() => {}}
+                quantity={quantity}
+                poolId={pool.poolId}
+                protocol={usdcProtocol}
               />
             </div>
           </>

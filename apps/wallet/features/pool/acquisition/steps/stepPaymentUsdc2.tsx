@@ -1,24 +1,15 @@
 import { useTranslation } from "next-i18next";
-import { FC, FormEvent, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePaymentCalculator";
-import { Number } from "@/app/components/number";
 import { HintBox } from "@/app/components/hintBox";
 import QRCode from "react-qr-code";
 import { CopyButton } from "@/app/components/buttons/copyButton";
 import { AnimatedIconQrCode } from "@/app/components/animatedIcons/animatedIconQrCode";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import { useNotification } from "@/app/hooks/useNotification";
-import { NewChargeResponse } from "@/bff/types/newChargeResponse";
-import { useAccount } from "@/app/hooks/useAccount";
-import useSWR from "swr";
-import { Button } from "react-daisyui";
-import { RiClipboardLine, RiQrCodeFill } from "react-icons/ri";
-import { AttentionSeeker } from "react-awesome-reveal";
 import * as React from "react";
-import { Countdown } from "@/app/components/countdown";
-import { NetworkType } from "./stepPaymentUsdc1";
 import { formatNumber } from "@/app/formatNumber";
 import { shortenAddress } from "@/app/shortenAddress";
+import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
 
 const NetworkResourceMap = {
   eth: {
@@ -36,17 +27,17 @@ const NetworkResourceMap = {
 };
 
 interface Props {
-  onStatusChange: (status: "pending" | "paid") => void;
+  onStatusChange: (status: "pending" | "confirmed") => void;
   quantity: number;
   poolId: string;
-  network: NetworkType;
+  protocol: BlockchainProtocolType;
 }
 
 export const StepPaymentUsdc2: FC<Props> = ({
   onStatusChange,
   quantity,
   poolId,
-  network,
+  protocol,
 }) => {
   const { t } = useTranslation();
   const {
@@ -58,7 +49,7 @@ export const StepPaymentUsdc2: FC<Props> = ({
   );
 
   useEffect(() => {
-    switch (network) {
+    switch (protocol) {
       case "algo":
         return setDepositAddress(Usdc.DepositAccountAlgo);
       case "sol":
@@ -67,7 +58,10 @@ export const StepPaymentUsdc2: FC<Props> = ({
       default:
         return setDepositAddress(Usdc.DepositAccountEth);
     }
-  }, [network]);
+  }, [protocol]);
+
+  // @ts-ignore
+  const { label, img } = NetworkResourceMap[protocol];
 
   return (
     <div className="flex flex-col justify-between text-center h-[75vh] relative prose w-full mx-auto">
@@ -87,14 +81,11 @@ export const StepPaymentUsdc2: FC<Props> = ({
           </div>
         </HintBox>
       </section>
-      <section className="w-[400px] mx-auto">
+      <section className="w-[300px] mx-auto">
         <div className="bg-white rounded p-2 max-w-[140px] lg:max-w-[180px] mx-auto relative">
           <div className="flex flex-row items-center justify-center text-base-100">
-            <img
-              className="m-0 mr-1 pb-1 h-[20px]"
-              src={NetworkResourceMap[network].img}
-            />
-            <small>{NetworkResourceMap[network].label}</small>
+            <img className="m-0 mr-1 pb-1 h-[20px]" src={img} />
+            <small>{label}</small>
           </div>
           <div className={`${!depositAddress ? "blur-sm" : ""}`}>
             <QRCode

@@ -47,7 +47,7 @@ export const StepPaymentPix: FC<Props> = ({
     async () => {
       if (!paymentCharge?.txId) return null;
       try {
-        return await PaymentService.getPaymentStatus(paymentCharge.txId);
+        return await PaymentService.getPixPaymentStatus(paymentCharge.txId);
       } catch (e: any) {
         console.warn(
           `Could not get payment status for transaction ${paymentCharge.txId}`
@@ -64,7 +64,7 @@ export const StepPaymentPix: FC<Props> = ({
     if (!customer) return;
 
     setIsFetching(true);
-    PaymentService.createPaymentUrl({
+    PaymentService.createPixPaymentUrl({
       amountBrl: totalBRL,
       quantity,
       accountId,
@@ -84,7 +84,7 @@ export const StepPaymentPix: FC<Props> = ({
   };
 
   useEffect(() => {
-    if (paymentStatus && paymentStatus.status === "paid") {
+    if (paymentStatus && paymentStatus.status === "confirmed") {
       showSuccess(t("pix_success"));
     }
   }, [paymentStatus, showSuccess, t]);

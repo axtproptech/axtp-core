@@ -105,5 +105,8 @@
   "usdc_select_network": "Please, choose your USDC network",
   "usdc_select_network_description": "Choosing the right network is crucial, or your funds may be sent to nowhere. If you are unsure, please contact us.",
   "usdc_payments_description": "Send the amount to the given blockchain address. If done, paste the resulting transaction hash in the next step to confirm the transfer.",
-  "address_look_like": "Addresses look like"
+  "address_look_like": "Addresses look like",
+  "paste_clipboard_failure": "Could not paste text from clipboard.",
+  "enter_transaction_hash": "Enter the transaction hash here",
+  "transaction_verification": "Confirm your payment by pasting the transaction hash in the text box below."
 }

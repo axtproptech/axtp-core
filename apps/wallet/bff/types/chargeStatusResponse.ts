@@ -1,3 +1,3 @@
 export interface ChargeStatusResponse {
-  status: "pending" | "paid";
+  status: "pending" | "confirmed";
 }
