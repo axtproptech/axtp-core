@@ -1,31 +1,19 @@
 import { useTranslation } from "next-i18next";
-import { FC, FormEvent, useEffect, useMemo, useState } from "react";
-import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePaymentCalculator";
+import { FC, FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { HintBox } from "@/app/components/hintBox";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import useSWR from "swr";
-import { Button, Input, Textarea } from "react-daisyui";
+import { Button, Textarea } from "react-daisyui";
 import * as React from "react";
 import { PasteButton } from "@/app/components/buttons/pasteButton";
 import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
-
-const NetworkResourceMap = {
-  eth: {
-    img: "/assets/img/ethereum-logo.svg",
-    label: "Ethereum",
-  },
-  algo: {
-    img: "/assets/img/algorand-logo.svg",
-    label: "Algorand",
-  },
-  sol: {
-    img: "/assets/img/solanaLogoMark.svg",
-    label: "Solana",
-  },
-};
+import { Fade, Zoom } from "react-awesome-reveal";
+import { AnimatedIconGlobe } from "@/app/components/animatedIcons/animatedIconGlobe";
+import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
+import { shortenHash } from "@/app/shortenHash";
+import { AnimatedIconConfetti } from "@/app/components/animatedIcons/animatedIconConfetti";
 
 interface Props {
-  onStatusChange: (status: "pending" | "paid") => void;
+  onStatusChange: (status: "pending" | "confirmed") => void;
   quantity: number;
   poolId: string;
   protocol: BlockchainProtocolType;
@@ -38,33 +26,41 @@ export const StepPaymentUsdc3: FC<Props> = ({
   protocol,
 }) => {
   const { t } = useTranslation();
-  const {
-    PaymentService,
-    Payment: { Usdc },
-  } = useAppContext();
-  const { totalAXTC } = usePaymentCalculator(quantity, poolId);
+  const timer = useRef<any>(null);
+  const { PaymentService } = useAppContext();
   const [transactionHash, setTransactionHash] = useState<string>("");
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [txStatus, setTxStatus] = useState<
+    "pending" | "confirmed" | "timedout"
+  >("pending");
 
-  const { data } = useSWR(
-    transactionHash ? `/verifyTx/${transactionHash}` : null,
-    async () => {
+  function stopTimeout() {
+    timer.current && clearTimeout(timer.current);
+  }
+
+  useEffect(() => {
+    if (!transactionHash) return;
+
+    let retrials = 0;
+
+    async function checkPaymentStatus() {
       try {
-        const { status } = await PaymentService.getUsdcPaymentStatus(
-          transactionHash,
-          protocol
-        );
-        return status;
+        if (retrials++ > 10) {
+          setTxStatus("timedout");
+        }
+        await PaymentService.getUsdcPaymentStatus(transactionHash, protocol);
+        setTxStatus("confirmed");
+        onStatusChange("confirmed");
       } catch (e: any) {
-        console.warn("Could not verify");
-        return null;
+        timer.current = setTimeout(checkPaymentStatus, 5_000);
       }
-    },
-    {
-      refreshInterval: 5_000,
-      errorRetryCount: 5,
     }
-  );
+
+    timer.current = setTimeout(checkPaymentStatus, 5_000);
+
+    return () => {
+      stopTimeout();
+    };
+  }, [PaymentService, protocol, transactionHash]);
 
   const handleChange = (e: FormEvent<HTMLTextAreaElement>) => {
     // @ts-ignore
@@ -75,26 +71,86 @@ export const StepPaymentUsdc3: FC<Props> = ({
     setTransactionHash(text);
   };
 
+  const handleCancel = () => {
+    stopTimeout();
+    setTransactionHash("");
+  };
+
+  const handleRetry = () => {
+    stopTimeout();
+    setTransactionHash("");
+    setTxStatus("pending");
+  };
+
+  const statusMessage = useMemo(() => {
+    if (!transactionHash) {
+      return t("transaction_verification");
+    }
+    if (txStatus === "confirmed") {
+      return t("transaction_verified");
+    }
+    if (txStatus === "timedout") {
+      return t("transaction_timedout");
+    }
+
+    return t("transaction_verifying");
+  }, [transactionHash, txStatus, t]);
+
   return (
     <div className="flex flex-col justify-between text-center h-[75vh] relative prose w-full mx-auto">
       <section className="mt-8">
-        <HintBox text={t("transaction_verification")} />
-        <div className="mt-4 relative flex flex-col w-[75%] mx-auto ">
-          <Textarea
-            className="w-full lg:w-[75%] text-justify border-base-content text-lg"
-            onChange={handleChange}
-            value={transactionHash}
-            placeholder={t("enter_transaction_hash")}
-            aria-label={t("enter_transaction_hash")}
-            rows={3}
-            disabled={!!transactionHash}
-          />
+        <HintBox className="text-center font-bold" text={statusMessage}>
+          {txStatus === "timedout" && <p>{t("transaction_timedout_hint")}</p>}
+        </HintBox>
+        <div className="mt-4 mx-auto">
+          {!transactionHash && (
+            <>
+              <Textarea
+                className="w-[75%] text-justify border-base-content text-lg"
+                onChange={handleChange}
+                value={transactionHash}
+                placeholder={t("enter_transaction_hash")}
+                aria-label={t("enter_transaction_hash")}
+                rows={3}
+                disabled={!!transactionHash}
+              />
+              <PasteButton onText={handlePaste} disabled={!!transactionHash} />
+            </>
+          )}
+
+          {transactionHash && txStatus === "pending" && (
+            <>
+              <Fade>
+                <div className="w-[96px] mx-auto">
+                  <AnimatedIconGlobe loopDelay={2000} loop />
+                </div>
+                <p>{shortenHash(transactionHash)}</p>
+              </Fade>
+              <Button onClick={handleCancel}>{t("cancel")}</Button>
+            </>
+          )}
+
+          {transactionHash && txStatus === "confirmed" && (
+            <Zoom>
+              <div className="w-[120px] mx-auto">
+                <AnimatedIconConfetti touchable loopDelay={2500} />
+              </div>
+            </Zoom>
+          )}
+
+          {transactionHash && txStatus === "timedout" && (
+            <>
+              <Fade>
+                <div className="w-[96px] mx-auto">
+                  <AnimatedIconError loopDelay={2000} />
+                </div>
+              </Fade>
+              <Button onClick={handleRetry}>{t("retry")}</Button>
+            </>
+          )}
         </div>
-        <PasteButton onText={handlePaste} disabled={!!transactionHash} />
       </section>
-      <section className="h-[240px]">
-        {transactionHash && <h2>Checking...</h2>}
-      </section>
+      <section></section>
     </div>
   );
 };

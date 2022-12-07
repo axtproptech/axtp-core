@@ -8,7 +8,7 @@ import { AnimatedIconQrCode } from "@/app/components/animatedIcons/animatedIconQ
 import { useAppContext } from "@/app/hooks/useAppContext";
 import * as React from "react";
 import { formatNumber } from "@/app/formatNumber";
-import { shortenAddress } from "@/app/shortenAddress";
+import { shortenHash } from "@/app/shortenHash";
 import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
 
 const NetworkResourceMap = {
@@ -27,18 +27,12 @@ const NetworkResourceMap = {
 };
 
 interface Props {
-  onStatusChange: (status: "pending" | "confirmed") => void;
   quantity: number;
   poolId: string;
   protocol: BlockchainProtocolType;
 }
 
-export const StepPaymentUsdc2: FC<Props> = ({
-  onStatusChange,
-  quantity,
-  poolId,
-  protocol,
-}) => {
+export const StepPaymentUsdc2: FC<Props> = ({ quantity, poolId, protocol }) => {
   const { t } = useTranslation();
   const {
     Payment: { Usdc },
@@ -96,7 +90,7 @@ export const StepPaymentUsdc2: FC<Props> = ({
             />
           </div>
         </div>
-        <small className="mt-0.5">{shortenAddress(depositAddress, 20)}</small>
+        <small className="mt-0.5">{shortenHash(depositAddress, 20)}</small>
         <CopyButton textToCopy={depositAddress} />
       </section>
       <section></section>

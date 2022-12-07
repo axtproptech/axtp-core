@@ -19,7 +19,7 @@ import { Countdown } from "@/app/components/countdown";
 import { formatNumber } from "@/app/formatNumber";
 
 interface Props {
-  onStatusChange: (status: "pending" | "paid") => void;
+  onStatusChange: (status: "pending" | "confirmed") => void;
   quantity: number;
   poolId: string;
 }

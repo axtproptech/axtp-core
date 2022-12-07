@@ -128,6 +128,10 @@ export const getUsdcTransactionStatus: HandlerFunction = async (req, res) => {
 
     res.status(404).end();
   } catch (e: any) {
+    if (e.message.toLowerCase().indexOf("not found") !== -1) {
+      res.status(404).end();
+      return;
+    }
     handleError({ e, res });
   }
 };

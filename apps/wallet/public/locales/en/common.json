@@ -108,5 +108,9 @@
   "address_look_like": "Addresses look like",
   "paste_clipboard_failure": "Could not paste text from clipboard.",
   "enter_transaction_hash": "Enter the transaction hash here",
-  "transaction_verification": "Confirm your payment by pasting the transaction hash in the text box below."
+  "transaction_verification": "Confirm your payment by pasting the transaction hash in the text box below.",
+  "transaction_verifying": "Verifying transaction...please wait",
+  "transaction_verified": "Yay \uD83C\uDF89, the transaction was successfully verified.",
+  "transaction_timedout": "Oh no. the transaction could not be verified.",
+  "transaction_timedout_hint": "Please retry the verification. If the problem persists do not hesitate to contact our support."
 }

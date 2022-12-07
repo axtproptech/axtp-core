@@ -16,7 +16,12 @@ import {
 } from "./steps";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { voidFn } from "@/app/voidFn";
-import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
+import {
+  RiAccountBoxLine,
+  RiArrowLeftCircleLine,
+  RiArrowRightCircleLine,
+  RiHome6Line,
+} from "react-icons/ri";
 import { OnStepChangeArgs } from "@/features/account";
 import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
 
@@ -50,6 +55,9 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
 
   const routeBack = async () => router.back();
 
+  const routeHome = async () => router.replace("/");
+  const routeAccount = async () => router.replace("/account");
+
   const routeStep = async (step: number) => {
     let newRoute = StepRoutes[paymentMethod][step];
     await router.push(`#${newRoute}`, `#${newRoute}`, { shallow: true });
@@ -81,29 +89,42 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
       label: "",
     };
 
+    const HomeItem: BottomNavigationItem = {
+      onClick: routeHome,
+      icon: <RiHome6Line />,
+      disabled: !paid,
+      label: t("home"),
+    };
+
     let canProceed = true;
 
     if (StepRoutes[paymentMethod][currentStep] === "quantity") {
       canProceed = quantity > 0 && quantity <= maxAllowedShares;
     }
+
     //
     const isFirstStep = currentStep === 0;
     const isLastStep = currentStep === stepCount - 1;
+
+    if (isLastStep) {
+      canProceed = paid;
+    }
 
     const bottomNav: BottomNavigationItem[] = [
       {
         label: t("back"),
         onClick: isFirstStep ? routeBack : previousStep,
         icon: <RiArrowLeftCircleLine />,
+        disabled: isLastStep && paid,
       },
-      EmptyItem,
+      isLastStep ? HomeItem : EmptyItem,
       {
         label: t("next"),
-        onClick: nextStep,
+        onClick: isLastStep ? routeAccount : nextStep,
         disabled: !canProceed,
         color: canProceed ? "secondary" : undefined,
         loading: isLastStep && !paid,
-        icon: <RiArrowRightCircleLine />,
+        icon: isLastStep ? <RiAccountBoxLine /> : <RiArrowRightCircleLine />,
       },
     ];
     onStepChange({ steps: stepCount, currentStep, bottomNav });
@@ -112,6 +133,12 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
   useEffect(() => {
     setStepCount(StepRoutes[paymentMethod].length);
   }, [paymentMethod]);
+
+  const handleStatus = (status: "pending" | "confirmed") => {
+    if (status === "confirmed") {
+      setPaid(true);
+    }
+  };
 
   if (!pool) return null;
 
@@ -135,7 +162,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
         {paymentMethod === "pix" && (
           <div id="paymentPix" className="carousel-item relative w-full">
             <StepPaymentPix
-              onStatusChange={() => {}}
+              onStatusChange={handleStatus}
               quantity={quantity}
               poolId={pool.poolId}
             />
@@ -152,7 +179,6 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
             </div>
             <div id="paymentUsdc-2" className="carousel-item relative w-full">
               <StepPaymentUsdc2
-                onStatusChange={() => {}}
                 quantity={quantity}
                 poolId={pool.poolId}
                 protocol={usdcProtocol}
@@ -160,7 +186,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
             </div>
             <div id="paymentUsdc-3" className="carousel-item relative w-full">
               <StepPaymentUsdc3
-                onStatusChange={() => {}}
+                onStatusChange={handleStatus}
                 quantity={quantity}
                 poolId={pool.poolId}
                 protocol={usdcProtocol}
