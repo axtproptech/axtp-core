@@ -86,6 +86,7 @@ export const StepPaymentPix: FC<Props> = ({
   useEffect(() => {
     if (paymentStatus && paymentStatus.status === "confirmed") {
       showSuccess(t("pix_success"));
+      onStatusChange("confirmed");
     }
   }, [paymentStatus, showSuccess, t]);
 

@@ -82,15 +82,24 @@ export const StepPaymentUsdc3: FC<Props> = ({
     setTxStatus("pending");
   };
 
-  const statusMessage = useMemo(() => {
+  const { statusMessage, hint } = useMemo(() => {
     if (!transactionHash) {
-      return t("transaction_verification");
+      return {
+        statusMessage: t("transaction_verification"),
+        hint: "",
+      };
     }
     if (txStatus === "confirmed") {
-      return t("transaction_verified");
+      return {
+        statusMessage: t("transaction_verified"),
+        hint: t("payment_success_hint"),
+      };
     }
     if (txStatus === "timedout") {
-      return t("transaction_timedout");
+      return {
+        statusMessage: t("transaction_timedout"),
+        hint: t("transaction_timedout_hint"),
+      };
     }
 
     return t("transaction_verifying");
@@ -100,7 +109,7 @@ export const StepPaymentUsdc3: FC<Props> = ({
     <div className="flex flex-col justify-between text-center h-[75vh] relative prose w-full mx-auto">
       <section className="mt-8">
         <HintBox className="text-center font-bold" text={statusMessage}>
-          {txStatus === "timedout" && <p>{t("transaction_timedout_hint")}</p>}
+          {hint && <p>{hint}</p>}
         </HintBox>
         <div className="mt-4 mx-auto">
           {!transactionHash && (
