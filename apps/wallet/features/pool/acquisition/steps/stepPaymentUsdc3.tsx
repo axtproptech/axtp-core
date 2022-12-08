@@ -11,6 +11,12 @@ import { AnimatedIconGlobe } from "@/app/components/animatedIcons/animatedIconGl
 import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
 import { shortenHash } from "@/app/shortenHash";
 import { AnimatedIconConfetti } from "@/app/components/animatedIcons/animatedIconConfetti";
+import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePaymentCalculator";
+import { RegisterPaymentType } from "@/bff/types/registerPaymentRequest";
+import { useAppSelector } from "@/states/hooks";
+import { selectPoolContractState } from "@/app/states/poolsState";
+import { useAccount } from "@/app/hooks/useAccount";
+import { ChainValue } from "@signumjs/util";
 
 interface Props {
   onStatusChange: (status: "pending" | "confirmed") => void;
@@ -28,7 +34,10 @@ export const StepPaymentUsdc3: FC<Props> = ({
   const { t } = useTranslation();
   const timer = useRef<any>(null);
   const { PaymentService } = useAppContext();
+  const { accountPublicKey, customer } = useAccount();
   const [transactionHash, setTransactionHash] = useState<string>("");
+  const { totalAXTC } = usePaymentCalculator(quantity, poolId);
+  const { token } = useAppSelector(selectPoolContractState(poolId));
   const [txStatus, setTxStatus] = useState<
     "pending" | "confirmed" | "timedout"
   >("pending");
@@ -42,12 +51,44 @@ export const StepPaymentUsdc3: FC<Props> = ({
 
     let retrials = 0;
 
+    const protocolToPaymentType = (
+      p: BlockchainProtocolType
+    ): RegisterPaymentType => {
+      switch (p) {
+        case "algo":
+          return "usdalg";
+        case "sol":
+          return "usdsol";
+        case "eth":
+          return "usdeth";
+        default:
+          throw new Error(`Unknown protocol type [${p}]`);
+      }
+    };
+
     async function checkPaymentStatus() {
+      if (!customer) {
+        return;
+      }
+
       try {
         if (retrials++ > 10) {
           setTxStatus("timedout");
         }
+        // throws if status is not confirmed
         await PaymentService.getUsdcPaymentStatus(transactionHash, protocol);
+        await PaymentService.createPaymentRecord({
+          poolId,
+          paymentType: protocolToPaymentType(protocol),
+          amount: totalAXTC.toString(),
+          txId: transactionHash,
+          tokenId: token.id,
+          customerId: customer.customerId,
+          accountPk: accountPublicKey,
+          tokenQnt: ChainValue.create(token.decimals)
+            .setCompound(quantity)
+            .getCompound(),
+        });
         setTxStatus("confirmed");
         onStatusChange("confirmed");
       } catch (e: any) {

@@ -100,6 +100,7 @@
   "acquire_method_usdc": "USDC is a transparent and regulated stable coin fixed at one US Dollar. We support USDC on Ethereum, Solana and Algorand blockchains.",
   "pix_payments_description": "Click the button to generate a payment code and scan it with your favorite banking app. The payment status is being verified at real time.",
   "pix_error_creating_charge": "Oh no! It was not possible to generate the payment information. Try again and eventually reload the page.",
+  "pix_error_create_record": "Oh snap! Something failed while payment processing.",
   "pix_success": "Yay \uD83C\uDF89, Payment successfully executed.",
   "pix_generate": "Generate",
   "usdc_select_network": "Please, choose your USDC network",

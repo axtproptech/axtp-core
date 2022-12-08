@@ -3,6 +3,8 @@ import retry from "p-retry";
 import { ChargeStatusResponse } from "@/bff/types/chargeStatusResponse";
 import { NewChargeResponse } from "@/bff/types/newChargeResponse";
 import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
+import { RegisterPaymentRequest } from "@/bff/types/registerPaymentRequest";
+import { RegisterPaymentResponse } from "@/bff/types/registerPaymentResponse";
 
 interface CreatePaymentUrlArgs {
   customerId: string;
@@ -41,6 +43,15 @@ export class PaymentService {
         ...args,
       });
       return response as NewChargeResponse;
+    });
+  }
+
+  createPaymentRecord(args: RegisterPaymentRequest) {
+    return retry(async () => {
+      const { response } = await this.httpClient.post(`/payment/record`, {
+        ...args,
+      });
+      return response as RegisterPaymentResponse;
     });
   }
 }

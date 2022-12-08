@@ -1,9 +1,15 @@
 {
-  "name": "@axtp/core-package",
+  "name": "@axtp/core",
   "version": "1.0.1",
   "description": "A shared library",
   "main": "index.js",
   "author": "ohager",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@signumjs/core": "^1.0.0-rc.52",
+    "@signumjs/crypto": "^1.0.0-rc.52",
+    "@signumjs/standards": "^1.0.0-rc.52",
+    "@signumjs/util": "^1.0.0-rc.52"
+  }
 }

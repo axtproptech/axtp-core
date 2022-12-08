@@ -17,6 +17,9 @@ import { AttentionSeeker } from "react-awesome-reveal";
 import * as React from "react";
 import { Countdown } from "@/app/components/countdown";
 import { formatNumber } from "@/app/formatNumber";
+import { useAppSelector } from "@/states/hooks";
+import { selectPoolContractState } from "@/app/states/poolsState";
+import { ChainValue } from "@signumjs/util";
 
 interface Props {
   onStatusChange: (status: "pending" | "confirmed") => void;
@@ -34,7 +37,8 @@ export const StepPaymentPix: FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const { PaymentService } = useAppContext();
-  const { accountId, customer } = useAccount();
+  const { accountId, customer, accountPublicKey } = useAccount();
+  const { token } = useAppSelector(selectPoolContractState(poolId));
   const { totalBRL } = usePaymentCalculator(quantity, poolId);
   const [isFetching, setIsFetching] = useState(false);
   const { showError, showSuccess } = useNotification();
@@ -62,6 +66,7 @@ export const StepPaymentPix: FC<Props> = ({
 
   const handleCreatePixPaymentUrl = async () => {
     if (!customer) return;
+    if (!isFetching) return;
 
     setIsFetching(true);
     PaymentService.createPixPaymentUrl({
@@ -84,11 +89,37 @@ export const StepPaymentPix: FC<Props> = ({
   };
 
   useEffect(() => {
-    if (paymentStatus && paymentStatus.status === "confirmed") {
-      showSuccess(t("pix_success"));
-      onStatusChange("confirmed");
+    if (!customer) return;
+    if (!paymentCharge) return;
+    if (!isFetching) return;
+    if (!(paymentStatus && paymentStatus.status === "confirmed")) {
+      return;
     }
-  }, [paymentStatus, showSuccess, t]);
+
+    setIsFetching(true);
+    PaymentService.createPaymentRecord({
+      paymentType: "pix",
+      txId: paymentCharge.txId,
+      tokenId: token.id,
+      tokenQnt: ChainValue.create(token.decimals)
+        .setCompound(quantity)
+        .getCompound(),
+      amount: totalBRL.toString(),
+      customerId: customer.customerId,
+      poolId,
+      accountPk: accountPublicKey,
+    })
+      .then(() => {
+        onStatusChange("confirmed");
+      })
+      .catch((e) => {
+        console.error("Problems while payment", e.message);
+        showError(t("pix_error_create_record"));
+      })
+      .finally(() => {
+        setIsFetching(false);
+      });
+  }, [paymentStatus]); // listen only to paymentstatus
 
   useEffect(() => {
     setPaymentCharge(null);
