@@ -5,9 +5,14 @@ import {
   TransactionId,
   TransactionType,
 } from "@signumjs/core";
-import { PaymentRecord } from "./paymentRecord";
+import {
+  createSRC44PaymentRecord,
+  getPaymentRecordFromSRC44,
+  readSRC44PaymentFromTransaction,
+} from "./paymentRecordHelper";
 import { generateMasterKeys } from "@signumjs/crypto";
 import { Amount, ChainValue } from "@signumjs/util";
+import { PaymentRecord } from "./paymentRecord";
 
 interface PaymentRecordServiceContext {
   ledger: Ledger;
@@ -28,8 +33,10 @@ export class PaymentRecordService {
   ) {
     const { publicKey, signPrivateKey, agreementPrivateKey } = this.getKeys();
 
+    const src44Data = createSRC44PaymentRecord(record);
+
     return this.context.ledger.message.sendEncryptedMessage({
-      message: JSON.stringify(record.data),
+      message: src44Data.stringify(),
       messageIsText: true,
       recipientId: Address.fromPublicKey(recipientPublicKey).getNumericId(),
       recipientPublicKey: recipientPublicKey,
@@ -65,7 +72,9 @@ export class PaymentRecordService {
       for (let tx of transactions) {
         try {
           records.push(
-            PaymentRecord.readFromTransaction(tx, recipientAgreementKey)
+            getPaymentRecordFromSRC44(
+              readSRC44PaymentFromTransaction(tx, recipientAgreementKey)
+            )
           );
         } catch (e: any) {
           // ignore
@@ -86,7 +95,7 @@ export class PaymentRecordService {
   ) {
     const { ledger, sendFee } = this.context;
     const { publicKey, signPrivateKey, agreementPrivateKey } = this.getKeys();
-    const { tokenId, tokenQuantity } = record.data;
+    const { tokenId, tokenQuantity } = record;
     const { name, decimals } = await ledger.asset.getAsset({
       assetId: tokenId,
     });
@@ -98,7 +107,7 @@ export class PaymentRecordService {
         ? `Thank you for purchasing ${tokenAmount} ${name} tokens. You'll get them credited very soon.`
         : `Thank you for purchasing a ${name} token. You'll get it credited very soon.`;
 
-    return ledger.message.sendEncryptedMessage({
+    return (await ledger.message.sendEncryptedMessage({
       message,
       messageIsText: true,
       recipientId: Address.fromPublicKey(customerPublicKey).getNumericId(),
@@ -108,6 +117,6 @@ export class PaymentRecordService {
       senderPublicKey: publicKey,
       senderPrivateKey: signPrivateKey,
       senderAgreementKey: agreementPrivateKey,
-    }) as Promise<TransactionId>;
+    })) as TransactionId;
   }
 }

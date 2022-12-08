@@ -1,11 +1,11 @@
 import { HandlerFunction } from "@/bff/route";
 import { createLedgerClient } from "@/bff/createLedgerClient";
-import { PaymentRecordService } from "@axtp/core";
+import { PaymentRecordService, PaymentRecord } from "@axtp/core";
 import { Amount } from "@signumjs/util";
-import { PaymentRecord } from "@axtp/core/paymentRecord";
 import { getEnvVar } from "@/bff/getEnvVar";
 import { Address } from "@signumjs/core";
 import { RegisterPaymentRequest } from "@/bff/types/registerPaymentRequest";
+import { handleError } from "@/bff/handler/handleError";
 
 export const registerPaymentRecord: HandlerFunction = async (req, res) => {
   const {
@@ -25,14 +25,15 @@ export const registerPaymentRecord: HandlerFunction = async (req, res) => {
   const paymentRecordAccountPubKey = getEnvVar(
     "NEXT_SERVER_PAYMENT_SIGNUM_ACCOUNT_PUBKEY"
   );
+  const sendFeeSigna = parseFloat(getEnvVar("NEXT_SERVER_SIGNUM_SEND_FEE"));
 
   const service = new PaymentRecordService({
     ledger,
     senderSeed,
-    sendFee: Amount.fromSigna(0.01),
+    sendFee: Amount.fromSigna(sendFeeSigna),
   });
 
-  const record = PaymentRecord.create({
+  const record: PaymentRecord = {
     accountId: Address.fromPublicKey(accountPk).getNumericId(),
     poolId,
     tokenId,
@@ -41,12 +42,16 @@ export const registerPaymentRecord: HandlerFunction = async (req, res) => {
     paymentTransactionId: txId,
     paymentType,
     customerId,
-  });
+  };
 
-  const [recordTx] = await Promise.all([
-    service.sendPaymentRecord(record, paymentRecordAccountPubKey),
-    service.sendPaymentReceiptToCustomer(record, accountPk),
-  ]);
+  try {
+    const [recordTx] = await Promise.all([
+      service.sendPaymentRecord(record, paymentRecordAccountPubKey),
+      service.sendPaymentReceiptToCustomer(record, accountPk),
+    ]);
 
-  res.status(201).json(recordTx);
+    res.status(201).json(recordTx);
+  } catch (e) {
+    handleError({ e, res });
+  }
 };

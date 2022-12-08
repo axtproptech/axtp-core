@@ -1,15 +1,24 @@
 {
   "name": "@axtp/core",
-  "version": "1.0.1",
-  "description": "A shared library",
-  "main": "index.js",
+  "version": "1.0.8",
+  "description": "The shared lib for AXTP system",
   "author": "ohager",
   "license": "MIT",
   "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "generate-core": "yarn run build",
+    "build": "tsup",
+    "dev": "tsup --dev"
+  },
   "dependencies": {
     "@signumjs/core": "^1.0.0-rc.52",
     "@signumjs/crypto": "^1.0.0-rc.52",
     "@signumjs/standards": "^1.0.0-rc.52",
     "@signumjs/util": "^1.0.0-rc.52"
+  },
+  "devDependencies": {
+    "tsup": "^6.5.0"
   }
 }

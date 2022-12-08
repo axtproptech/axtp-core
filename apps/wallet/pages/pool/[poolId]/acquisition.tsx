@@ -1,17 +1,10 @@
 import { Layout } from "@/app/components/layout";
 import { MetaTags } from "@/app/components/metaTags";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
-import {
-  RiAccountBoxLine,
-  RiArrowLeftCircleLine,
-  RiHome6Line,
-} from "react-icons/ri";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { Config } from "@/app/config";
 import { PoolShareAcquisition } from "@/features/pool";
-import { useMemo, useState } from "react";
-import { useAccount } from "@/app/hooks/useAccount";
+import { useState } from "react";
 import { OnStepChangeArgs } from "@/features/account";
 
 export async function getStaticPaths({ locales }: any) {
