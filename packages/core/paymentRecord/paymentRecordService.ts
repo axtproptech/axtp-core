@@ -35,7 +35,7 @@ export class PaymentRecordService {
 
     const src44Data = createSRC44PaymentRecord(record);
 
-    return this.context.ledger.message.sendEncryptedMessage({
+    return (await this.context.ledger.message.sendEncryptedMessage({
       message: src44Data.stringify(),
       messageIsText: true,
       recipientId: Address.fromPublicKey(recipientPublicKey).getNumericId(),
@@ -45,7 +45,7 @@ export class PaymentRecordService {
       senderPublicKey: publicKey,
       senderPrivateKey: signPrivateKey,
       senderAgreementKey: agreementPrivateKey,
-    });
+    })) as TransactionId;
   }
 
   public async getAllPaymentRecords(

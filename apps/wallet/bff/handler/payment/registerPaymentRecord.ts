@@ -6,6 +6,7 @@ import { getEnvVar } from "@/bff/getEnvVar";
 import { Address } from "@signumjs/core";
 import { RegisterPaymentRequest } from "@/bff/types/registerPaymentRequest";
 import { handleError } from "@/bff/handler/handleError";
+import { prisma } from "@axtp/db";
 
 export const registerPaymentRecord: HandlerFunction = async (req, res) => {
   const {
@@ -49,6 +50,25 @@ export const registerPaymentRecord: HandlerFunction = async (req, res) => {
       service.sendPaymentRecord(record, paymentRecordAccountPubKey),
       service.sendPaymentReceiptToCustomer(record, accountPk),
     ]);
+
+    await prisma.payment.create({
+      data: {
+        tokenId,
+        tokenQuantity: parseFloat(tokenQnt),
+        poolId,
+        accountId: record.accountId,
+        amount,
+        status: "Pending",
+        type: paymentType,
+        transactionId: txId,
+        recordId: recordTx.transaction,
+        customer: {
+          connect: {
+            cuid: customerId,
+          },
+        },
+      },
+    });
 
     res.status(201).json(recordTx);
   } catch (e) {

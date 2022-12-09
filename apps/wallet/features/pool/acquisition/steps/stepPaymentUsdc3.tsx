@@ -143,7 +143,10 @@ export const StepPaymentUsdc3: FC<Props> = ({
       };
     }
 
-    return t("transaction_verifying");
+    return {
+      statusMessage: t("transaction_verifying"),
+      hint: "",
+    };
   }, [transactionHash, txStatus, t]);
 
   return (
