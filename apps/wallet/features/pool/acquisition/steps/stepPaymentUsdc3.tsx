@@ -17,6 +17,7 @@ import { useAppSelector } from "@/states/hooks";
 import { selectPoolContractState } from "@/app/states/poolsState";
 import { useAccount } from "@/app/hooks/useAccount";
 import { ChainValue } from "@signumjs/util";
+import { Countdown } from "@/app/components/countdown";
 
 interface Props {
   onStatusChange: (status: "pending" | "confirmed") => void;
@@ -24,6 +25,9 @@ interface Props {
   poolId: string;
   protocol: BlockchainProtocolType;
 }
+
+const MaxRetrials = 5;
+const PollingInterval = 5_000;
 
 export const StepPaymentUsdc3: FC<Props> = ({
   onStatusChange,
@@ -72,8 +76,9 @@ export const StepPaymentUsdc3: FC<Props> = ({
       }
 
       try {
-        if (retrials++ > 10) {
+        if (retrials++ >= MaxRetrials) {
           setTxStatus("timedout");
+          return;
         }
         // throws if status is not confirmed
         await PaymentService.getUsdcPaymentStatus(transactionHash, protocol);
@@ -92,11 +97,12 @@ export const StepPaymentUsdc3: FC<Props> = ({
         setTxStatus("confirmed");
         onStatusChange("confirmed");
       } catch (e: any) {
-        timer.current = setTimeout(checkPaymentStatus, 5_000);
+        timer.current = setTimeout(checkPaymentStatus, PollingInterval);
       }
     }
 
-    timer.current = setTimeout(checkPaymentStatus, 5_000);
+    stopTimeout();
+    timer.current = setTimeout(checkPaymentStatus, PollingInterval);
 
     return () => {
       stopTimeout();
@@ -127,25 +133,33 @@ export const StepPaymentUsdc3: FC<Props> = ({
     if (!transactionHash) {
       return {
         statusMessage: t("transaction_verification"),
-        hint: "",
+        hint: null,
       };
     }
     if (txStatus === "confirmed") {
       return {
         statusMessage: t("transaction_verified"),
-        hint: t("payment_success_hint"),
+        hint: <p>{t("payment_success_hint")}</p>,
       };
     }
     if (txStatus === "timedout") {
       return {
         statusMessage: t("transaction_timedout"),
-        hint: t("transaction_timedout_hint"),
+        hint: <p>{t("transaction_timedout_hint")}</p>,
       };
     }
 
     return {
       statusMessage: t("transaction_verifying"),
-      hint: "",
+      hint: (
+        <div className="w-[96px] mx-auto m-0">
+          <Countdown
+            className="text-xl"
+            seconds={Math.ceil((MaxRetrials + 1) * (PollingInterval / 1000))}
+            onTimeout={() => null}
+          />
+        </div>
+      ),
     };
   }, [transactionHash, txStatus, t]);
 
@@ -153,7 +167,7 @@ export const StepPaymentUsdc3: FC<Props> = ({
     <div className="flex flex-col justify-between text-center h-[75vh] relative prose w-full mx-auto">
       <section className="mt-8">
         <HintBox className="text-center font-bold" text={statusMessage}>
-          {hint && <p>{hint}</p>}
+          {hint}
         </HintBox>
         <div className="mt-4 mx-auto">
           {!transactionHash && (
