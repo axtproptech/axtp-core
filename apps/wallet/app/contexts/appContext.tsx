@@ -5,6 +5,7 @@ import { ChildrenProps } from "@/types/childrenProps";
 import { Config } from "@/app/config";
 import { Ledger, LedgerClientFactory } from "@signumjs/core";
 import { KycService } from "@/app/services/kycService";
+import { PaymentService } from "@/app/services/paymentService";
 
 type AddressPrefixType = "TS" | "S";
 type SignaPrefixType = "TSIGNA" | "SIGNA";
@@ -16,6 +17,7 @@ export interface AppContextType {
   AXTPoolTokenIds: string[];
   JotFormId: string;
   KycService: KycService;
+  PaymentService: PaymentService;
   Ledger: {
     IsTestNet: boolean;
     Client: Ledger;
@@ -24,6 +26,16 @@ export interface AppContextType {
     Hosts: string[];
     PollingInterval: number;
     ExplorerUrl: string;
+  };
+  Market: {
+    BrlUsdAdjustment: number;
+  };
+  Payment: {
+    Usdc: {
+      DepositAccountEth: string;
+      DepositAccountAlgo: string;
+      DepositAccountSol: string;
+    };
   };
 }
 
@@ -34,6 +46,17 @@ const config: AppContextType = {
   AXTPoolTokenIds: Config.Tokens.AXTPs,
   JotFormId: Config.JotForm.Id,
   KycService: new KycService(),
+  PaymentService: new PaymentService(),
+  Market: {
+    BrlUsdAdjustment: Config.Market.BrlUsdAdjustment,
+  },
+  Payment: {
+    Usdc: {
+      DepositAccountEth: Config.Payment.Usdc.DepositAccountEth,
+      DepositAccountAlgo: Config.Payment.Usdc.DepositAccountAlgo,
+      DepositAccountSol: Config.Payment.Usdc.DepositAccountSol,
+    },
+  },
   Ledger: {
     IsTestNet: Config.Ledger.IsTestNet,
     Client: LedgerClientFactory.createClient({

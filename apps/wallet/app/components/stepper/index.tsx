@@ -21,11 +21,13 @@ interface Props {
 
 export const Stepper: FC<Props> = ({ currentStep, steps }) => {
   return (
-    <div className="flex flex-row justify-between w-1/2 mx-auto">
+    <div className="flex flex-row justify-center w-1/2 mx-auto">
       {Array(steps)
         .fill(1)
         .map((_, i) => (
-          <StepIndicator key={i} isActive={currentStep === i}></StepIndicator>
+          <div className="mx-4" key={i}>
+            <StepIndicator isActive={currentStep === i}></StepIndicator>
+          </div>
         ))}
     </div>
   );

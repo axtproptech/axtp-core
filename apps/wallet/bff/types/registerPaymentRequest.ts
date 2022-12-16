@@ -1,0 +1,12 @@
+export type RegisterPaymentType = "pix" | "usdeth" | "usdsol" | "usdalg";
+
+export interface RegisterPaymentRequest {
+  customerId: string;
+  accountPk: string;
+  poolId: string;
+  tokenId: string;
+  tokenQnt: string;
+  amount: string;
+  paymentType: RegisterPaymentType;
+  txId: string;
+}

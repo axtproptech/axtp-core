@@ -22,7 +22,7 @@ import { encrypt, stretchKey } from "@/app/sec";
 import { useDispatch } from "react-redux";
 import { accountActions } from "@/app/states/accountState";
 import { useNotification } from "@/app/hooks/useNotification";
-import { OnStepChangeArgs } from "../types/onStepChangeArgs";
+import { OnStepChangeArgs } from "@/features/account";
 import { useAppContext } from "@/app/hooks/useAppContext";
 
 enum Steps {
@@ -55,13 +55,13 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
   const nextStep = async () => {
     const newStep = Math.min(currentStep + 1, StepCount - 1);
     setCurrentStep(newStep);
-    router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
+    await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
   };
 
-  const previousStep = () => {
+  const previousStep = async () => {
     const newStep = Math.max(0, currentStep - 1);
     setCurrentStep(newStep);
-    router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
+    await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
   };
 
   useEffect(() => {
@@ -203,12 +203,12 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
     } catch (e: any) {
       console.error("Something failed", e.message);
     }
-  }, [seed]);
+  }, [Ledger.AddressPrefix, seed]);
 
   return (
     <>
       <div className="mt-4">
-        <Stepper currentStep={currentStep} steps={StepCount}></Stepper>
+        <Stepper currentStep={currentStep} steps={StepCount} />
         <div className="carousel w-full touch-none">
           <div id="step0" className="carousel-item relative w-full">
             <StepDefinePin onPinChange={setPin} />

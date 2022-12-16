@@ -8,9 +8,9 @@ interface Props extends ClassNameProps, ChildrenProps {
 
 export const HintBox: FC<Props> = ({ className = "", text = "", children }) => (
   <section
-    className={`w-full lg:w-[75%] mx-auto text-justify border border-base-content/50 p-4 rounded relative ${className}`}
+    className={`w-full lg:w-[75%] mx-auto text-justify border border-base-content/50 p-4 rounded relative`}
   >
-    {text && <p className="mb-2">{text}</p>}
+    {text && <p className={`mb-2 ${className}`}>{text}</p>}
     {children}
   </section>
 );

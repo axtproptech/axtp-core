@@ -58,7 +58,7 @@ export default function Page({ poolId }: any) {
     if (account) {
       nav.push({
         route: "/account",
-        label: t("ccount"),
+        label: t("account"),
         icon: <RiAccountBoxLine />,
       });
     }

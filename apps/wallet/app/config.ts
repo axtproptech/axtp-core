@@ -15,7 +15,19 @@ export const Config = {
   JotForm: {
     Id: process.env.NEXT_PUBLIC_JOTFORM_ID || "",
   },
-
+  Market: {
+    BrlUsdAdjustment: toNumber(
+      process.env.NEXT_PUBLIC_BRLUSD_ADJUSTMENT || 0.05
+    ),
+  },
+  Payment: {
+    Usdc: {
+      DepositAccountEth: process.env.NEXT_PUBLIC_USDC_DEPOSIT_ACCOUNT_ETH || "",
+      DepositAccountAlgo:
+        process.env.NEXT_PUBLIC_USDC_DEPOSIT_ACCOUNT_ALGO || "",
+      DepositAccountSol: process.env.NEXT_PUBLIC_USDC_DEPOSIT_ACCOUNT_SOL || "",
+    },
+  },
   Ledger: {
     IsTestNet: isTestNet,
     PollingInterval:

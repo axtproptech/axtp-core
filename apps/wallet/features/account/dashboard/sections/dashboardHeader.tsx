@@ -152,7 +152,7 @@ export const DashboardHeader: FC<Props> = ({
               </h3>
             </div>
             <h3 className={"text-lg opacity-80"}>{signaBalance.formatted}</h3>
-            <h5 className={"text-sm opacity-60"}>~ {fiatBalance.formatted}</h5>
+            <h5 className={"text-sm opacity-60"}>≈ {fiatBalance.formatted}</h5>
           </div>
           <div className="flex flex-col">
             {!accountData.isActive && (

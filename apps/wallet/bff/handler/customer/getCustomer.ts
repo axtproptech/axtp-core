@@ -28,7 +28,6 @@ export const getCustomer: HandlerFunction = async (req, res) => {
       const { output } = notFound();
       return res.status(output.statusCode).json(output.payload);
     }
-
     return res.status(200).json(toCustomerResponse(customer));
   } catch (e: any) {
     handleError({ e, res });

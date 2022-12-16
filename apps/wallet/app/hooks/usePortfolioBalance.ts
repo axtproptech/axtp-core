@@ -7,7 +7,6 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { selectAXTToken } from "@/app/states/tokenState";
 import { useMemo } from "react";
-import { fromQuantity, toQuantity } from "@/app/tokenQuantity";
 import { selectAllPools } from "@/app/states/poolsState";
 import { ChainValue } from "@signumjs/util";
 
