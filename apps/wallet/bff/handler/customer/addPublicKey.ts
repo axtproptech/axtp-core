@@ -1,9 +1,9 @@
-import { HandlerFunction } from "@/bff/route";
+import { RouteHandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 import { Address } from "@signumjs/core";
 import { handleError } from "@/bff/handler/handleError";
 
-export const addPublicKey: HandlerFunction = async (req, res) => {
+export const addPublicKey: RouteHandlerFunction = async (req, res) => {
   try {
     const { customerId } = req.query;
     const { publicKey, isTestnet = false } = req.body;

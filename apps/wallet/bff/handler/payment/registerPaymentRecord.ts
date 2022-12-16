@@ -1,4 +1,4 @@
-import { HandlerFunction } from "@/bff/route";
+import { RouteHandlerFunction } from "@/bff/route";
 import { createLedgerClient } from "@/bff/createLedgerClient";
 import { PaymentRecordService, PaymentRecord } from "@axtp/core";
 import { Amount } from "@signumjs/util";
@@ -8,7 +8,7 @@ import { RegisterPaymentRequest } from "@/bff/types/registerPaymentRequest";
 import { handleError } from "@/bff/handler/handleError";
 import { prisma } from "@axtp/db";
 
-export const registerPaymentRecord: HandlerFunction = async (req, res) => {
+export const registerPaymentRecord: RouteHandlerFunction = async (req, res) => {
   const {
     customerId,
     accountPk,

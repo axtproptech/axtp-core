@@ -1,10 +1,13 @@
-import { HandlerFunction } from "@/bff/route";
+import { RouteHandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 import { notFound } from "@hapi/boom";
 import { handleError } from "@/bff/handler/handleError";
 import { toSafeCustomerResponse } from "@/bff/handler/customer/toSafeCustomerResponse";
 
-export const getCustomerByPublicKey: HandlerFunction = async (req, res) => {
+export const getCustomerByPublicKey: RouteHandlerFunction = async (
+  req,
+  res
+) => {
   try {
     const { publicKey } = req.query;
 

@@ -1,6 +1,6 @@
-import { HandlerFunction } from "@/bff/route";
+import { RouteHandlerFunction } from "@/bff/route";
 
-export const getChargeStatus: HandlerFunction = async (req, res) => {
+export const getChargeStatus: RouteHandlerFunction = async (req, res) => {
   const { txId } = req.query;
 
   // TODO get status from charge - pagseguro

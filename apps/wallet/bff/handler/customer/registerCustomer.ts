@@ -1,4 +1,4 @@
-import { HandlerFunction } from "@/bff/route";
+import { RouteHandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 // @ts-ignore
 import jotform from "jotform";
@@ -10,7 +10,7 @@ jotform.options({
   apiKey: process.env.JOTFORM_API_KEY || "",
 });
 
-export const registerCustomer: HandlerFunction = async (req, res) => {
+export const registerCustomer: RouteHandlerFunction = async (req, res) => {
   try {
     const { submission_id } = req.body;
     const submission = (await jotform.getSubmission(

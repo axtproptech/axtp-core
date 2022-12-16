@@ -1,9 +1,9 @@
-import { HandlerFunction } from "@/bff/route";
+import { RouteHandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 import { handleError } from "@/bff/handler/handleError";
 import { notFound } from "@hapi/boom";
 
-export const acceptTermsOfUse: HandlerFunction = async (req, res) => {
+export const acceptTermsOfUse: RouteHandlerFunction = async (req, res) => {
   try {
     const { customerId } = req.body;
     const termsOfUseId = Number(process.env.ACTIVE_TERMS_OF_USE_ID || "1");

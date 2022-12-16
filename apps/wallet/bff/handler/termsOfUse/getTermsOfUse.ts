@@ -1,9 +1,9 @@
-import { HandlerFunction } from "@/bff/route";
+import { RouteHandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 import { notFound } from "@hapi/boom";
 import { handleError } from "@/bff/handler/handleError";
 
-export const getTermsOfUse: HandlerFunction = async (_, res) => {
+export const getTermsOfUse: RouteHandlerFunction = async (_, res) => {
   try {
     const termsOfUse = await prisma.termsOfUse.findUnique({
       where: {

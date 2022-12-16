@@ -1,10 +1,10 @@
-import { HandlerFunction } from "@/bff/route";
+import { RouteHandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 import { notFound } from "@hapi/boom";
 import { handleError } from "@/bff/handler/handleError";
 import { toSafeCustomerResponse } from "@/bff/handler/customer/toSafeCustomerResponse";
 
-export const getCustomer: HandlerFunction = async (req, res) => {
+export const getCustomer: RouteHandlerFunction = async (req, res) => {
   try {
     console.log("getCustomer", req.query);
     const { customerId } = req.query;

@@ -1,4 +1,4 @@
-import { HandlerFunction } from "@/bff/route";
+import { RouteHandlerFunction } from "@/bff/route";
 import * as process from "process";
 import { handleError } from "@/bff/handler/handleError";
 import { HttpClientFactory } from "@signumjs/http";
@@ -99,7 +99,10 @@ function getProtocolContext(protocol: string): ProtocolContext {
   }
 }
 
-export const getUsdcTransactionStatus: HandlerFunction = async (req, res) => {
+export const getUsdcTransactionStatus: RouteHandlerFunction = async (
+  req,
+  res
+) => {
   try {
     const { txId, protocol: proto } = req.query;
 

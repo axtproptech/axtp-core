@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { ApiHandler } from "@/bff/types/apiHandler";
+import { RouteHandlerFunction } from "@/bff/route";
 
 interface MiddlewareArgs {
   req: NextApiRequest;
@@ -16,7 +16,7 @@ function isPromise(value: any) {
 
 export const withMiddleware = (...warez: Middleware[]) => ({
   do:
-    (handler: ApiHandler) =>
+    (handler: RouteHandlerFunction) =>
     async (req: NextApiRequest, res: NextApiResponse) => {
       for (let ware of warez) {
         let result = await Promise.resolve(ware({ req, res }));

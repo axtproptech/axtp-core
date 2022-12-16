@@ -1,10 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withMiddleware, Middleware } from "@/bff/withMiddleware";
-import { ApiHandler } from "./types/apiHandler";
 import process from "process";
 import Boom from "@hapi/boom";
 
-export type HandlerFunction = (
+export type RouteHandlerFunction = (
   req: NextApiRequest,
   res: NextApiResponse
 ) => unknown | Promise<unknown>;
@@ -12,12 +11,12 @@ export type HandlerFunction = (
 interface RouteArgs {
   req: NextApiRequest;
   res: NextApiResponse;
-  post?: ApiHandler;
-  get?: ApiHandler;
-  delete?: ApiHandler;
-  put?: ApiHandler;
-  head?: ApiHandler;
-  options?: ApiHandler;
+  post?: RouteHandlerFunction;
+  get?: RouteHandlerFunction;
+  delete?: RouteHandlerFunction;
+  put?: RouteHandlerFunction;
+  head?: RouteHandlerFunction;
+  options?: RouteHandlerFunction;
   middlewares?: Middleware[];
 }
 
