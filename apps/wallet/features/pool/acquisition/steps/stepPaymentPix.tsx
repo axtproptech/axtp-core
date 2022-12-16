@@ -66,7 +66,7 @@ export const StepPaymentPix: FC<Props> = ({
 
   const handleCreatePixPaymentUrl = async () => {
     if (!customer) return;
-    if (!isFetching) return;
+    if (isFetching) return;
 
     setIsFetching(true);
     PaymentService.createPixPaymentUrl({
