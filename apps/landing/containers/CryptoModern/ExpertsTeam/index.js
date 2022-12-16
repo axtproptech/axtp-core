@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import CountUp from "react-countup";
 import Box from "common/components/Box";
 import NextImage from "common/components/NextImage";
 import Card from "common/components/Card";
@@ -9,8 +8,10 @@ import Heading from "common/components/Heading";
 import Button from "common/components/Button";
 import FeatureBlock from "common/components/FeatureBlock";
 import Container from "common/components/UI/Container";
-import ExpertsTeamWrapper, { CounterUpArea } from "./workHistory.style";
-import shape1 from "common/assets/image/cryptoModern/oliver-hager-colored.webp";
+import ExpertsTeamWrapper, { CounterUpArea } from "./expertsTeam.style";
+import oliver from "common/assets/image/cryptoModern/oliver-hager-colored.webp";
+import danniel from "common/assets/image/cryptoModern/danniel-covo.webp";
+import osman from "common/assets/image/cryptoModern/osman-lima.webp";
 
 const Items = {
   default: {
@@ -63,7 +64,7 @@ const ExpertsTeam = ({ row, col, cardStyle, btnStyle }) => {
                 className="card"
                 {...cardStyle}
               >
-                <NextImage src={shape1} alt="Daniel Heuri, CEO" />
+                <NextImage src={oliver} alt="Daniel Heuri, CEO" />
                 <h2>
                   Daniel Heuri
                   <Text content="CEO" />
@@ -75,7 +76,7 @@ const ExpertsTeam = ({ row, col, cardStyle, btnStyle }) => {
                 className="card"
                 {...cardStyle}
               >
-                <NextImage src={shape1} alt="Osman Lima, COO" />
+                <NextImage src={osman} alt="Osman Lima, COO" />
                 <h2>
                   Osman Lima
                   <Text content="COO" />
@@ -86,7 +87,7 @@ const ExpertsTeam = ({ row, col, cardStyle, btnStyle }) => {
                 className="card"
                 {...cardStyle}
               >
-                <NextImage src={shape1} alt="Oliver Hager, CTO" />
+                <NextImage src={oliver} alt="Oliver Hager, CTO" />
                 <h2>
                   Oliver Hager
                   <Text content="CTO" />
@@ -98,7 +99,7 @@ const ExpertsTeam = ({ row, col, cardStyle, btnStyle }) => {
                 className="card"
                 {...cardStyle}
               >
-                <NextImage src={shape1} alt="Danniel Covo, CMO" />
+                <NextImage src={danniel} alt="Danniel Covo, CMO" />
                 <h2>
                   Danniel Covo
                   <Text content="CMO" />
