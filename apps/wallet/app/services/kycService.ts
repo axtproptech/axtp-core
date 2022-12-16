@@ -1,17 +1,13 @@
-import { Http, HttpClientFactory } from "@signumjs/http";
+import { Http } from "@signumjs/http";
 import retry from "p-retry";
 import { CustomerSafeData } from "@/types/customerSafeData";
 
 export class KycService {
-  private readonly httpClient: Http;
-
-  constructor() {
-    this.httpClient = HttpClientFactory.createHttpClient("/api");
-  }
+  constructor(private bffClient: Http) {}
 
   acceptTermsOfUse(customerId: string) {
     return retry(async () => {
-      const { response } = await this.httpClient.put("/termsOfUse", {
+      const { response } = await this.bffClient.put("/termsOfUse", {
         customerId,
       });
       return response;
@@ -24,7 +20,7 @@ export class KycService {
     isTestnet: boolean
   ) {
     return retry(async () => {
-      const { response } = await this.httpClient.post(
+      const { response } = await this.bffClient.post(
         `/customer/${customerId}/publicKey`,
         {
           publicKey,
@@ -37,14 +33,14 @@ export class KycService {
 
   async fetchCustomerData(customerId: string) {
     return retry(async () => {
-      const { response } = await this.httpClient.get(`/customer/${customerId}`);
+      const { response } = await this.bffClient.get(`/customer/${customerId}`);
       return response as CustomerSafeData;
     });
   }
 
   async fetchCustomerDataByPublicKey(publicKey: string) {
     return retry(async () => {
-      const { response } = await this.httpClient.get(
+      const { response } = await this.bffClient.get(
         `/customer?publicKey=${publicKey}`
       );
       return response as CustomerSafeData;

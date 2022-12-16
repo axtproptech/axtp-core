@@ -2,7 +2,7 @@ import { HandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 import { notFound } from "@hapi/boom";
 import { handleError } from "@/bff/handler/handleError";
-import { toCustomerResponse } from "@/bff/handler/customer/toCustomerResponse";
+import { toSafeCustomerResponse } from "@/bff/handler/customer/toSafeCustomerResponse";
 
 export const getCustomerByPublicKey: HandlerFunction = async (req, res) => {
   try {
@@ -36,7 +36,7 @@ export const getCustomerByPublicKey: HandlerFunction = async (req, res) => {
       },
     });
 
-    return res.status(200).json(toCustomerResponse(customer));
+    return res.status(200).json(toSafeCustomerResponse(customer));
   } catch (e: any) {
     handleError({ e, res });
   }

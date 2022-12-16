@@ -12,6 +12,9 @@ const isTestNet = toBoolean(
 );
 
 export const Config = {
+  // this is not "security", but at least some obstacle
+  // we don't need fully fledged auth as the BFF returns only minimum, safe data
+  BffApiKey: process.env.NEXT_PUBLIC_BFF_API_KEY || "",
   JotForm: {
     Id: process.env.NEXT_PUBLIC_JOTFORM_ID || "",
   },

@@ -1,6 +1,6 @@
 import { CustomerSafeData } from "@/types/customerSafeData";
 
-export const toCustomerResponse = (customer: any): CustomerSafeData => {
+export const toSafeCustomerResponse = (customer: any): CustomerSafeData => {
   const {
     firstName,
     verificationLevel,

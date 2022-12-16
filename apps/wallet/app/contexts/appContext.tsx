@@ -6,6 +6,7 @@ import { Config } from "@/app/config";
 import { Ledger, LedgerClientFactory } from "@signumjs/core";
 import { KycService } from "@/app/services/kycService";
 import { PaymentService } from "@/app/services/paymentService";
+import { HttpClientFactory } from "@signumjs/http";
 
 type AddressPrefixType = "TS" | "S";
 type SignaPrefixType = "TSIGNA" | "SIGNA";
@@ -39,14 +40,22 @@ export interface AppContextType {
   };
 }
 
+const bffClient = HttpClientFactory.createHttpClient("/api", {
+  headers: {
+    // this is not "security", but at least some obstacle
+    // we don't need fully fledged auth as the BFF returns only minimum, safe data
+    "x-api-key": Config.BffApiKey,
+  },
+});
+
 const config: AppContextType = {
   IsMobile: isMobile,
   IsClientSide: isClientSide(),
   AXTTokenId: Config.Tokens.AXTC,
   AXTPoolTokenIds: Config.Tokens.AXTPs,
   JotFormId: Config.JotForm.Id,
-  KycService: new KycService(),
-  PaymentService: new PaymentService(),
+  KycService: new KycService(bffClient),
+  PaymentService: new PaymentService(bffClient),
   Market: {
     BrlUsdAdjustment: Config.Market.BrlUsdAdjustment,
   },

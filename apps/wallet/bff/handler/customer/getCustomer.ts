@@ -2,10 +2,11 @@ import { HandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 import { notFound } from "@hapi/boom";
 import { handleError } from "@/bff/handler/handleError";
-import { toCustomerResponse } from "@/bff/handler/customer/toCustomerResponse";
+import { toSafeCustomerResponse } from "@/bff/handler/customer/toSafeCustomerResponse";
 
 export const getCustomer: HandlerFunction = async (req, res) => {
   try {
+    console.log("getCustomer", req.query);
     const { customerId } = req.query;
 
     const customer = await prisma.customer.findUnique({
@@ -28,7 +29,7 @@ export const getCustomer: HandlerFunction = async (req, res) => {
       const { output } = notFound();
       return res.status(output.statusCode).json(output.payload);
     }
-    return res.status(200).json(toCustomerResponse(customer));
+    return res.status(200).json(toSafeCustomerResponse(customer));
   } catch (e: any) {
     handleError({ e, res });
   }
