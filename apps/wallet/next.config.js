@@ -8,7 +8,10 @@ const withPWA = require("next-pwa")({
   disable: process.env.NODE_ENV === "development",
   buildExcludes: [/middleware-manifest\.json$/],
 });
-const withTM = require("next-transpile-modules")(["react-daisyui"]);
+const withTM = require("next-transpile-modules")([
+  "react-daisyui",
+  "@axtp/core",
+]);
 module.exports = withPWA(
   withTM({
     reactStrictMode: true,
