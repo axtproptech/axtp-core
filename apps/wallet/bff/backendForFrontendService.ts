@@ -10,12 +10,36 @@ export class BackendForFrontendService {
       ? "http"
       : "https";
     const baseUrl = `${protocol}://${host}/api`;
-    this.http = HttpClientFactory.createHttpClient(baseUrl);
+    this.http = HttpClientFactory.createHttpClient(baseUrl, {
+      headers: {
+        "x-api-key": process.env.NEXT_PUBLIC_BFF_API_KEY || "",
+      },
+    });
   }
 
   async get<T>(url: string): Promise<T | undefined> {
     try {
       const { response } = await this.http.get(url);
+      return response;
+    } catch (e: any) {
+      console.error(e);
+      return;
+    }
+  }
+
+  async put<T>(url: string, data: object): Promise<T | undefined> {
+    try {
+      const { response } = await this.http.put(url, data);
+      return response;
+    } catch (e: any) {
+      console.error(e);
+      return;
+    }
+  }
+
+  async post<T>(url: string, data: object): Promise<T | undefined> {
+    try {
+      const { response } = await this.http.post(url, data);
       return response;
     } catch (e: any) {
       console.error(e);
