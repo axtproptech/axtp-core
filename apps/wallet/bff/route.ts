@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { withMiddleware, Middleware } from "@/bff/withMiddleware";
 import process from "process";
 import Boom from "@hapi/boom";
+import { requireApiKey } from "@/bff/middlewares/requireApiKey";
 
 export type RouteHandlerFunction = (
   req: NextApiRequest,
@@ -28,10 +29,6 @@ export async function route(routeArgs: RouteArgs): Promise<void> {
     : undefined;
   try {
     if (handlerFunction) {
-      // api key is mandatory
-      if (req.headers["x-api-key"] !== process.env.NEXT_PUBLIC_BFF_API_KEY) {
-        throw Boom.unauthorized();
-      }
       await withMiddleware(...middlewares).do(handlerFunction)(req, res);
     } else {
       // if no handler than route does not exists
@@ -48,4 +45,11 @@ export async function route(routeArgs: RouteArgs): Promise<void> {
   } finally {
     res.end();
   }
+}
+
+export async function protectedRoute(args: RouteArgs) {
+  const newArgs = { ...args };
+  newArgs.middlewares = args.middlewares || [];
+  newArgs.middlewares.unshift(requireApiKey);
+  return route(newArgs);
 }

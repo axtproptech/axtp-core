@@ -1,18 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { route } from "@/bff/route";
-import {
-  getCustomerByPublicKey,
-  registerCustomer,
-} from "@/bff/handler/customer";
+import { protectedRoute } from "@/bff/route";
+import { getCustomerByPublicKey } from "@/bff/handler/customer";
 
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<unknown> {
-  return route({
+  return protectedRoute({
     req,
     res,
     get: getCustomerByPublicKey,
-    post: registerCustomer,
   });
 }
