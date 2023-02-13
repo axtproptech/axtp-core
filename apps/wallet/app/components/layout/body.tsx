@@ -6,5 +6,5 @@ interface Props extends ChildrenProps {
 }
 
 export const Body: FC<Props> = ({ children, className = "" }) => {
-  return <div className={`p-4 ${className}`}>{children}</div>;
+  return <div className={`mt-4 p-4 ${className}`}>{children}</div>;
 };

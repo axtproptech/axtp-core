@@ -132,13 +132,13 @@ export const DashboardHeader: FC<Props> = ({
 
   return (
     <div className={`h-[240px] relative py-4 ${loadingClassName}`}>
-      <div className="absolute top-0 h-[240px] w-full">
+      <div className="absolute h-[240px] w-full">
         {chartData && <Chart data={chartData[0]} />}
       </div>
-      <div className="absolute top-0 h-[240px] w-full">
+      <div className="absolute h-[240px] w-full">
         {chartData && <Chart data={chartData[1]} />}
       </div>
-      <div className="absolute top-0 p-4 w-full">
+      <div className="absolute p-4 w-full">
         <div className="flex flex-row justify-between items-start">
           <div className="flex flex-col">
             <h1 className={"text-3xl"}>{axtcTotalBalance.formatted}</h1>

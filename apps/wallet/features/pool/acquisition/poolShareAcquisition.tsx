@@ -82,20 +82,6 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
   const maxAllowedShares = Math.min(4, availableShares);
 
   useEffect(() => {
-    const EmptyItem: BottomNavigationItem = {
-      onClick: voidFn,
-      icon: <div />,
-      disabled: true,
-      label: "",
-    };
-
-    const HomeItem: BottomNavigationItem = {
-      onClick: routeHome,
-      icon: <RiHome6Line />,
-      disabled: !paid,
-      label: t("home"),
-    };
-
     let canProceed = true;
 
     if (StepRoutes[paymentMethod][currentStep] === "quantity") {
@@ -110,6 +96,13 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
       canProceed = paid;
     }
 
+    const HomeItem: BottomNavigationItem = {
+      onClick: routeHome,
+      icon: <RiHome6Line />,
+      disabled: isLastStep && !paid,
+      label: t("home"),
+    };
+
     const bottomNav: BottomNavigationItem[] = [
       {
         label: t("back"),
@@ -117,7 +110,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
         icon: <RiArrowLeftCircleLine />,
         disabled: isLastStep && paid,
       },
-      isLastStep ? HomeItem : EmptyItem,
+      HomeItem,
       {
         label: t("next"),
         onClick: isLastStep ? routeAccount : nextStep,
