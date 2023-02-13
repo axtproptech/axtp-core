@@ -8,7 +8,7 @@ A presente Política de Privacidade e Proteção de Dados (“Política”) tem 
 
 A identidade e as informações do Encarregado pelo Tratamento de Dados Pessoais de **AXT PROPTECH COMPANY S/A** seguem abaixo discriminadas:
 
-**<span style="text-decoration:underline;">Responsável:</span>** **EXIN GLOBAL CONSULTORIA E INTERMEDIAÇÃO DE NEGÓCIOS EIRELI**, pessoa jurídica de direito privado, com sede em Curitiba, no estado do Paraná, à Rua Acyr Guimarães 222, sala 1201, Água Verde, CEP: 80240-230, inscrita no CNPJ sob Nº 33.728.143/0001-73, neste ato representada pela Sra. ADRIANA SILIPRANDI, brasileira, advogada, divorciada, portadora da Cédula de Identidade RG Nº 7.767.981-2 SSP/PR, inscrita no CPF Nº 006.978.389-60, residente e domiciliada na cidade de Curitiba, no estado do Paraná.
+_Responsável_: **EXIN GLOBAL CONSULTORIA E INTERMEDIAÇÃO DE NEGÓCIOS EIRELI**, pessoa jurídica de direito privado, com sede em Curitiba, no estado do Paraná, à Rua Acyr Guimarães 222, sala 1201, Água Verde, CEP: 80240-230, inscrita no CNPJ sob Nº 33.728.143/0001-73, neste ato representada pela Sra. ADRIANA SILIPRANDI, brasileira, advogada, divorciada, portadora da Cédula de Identidade RG Nº 7.767.981-2 SSP/PR, inscrita no CPF Nº 006.978.389-60, residente e domiciliada na cidade de Curitiba, no estado do Paraná.
 
 Qualquer reclamação ou comunicação dos TITULARES deverá ser dirigida ao Encarregado acima identificado. O Encarregado se encontra devidamente autorizado por **AXT PROPTECH COMPANY S/A** para prestar esclarecimentos e/ou adotar providências referentes ao tratamento de dados pessoais pela empresa.
 

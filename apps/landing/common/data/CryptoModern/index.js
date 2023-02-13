@@ -189,7 +189,8 @@ export const Footer_Data = [
     title: "Políticas",
     menuItems: [
       {
-        url: "#",
+        id: "privacy",
+        url: "/privacy",
         text: "Política de Privacidade",
       },
     ],

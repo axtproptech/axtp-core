@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, ReactElement } from "react";
 import PropTypes from "prop-types";
 import Link from "next/link";
 import Box from "common/components/Box";
@@ -12,6 +12,7 @@ import LogoImage from "common/assets/image/cryptoModern/logo-light.svg";
 
 import { Footer_Data } from "common/data/CryptoModern";
 import colors from "common/theme/cryptoModern/colors";
+import { Modal } from "common/components/Modal";
 
 const Footer = ({
   row,

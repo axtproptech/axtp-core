@@ -27,6 +27,7 @@
     "react-countup": "^6.0.0",
     "react-dom": "^18.2.0",
     "react-icons-kit": "^2.0.0",
+    "react-markdown": "6",
     "react-reveal": "^1.2.2",
     "react-scrollspy": "^3.4.3",
     "react-select": "^5.0.0",
