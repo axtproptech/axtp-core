@@ -26,7 +26,7 @@ const CryptoModern = () => {
     <ThemeProvider theme={theme}>
       <>
         <Head>
-          <title>AXT PropTech Company S/A - Exlusice Area</title>
+          <title>AXT PropTech Company S/A - Exlusive Area</title>
           <meta
             name="Description"
             content="AXT PropTech Company S/A - Exclusive Area"

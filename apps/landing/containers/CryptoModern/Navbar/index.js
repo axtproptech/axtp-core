@@ -135,13 +135,13 @@ const Navbar = () => {
           {/*</Search>*/}
           {/* end of search */}
 
-          <Button
-            className="text"
-            variant="textButton"
-            title="Área Exclusiva"
-            style={{ marginLeft: "2rem" }}
-            onClick={handleLogin}
-          />
+          {/*<Button*/}
+          {/*  className="text"*/}
+          {/*  variant="textButton"*/}
+          {/*  title="Área Exclusiva"*/}
+          {/*  style={{ marginLeft: "2rem" }}*/}
+          {/*  onClick={handleLogin}*/}
+          {/*/>*/}
 
           <Button
             className="menubar"
@@ -164,12 +164,12 @@ const Navbar = () => {
       {/* start mobile menu */}
       <MobileMenu className={`mobile-menu ${state.mobileMenu ? "active" : ""}`}>
         <Container>
-          <Button
-            className="text"
-            variant="textButton"
-            title="Área Exclusiva"
-            onClick={handleLogin}
-          />
+          {/*<Button*/}
+          {/*  className="text"*/}
+          {/*  variant="textButton"*/}
+          {/*  title="Área Exclusiva"*/}
+          {/*  onClick={handleLogin}*/}
+          {/*/>*/}
           <Scrollspy
             className="menu"
             items={scrollItems}

@@ -4,10 +4,10 @@ import Text from "common/components/Text";
 import Heading from "common/components/Heading";
 import NextImage from "common/components/NextImage";
 import Container from "common/components/UI/Container";
-import SectionWrapper, { ContentWrapper } from "./privacy.style";
+import SectionWrapper, { ContentWrapper } from "./compliance.style";
 import Illustration from "common/assets/image/cryptoModern/illustration1.png";
 
-const PrivacyPortal = () => {
+const Compliance = () => {
   return (
     <SectionWrapper id="compliance">
       <Container>
@@ -32,4 +32,4 @@ const PrivacyPortal = () => {
   );
 };
 
-export default PrivacyPortal;
+export default Compliance;

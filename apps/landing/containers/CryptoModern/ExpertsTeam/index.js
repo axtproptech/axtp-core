@@ -5,13 +5,14 @@ import NextImage from "common/components/NextImage";
 import Card from "common/components/Card";
 import Text from "common/components/Text";
 import Heading from "common/components/Heading";
-import Button from "common/components/Button";
 import FeatureBlock from "common/components/FeatureBlock";
 import Container from "common/components/UI/Container";
 import ExpertsTeamWrapper, { CounterUpArea } from "./expertsTeam.style";
 import oliver from "common/assets/image/cryptoModern/oliver-hager-colored.webp";
 import danniel from "common/assets/image/cryptoModern/danniel-covo.webp";
 import osman from "common/assets/image/cryptoModern/osman-lima.webp";
+import danielh from "common/assets/image/cryptoModern/daniel-heuri.webp";
+import Link from "common/components/Link";
 
 const Items = {
   default: {
@@ -28,12 +29,12 @@ const Items = {
   osman: {
     title: "Osman Lima, COO",
     description: "Osman Lime é ...",
-    link: "https://www.linkedin.com/in/osman-lima-41378018/",
+    link: "https://www.linkedin.com/in/osman-lima/",
   },
   daniel: {
     title: "Daniel Heuri, CEO",
     description: "Daniel Heuri é ...",
-    link: "https://www.linkedin.com/in/danielheuri/",
+    link: "https://www.linkedin.com/in/danielheuri",
   },
   danniel: {
     title: "Danniel Covo, CMO",
@@ -42,15 +43,11 @@ const Items = {
   },
 };
 
-const ExpertsTeam = ({ row, col, cardStyle, btnStyle }) => {
+const ExpertsTeam = ({ row, col, cardStyle }) => {
   const [selected, setSelected] = useState(Items.default);
 
   const handleSelect = (selection) => () => {
     setSelected(Items[selection] || Items.default);
-  };
-
-  const openLink = (link) => () => {
-    window.open(link, "_blank", "noreferrer noopener");
   };
 
   return (
@@ -60,11 +57,12 @@ const ExpertsTeam = ({ row, col, cardStyle, btnStyle }) => {
           <Box className="col" {...col}>
             <CounterUpArea>
               <Card
-                onClick={handleSelect("daniel")}
+                onMouseEnter={handleSelect("daniel")}
+                onMouseLeave={handleSelect()}
                 className="card"
                 {...cardStyle}
               >
-                <NextImage src={oliver} alt="Daniel Heuri, CEO" />
+                <NextImage src={danielh} alt="Daniel Heuri, CEO" />
                 <h2>
                   Daniel Heuri
                   <Text content="CEO" />
@@ -72,7 +70,8 @@ const ExpertsTeam = ({ row, col, cardStyle, btnStyle }) => {
                 </h2>
               </Card>
               <Card
-                onClick={handleSelect("osman")}
+                onMouseEnter={handleSelect("osman")}
+                onMouseLeave={handleSelect()}
                 className="card"
                 {...cardStyle}
               >
@@ -83,7 +82,8 @@ const ExpertsTeam = ({ row, col, cardStyle, btnStyle }) => {
                 </h2>
               </Card>
               <Card
-                onClick={handleSelect("oliver")}
+                onMouseEnter={handleSelect("oliver")}
+                onMouseLeave={handleSelect()}
                 className="card"
                 {...cardStyle}
               >
@@ -95,7 +95,8 @@ const ExpertsTeam = ({ row, col, cardStyle, btnStyle }) => {
                 </h2>
               </Card>
               <Card
-                onClick={handleSelect("danniel")}
+                onMouseEnter={handleSelect("danniel")}
+                onMouseLeave={handleSelect()}
                 className="card"
                 {...cardStyle}
               >
@@ -103,7 +104,6 @@ const ExpertsTeam = ({ row, col, cardStyle, btnStyle }) => {
                 <h2>
                   Danniel Covo
                   <Text content="CMO" />
-                  {/*<CountUp start={0} end={75000} />+*/}
                 </h2>
               </Card>
             </CounterUpArea>
@@ -114,13 +114,15 @@ const ExpertsTeam = ({ row, col, cardStyle, btnStyle }) => {
               description={<Text content={selected.description} />}
               button={
                 selected.link && (
-                  <Button
-                    title="LinkedIn"
-                    variant="textButton"
-                    icon={<i className="flaticon-next" />}
-                    onClick={openLink(selected.link)}
-                    {...btnStyle}
-                  />
+                  <Link
+                    href={selected.link}
+                    style={{ color: "white" }}
+                    rel="noreferrer noopener"
+                    target="_blank"
+                  >
+                    LinkedIn&nbsp;
+                    <i className="flaticon-next" />
+                  </Link>
                 )
               }
             />

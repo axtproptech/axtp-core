@@ -9,7 +9,6 @@ import Features from "containers/CryptoModern/FeatureSection";
 import ExpertsTeam from "containers/CryptoModern/ExpertsTeam";
 import MarketsPortal from "containers/CryptoModern/Markets";
 import BlockchainProjects from "containers/CryptoModern/BlockchainProjects";
-import Privacypolicy from "containers/CryptoModern/Privacy";
 import FaqSection from "containers/CryptoModern/FaqSection";
 import Register from "containers/CryptoModern/Newsletter";
 import Footer from "containers/CryptoModern/Footer";
@@ -18,6 +17,7 @@ import GlobalStyle, {
   ContentWrapper,
 } from "containers/CryptoModern/cryptoModern.style";
 import { MessageBox } from "containers/CryptoModern/MessageBox";
+import Compliance from "containers/CryptoModern/Compliance";
 
 const CryptoModern = () => {
   return (
@@ -95,7 +95,7 @@ const CryptoModern = () => {
             <ExpertsTeam />
             <MarketsPortal />
             <BlockchainProjects />
-            <Privacypolicy />
+            <Compliance />
             {/*<WalletSection />*/}
             {/*<MapSection />*/}
             <FaqSection />
