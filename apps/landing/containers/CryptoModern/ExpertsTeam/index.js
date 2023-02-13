@@ -29,17 +29,18 @@ const Items = {
   osman: {
     title: "Osman Lima, COO",
     description: "Osman Lime é ...",
-    link: "https://www.linkedin.com/in/osman-lima/",
+    link: "https://www.linkedin.com/in/osman-lima",
   },
   daniel: {
     title: "Daniel Heuri, CEO",
-    description: "Daniel Heuri é ...",
+    description:
+      "Daniel Heuri é um reconhecido especialista financeiro com ampla experiência em consultoria e educação financeira. Entre outras, ele é CEO da NXT Advisors, Prof. Pós-Graduação na FGV, Eng. Poli, Mestre Adm. da FEA-USP, Consultor CVM, Cert. CEA, Advisor Financeiro e Expert em Tranquilidade Financeira, Angel Investor na Poli Angels e membro das sociedades MENSA e MDRT.",
     link: "https://www.linkedin.com/in/danielheuri",
   },
   danniel: {
     title: "Danniel Covo, CMO",
     description: "Danniel Covo  é ...",
-    link: "https://www.linkedin.com/in/danniel-covo/",
+    link: "https://www.linkedin.com/in/danniel-covo",
   },
 };
 
@@ -62,12 +63,18 @@ const ExpertsTeam = ({ row, col, cardStyle }) => {
                 className="card"
                 {...cardStyle}
               >
-                <NextImage src={danielh} alt="Daniel Heuri, CEO" />
-                <h2>
-                  Daniel Heuri
-                  <Text content="CEO" />
-                  {/*<CountUp start={0} end={75000} />+*/}
-                </h2>
+                <a
+                  href={selected.link}
+                  style={{ color: "white" }}
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  <NextImage src={danielh} alt="Daniel Heuri, CEO" />
+                  <h2>
+                    Daniel Heuri
+                    <Text content="CEO" />
+                  </h2>
+                </a>
               </Card>
               <Card
                 onMouseEnter={handleSelect("osman")}
@@ -75,11 +82,17 @@ const ExpertsTeam = ({ row, col, cardStyle }) => {
                 className="card"
                 {...cardStyle}
               >
-                <NextImage src={osman} alt="Osman Lima, COO" />
-                <h2>
-                  Osman Lima
-                  <Text content="COO" />
-                </h2>
+                <a
+                  href={selected.link}
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  <NextImage src={osman} alt="Osman Lima, COO" />
+                  <h2>
+                    Osman Lima
+                    <Text content="COO" />
+                  </h2>
+                </a>
               </Card>
               <Card
                 onMouseEnter={handleSelect("oliver")}
@@ -87,12 +100,18 @@ const ExpertsTeam = ({ row, col, cardStyle }) => {
                 className="card"
                 {...cardStyle}
               >
-                <NextImage src={oliver} alt="Oliver Hager, CTO" />
-                <h2>
-                  Oliver Hager
-                  <Text content="CTO" />
-                  {/*<CountUp start={0} end={75000} />+*/}
-                </h2>
+                <a
+                  href={selected.link}
+                  style={{ color: "white" }}
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  <NextImage src={oliver} alt="Oliver Hager, CTO" />
+                  <h2>
+                    Oliver Hager
+                    <Text content="CTO" />
+                  </h2>
+                </a>
               </Card>
               <Card
                 onMouseEnter={handleSelect("danniel")}
@@ -100,11 +119,18 @@ const ExpertsTeam = ({ row, col, cardStyle }) => {
                 className="card"
                 {...cardStyle}
               >
-                <NextImage src={danniel} alt="Danniel Covo, CMO" />
-                <h2>
-                  Danniel Covo
-                  <Text content="CMO" />
-                </h2>
+                <a
+                  href={selected.link}
+                  style={{ color: "white" }}
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  <NextImage src={danniel} alt="Danniel Covo, CMO" />
+                  <h2>
+                    Danniel Covo
+                    <Text content="CMO" />
+                  </h2>
+                </a>
               </Card>
             </CounterUpArea>
           </Box>
@@ -112,19 +138,6 @@ const ExpertsTeam = ({ row, col, cardStyle }) => {
             <FeatureBlock
               title={<Heading content={selected.title} />}
               description={<Text content={selected.description} />}
-              button={
-                selected.link && (
-                  <Link
-                    href={selected.link}
-                    style={{ color: "white" }}
-                    rel="noreferrer noopener"
-                    target="_blank"
-                  >
-                    LinkedIn&nbsp;
-                    <i className="flaticon-next" />
-                  </Link>
-                )
-              }
             />
           </Box>
         </Box>
