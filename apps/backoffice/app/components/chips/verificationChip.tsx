@@ -4,7 +4,7 @@ const VerificationColors = {
   Level1: "success",
   Level2: "info",
   Pending: "warning",
-  NotVerified: "",
+  NotVerified: "default",
 };
 
 type VerificationLevel = "Level1" | "Level2" | "Pending" | "NotVerified";
@@ -19,7 +19,7 @@ export const VerificationChip = ({ level }: Props) => {
   const color = VerificationColors[level];
   return (
     <Tooltip title="Verification Status">
-      <Chip label={level} color={color} />
+      <Chip label={level} color={color || "default"} />
     </Tooltip>
   );
 };
