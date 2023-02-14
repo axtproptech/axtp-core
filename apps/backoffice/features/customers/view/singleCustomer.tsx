@@ -28,13 +28,12 @@ import { useExplorerLink } from "@/app/hooks/useExplorerLink";
 import { DownloadButton } from "@/app/components/buttons/downloadButton";
 import { cpf } from "cpf-cnpj-validator";
 import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
+import { useRouter } from "next/router";
 const gridSpacing = Config.Layout.GridSpacing;
 
-interface Props {
-  cuid: string;
-}
-
-export const SingleCustomer: FC<Props> = ({ cuid }) => {
+export const SingleCustomer = () => {
+  const { query } = useRouter();
+  const cuid = query.cuid as string;
   const { getAccountLink } = useExplorerLink();
   const { mutate } = useSWRConfig();
   const { data: customer, error } = useSWR(`getCustomer/${cuid}`, () => {
