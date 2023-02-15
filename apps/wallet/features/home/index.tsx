@@ -14,7 +14,6 @@ import { ShowAccountButton } from "@/app/components/buttons/showAccountButton";
 export const Home = () => {
   const pools = useAppSelector(selectAllPools);
   const { accountId, customer } = useAccount();
-  const router = useRouter();
   const stats = useMemo(() => {
     // TODO: calc the correct values
     return {
@@ -50,7 +49,7 @@ export const Home = () => {
               hideIfAccepted
             />
           )}
-          {accountId && <ShowAccountButton />}
+          {accountId && customer && <ShowAccountButton />}
         </section>
         <section className="mt-8">
           <PoolList />

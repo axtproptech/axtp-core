@@ -42,7 +42,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { showSuccess, showError } = useNotification();
-  const { Ledger } = useAppContext();
+  const { Ledger, ActivationService } = useAppContext();
   const StepCount = 5;
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [seed, setSeed] = useState<string>("");
@@ -141,6 +141,8 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
       const keys = generateMasterKeys(seed);
       const { salt, key } = await stretchKey(pin);
       const securedKeys = await encrypt(key, JSON.stringify(keys));
+      const address = Address.fromPublicKey(keys.publicKey);
+      await ActivationService.activate(address);
       dispatch(
         accountActions.setAccount({
           publicKey: keys.publicKey,

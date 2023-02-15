@@ -23,7 +23,7 @@ export const useAccount = () => {
     showVerificationStatus,
   } = useAppSelector<AccountState>((state) => state.accountState);
 
-  const { data } = useSWR(
+  const { data, error } = useSWR(
     `/fetchAccount/${accountId}`,
     async () => {
       const [account, accountTransactions] = await Promise.all([
@@ -52,13 +52,15 @@ export const useAccount = () => {
         },
       };
 
-      const axtBalance = account.assetBalances.find(
-        ({ asset }) => asset === AXTTokenId
-      );
+      const axtBalance = account.assetBalances
+        ? account.assetBalances.find(({ asset }) => asset === AXTTokenId)
+        : "";
 
-      const poolBalances = account.assetBalances.filter(({ asset }) =>
-        AXTPoolTokenIds.includes(asset)
-      );
+      const poolBalances = account.assetBalances
+        ? account.assetBalances.filter(({ asset }) =>
+            AXTPoolTokenIds.includes(asset)
+          )
+        : [];
       const poolTokenRequests = poolBalances.map(({ asset }) =>
         Ledger.Client.asset.getAsset({ assetId: asset })
       );

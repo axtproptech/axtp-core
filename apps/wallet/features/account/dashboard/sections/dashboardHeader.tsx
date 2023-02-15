@@ -111,11 +111,13 @@ export const DashboardHeader: FC<Props> = ({
           </div>
         </div>
       </div>
-      <div className="w-full">
-        <h5 className="text-center text-sm opacity-60 ">
-          ≈ {fiatBalance.formatted}
-        </h5>
-      </div>
+      {fiatBalance.balance > 0 && (
+        <div className="w-full">
+          <h5 className="text-center text-sm opacity-60 ">
+            ≈ {fiatBalance.formatted}
+          </h5>
+        </div>
+      )}
     </Fade>
   );
 };

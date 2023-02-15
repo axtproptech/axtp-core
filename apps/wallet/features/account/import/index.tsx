@@ -24,7 +24,6 @@ import {
 } from "@/features/account/components/steps";
 import { OnStepChangeArgs } from "@/features/account/types/onStepChangeArgs";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import { KycService } from "@/app/services";
 
 enum Steps {
   DefinePin,

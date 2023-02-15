@@ -7,6 +7,7 @@ import { Ledger, LedgerClientFactory } from "@signumjs/core";
 import { KycService } from "@/app/services/kycService";
 import { PaymentService } from "@/app/services/paymentService";
 import { HttpClientFactory } from "@signumjs/http";
+import { AccountActivationService } from "@/app/services/accountActivationService";
 
 type AddressPrefixType = "TS" | "S";
 type SignaPrefixType = "TSIGNA" | "SIGNA";
@@ -19,6 +20,7 @@ export interface AppContextType {
   JotFormId: string;
   KycService: KycService;
   PaymentService: PaymentService;
+  ActivationService: AccountActivationService;
   Ledger: {
     IsTestNet: boolean;
     Client: Ledger;
@@ -56,6 +58,7 @@ const config: AppContextType = {
   JotFormId: Config.JotForm.Id,
   KycService: new KycService(bffClient),
   PaymentService: new PaymentService(bffClient),
+  ActivationService: new AccountActivationService(),
   Market: {
     BrlUsdAdjustment: Config.Market.BrlUsdAdjustment,
   },
