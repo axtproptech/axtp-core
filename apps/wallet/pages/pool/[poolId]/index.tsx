@@ -3,7 +3,7 @@ import { MetaTags } from "@/app/components/metaTags";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import {
-  RiAccountBoxLine,
+  RiWallet3Line,
   RiArrowLeftCircleLine,
   RiHome6Line,
 } from "react-icons/ri";
@@ -59,7 +59,7 @@ export default function Page({ poolId }: any) {
       nav.push({
         route: "/account",
         label: t("account"),
-        icon: <RiAccountBoxLine />,
+        icon: <RiWallet3Line />,
       });
     }
 

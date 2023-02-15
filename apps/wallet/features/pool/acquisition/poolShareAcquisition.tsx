@@ -15,9 +15,8 @@ import {
   StepPaymentUsdc3,
 } from "./steps";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
-import { voidFn } from "@/app/voidFn";
 import {
-  RiAccountBoxLine,
+  RiWallet3Line,
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
   RiHome6Line,
@@ -117,7 +116,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
         disabled: !canProceed,
         color: canProceed ? "secondary" : undefined,
         loading: isLastStep && !paid,
-        icon: isLastStep ? <RiAccountBoxLine /> : <RiArrowRightCircleLine />,
+        icon: isLastStep ? <RiWallet3Line /> : <RiArrowRightCircleLine />,
       },
     ];
     onStepChange({ steps: stepCount, currentStep, bottomNav });

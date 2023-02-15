@@ -37,7 +37,7 @@
   "settings": "Configurações",
   "disconnect": "Desconectar",
   "disconnect_hint": "Desconectar sua conta é como deslogar. Para fazer login novamente, você precisa importar sua conta usando a Frase de Recuperação",
-  "you_own_n_shares_one": "Possui uma token",
+  "you_own_n_shares_one": "Possui um token",
   "you_own_n_shares_other": "Possui {{count}} tokens",
   "account_unregistered": "Conta não registrada",
   "no_pool_joined_hint": "Aqui você normalmente veria as pools cujas tokens você detém. Mas não há nada aqui. Que pena!",
@@ -114,5 +114,6 @@
   "transaction_verifying": "Verificando a transação... aguarde",
   "usdc_payments_description": "Envie o valor para o endereço da blockchain fornecido. Se feito, cole o hash da transação resultante na próxima etapa para confirmar a transferência.",
   "usdc_select_network": "Por favor, escolha sua rede USDC",
-  "usdc_select_network_description": "Escolher a rede certa é crucial, ou seus fundos podem ser enviados para lugar nenhum. Se você não tiver certeza, entre em contato conosco."
+  "usdc_select_network_description": "Escolher a rede certa é crucial, ou seus fundos podem ser enviados para lugar nenhum. Se você não tiver certeza, entre em contato conosco.",
+  "my_portfolio": "Mostrar meu portfólio"
 }

@@ -11,17 +11,23 @@ import {
   PieChart,
   PieChartDatum,
 } from "@/features/account/dashboard/sections/pieChart";
-import { Fade, Roll, Zoom } from "react-awesome-reveal";
+import { AttentionSeeker, Fade, Roll, Zoom } from "react-awesome-reveal";
 import { useAppSelector } from "@/states/hooks";
 import { selectAXTToken } from "@/app/states/tokenState";
 import { selectBrlUsdMarketData } from "@/app/states/marketState";
+import { SafeExternalLink } from "@/app/components/navigation/externalLink";
+import { RiExternalLinkLine } from "react-icons/ri";
+import { useLedgerService } from "@/app/hooks/useLedgerService";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 interface Props {
+  accountAddress: string;
   accountData: AccountData;
   verificationLevel: VerificationLevelType;
 }
 
 export const DashboardHeader: FC<Props> = ({
+  accountAddress,
   accountData,
   verificationLevel,
 }) => {
@@ -30,6 +36,7 @@ export const DashboardHeader: FC<Props> = ({
   const brlUsdMarket = useAppSelector(selectBrlUsdMarketData);
   const { t } = useTranslation();
   const router = useRouter();
+  const { Ledger } = useAppContext();
 
   const handleOnClickInactive = async () => {
     await router.push("/account/activate");
@@ -62,6 +69,19 @@ export const DashboardHeader: FC<Props> = ({
 
   return (
     <Fade triggerOnce>
+      <section className="pt-8 flex-row flex mx-auto justify-center">
+        <div className="text-center">
+          <SafeExternalLink
+            href={`${Ledger.ExplorerUrl}/address/${accountData.accountId}`}
+          >
+            <span className="flex flex-row items-center">
+              <h2 className="text-xl font-bold">{accountAddress}</h2>
+              &nbsp;
+              <RiExternalLinkLine />
+            </span>
+          </SafeExternalLink>
+        </div>
+      </section>
       <div className={`h-[240px] relative mt-4 p-0 ${loadingClassName}`}>
         <div className="absolute h-[240px] w-full">
           <PieChart data={chartData} />

@@ -22,8 +22,13 @@ const StatusSlugMap = {
 export const AccountDashboard = () => {
   const router = useRouter();
   const { t } = useTranslation();
-  const { accountId, accountData, customer, showVerificationStatus } =
-    useAccount();
+  const {
+    accountId,
+    accountData,
+    accountAddress,
+    customer,
+    showVerificationStatus,
+  } = useAccount();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -48,6 +53,7 @@ export const AccountDashboard = () => {
     <div className="overflow-hidden h-[100vh]">
       <section>
         <DashboardHeader
+          accountAddress={accountAddress || ""}
           accountData={accountData}
           verificationLevel={verificationLevel}
         />

@@ -114,5 +114,6 @@
   "transaction_verified": "Yay 🎉, the transaction was successfully verified.",
   "transaction_timedout": "Oh no. the transaction could not be verified.",
   "transaction_timedout_hint": "Please retry the verification. If the problem persists do not hesitate to contact our support.",
-  "payment_success_hint": "Congratulations, you are now part of an exclusive investors club. You will receive your token(s) within the next few hours. The acquisition status is being shown on the pool details."
+  "payment_success_hint": "Congratulations, you are now part of an exclusive investors club. You will receive your token(s) within the next few hours. The acquisition status is being shown on the pool details.",
+  "my_portfolio": "Show My Portfolio"
 }

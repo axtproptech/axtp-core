@@ -6,7 +6,7 @@ import {
   BottomNavigationItem,
 } from "../navigation/bottomNavigation";
 import { Body } from "./body";
-import { RiHome6Line, RiAccountBoxLine } from "react-icons/ri";
+import { RiHome6Line, RiWallet3Line } from "react-icons/ri";
 import { Notification } from "@/app/components/notification";
 
 const DefaultNav: BottomNavigationItem[] = [
@@ -18,7 +18,7 @@ const DefaultNav: BottomNavigationItem[] = [
   {
     route: "/account",
     label: "Account",
-    icon: <RiAccountBoxLine />,
+    icon: <RiWallet3Line />,
   },
 ];
 

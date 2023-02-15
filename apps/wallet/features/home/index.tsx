@@ -3,15 +3,18 @@ import { DashboardStats } from "./sections/dashboardStats";
 import { TextLogo } from "@/app/components/logo/textLogo";
 import { Fade, Slide } from "react-awesome-reveal";
 import { selectAllPools } from "@/app/states/poolsState";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { PoolList } from "@/app/components/poolList";
 import { useAccount } from "@/app/hooks/useAccount";
 import { VerificationStatus } from "@/app/components/verificationStatus";
 import { JoinClubButton } from "@/app/components/buttons/joinClubButton";
+import { useRouter } from "next/router";
+import { ShowAccountButton } from "@/app/components/buttons/showAccountButton";
 
 export const Home = () => {
   const pools = useAppSelector(selectAllPools);
-  const { customer } = useAccount();
+  const { accountId, customer } = useAccount();
+  const router = useRouter();
   const stats = useMemo(() => {
     // TODO: calc the correct values
     return {
@@ -47,6 +50,7 @@ export const Home = () => {
               hideIfAccepted
             />
           )}
+          {accountId && <ShowAccountButton />}
         </section>
         <section className="mt-8">
           <PoolList />

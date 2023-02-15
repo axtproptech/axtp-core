@@ -1,7 +1,6 @@
 import { Layout } from "@/app/components/layout";
 import { Home } from "@/features/home";
 import { MetaTags } from "@/app/components/metaTags";
-
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export async function getStaticProps({ locale }: { locale: string }) {
