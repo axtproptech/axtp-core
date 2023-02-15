@@ -16,9 +16,15 @@ interface BalanceType {
   formatted: string;
 }
 
+interface PoolBalanceType extends BalanceType {
+  poolTicker: string;
+  poolQuantity: string;
+}
+
 export interface PortfolioBalance {
   axtcBalance: BalanceType;
   axtcReservedBalance: BalanceType;
+  axtcPoolBalances: PoolBalanceType[];
   axtcTotalBalance: BalanceType;
   fiatBalance: BalanceType;
   signaBalance: BalanceType;
@@ -40,26 +46,53 @@ export const usePortfolioBalance = (): PortfolioBalance => {
     Ledger: { SignaPrefix },
   } = useAppContext();
 
-  const axtcReservedBalance: BalanceType = useMemo(() => {
-    const reserved = accountData.balancesPools.reduce((axtcSum, b) => {
-      const pool = pools.find((p) => p.token.id === b.id);
+  const [axtcReservedBalance, axtcPoolBalances] = useMemo(() => {
+    let reservedAXTC = ChainValue.create(decimals);
+    let poolBalancesAXTC: PoolBalanceType[] = [];
+    for (let pb of accountData.balancesPools) {
+      const pool = pools.find((p) => p.token.id === pb.id);
       if (!pool) {
-        return axtcSum;
+        continue;
       }
-      // token rate is compound and not quantity
-      const poolAXTC = ChainValue.create(b.decimals)
-        .setAtomic(b.quantity)
+      const poolAXTC = ChainValue.create(pb.decimals)
+        .setAtomic(pb.quantity)
         .multiply(pool.tokenRate)
         .getCompound();
 
-      return axtcSum.add(ChainValue.create(decimals).setCompound(poolAXTC));
-    }, ChainValue.create(decimals));
+      const poolBalance: PoolBalanceType = {
+        balance: Number(poolAXTC),
+        poolQuantity: pb.quantity,
+        poolTicker: pb.name.toUpperCase(),
+        ticker: name.toUpperCase(),
+        formatted: "",
+      };
+      poolBalance.formatted = format(poolBalance);
+      poolBalancesAXTC.push(poolBalance);
+      reservedAXTC.add(ChainValue.create(decimals).setCompound(poolAXTC));
+    }
 
-    return {
-      balance: Number(reserved.getCompound()),
+    // const reserved = accountData.balancesPools.reduce((axtcSum, b) => {
+    //   const pool = pools.find((p) => p.token.id === b.id);
+    //   if (!pool) {
+    //     return axtcSum;
+    //   }
+    //   // token rate is compound and not quantity
+    //   const poolAXTC = ChainValue.create(b.decimals)
+    //     .setAtomic(b.quantity)
+    //     .multiply(pool.tokenRate)
+    //     .getCompound();
+    //
+    //   return axtcSum.add(ChainValue.create(decimals).setCompound(poolAXTC));
+    // }, ChainValue.create(decimals));
+
+    const reservedBalanceAXTC = {
+      balance: Number(reservedAXTC.getCompound()),
       ticker: name.toUpperCase(),
       formatted: "",
     };
+    reservedBalanceAXTC.formatted = format(reservedBalanceAXTC);
+
+    return [reservedBalanceAXTC, poolBalancesAXTC];
   }, [accountData.balancesPools, decimals, name, pools]);
 
   const axtcBalance: BalanceType = {
@@ -90,7 +123,6 @@ export const usePortfolioBalance = (): PortfolioBalance => {
   };
 
   axtcBalance.formatted = format(axtcBalance);
-  axtcReservedBalance.formatted = format(axtcReservedBalance);
   axtcTotalBalance.formatted = format(axtcTotalBalance);
   signaBalance.formatted = format(signaBalance);
   fiatBalance.formatted = format(fiatBalance);
@@ -98,6 +130,7 @@ export const usePortfolioBalance = (): PortfolioBalance => {
   return {
     axtcBalance,
     axtcReservedBalance,
+    axtcPoolBalances,
     axtcTotalBalance,
     fiatBalance,
     signaBalance,

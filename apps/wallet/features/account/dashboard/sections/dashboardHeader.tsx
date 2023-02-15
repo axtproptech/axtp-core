@@ -1,50 +1,16 @@
 import { FC, useMemo } from "react";
 import { AccountData } from "@/types/accountData";
-import { ResponsiveLine, Serie } from "@nivo/line";
-import { linearGradientDef } from "@nivo/core";
 import { usePortfolioBalance } from "@/app/hooks/usePortfolioBalance";
 import { Badge } from "react-daisyui";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { VerificationLevelType } from "@/types/verificationLevelType";
 import { VerificationBadge } from "@/app/components/badges/verificationBadge";
-
-interface ChartProps {
-  data: Serie;
-}
-
-const Chart: FC<ChartProps> = ({ data }) => {
-  if (!data.data || !data.data.length) return null;
-
-  return (
-    <ResponsiveLine
-      data={[data]}
-      yScale={{
-        type: "linear",
-        min: "auto",
-        max: "auto",
-        nice: true,
-        stacked: false,
-        reverse: false,
-      }}
-      margin={{ top: 100, bottom: 12 }}
-      curve="basis"
-      layers={["lines", "areas"]}
-      yFormat=" >-.2f"
-      lineWidth={4}
-      enableArea
-      defs={[
-        linearGradientDef("gradientA", [
-          { offset: 0, color: "rgb(220, 165, 76)", opacity: 1 },
-          { offset: 1.25, color: "rgb(220, 165, 76)", opacity: 0 },
-        ]),
-      ]}
-      fill={[{ match: "*", id: "gradientA" }]}
-      colors={{ datum: "color" }}
-      animate
-    />
-  );
-};
+import {
+  ChartColors,
+  PieChart,
+  PieChartDatum,
+} from "@/features/account/dashboard/sections/pieChart";
 
 interface Props {
   accountData: AccountData;
@@ -60,6 +26,7 @@ export const DashboardHeader: FC<Props> = ({
     axtcBalance,
     fiatBalance,
     axtcReservedBalance,
+    axtcPoolBalances,
     axtcTotalBalance,
   } = usePortfolioBalance();
   const { t } = useTranslation();
@@ -69,74 +36,35 @@ export const DashboardHeader: FC<Props> = ({
     await router.push("/account/activate");
   };
 
-  const chartData = useMemo<Serie[] | null>(() => {
-    if (!accountData) return null;
+  const chartData = useMemo<PieChartDatum[]>(() => {
+    const balances = axtcPoolBalances.map((pb, i) => {
+      const color = (i + 1) % ChartColors.schema.length;
+      return {
+        id: pb.poolTicker,
+        value: pb.balance,
+        label: pb.poolTicker,
+        color: ChartColors.schema[color],
+      };
+    });
 
-    const signaHistory: Serie = {
-      id: "signa",
-      color: "rgb(157,116,35)",
-      data: [],
-    };
-    const axtHistory: Serie = {
-      id: "axt",
-      color: "rgb(220, 165, 76)",
-      data: [],
-    };
-    let signa = Number(accountData.balanceSigna);
-    let axt = Number(accountData.balanceAxt);
-    let i = 0;
-    for (let tx of accountData.transactions) {
-      if (tx.signa !== undefined) {
-        signaHistory.data.push({
-          x: i,
-          y: signa,
-        });
-        signa += tx.type === "out" ? tx.signa : -tx.signa;
-      }
-
-      if (tx.axt !== undefined) {
-        axtHistory.data.push({
-          x: i,
-          y: axt,
-        });
-        axt += tx.type === "out" ? tx.axt : -tx.axt;
-      }
-      ++i;
-    }
-
-    if (axt > 0 && axtHistory.data.length === 0) {
-      axtHistory.data.push({
-        x: 0,
-        y: axt,
-      });
-      axtHistory.data.push({
-        x: i - 1,
-        y: axt,
+    if (axtcBalance.balance > 0) {
+      balances.unshift({
+        value: axtcBalance.balance,
+        label: t("free"),
+        id: "axtc",
+        color: ChartColors.schema[0],
       });
     }
 
-    if (signa > 0 && signaHistory.data.length === 0) {
-      signaHistory.data.push({
-        x: 0,
-        y: signa,
-      });
-      signaHistory.data.push({
-        x: i - 1,
-        y: signa,
-      });
-    }
-    return [signaHistory, axtHistory];
-  }, [accountData]);
+    return balances;
+  }, [axtcPoolBalances, axtcBalance, t]);
 
-  const loadingClassName = chartData ? "" : `blur animate-pulse`;
+  const loadingClassName = chartData ? "" : "blur animate-pulse";
 
   return (
     <div className={`h-[240px] relative py-4 ${loadingClassName}`}>
       <div className="absolute h-[240px] w-full">
-        {chartData && <Chart data={chartData[0]} />}
-      </div>
-      <div className="absolute h-[240px] w-full">
-        {chartData && <Chart data={chartData[1]} />}
+        <PieChart data={chartData} />
       </div>
       <div className="absolute p-4 w-full">
         <div className="flex flex-row justify-between items-start">
