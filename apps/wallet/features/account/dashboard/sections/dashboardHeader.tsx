@@ -11,6 +11,10 @@ import {
   PieChart,
   PieChartDatum,
 } from "@/features/account/dashboard/sections/pieChart";
+import { Fade, Roll, Zoom } from "react-awesome-reveal";
+import { useAppSelector } from "@/states/hooks";
+import { selectAXTToken } from "@/app/states/tokenState";
+import { selectBrlUsdMarketData } from "@/app/states/marketState";
 
 interface Props {
   accountData: AccountData;
@@ -21,14 +25,9 @@ export const DashboardHeader: FC<Props> = ({
   accountData,
   verificationLevel,
 }) => {
-  const {
-    signaBalance,
-    axtcBalance,
-    fiatBalance,
-    axtcReservedBalance,
-    axtcPoolBalances,
-    axtcTotalBalance,
-  } = usePortfolioBalance();
+  const { axtcBalance, fiatBalance, axtcPoolBalances } = usePortfolioBalance();
+  const { name } = useAppSelector(selectAXTToken);
+  const brlUsdMarket = useAppSelector(selectBrlUsdMarketData);
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -62,40 +61,41 @@ export const DashboardHeader: FC<Props> = ({
   const loadingClassName = chartData ? "" : "blur animate-pulse";
 
   return (
-    <div className={`h-[240px] relative py-4 ${loadingClassName}`}>
-      <div className="absolute h-[240px] w-full">
-        <PieChart data={chartData} />
-      </div>
-      <div className="absolute p-4 w-full">
-        <div className="flex flex-row justify-between items-start">
-          <div className="flex flex-col">
-            <h1 className={"text-3xl"}>{axtcTotalBalance.formatted}</h1>
-            <div className="flex flex-row">
-              <h3 className={"text-sm opacity-80"}>
-                {axtcBalance.formatted}&nbsp;{t("free")}&nbsp;
-              </h3>
-              •
-              <h3 className={"text-sm opacity-80"}>
-                &nbsp;{axtcReservedBalance.formatted}&nbsp;{t("reserved")}
-              </h3>
+    <Fade triggerOnce>
+      <div className={`h-[240px] relative mt-4 p-0 ${loadingClassName}`}>
+        <div className="absolute h-[240px] w-full">
+          <PieChart data={chartData} />
+        </div>
+        <div className="absolute w-full">
+          <div className="flex flex-row justify-between p-4">
+            <div className="flex flex-col">
+              <h5 className="text-xs opacity-60 mt-1">
+                1 USD = 1 {name.toUpperCase()}
+              </h5>
+              <h5 className="text-xs opacity-60 mt-1">
+                1 USD ≈ {brlUsdMarket.current_price} BRL
+              </h5>
             </div>
-            <h3 className={"text-lg opacity-80"}>{signaBalance.formatted}</h3>
-            <h5 className={"text-sm opacity-60"}>≈ {fiatBalance.formatted}</h5>
-          </div>
-          <div className="flex flex-col">
-            {!accountData.isActive && (
-              <Badge
-                className="my-1 cursor-pointer"
-                color="warning"
-                onClick={handleOnClickInactive}
-              >
-                {t("account_unregistered")}
-              </Badge>
-            )}
-            <VerificationBadge verificationLevel={verificationLevel} />
+            <div className="flex flex-col">
+              {!accountData.isActive && (
+                <Badge
+                  className="my-1 cursor-pointer"
+                  color="warning"
+                  onClick={handleOnClickInactive}
+                >
+                  {t("account_unregistered")}
+                </Badge>
+              )}
+              <VerificationBadge verificationLevel={verificationLevel} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <div className="w-full">
+        <h5 className="text-center text-sm opacity-60 ">
+          ≈ {fiatBalance.formatted}
+        </h5>
+      </div>
+    </Fade>
   );
 };

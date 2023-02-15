@@ -89,7 +89,7 @@ export const AccountDashboard = () => {
           </HintBox>
         )}
         {isVerified && (
-          <div className="mt-16">
+          <div className="mt-2">
             <PoolList accountData={accountData} />
           </div>
         )}

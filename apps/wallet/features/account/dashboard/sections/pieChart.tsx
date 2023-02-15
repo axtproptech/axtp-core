@@ -6,7 +6,16 @@ import { selectAXTToken } from "@/app/states/tokenState";
 
 export const ChartColors = {
   base: "#dca54c",
-  schema: ["#DCA54C", "#D79833", "#BB8225", "#996A1E", "#775138", "#553B11"],
+  // schema: ["#DCA54C", "#D79833", "#BB8225", "#996A1E", "#775138", "#553B11"],
+  schema: [
+    "#87d039",
+    "#66c6ff",
+    "#e2d562",
+    "#ff6f6f",
+    "#abc9ff",
+    "#f9b9e5",
+    "#DCA54C",
+  ],
 };
 export interface PieChartDatum extends DefaultRawDatum {
   label: string;
@@ -58,7 +67,7 @@ const CenteredMetric = ({ dataWithArc, centerX, centerY }) => {
 export const PieChart: FC<PieChartsProps> = ({ data }) => (
   <ResponsivePie
     data={data}
-    margin={{ top: 30, right: 20, bottom: 30, left: 20 }}
+    margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
     innerRadius={0.625}
     padAngle={1}
     animate={true}

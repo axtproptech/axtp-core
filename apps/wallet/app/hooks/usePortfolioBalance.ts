@@ -27,7 +27,7 @@ export interface PortfolioBalance {
   axtcPoolBalances: PoolBalanceType[];
   axtcTotalBalance: BalanceType;
   fiatBalance: BalanceType;
-  signaBalance: BalanceType;
+  // signaBalance: BalanceType;
 }
 
 const numberFormat = new Intl.NumberFormat("pt-BR");
@@ -37,14 +37,11 @@ function format(balance: BalanceType) {
 }
 
 export const usePortfolioBalance = (): PortfolioBalance => {
-  const signaMarket = useAppSelector(selectActiveMarketData);
-  const brlMarket = useAppSelector(selectBrlUsdMarketData);
+  const activeMarket = useAppSelector(selectActiveMarketData);
+  const brlUsdMarket = useAppSelector(selectBrlUsdMarketData);
   const { name, decimals } = useAppSelector(selectAXTToken);
   const pools = useAppSelector(selectAllPools);
   const { accountData } = useAccount();
-  const {
-    Ledger: { SignaPrefix },
-  } = useAppContext();
 
   const [axtcReservedBalance, axtcPoolBalances] = useMemo(() => {
     let reservedAXTC = ChainValue.create(decimals);
@@ -108,23 +105,24 @@ export const usePortfolioBalance = (): PortfolioBalance => {
     formatted: "",
   };
 
-  const signaBalance: BalanceType = {
-    balance: Number(accountData?.balanceSigna || "0"),
-    ticker: SignaPrefix.toUpperCase(),
-    formatted: "",
-  };
+  // const signaBalance: BalanceType = {
+  //   balance: Number(accountData?.balanceSigna || "0"),
+  //   ticker: SignaPrefix.toUpperCase(),
+  //   formatted: "",
+  // };
 
   const fiatBalance: BalanceType = {
     balance:
-      signaBalance.balance * signaMarket.current_price +
-      axtcTotalBalance.balance * brlMarket.current_price,
-    ticker: signaMarket.ticker.toUpperCase(),
+      // TODO: signa is not of importance here...
+      // signaBalance.balance * signaMarket.current_price +
+      axtcTotalBalance.balance * brlUsdMarket.current_price,
+    ticker: activeMarket.ticker.toUpperCase(),
     formatted: "",
   };
 
   axtcBalance.formatted = format(axtcBalance);
   axtcTotalBalance.formatted = format(axtcTotalBalance);
-  signaBalance.formatted = format(signaBalance);
+  // signaBalance.formatted = format(signaBalance);
   fiatBalance.formatted = format(fiatBalance);
 
   return {
@@ -133,6 +131,6 @@ export const usePortfolioBalance = (): PortfolioBalance => {
     axtcPoolBalances,
     axtcTotalBalance,
     fiatBalance,
-    signaBalance,
+    // signaBalance,
   };
 };
