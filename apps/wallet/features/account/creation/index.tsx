@@ -132,6 +132,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
   }
 
   async function download() {
+    window.print();
     console.log("Save");
   }
 
@@ -211,7 +212,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
     <>
       <div className="mt-4">
         <Stepper currentStep={currentStep} steps={StepCount} />
-        <div className="carousel w-full touch-none">
+        <div className="carousel w-full touch-none mx-[2px]">
           <div id="step0" className="carousel-item relative w-full">
             <StepDefinePin onPinChange={setPin} />
           </div>

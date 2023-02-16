@@ -92,7 +92,7 @@ export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
       const tx = await onSend(accountId, value);
       setTransactionId(tx.transactionId);
       reset();
-      showSuccess("Successfully updated GMV");
+      showSuccess("Successfully requested token send");
     } catch (e: any) {
       showError(`Something failed: ${e.message}`);
     } finally {

@@ -41,7 +41,7 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
 
   return (
     <IconContext.Provider value={{ size: "1.5em" }}>
-      <div className="btm-nav max-w-[768px] mx-auto">
+      <div className="btm-nav max-w-[768px] mx-auto print:hidden">
         {nav.map((n, index) => {
           const active = router.route === n.route ? "active" : "";
           const btnColor = n.color

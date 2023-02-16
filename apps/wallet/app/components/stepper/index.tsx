@@ -21,7 +21,7 @@ interface Props {
 
 export const Stepper: FC<Props> = ({ currentStep, steps }) => {
   return (
-    <div className="flex flex-row justify-center w-1/2 mx-auto">
+    <div className="flex flex-row justify-center w-1/2 mx-auto print:hidden">
       {Array(steps)
         .fill(1)
         .map((_, i) => (

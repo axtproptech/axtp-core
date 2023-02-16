@@ -115,5 +115,7 @@
   "usdc_payments_description": "Envie o valor para o endereço da blockchain fornecido. Se feito, cole o hash da transação resultante na próxima etapa para confirmar a transferência.",
   "usdc_select_network": "Por favor, escolha sua rede USDC",
   "usdc_select_network_description": "Escolher a rede certa é crucial, ou seus fundos podem ser enviados para lugar nenhum. Se você não tiver certeza, entre em contato conosco.",
-  "my_portfolio": "Mostrar meu portfólio"
+  "my_portfolio": "Mostrar meu portfólio",
+  "your_seed_print_hint": "É muito importante que guarde esta Frase de Recuperação num local seguro. Se você perdê-lo, perderá o acesso à sua conta.",
+  "your_seed_signum_hint": "Esta conta faz parte da Signum Network, uma plataforma blockchain avançada. Você pode usar esta Frase de Recuperação em todo o ecossistema Signum, por ex. negocie tokens criptográficos, crie/compre NFTs e muito mais."
 }
