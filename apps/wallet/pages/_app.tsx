@@ -19,8 +19,7 @@ export { reportWebVitals } from "next-axiom";
 const persistor = persistStore(store);
 
 const handleError = (error: Error, info: { componentStack: string }) => {
-  // todo: define a structure
-  log.error("AXTP Wallet Error Boundary", {});
+  log.error("[Frontend] Error Boundary", { error, info });
 };
 function App({ Component, pageProps }: AppProps) {
   return (
