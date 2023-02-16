@@ -34,7 +34,7 @@ export const ErrorFallback: FC<FallbackProps> = ({
         </div>
         <article className="prose mx-auto">
           <h2 className="text-center">{t("500_title")}</h2>
-          {!Ledger.IsTestNet ? (
+          {Ledger.IsTestNet ? (
             <div className="my-4 mockup-code bg-accent">
               <code className="bg-accent">
                 Message: {error.message} <br />

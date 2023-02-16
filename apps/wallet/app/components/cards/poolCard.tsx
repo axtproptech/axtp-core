@@ -1,5 +1,4 @@
-import { FC, useMemo } from "react";
-import { voidFn } from "@/app/voidFn";
+import { FC, useMemo, useEffect } from "react";
 import { PoolContractData } from "@/types/poolContractData";
 import { Number } from "@/app/components/number";
 import { useAppSelector } from "@/states/hooks";
@@ -130,6 +129,3 @@ export const PoolCard: FC<Props> = ({
     </div>
   );
 };
-function useEffect(arg0: () => void, arg1: string[]) {
-  throw new Error("Function not implemented.");
-}
