@@ -44,10 +44,8 @@ export const PoolCard: FC<Props> = ({
       : parseInt(accountData.balancesPools[index].quantity);
   }, [accountData, poolData]);
 
-  const freeSeats = Math.max(
-    poolData.maxShareQuantity - poolData.token.numHolders,
-    0
-  );
+  const soldTokens = parseFloat(poolData.token.supply);
+  const freeSeats = Math.max(poolData.maxShareQuantity - soldTokens, 0);
   const performance =
     (poolData.grossMarketValue / poolData.nominalLiquidity) * 100 - 100;
 
@@ -101,11 +99,11 @@ export const PoolCard: FC<Props> = ({
             <div className="flex flex-row justify-between items-center">
               <progress
                 className="progress progress-info mr-1"
-                value={poolData.token.numHolders}
+                value={soldTokens}
                 max={poolData.maxShareQuantity}
               />
               <small>
-                {poolData.token.numHolders}/{poolData.maxShareQuantity}
+                {soldTokens}/{poolData.maxShareQuantity}
               </small>
             </div>
             <small>

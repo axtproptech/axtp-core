@@ -1,2 +1,3 @@
-export * from "./Error500";
-export * from "./Error404";
+export * from "./error500";
+export * from "./error404";
+export * from "./errorFallback";

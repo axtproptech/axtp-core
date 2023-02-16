@@ -10,11 +10,17 @@ import { appWithTranslation } from "next-i18next";
 
 import "./globals.css";
 import * as React from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { ErrorFallback } from "@/features/error";
+import { log } from "next-axiom";
 
 export { reportWebVitals } from "next-axiom";
 
 const persistor = persistStore(store);
 
+const handleError = (error: Error, info: { componentStack: string }) => {
+  log.error("[Frontend] Error Boundary", { error, info });
+};
 function App({ Component, pageProps }: AppProps) {
   return (
     <AppContextProvider>
@@ -26,12 +32,14 @@ function App({ Component, pageProps }: AppProps) {
         description=""
         viewport="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
       />
-      <ReduxProvider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <AppInitializer />
-          <Component {...pageProps} />
-        </PersistGate>
-      </ReduxProvider>
+      <ErrorBoundary FallbackComponent={ErrorFallback} onError={handleError}>
+        <ReduxProvider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <AppInitializer />
+            <Component {...pageProps} />
+          </PersistGate>
+        </ReduxProvider>
+      </ErrorBoundary>
     </AppContextProvider>
   );
 }
