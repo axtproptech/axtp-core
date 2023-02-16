@@ -28,15 +28,6 @@ interface Props {
 
 export const BottomNavigation: FC<Props> = ({ nav }) => {
   const router = useRouter();
-
-  useEffect(() => {
-    nav.forEach((n) => {
-      if (n.route) {
-        router.prefetch(n.route);
-      }
-    });
-  }, [router, nav]);
-
   const handleOnClick = (n: BottomNavigationItem) => {
     if (n.back) {
       router.back();
@@ -52,6 +43,9 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
       <div className="btm-nav max-w-[768px] mx-auto print:hidden">
         {nav.map((n, index) => {
           const active = router.route === n.route ? "active" : "";
+          if (n.route) {
+            router.prefetch(n.route);
+          }
           const btnColor = n.color
             ? `rounded-lg btn-${n.color}`
             : "bg-transparent border-0";
