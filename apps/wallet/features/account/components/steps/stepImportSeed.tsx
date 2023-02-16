@@ -86,7 +86,7 @@ export const StepImportSeed: FC<Props> = ({ onSeedChange }) => {
         <>
           <section>
             <QrReader
-              constraints={{}}
+              constraints={{ facingMode: { ideal: "environment" } }}
               onResult={(args) => handleOnResult(args)}
             ></QrReader>
           </section>
