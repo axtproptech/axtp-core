@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { IconContext } from "react-icons";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 
 export interface BottomNavigationItem {
   icon: any;
@@ -28,6 +28,14 @@ interface Props {
 
 export const BottomNavigation: FC<Props> = ({ nav }) => {
   const router = useRouter();
+
+  useEffect(() => {
+    nav.forEach((n) => {
+      if (n.route) {
+        router.prefetch(n.route);
+      }
+    });
+  }, [router, nav]);
 
   const handleOnClick = (n: BottomNavigationItem) => {
     if (n.back) {
