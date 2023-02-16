@@ -36,6 +36,7 @@
     "localforage": "^1.10.0",
     "lottie-react": "^2.3.1",
     "next": "12.2.6",
+    "next-axiom": "^0.17.0",
     "next-i18next": "^11.3.0",
     "next-pwa": "^5.5.4",
     "next-transpile-modules": "^9.0.0",

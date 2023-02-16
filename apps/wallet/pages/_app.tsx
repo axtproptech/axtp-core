@@ -11,6 +11,8 @@ import { appWithTranslation } from "next-i18next";
 import "./globals.css";
 import * as React from "react";
 
+export { reportWebVitals } from "next-axiom";
+
 const persistor = persistStore(store);
 
 function App({ Component, pageProps }: AppProps) {

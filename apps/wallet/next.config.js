@@ -2,6 +2,7 @@
 
 const { i18n } = require("./next-i18next.config");
 const runtimeCaching = require("next-pwa/cache");
+const { withAxiom } = require("next-axiom");
 const withPWA = require("next-pwa")({
   dest: "public",
   runtimeCaching,
@@ -12,9 +13,11 @@ const withTM = require("next-transpile-modules")([
   "react-daisyui",
   "@axtp/core",
 ]);
-module.exports = withPWA(
-  withTM({
-    reactStrictMode: true,
-    i18n,
-  })
+module.exports = withAxiom(
+  withPWA(
+    withTM({
+      reactStrictMode: true,
+      i18n,
+    })
+  )
 );
