@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { IconContext } from "react-icons";
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 
 export interface BottomNavigationItem {
   icon: any;

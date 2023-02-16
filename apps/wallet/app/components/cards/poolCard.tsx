@@ -18,6 +18,8 @@ interface Props {
   className?: string;
 }
 
+const getPoolUrl = (poolId: string) => `/pool/${poolId}`;
+
 export const PoolCard: FC<Props> = ({
   className = "",
   poolData,
@@ -26,6 +28,12 @@ export const PoolCard: FC<Props> = ({
   const { t } = useTranslation();
   const router = useRouter();
   const { name } = useAppSelector(selectAXTToken);
+
+  useEffect(() => {
+    if (poolData.poolId) {
+      router.prefetch(getPoolUrl(poolData.poolId));
+    }
+  }, [poolData.poolId]);
 
   const iconUrl = useMemo(() => {
     if (!poolData) return "";
@@ -57,7 +65,7 @@ export const PoolCard: FC<Props> = ({
     <div className={className}>
       <div
         className="relative card card-side w-full glass cursor-pointer h-full"
-        onClick={() => router.push(`/pool/${poolData.poolId}`)}
+        onClick={() => router.push(getPoolUrl(poolData.poolId))}
       >
         <figure className="ml-8 mt-14 w-[64px] flex-col relative">
           <AttentionSeeker effect="rubberBand" delay={randomDelay}>
@@ -122,3 +130,6 @@ export const PoolCard: FC<Props> = ({
     </div>
   );
 };
+function useEffect(arg0: () => void, arg1: string[]) {
+  throw new Error("Function not implemented.");
+}
