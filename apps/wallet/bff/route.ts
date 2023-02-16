@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withMiddleware, Middleware } from "@/bff/withMiddleware";
-import process from "process";
-import Boom from "@hapi/boom";
 import { requireApiKey } from "@/bff/middlewares/requireApiKey";
+import { log } from "next-axiom";
 
 export type RouteHandlerFunction = (
   req: NextApiRequest,
@@ -39,9 +38,16 @@ export async function route(routeArgs: RouteArgs): Promise<void> {
       `BFF Errored in [${req.method} ${handlerFunction.name}]`,
       err
     );
-    // TODO: using 500 in case of unknown errors - we need another page for it,
-    //  or some other less intrusive treatment, i.e. a message
-    res.status(404).end();
+    log.error("[BFF] Route", {
+      error: err,
+      info: {
+        url: req.url,
+        method: req.method,
+        query: req.query,
+        body: req.body,
+      },
+    });
+    res.status(500).end();
   } finally {
     res.end();
   }
