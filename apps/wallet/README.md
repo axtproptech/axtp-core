@@ -1,3 +1,3 @@
 ## Getting Started
 
-The AXT Wallet
+The AXT Wallet for Customers
