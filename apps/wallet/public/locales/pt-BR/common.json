@@ -41,8 +41,8 @@
   "you_own_n_shares_other": "Possui {{count}} tokens",
   "account_unregistered": "Conta não registrada",
   "no_pool_joined_hint": "Aqui você normalmente veria as pools cujas tokens você detém. Mas não há nada aqui. Que pena!",
-  "404_title": "Ooops, isto vem sem intenção",
-  "404_hint": "Pedimos desculpas por este evento desagradável. Mesmo que haja um pequeno chance de que o problema esteja na frente do monitor, nós nos sentimos plenamente responsável por este percalço. Pedimos a gentileza de voltar ao página anterior.",
+  "404_title": "Oooops, você encontrou um lugar perdido",
+  "404_hint": "Este lugar parece não ter sido reivindicado por nós ainda. Pedimos desculpas por este evento desagradável. Pedimos a gentileza de retornar à página anterior.",
   "404_hint2": "Se este problema persistir, não hesite em nos contatar imediatamente.",
   "500_title": "Woooow, você encontrou um bug! 🐞",
   "500_hint": "Isto é definitivamente por nossa conta e pedimos desculpas por este inconveniente.",
@@ -117,5 +117,9 @@
   "usdc_select_network_description": "Escolher a rede certa é crucial, ou seus fundos podem ser enviados para lugar nenhum. Se você não tiver certeza, entre em contato conosco.",
   "my_portfolio": "Mostrar meu portfólio",
   "your_seed_print_hint": "É muito importante que guarde esta Frase de Recuperação num local seguro. Se você perdê-lo, perderá o acesso à sua conta.",
-  "your_seed_signum_hint": "Esta conta faz parte da Signum Network, uma plataforma blockchain avançada. Você pode usar esta Frase de Recuperação em todo o ecossistema Signum, por ex. negocie tokens criptográficos, crie/compre NFTs e muito mais."
+  "your_seed_signum_hint": "Esta conta faz parte da Signum Network, uma plataforma blockchain avançada. Você pode usar esta Frase de Recuperação em todo o ecossistema Signum, por ex. negocie tokens criptográficos, crie/compre NFTs e muito mais.",
+  "qrscan_failure": "Desculpe, não foi possível escanear o QR Code.",
+  "clear": "Limpar",
+  "download": "Baixar",
+  "regenerate": "Regenerar"
 }

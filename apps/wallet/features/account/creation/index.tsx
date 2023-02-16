@@ -76,12 +76,12 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
       "1": {
         label: "Regenerate",
         onClick: generateSeed,
-        icon: <div>Regenerate</div>,
+        icon: <div>{t("regenerate")}</div>,
       },
       "2": {
         label: "Download",
         onClick: download,
-        icon: <div>Download</div>,
+        icon: <div>{t("download")}</div>,
       },
     };
 
@@ -220,7 +220,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
             <StepSeeNewAccount account={accountAddress} />
           </div>
           <div id="step2" className="carousel-item relative w-full">
-            <StepViewSeed seed={seed} />
+            <StepViewSeed seed={seed} address={accountAddress} />
           </div>
           <div id="step3" className="carousel-item relative w-full">
             <StepVerifySeed seed={seed} onVerificationChange={setIsVerified} />

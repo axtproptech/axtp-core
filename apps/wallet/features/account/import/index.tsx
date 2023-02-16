@@ -67,6 +67,8 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
 
     if (currentStep === Steps.DefinePin) {
       canProceed = pin.length > 4;
+    } else if (currentStep === Steps.ImportSeed) {
+      canProceed = seed.length > 0;
     } else if (currentStep === Steps.Confirm) {
       canProceed = isConfirmed;
     }
@@ -97,7 +99,7 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
       },
     ];
     onStepChange({ steps: StepCount, currentStep, bottomNav });
-  }, [currentStep, pin, isConfirmed, isCreating]);
+  }, [currentStep, pin, isConfirmed, isCreating, seed]);
 
   const tryImportCustomer = useCallback(
     async (publicKey: string) => {

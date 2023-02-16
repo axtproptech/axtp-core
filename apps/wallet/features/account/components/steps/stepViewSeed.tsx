@@ -8,9 +8,10 @@ import { TextLogo } from "@/app/components/logo/textLogo";
 
 interface Props {
   seed: string;
+  address: string;
 }
 
-export const StepViewSeed: FC<Props> = ({ seed }) => {
+export const StepViewSeed: FC<Props> = ({ seed, address }) => {
   const { t } = useTranslation();
   return (
     <>
@@ -41,6 +42,7 @@ export const StepViewSeed: FC<Props> = ({ seed }) => {
         <section className="text-center">
           <TextLogo className="w-1/2 mx-auto" />
           <h2>{t("your_seed")}</h2>
+          <h4>{address}</h4>
         </section>
         <section>
           <HintBox text={""}>
