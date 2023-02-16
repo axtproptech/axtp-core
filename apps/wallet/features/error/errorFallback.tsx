@@ -3,9 +3,8 @@ import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconEr
 import { useTranslation } from "next-i18next";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { FallbackProps } from "react-error-boundary";
-import { useRouter } from "next/router";
 import { Button } from "react-daisyui";
-import { RiHome6Line, RiRestartLine, RiWallet3Line } from "react-icons/ri";
+import { RiHome6Line, RiRestartLine } from "react-icons/ri";
 import { Container } from "@/app/components/layout/container";
 import {
   BottomNavigation,
