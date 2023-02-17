@@ -41,7 +41,7 @@ export const Config = {
     ),
     ExplorerUrl:
       process.env.NEXT_PUBLIC_LEDGER_EXPLORER_URL ||
-      "https//t-chain.signum.network",
+      "https://t-chain.signum.network",
     ActivationServiceUrl:
       process.env.NEXT_PUBLIC_LEDGER_ACTIVATION_SERVICE_URL ||
       "https://signum-account-activator-ohager.vercel.app",

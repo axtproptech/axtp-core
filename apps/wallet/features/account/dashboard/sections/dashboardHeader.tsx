@@ -35,12 +35,7 @@ export const DashboardHeader: FC<Props> = ({
   const { name } = useAppSelector(selectAXTToken);
   const brlUsdMarket = useAppSelector(selectBrlUsdMarketData);
   const { t } = useTranslation();
-  const router = useRouter();
   const { Ledger } = useAppContext();
-
-  const handleOnClickInactive = async () => {
-    await router.push("/account/activate");
-  };
 
   const chartData = useMemo<PieChartDatum[]>(() => {
     const balances = axtcPoolBalances.map((pb, i) => {
@@ -97,15 +92,6 @@ export const DashboardHeader: FC<Props> = ({
               </h5>
             </div>
             <div className="flex flex-col">
-              {!accountData.isActive && (
-                <Badge
-                  className="my-1 cursor-pointer"
-                  color="warning"
-                  onClick={handleOnClickInactive}
-                >
-                  {t("account_unregistered")}
-                </Badge>
-              )}
               <VerificationBadge verificationLevel={verificationLevel} />
             </div>
           </div>
