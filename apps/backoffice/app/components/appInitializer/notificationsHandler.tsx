@@ -49,7 +49,7 @@ function getMasterContractNotifications(
   if (isApprovalRequested(masterContract.approvalStatusSendToPool)) {
     notifications.push({
       icon: "approval",
-      link: `/admin/pools/${masterContract.currentSendPoolAddress}`,
+      link: `/admin/liquidity`,
       title: "Pending Liquidity Transfer Approval",
       message: `There is a pending Liquidity Transfer of ${masterContract.approvalStatusSendToPool.quantity} ${masterContract.token.name} for a Pool.`,
     });

@@ -12,7 +12,7 @@ import { SucceededTransactionSection } from "@/app/components/sections/succeeded
 import { useEffect, useMemo, useState } from "react";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
-import { toStableCoinQuantity } from "@/app/tokenQuantity";
+import { toStableCoinAmount, toStableCoinQuantity } from "@/app/tokenQuantity";
 import { useTheme } from "@mui/material/styles";
 import { useAppSelector } from "@/states/hooks";
 import { selectAllPools } from "@/app/states/poolsState";
@@ -40,10 +40,10 @@ export const SendToPoolActionCard = () => {
   const pool = watch("pool");
 
   const handleOnSendAction = () => {
-    const amountQuantity = toStableCoinQuantity(floatAmount.toString(10));
+    const amount = toStableCoinQuantity(floatAmount.toString(10));
     const poolId = pools[Number(pool)].poolId;
     execute((service) =>
-      service.masterContract.requestSendToPool(amountQuantity, poolId)
+      service.masterContract.requestSendToPool(amount, poolId)
     );
   };
 

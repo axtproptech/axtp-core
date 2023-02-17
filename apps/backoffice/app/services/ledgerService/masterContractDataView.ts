@@ -162,8 +162,10 @@ export class MasterContractDataView {
     approved3 && approvedAccounts.push(approved3);
     approved4 && approvedAccounts.push(approved4);
 
-    const quantity = this.view.getVariableAsDecimal(
-      MasterContractDataIndex.PendingSendToPoolToken
+    const quantity = toStableCoinAmount(
+      this.view.getVariableAsDecimal(
+        MasterContractDataIndex.PendingSendToPoolToken
+      )
     );
 
     return {
