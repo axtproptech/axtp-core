@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 const marketService = new MarketService();
 
-const PollingInterval = 60 * 5 * 1000;
+const PollingInterval = 20 * 60 * 1000; // 20 Minutes
 
 const swrPollingOptions = {
   dedupingInterval: PollingInterval - 1_000,

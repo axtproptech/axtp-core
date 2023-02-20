@@ -170,7 +170,7 @@ model Payment {
   id                   Int      @id @default(autoincrement())
   createdAt            DateTime @default(now())
   customer             Customer @relation(fields: [customerId], references: [id])
-  customerId           Int      @unique
+  customerId           Int
   updatedAt            DateTime @updatedAt
   accountId            String
   type                 String
@@ -180,7 +180,7 @@ model Payment {
   tokenQuantity        Int
   transactionId        String  @unique
   status               PaymentStatus
-  recordId             String  @unique
+  recordId             String  @unique // transaction id on Signum
   processedRecordId    String? // proof of processing
   cancelRecordId       String? // proof of cancellation
   observations         String? @db.Text

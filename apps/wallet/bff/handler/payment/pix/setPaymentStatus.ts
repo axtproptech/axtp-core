@@ -1,5 +1,10 @@
 import { RouteHandlerFunction } from "@/bff/route";
 import { sha256 } from "@/bff/sha256";
+import { NextApiRequest } from "next";
+import * as process from "process";
+import { getEnvVar } from "@/bff/getEnvVar";
+import { handleError } from "@/bff/handler/handleError";
+import { recordPayment } from "@/bff/handler/payment/recordPayment";
 
 /*
 
@@ -123,16 +128,39 @@ Expected format from PagSeguro
 }
  */
 
-export const setPaymentStatus: RouteHandlerFunction = async (req, res) => {
-  // 1. Authenticate PagSeguro
-  // 2. Create Payment record
-
-  const { customerId, accountId, poolId, quantity, amountBrl } = req.body;
-  const txId = sha256(
-    `${customerId}.${accountId}.${poolId}.${quantity}.${amountBrl}`
+function isProviderAuthenticated(req: NextApiRequest): boolean {
+  const payload = req.body;
+  const authToken = (req.headers["x-authenticity-token"] || "") as string;
+  const validationDigest = sha256(
+    `${getEnvVar("NEXT_SERVER_PIX_API_TOKEN")}-${JSON.stringify(payload)}`
   );
+  return authToken.toLowerCase() === validationDigest.toLowerCase();
+}
 
-  // TODO create charge - pagseguro
+function isProcessableRequest(req: NextApiRequest): boolean {
+  return (req.headers["x-authenticity-token"] || "").length > 0;
+}
+
+// This is called by the pix provider via webhook... it's the callback
+export const setPaymentStatus: RouteHandlerFunction = async (req, res) => {
+  // PagSeguro sends not only payment status messages, but also notifications...
+  if (!isProcessableRequest(req)) {
+    console.log("[BFF] - ");
+    return res.status(501).end();
+  }
+
+  // 1. Authenticate PagSeguro
+  if (!isProviderAuthenticated(req)) {
+    console.error(
+      "[BFF] - setPaymentStatus: Could not authenticate PIX provider"
+    );
+    return res.status(403).end();
+  }
+
+  // we "cannot" store the permanent record here, as the data from PIX provider is incomplete,
+  // and gathering them all here requires several requests to database. So, no further action here (yet)
+  // atm, we might wanna use this function merely for logging/developing reasons...
+  // We will use the getPaymentStatus method and check by polling. On the frontend we have all information
 
   res.status(200).end();
 };

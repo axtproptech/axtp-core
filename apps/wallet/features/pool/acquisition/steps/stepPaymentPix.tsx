@@ -11,7 +11,7 @@ import { NewPixPaymentResponse } from "@/bff/types/newPixPaymentResponse";
 import { useAccount } from "@/app/hooks/useAccount";
 import useSWR from "swr";
 import { Button } from "react-daisyui";
-import { RiQrCodeFill } from "react-icons/ri";
+import { RiCheckboxCircleLine, RiQrCodeFill } from "react-icons/ri";
 import { AttentionSeeker } from "react-awesome-reveal";
 import * as React from "react";
 import { Countdown } from "@/app/components/countdown";
@@ -90,12 +90,10 @@ export const StepPaymentPix: FC<Props> = ({
   useEffect(() => {
     if (!customer) return;
     if (!payment) return;
-    if (!isFetching) return;
     if (!(paymentStatus && paymentStatus.status === "confirmed")) {
       return;
     }
 
-    setIsFetching(true);
     PaymentService.createPaymentRecord({
       paymentType: "pix",
       txId: payment.txId,
@@ -109,14 +107,12 @@ export const StepPaymentPix: FC<Props> = ({
       accountPk: accountPublicKey,
     })
       .then(() => {
+        showSuccess(t("pix_success"));
         onStatusChange("confirmed");
       })
       .catch((e) => {
         console.error("Problems while payment", e.message);
         showError(t("pix_error_create_record"));
-      })
-      .finally(() => {
-        setIsFetching(false);
       });
   }, [paymentStatus]); // listen only to paymentstatus
 
@@ -148,49 +144,57 @@ export const StepPaymentPix: FC<Props> = ({
           </div>
         </HintBox>
       </section>
-      <section className="w-[300px] mx-auto">
-        {payment && (
-          <div className="flex justify-center">
-            <Countdown
-              seconds={5 * 60}
-              onTimeout={handleTimeout}
-              className={"font-mono text-xl"}
-            />
-          </div>
-        )}
-        <div className="bg-white rounded p-2 max-w-[200px] lg:max-w-[240px] mx-auto relative">
-          <img
-            className="m-0 pb-1 h-[28px] mx-auto"
-            src="/assets/img/pix-logo.svg"
-          />
-          <div className={`${!payment ? "blur-sm" : ""}`}>
-            <QRCode
-              size={256}
-              style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-              value={payment ? payment.pixUrl : DummyPayload}
-              viewBox={`0 0 256 256`}
-            />
-          </div>
-          {!payment && (
-            <div className="absolute top-1/2 lg:left-[64px] left-[38px] drop-shadow-lg">
-              <Button
-                color="primary"
-                onClick={handleCreatePixPaymentUrl}
-                loading={isFetching}
-              >
-                <AttentionSeeker delay={4000} effect="heartBeat">
-                  <RiQrCodeFill className="mr-2" />
-                </AttentionSeeker>
-                {t("pix_generate")}
-              </Button>
+      {(!paymentStatus || paymentStatus.status !== "confirmed") && (
+        <section className="w-[300px] mx-auto">
+          {payment && (
+            <div className="flex justify-center">
+              <Countdown
+                seconds={5 * 60}
+                onTimeout={handleTimeout}
+                className={"font-mono text-xl"}
+              />
             </div>
           )}
-        </div>
-        <CopyButton
-          textToCopy={payment ? payment.txId : ""}
-          disabled={!payment}
-        />
-      </section>
+          <div className="bg-white rounded p-2 max-w-[200px] lg:max-w-[240px] mx-auto relative">
+            <img
+              className="m-0 pb-1 h-[28px] mx-auto"
+              src="/assets/img/pix-logo.svg"
+              alt="Pix Logo"
+            />
+            <div className={`${!payment ? "blur-sm" : ""}`}>
+              <QRCode
+                size={256}
+                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                value={payment ? payment.pixUrl : DummyPayload}
+                viewBox={`0 0 256 256`}
+              />
+            </div>
+            {!payment && (
+              <div className="absolute top-1/2 lg:left-[64px] left-[38px] drop-shadow-lg">
+                <Button
+                  color="primary"
+                  onClick={handleCreatePixPaymentUrl}
+                  loading={isFetching}
+                >
+                  <AttentionSeeker delay={4000} effect="heartBeat">
+                    <RiQrCodeFill className="mr-2" />
+                  </AttentionSeeker>
+                  {t("pix_generate")}
+                </Button>
+              </div>
+            )}
+          </div>
+          <CopyButton
+            textToCopy={payment ? payment.txId : ""}
+            disabled={!payment}
+          />
+        </section>
+      )}
+      {paymentStatus && paymentStatus.status === "confirmed" && (
+        <AttentionSeeker effect="tada" className="text-center">
+          <RiCheckboxCircleLine size={92} className="w-full" />
+        </AttentionSeeker>
+      )}
       <section></section>
     </div>
   );

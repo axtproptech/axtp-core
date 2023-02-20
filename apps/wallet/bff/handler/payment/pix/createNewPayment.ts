@@ -6,10 +6,8 @@ import * as process from "process";
 import { prisma } from "@axtp/db";
 import { NextApiRequest } from "next/types";
 import { badRequest, notFound } from "@hapi/boom";
-import { log } from "next-axiom";
-
-const TestPayload =
-  "00020126830014br.gov.bcb.pix2561api.pagseguro.com/pix/v2/210387E0-A6BF-45D1-80B5-CFEB9BBCEE2F5204899953039865802BR5921Pagseguro Internet SA6009SAO PAULO62070503***63047E6D";
+import { getEnvVar } from "@/bff/getEnvVar";
+import { createPixProviderClient } from "@/bff/createPixProviderClient";
 
 /*
 {
@@ -41,26 +39,24 @@ const TestPayload =
 }
  */
 
-const PixProviderClient = HttpClientFactory.createHttpClient(
-  process.env.NEXT_SERVER_PIX_PROVIDER_URL || "",
-  {
-    headers: {
-      Authorization: `Bearer ${process.env.NEXT_SERVER_PIX_API_TOKEN || ""}`,
-    },
-  }
-);
-
 function getWebHookUrl(req: NextApiRequest) {
+  const CallbackEndpoint = "/api/public/pix/pagseg";
+
+  const webhookUrl = getEnvVar("NEXT_SERVER_PIX_WEBHOOK_URL");
+  if (webhookUrl) {
+    return `${webhookUrl}${CallbackEndpoint}`;
+  }
+
   return (
     (process.env.NODE_ENV === "development" ? "http://" : "https://") +
     req.headers.host +
-    "/api/public/pix/pagseg"
+    CallbackEndpoint
   );
 }
 
 export const createNewPayment: RouteHandlerFunction = async (req, res) => {
   const { customerId, accountId, tokenName, quantity, amountBrl } = req.body;
-  const amount = parseFloat(amountBrl);
+  const amount = parseFloat(amountBrl) * 100; // payment is in BRL cent
   const qnt = parseFloat(quantity);
 
   if (
@@ -111,7 +107,7 @@ export const createNewPayment: RouteHandlerFunction = async (req, res) => {
     qr_codes: [
       {
         amount: {
-          value: amountBrl,
+          value: amount,
         },
         expiration_date: new Date(expiration).toISOString(),
       },
@@ -119,7 +115,7 @@ export const createNewPayment: RouteHandlerFunction = async (req, res) => {
     notification_urls: [getWebHookUrl(req)],
   };
 
-  const { response } = await PixProviderClient.post("/orders", payment);
+  const { response } = await createPixProviderClient().post("/orders", payment);
 
   console.log("[BFF] - createNewPayment", response);
 
