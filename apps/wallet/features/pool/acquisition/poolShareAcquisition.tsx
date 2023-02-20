@@ -10,7 +10,6 @@ import {
   StepSelectQuantity,
   PaymentMethod,
   StepSelectPaymentMethod,
-  StepPaymentUsdc1,
   StepPaymentUsdc2,
   StepPaymentUsdc3,
 } from "./steps";
@@ -29,7 +28,7 @@ const StepRoutes = {
   usdc: [
     "quantity",
     "paymentMethod",
-    "paymentUsdc-1",
+    // "paymentUsdc-1",
     "paymentUsdc-2",
     "paymentUsdc-3",
   ],
@@ -48,6 +47,8 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
+
+  // TODO: atm, we support only one network - ETH. But  code for more is already implemented
   const [usdcProtocol, setUsdcProtocol] =
     useState<BlockchainProtocolType>("eth");
   const [paid, setPaid] = useState<boolean>(false);
@@ -162,13 +163,13 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
         )}
         {paymentMethod === "usdc" && (
           <>
-            <div id="paymentUsdc-1" className="carousel-item relative w-full">
-              <StepPaymentUsdc1
-                onProtocolChange={(network) => setUsdcProtocol(network)}
-                quantity={quantity}
-                poolId={pool.poolId}
-              />
-            </div>
+            {/*<div id="paymentUsdc-1" className="carousel-item relative w-full">*/}
+            {/*  <StepPaymentUsdc1*/}
+            {/*    onProtocolChange={(network) => setUsdcProtocol(network)}*/}
+            {/*    quantity={quantity}*/}
+            {/*    poolId={pool.poolId}*/}
+            {/*  />*/}
+            {/*</div>*/}
             <div id="paymentUsdc-2" className="carousel-item relative w-full">
               <StepPaymentUsdc2
                 quantity={quantity}
