@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { protectedRoute } from "@/bff/route";
-import { getChargeStatus } from "@/bff/handler/payment/pix/getChargeStatus";
+import { getPaymentStatus } from "@/bff/handler/payment/pix/getPaymentStatus";
 
 export default function handler(
   req: NextApiRequest,
@@ -9,6 +9,6 @@ export default function handler(
   return protectedRoute({
     req,
     res,
-    get: getChargeStatus,
+    get: getPaymentStatus,
   });
 }

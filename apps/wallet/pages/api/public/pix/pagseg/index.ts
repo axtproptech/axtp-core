@@ -1,14 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { protectedRoute } from "@/bff/route";
-import { createNewPayment } from "@/bff/handler/payment/pix/createNewPayment";
+import { route } from "@/bff/route";
+import { setPaymentStatus } from "@/bff/handler/payment/pix/setPaymentStatus";
 
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<unknown> {
-  return protectedRoute({
+  return route({
     req,
     res,
-    post: createNewPayment,
+    post: setPaymentStatus,
   });
 }

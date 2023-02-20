@@ -8,7 +8,7 @@ import { CopyButton } from "@/app/components/buttons/copyButton";
 import { AnimatedIconQrCode } from "@/app/components/animatedIcons/animatedIconQrCode";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useNotification } from "@/app/hooks/useNotification";
-import { NewChargeResponse } from "@/bff/types/newChargeResponse";
+import { NewPixPaymentResponse } from "@/bff/types/newPixPaymentResponse";
 import { useAccount } from "@/app/hooks/useAccount";
 import useSWR from "swr";
 import { Button } from "react-daisyui";

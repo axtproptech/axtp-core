@@ -1,18 +1,17 @@
 import { useTranslation } from "next-i18next";
 import { FC, useEffect, useState } from "react";
 import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePaymentCalculator";
-import { Number } from "@/app/components/number";
 import { HintBox } from "@/app/components/hintBox";
 import QRCode from "react-qr-code";
 import { CopyButton } from "@/app/components/buttons/copyButton";
 import { AnimatedIconQrCode } from "@/app/components/animatedIcons/animatedIconQrCode";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useNotification } from "@/app/hooks/useNotification";
-import { NewChargeResponse } from "@/bff/types/newChargeResponse";
+import { NewPixPaymentResponse } from "@/bff/types/newPixPaymentResponse";
 import { useAccount } from "@/app/hooks/useAccount";
 import useSWR from "swr";
 import { Button } from "react-daisyui";
-import { RiClipboardLine, RiQrCodeFill } from "react-icons/ri";
+import { RiQrCodeFill } from "react-icons/ri";
 import { AttentionSeeker } from "react-awesome-reveal";
 import * as React from "react";
 import { Countdown } from "@/app/components/countdown";
@@ -28,7 +27,7 @@ interface Props {
 }
 
 const DummyPayload =
-  "00020126830014br.gov.bcb.pix2561api.pagseguro.com/pix/v2/210387E0-A6BF-45D1-80B5-CFEB9BBCEE2F5204899953039865802BR5921Pagseguro Internet SA6009SAO PAULO62070503***63047E6D";
+  "00020101021226850014br.gov.bcb.pix2563api-h.pagseguro.com/pix/v2/B79D624F-EB26-4F88-B5C6-6B1B7D31EC6127600016BR.COM.PAGSEGURO0136B79D624F-EB26-4F88-B5C6-6B1B7D31EC6152048999530398654045.005802BR5922AXT PropTech Company S6007JUNDIAI62070503***6304DFB6";
 
 export const StepPaymentPix: FC<Props> = ({
   onStatusChange,
@@ -42,19 +41,17 @@ export const StepPaymentPix: FC<Props> = ({
   const { totalBRL } = usePaymentCalculator(quantity, poolId);
   const [isFetching, setIsFetching] = useState(false);
   const { showError, showSuccess } = useNotification();
-  const [paymentCharge, setPaymentCharge] = useState<NewChargeResponse | null>(
-    null
-  );
+  const [payment, setPayment] = useState<NewPixPaymentResponse | null>(null);
 
   const { data: paymentStatus } = useSWR(
-    paymentCharge ? `/payment/${paymentCharge.txId}` : null,
+    payment ? `/payment/${payment.txId}` : null,
     async () => {
-      if (!paymentCharge?.txId) return null;
+      if (!payment?.txId) return null;
       try {
-        return await PaymentService.getPixPaymentStatus(paymentCharge.txId);
+        return await PaymentService.getPixPaymentStatus(payment.txId);
       } catch (e: any) {
         console.warn(
-          `Could not get payment status for transaction ${paymentCharge.txId}`
+          `Could not get payment status for transaction ${payment.txId}`
         );
         throw e;
       }
@@ -71,17 +68,19 @@ export const StepPaymentPix: FC<Props> = ({
     setIsFetching(true);
     PaymentService.createPixPaymentUrl({
       amountBrl: totalBRL,
-      quantity,
+      quantity: Number(
+        ChainValue.create(token.decimals).setCompound(quantity).getCompound()
+      ),
       accountId,
       customerId: customer.customerId,
-      poolId,
+      tokenName: token.name,
     })
       .then((response) => {
-        setPaymentCharge(response);
+        setPayment(response);
       })
       .catch((e) => {
         console.error("Problems while payment", e.message);
-        showError(t("pix_error_creating_charge"));
+        showError(new Error(t("pix_error_creating_charge")));
       })
       .finally(() => {
         setIsFetching(false);
@@ -90,7 +89,7 @@ export const StepPaymentPix: FC<Props> = ({
 
   useEffect(() => {
     if (!customer) return;
-    if (!paymentCharge) return;
+    if (!payment) return;
     if (!isFetching) return;
     if (!(paymentStatus && paymentStatus.status === "confirmed")) {
       return;
@@ -99,7 +98,7 @@ export const StepPaymentPix: FC<Props> = ({
     setIsFetching(true);
     PaymentService.createPaymentRecord({
       paymentType: "pix",
-      txId: paymentCharge.txId,
+      txId: payment.txId,
       tokenId: token.id,
       tokenQnt: ChainValue.create(token.decimals)
         .setCompound(quantity)
@@ -122,11 +121,11 @@ export const StepPaymentPix: FC<Props> = ({
   }, [paymentStatus]); // listen only to paymentstatus
 
   useEffect(() => {
-    setPaymentCharge(null);
+    setPayment(null);
   }, [totalBRL]);
 
   const handleTimeout = () => {
-    setPaymentCharge(null);
+    setPayment(null);
   };
 
   // TODO: Success when payment is done successfully
@@ -150,7 +149,7 @@ export const StepPaymentPix: FC<Props> = ({
         </HintBox>
       </section>
       <section className="w-[300px] mx-auto">
-        {paymentCharge && (
+        {payment && (
           <div className="flex justify-center">
             <Countdown
               seconds={5 * 60}
@@ -164,17 +163,21 @@ export const StepPaymentPix: FC<Props> = ({
             className="m-0 pb-1 h-[28px] mx-auto"
             src="/assets/img/pix-logo.svg"
           />
-          <div className={`${!paymentCharge ? "blur-sm" : ""}`}>
+          <div className={`${!payment ? "blur-sm" : ""}`}>
             <QRCode
               size={256}
               style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-              value={paymentCharge ? paymentCharge.pixUrl : DummyPayload}
+              value={payment ? payment.pixUrl : DummyPayload}
               viewBox={`0 0 256 256`}
             />
           </div>
-          {!paymentCharge && (
-            <div className="absolute top-1/2 lg:left-[64px] left-[38px] drop-shadow">
-              <Button color="primary" onClick={handleCreatePixPaymentUrl}>
+          {!payment && (
+            <div className="absolute top-1/2 lg:left-[64px] left-[38px] drop-shadow-lg">
+              <Button
+                color="primary"
+                onClick={handleCreatePixPaymentUrl}
+                loading={isFetching}
+              >
                 <AttentionSeeker delay={4000} effect="heartBeat">
                   <RiQrCodeFill className="mr-2" />
                 </AttentionSeeker>
@@ -184,8 +187,8 @@ export const StepPaymentPix: FC<Props> = ({
           )}
         </div>
         <CopyButton
-          textToCopy={paymentCharge ? paymentCharge.txId : ""}
-          disabled={!paymentCharge}
+          textToCopy={payment ? payment.txId : ""}
+          disabled={!payment}
         />
       </section>
       <section></section>
