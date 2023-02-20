@@ -5,9 +5,10 @@ import { HttpClientFactory } from "@signumjs/http";
 import * as process from "process";
 import { prisma } from "@axtp/db";
 import { NextApiRequest } from "next/types";
-import { badRequest, notFound } from "@hapi/boom";
+import { badRequest, boomify, notFound } from "@hapi/boom";
 import { getEnvVar } from "@/bff/getEnvVar";
 import { createPixProviderClient } from "@/bff/createPixProviderClient";
+import { array, number, object, string, date } from "yup";
 
 /*
 {
@@ -53,6 +54,35 @@ function getWebHookUrl(req: NextApiRequest) {
     CallbackEndpoint
   );
 }
+
+const ISODateRegex =
+  /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)$/;
+
+const PaymentSchema = object({
+  reference_id: string().required().min(1).max(200),
+  customer: object({
+    name: string().required().min(1).max(30),
+    email: string().required().min(10).max(255).email(),
+    tax_id: string()
+      .required()
+      .matches(/^\d{11}$|^\d{14}$/g),
+    phones: array().ensure(), // we don't use that
+  }),
+  items: array().of(
+    object({
+      name: string().required().min(1).max(64),
+      quantity: number().positive().max(99999),
+      unit_amount: number().positive().max(999999999),
+    })
+  ),
+  qr_codes: array().of(
+    object({
+      amount: object({ value: number().positive() }),
+      expiration_date: string().required().matches(ISODateRegex),
+    })
+  ),
+  notification_urls: array().of(string()).max(1).min(1),
+});
 
 export const createNewPayment: RouteHandlerFunction = async (req, res) => {
   const { customerId, accountId, tokenName, quantity, amountBrl } = req.body;
@@ -115,12 +145,22 @@ export const createNewPayment: RouteHandlerFunction = async (req, res) => {
     notification_urls: [getWebHookUrl(req)],
   };
 
-  const { response } = await createPixProviderClient().post("/orders", payment);
-
-  console.log("[BFF] - createNewPayment", response);
-
-  res.status(200).json({
-    txId,
-    pixUrl: response.qr_codes[0].text,
-  } as NewPixPaymentResponse);
+  try {
+    const validatedPayment = await PaymentSchema.validate(payment, {
+      strict: true,
+    });
+    const { response } = await createPixProviderClient().post(
+      "/orders",
+      validatedPayment
+    );
+    console.log("[BFF] - createNewPayment", response);
+    res.status(200).json({
+      txId,
+      pixUrl: response.qr_codes[0].text,
+    } as NewPixPaymentResponse);
+  } catch (e: any) {
+    const boom = boomify(e);
+    boom.output.statusCode = 400;
+    res.status(boom.output.statusCode).json(boom.output);
+  }
 };

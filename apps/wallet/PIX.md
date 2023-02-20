@@ -29,6 +29,8 @@ Easiest way is [ngrok](https://ngrok.com/)!
 
 You need to set the `NEXT_SERVER_PIX_WEBHOOK_URL` with the URL that (in case of ngrok) looks like this `https://a3f6-201-43-222-21.sa.ngrok.io`
 
+More on [PagSeguro API here](https://documenter.getpostman.com/view/10863174/TVetc6HV)
+
 ### Simulating a payment
 
 To simulate a payment follow this procedure
