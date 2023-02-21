@@ -9,4 +9,6 @@ export interface PaymentRecord {
   paymentType: PaymentType;
   paymentTransactionId: string;
   paymentAmount: string;
+  paymentUsd: string;
+  paymentCurrency: string;
 }

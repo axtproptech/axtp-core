@@ -12,6 +12,8 @@ export function createSRC44PaymentRecord(args: PaymentRecord): DescriptorData {
     .setCustomField("x-tqnt", args.tokenQuantity)
     .setCustomField("x-pt", args.paymentType)
     .setCustomField("x-pa", args.paymentAmount)
+    .setCustomField("x-usd", args.paymentUsd)
+    .setCustomField("x-cur", args.paymentCurrency)
     .setCustomField("x-ptx", args.paymentTransactionId)
     .build();
 }
@@ -29,6 +31,8 @@ export function getPaymentRecordFromSRC44(
     tokenQuantity: cx("x-tqnt"),
     paymentType: cx("x-pt") as PaymentType,
     paymentAmount: cx("x-pa"),
+    paymentCurrency: cx("x-cur"),
+    paymentUsd: cx("x-usd"),
     paymentTransactionId: cx("x-ptx"),
   };
 }

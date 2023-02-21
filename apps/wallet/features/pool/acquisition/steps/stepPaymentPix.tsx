@@ -39,7 +39,7 @@ export const StepPaymentPix: FC<Props> = ({
   const { PaymentService, TrackingEventService } = useAppContext();
   const { accountId, customer, accountPublicKey } = useAccount();
   const { token } = useAppSelector(selectPoolContractState(poolId));
-  const { totalBRL } = usePaymentCalculator(quantity, poolId);
+  const { totalBRL, totalAXTC } = usePaymentCalculator(quantity, poolId);
   const [isFetching, setIsFetching] = useState(false);
   const { showError, showSuccess } = useNotification();
   const [payment, setPayment] = useState<NewPixPaymentResponse | null>(null);
@@ -97,6 +97,8 @@ export const StepPaymentPix: FC<Props> = ({
 
     PaymentService.createPaymentRecord({
       paymentType: "pix",
+      currency: "BRL",
+      usd: totalAXTC.toString(),
       txId: payment.txId,
       tokenId: token.id,
       tokenQnt: ChainValue.create(token.decimals)

@@ -48,7 +48,7 @@ export class PaymentRecordService {
     })) as TransactionId;
   }
 
-  public async getAllPaymentRecords(
+  public async getAllPaymentRecordsFromChain(
     recipientPublicKey: string,
     recipientAgreementKey: string
   ) {

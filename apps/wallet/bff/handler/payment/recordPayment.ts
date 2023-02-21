@@ -14,8 +14,10 @@ export const recordPayment = async (
     poolId,
     tokenId,
     tokenQnt,
+    usd,
     amount,
     paymentType,
+    currency,
     txId,
   } = args;
 
@@ -38,7 +40,9 @@ export const recordPayment = async (
     poolId,
     tokenId,
     tokenQuantity: tokenQnt,
+    paymentUsd: usd,
     paymentAmount: amount,
+    paymentCurrency: currency,
     paymentTransactionId: txId,
     paymentType,
     customerId,

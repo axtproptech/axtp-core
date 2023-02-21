@@ -86,6 +86,8 @@ export const StepPaymentUsdc3: FC<Props> = ({
           poolId,
           paymentType: protocolToPaymentType(protocol),
           amount: totalAXTC.toString(),
+          usd: totalAXTC.toString(),
+          currency: "USDC",
           txId: transactionHash,
           tokenId: token.id,
           customerId: customer.customerId,

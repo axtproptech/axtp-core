@@ -9,4 +9,6 @@ export interface RegisterPaymentRequest {
   amount: string;
   paymentType: RegisterPaymentType;
   txId: string;
+  usd: string;
+  currency: string;
 }

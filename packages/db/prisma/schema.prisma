@@ -175,6 +175,8 @@ model Payment {
   accountId            String
   type                 String
   amount               Decimal
+  usd                  Decimal?
+  currency             String?
   poolId               String
   tokenId              String
   tokenQuantity        Int
