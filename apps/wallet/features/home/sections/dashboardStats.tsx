@@ -3,13 +3,15 @@ import { FC, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { getCompactFormatter } from "@/app/getCompactFormatter";
+import { Number } from "@/app/components/number";
 
 const Stat = Stats.Stat;
 
 interface StatsType {
-  initialShareholderValue: number;
+  totalCurrentGMV: number;
+  performancePercent: number;
   shareholderCount: number;
-  paidDividends: number;
+  totalPaidDividends: number;
   poolsCount: number;
 }
 
@@ -25,39 +27,41 @@ export const DashboardStats: FC<Props> = ({ stats }) => {
     [locale]
   );
 
-  const performance = stats.initialShareholderValue
-    ? ((stats.initialShareholderValue + stats.paidDividends) /
-        stats.initialShareholderValue) *
-        100 -
-      100
-    : 0;
   return (
     <div>
       <Stats className="stats-vertical lg:stats-horizontal shadow w-full">
         <Stat className="place-items-center">
-          <Stat.Item variant="title">{t("total_shv")}</Stat.Item>
+          <Stat.Item variant="title">{t("total_gmv")}</Stat.Item>
           <Stat.Item variant="value">
-            {compactFormatter.format(
-              stats.initialShareholderValue + stats.paidDividends
-            )}
+            {compactFormatter.format(stats.totalCurrentGMV)}
           </Stat.Item>
           <Stat.Item variant="desc">
             {t("in_n_pools", { count: stats.poolsCount })}
           </Stat.Item>
         </Stat>
         <Stat className="place-items-center">
-          <Stat.Item variant="title">{t("total_paid_divs")}</Stat.Item>
-          <Stat.Item variant="value">
-            {compactFormatter.format(stats.paidDividends)}
-          </Stat.Item>
-          <Stat.Item variant="desc">
-            {t("to_n_holders", { count: stats.shareholderCount })}
+          <Stat.Item variant="title">{t("overall_performance")}</Stat.Item>
+          <Stat.Item
+            variant="value"
+            className={
+              stats.performancePercent > 0 ? "text-green-400" : "text-red-500"
+            }
+          >
+            <Number
+              value={stats.performancePercent}
+              prefix={stats.performancePercent > 0 ? "+" : "-"}
+              suffix="%"
+              decimals={2}
+            />
           </Stat.Item>
         </Stat>
         <Stat className="place-items-center">
-          <Stat.Item variant="title">{t("overall_performance")}</Stat.Item>
-          <Stat.Item variant="value" className="text-success">
-            {performance.toFixed(2)} %{" "}
+          <Stat.Item variant="title">{t("total_paid_divs")}</Stat.Item>
+          <Stat.Item variant="value">
+            {compactFormatter.format(stats.totalPaidDividends)}
+          </Stat.Item>
+          <Stat.Item variant="desc">
+            {t("to_n_holders", { count: stats.shareholderCount })}
           </Stat.Item>
         </Stat>
       </Stats>

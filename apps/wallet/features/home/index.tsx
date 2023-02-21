@@ -8,19 +8,32 @@ import { PoolList } from "@/app/components/poolList";
 import { useAccount } from "@/app/hooks/useAccount";
 import { VerificationStatus } from "@/app/components/verificationStatus";
 import { JoinClubButton } from "@/app/components/buttons/joinClubButton";
-import { useRouter } from "next/router";
 import { ShowAccountButton } from "@/app/components/buttons/showAccountButton";
 
 export const Home = () => {
   const pools = useAppSelector(selectAllPools);
   const { accountId, customer } = useAccount();
   const stats = useMemo(() => {
+    let totalCurrentGMV = 0;
+    let totalPaidDividends = 0;
+    let shareholderCount = 0;
+    let initialGMV = 0;
+    const poolsCount = pools.length;
+    for (const p of pools) {
+      totalCurrentGMV += p.grossMarketValue;
+      totalPaidDividends += p.paidDistribution;
+      shareholderCount += p.token.numHolders;
+      initialGMV += p.nominalLiquidity;
+    }
+
     // TODO: calc the correct values
     return {
-      initialShareholderValue: 10_000_000,
-      shareholderCount: 352,
-      poolsCount: 2,
-      paidDividends: 1_520_000,
+      totalCurrentGMV,
+      performancePercent:
+        initialGMV > 0 ? (totalCurrentGMV / initialGMV) * 100 - 100 : 0,
+      poolsCount,
+      shareholderCount,
+      totalPaidDividends,
     };
   }, [pools]);
 
