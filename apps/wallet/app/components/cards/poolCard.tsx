@@ -10,6 +10,8 @@ import { Badge } from "react-daisyui";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { AccountData } from "@/types/accountData";
 import { useRouter } from "next/router";
+import { TrackingEventService } from "@/app/services";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 interface Props {
   poolData: PoolContractData;
@@ -25,6 +27,7 @@ export const PoolCard: FC<Props> = ({
   accountData,
 }) => {
   const { t } = useTranslation();
+  const { TrackingEventService } = useAppContext();
   const router = useRouter();
   const { name } = useAppSelector(selectAXTToken);
 
@@ -60,11 +63,21 @@ export const PoolCard: FC<Props> = ({
     return 2_000 + Math.floor(Math.random() * 3_000);
   }, [poolData.poolId]);
 
+  const handleCardClick = () => {
+    const detail = {
+      poolId: poolData.poolId,
+      poolName: poolData.token.name,
+      account: accountData?.accountId,
+    };
+    TrackingEventService.track({ msg: "Pool Card Clicked", detail });
+    router.push(getPoolUrl(poolData.poolId));
+  };
+
   return (
     <div className={className}>
       <div
         className="relative card card-side w-full glass cursor-pointer h-full"
-        onClick={() => router.push(getPoolUrl(poolData.poolId))}
+        onClick={handleCardClick}
       >
         <figure className="ml-8 mt-14 w-[64px] flex-col relative">
           <AttentionSeeker effect="rubberBand" delay={randomDelay}>

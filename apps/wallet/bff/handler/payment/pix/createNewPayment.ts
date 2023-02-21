@@ -1,16 +1,14 @@
 import { RouteHandlerFunction } from "@/bff/route";
 import { sha256 } from "@/bff/sha256";
 import { NewPixPaymentResponse } from "@/bff/types/newPixPaymentResponse";
-import { HttpClientFactory } from "@signumjs/http";
-import * as process from "process";
 import { prisma } from "@axtp/db";
-import { NextApiRequest } from "next/types";
 import { badRequest, boomify, notFound } from "@hapi/boom";
 import { getEnvVar } from "@/bff/getEnvVar";
 import { createPixProviderClient } from "@/bff/createPixProviderClient";
-import { array, number, object, string, date } from "yup";
+import { array, number, object, string } from "yup";
 
 /*
+PagSeguro Order Object
 {
     "reference_id": "ex-00002",
     "customer": {
@@ -40,19 +38,9 @@ import { array, number, object, string, date } from "yup";
 }
  */
 
-function getWebHookUrl(req: NextApiRequest) {
-  const CallbackEndpoint = "/api/public/pix/pagseg";
-
+function getWebHookUrl() {
   const webhookUrl = getEnvVar("NEXT_SERVER_PIX_WEBHOOK_URL");
-  if (webhookUrl) {
-    return `${webhookUrl}${CallbackEndpoint}`;
-  }
-
-  return (
-    (process.env.NODE_ENV === "development" ? "http://" : "https://") +
-    req.headers.host +
-    CallbackEndpoint
-  );
+  return `${webhookUrl}/api/public/pix/pagseg`;
 }
 
 const ISODateRegex =
@@ -142,7 +130,7 @@ export const createNewPayment: RouteHandlerFunction = async (req, res) => {
         expiration_date: new Date(expiration).toISOString(),
       },
     ],
-    notification_urls: [getWebHookUrl(req)],
+    notification_urls: [getWebHookUrl()],
   };
 
   try {
@@ -153,7 +141,10 @@ export const createNewPayment: RouteHandlerFunction = async (req, res) => {
       "/orders",
       validatedPayment
     );
-    console.log("[BFF] - createNewPayment", response);
+    console.log(
+      "[BFF] - createNewPayment: Successfully create PIX Order",
+      response
+    );
     res.status(200).json({
       txId,
       pixUrl: response.qr_codes[0].text,

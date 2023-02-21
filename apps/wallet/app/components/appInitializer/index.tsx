@@ -2,13 +2,14 @@ import { TokenInitializer } from "./tokenInitializer";
 import { MarketInitializer } from "@/app/components/appInitializer/marketInitializer";
 import { PoolsInitializer } from "@/app/components/appInitializer/poolsInitializer";
 import { KycInitializer } from "@/app/components/appInitializer/kycInitializer";
+import { useAppContext } from "@/app/hooks/useAppContext";
 import { useEffect } from "react";
-import { log } from "next-axiom";
-
 export const AppInitializer = () => {
+  const { TrackingEventService } = useAppContext();
+
   useEffect(() => {
-    log.info("[Frontend] - Appinitializer started");
-  }, []);
+    TrackingEventService.track({ msg: "Wallet Loaded" });
+  }, [TrackingEventService]);
 
   return (
     <>

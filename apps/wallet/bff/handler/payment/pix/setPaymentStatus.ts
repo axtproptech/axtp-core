@@ -1,10 +1,7 @@
 import { RouteHandlerFunction } from "@/bff/route";
 import { sha256 } from "@/bff/sha256";
 import { NextApiRequest } from "next";
-import * as process from "process";
 import { getEnvVar } from "@/bff/getEnvVar";
-import { handleError } from "@/bff/handler/handleError";
-import { recordPayment } from "@/bff/handler/payment/recordPayment";
 
 /*
 
@@ -145,14 +142,19 @@ function isProcessableRequest(req: NextApiRequest): boolean {
 export const setPaymentStatus: RouteHandlerFunction = async (req, res) => {
   // PagSeguro sends not only payment status messages, but also notifications...
   if (!isProcessableRequest(req)) {
-    console.log("[BFF] - ");
+    console.log(
+      "[BFF] - setPaymentStatus: Not processable PIX notification",
+      req.body
+    );
     return res.status(501).end();
   }
 
   // 1. Authenticate PagSeguro
   if (!isProviderAuthenticated(req)) {
     console.error(
-      "[BFF] - setPaymentStatus: Could not authenticate PIX provider"
+      "[BFF] - setPaymentStatus: Could not authenticate PIX provider",
+      req.headers,
+      req.body
     );
     return res.status(403).end();
   }
@@ -161,6 +163,10 @@ export const setPaymentStatus: RouteHandlerFunction = async (req, res) => {
   // and gathering them all here requires several requests to database. So, no further action here (yet)
   // atm, we might wanna use this function merely for logging/developing reasons...
   // We will use the getPaymentStatus method and check by polling. On the frontend we have all information
+  console.info(
+    "[BFF] - setPaymentStatus: Received PIX Payment Confirmation",
+    req.body
+  );
 
   res.status(200).end();
 };

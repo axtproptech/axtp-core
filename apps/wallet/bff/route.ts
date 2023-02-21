@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withMiddleware, Middleware } from "@/bff/withMiddleware";
 import { requireApiKey } from "@/bff/middlewares/requireApiKey";
-import { log } from "next-axiom";
 
 export type RouteHandlerFunction = (
   req: NextApiRequest,
@@ -38,15 +37,6 @@ export async function route(routeArgs: RouteArgs): Promise<void> {
       `BFF Errored in [${req.method} ${handlerFunction.name}]`,
       err
     );
-    log.error("[BFF] Route", {
-      error: err,
-      info: {
-        url: req.url,
-        method: req.method,
-        query: req.query,
-        body: req.body,
-      },
-    });
     res.status(500).end();
   } finally {
     res.end();

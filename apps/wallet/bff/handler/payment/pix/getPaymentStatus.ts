@@ -52,9 +52,15 @@ import { createPixProviderClient } from "@/bff/createPixProviderClient";
 export const getPaymentStatus: RouteHandlerFunction = async (req, res) => {
   try {
     const { txId } = req.query;
+    console.info(
+      "[BFF] - getPaymentStatus: Looking for a PIX Charge for reference",
+      txId
+    );
     const { response } = await createPixProviderClient().get(
       `/charges?reference_id=${txId}`
     );
+    console.info("[BFF] - getPaymentStatus: Found a PIX Charge", response.body);
+
     const status =
       response.length > 0 && response[0].status === "PAID"
         ? "confirmed"

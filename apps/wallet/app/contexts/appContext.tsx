@@ -4,10 +4,14 @@ import { isMobile } from "react-device-detect";
 import { ChildrenProps } from "@/types/childrenProps";
 import { Config } from "@/app/config";
 import { Ledger, LedgerClientFactory } from "@signumjs/core";
-import { KycService } from "@/app/services/kycService";
-import { PaymentService } from "@/app/services/paymentService";
+import {
+  PaymentService,
+  KycService,
+  TrackingEventService,
+  AccountActivationService,
+  trackingEventService,
+} from "@/app/services";
 import { HttpClientFactory } from "@signumjs/http";
-import { AccountActivationService } from "@/app/services/accountActivationService";
 
 type AddressPrefixType = "TS" | "S";
 type SignaPrefixType = "TSIGNA" | "SIGNA";
@@ -21,6 +25,7 @@ export interface AppContextType {
   KycService: KycService;
   PaymentService: PaymentService;
   ActivationService: AccountActivationService;
+  TrackingEventService: TrackingEventService;
   Ledger: {
     IsTestNet: boolean;
     Client: Ledger;
@@ -59,6 +64,7 @@ const config: AppContextType = {
   KycService: new KycService(bffClient),
   PaymentService: new PaymentService(bffClient),
   ActivationService: new AccountActivationService(),
+  TrackingEventService: trackingEventService,
   Market: {
     BrlUsdAdjustment: Config.Market.BrlUsdAdjustment,
   },

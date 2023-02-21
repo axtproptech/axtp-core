@@ -5,6 +5,7 @@ import { Button } from "react-daisyui";
 import { openExternalUrl } from "@/app/openExternalUrl";
 import { useRouter } from "next/router";
 import { useAccount } from "@/app/hooks/useAccount";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 interface Props {
   poolData: PoolContractData;
@@ -12,23 +13,31 @@ interface Props {
 
 export const PoolActions: FC<Props> = ({ poolData }) => {
   const { t } = useTranslation();
+  const { TrackingEventService } = useAppContext();
   const router = useRouter();
   const { accountPublicKey, customer } = useAccount();
 
   const handleOpenDocumentation = () => {
+    TrackingEventService.track({ msg: "Click Open Whitepaper" });
     const poolId = poolData.poolId;
     openExternalUrl("");
   };
 
   const handleAcquireShare = async () => {
+    TrackingEventService.track({
+      msg: "Click Buy Token",
+      detail: { poolId: poolData.poolId, poolName: poolData.token.name },
+    });
     await router.push(`/pool/${poolData.poolId}/acquisition`);
   };
 
   const handleSetupAccount = async () => {
+    TrackingEventService.track({ msg: "Click Setup Account" });
     await router.push(`/account/setup`);
   };
 
   const handleDoKyc = async () => {
+    TrackingEventService.track({ msg: "Click Register Customer" });
     await router.push(`/kyc/new`);
   };
 
