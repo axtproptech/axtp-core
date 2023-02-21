@@ -67,7 +67,7 @@ export const Notification = () => {
   if (showState === ShowState.NotVisible) return null;
 
   return (
-    <div className="top-2 w-full z-top px-2 absolute">
+    <div className="top-8 md:top-2 w-full z-top px-4 absolute">
       <Slide
         direction={showState === ShowState.Entering ? "down" : "up"}
         duration={AnimationDuration}
