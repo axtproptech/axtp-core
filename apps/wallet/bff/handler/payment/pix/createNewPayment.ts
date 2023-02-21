@@ -6,6 +6,7 @@ import { badRequest, boomify, notFound } from "@hapi/boom";
 import { getEnvVar } from "@/bff/getEnvVar";
 import { createPixProviderClient } from "@/bff/createPixProviderClient";
 import { array, number, object, string } from "yup";
+import { bffLoggingService } from "@/bff/bffLoggingService";
 
 /*
 PagSeguro Order Object
@@ -141,10 +142,11 @@ export const createNewPayment: RouteHandlerFunction = async (req, res) => {
       "/orders",
       validatedPayment
     );
-    console.log(
-      "[BFF] - createNewPayment: Successfully created new PIX Order",
-      response
-    );
+    bffLoggingService.info({
+      msg: "Successfully created new PIX Order",
+      domain: "pix",
+      detail: response,
+    });
     res.status(200).json({
       txId,
       pixUrl: response.qr_codes[0].text,

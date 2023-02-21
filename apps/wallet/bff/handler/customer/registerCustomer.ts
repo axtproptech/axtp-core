@@ -4,6 +4,7 @@ import { prisma } from "@axtp/db";
 import jotform from "jotform";
 import { JotFormSubmissionContent } from "@/bff/handler/customer/jotFormSubmissionResponse";
 import { JotFormSubmissionParser } from "@/bff/handler/customer/jotFormSubmissionParser";
+import { bffLoggingService } from "@/bff/bffLoggingService";
 
 jotform.options({
   debug: process.env.NODE_ENV !== "production",
@@ -17,6 +18,11 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
       submission_id
     )) as JotFormSubmissionContent;
     const answers = new JotFormSubmissionParser(submission);
+    bffLoggingService.info({
+      msg: "Registering customer",
+      domain: "customer",
+      detail: answers,
+    });
 
     const existingCustomer = await prisma.customer.findUnique({
       where: {
@@ -25,6 +31,11 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
     });
 
     if (existingCustomer) {
+      bffLoggingService.info({
+        msg: "Customer exists already",
+        domain: "customer",
+        detail: { cpfCnpj: answers.cpf },
+      });
       res.redirect(302, `/kyc/new/success?cuid=${existingCustomer.cuid}`);
       return;
     }
@@ -75,6 +86,13 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
         },
       },
     });
+
+    bffLoggingService.info({
+      msg: "New customer registered",
+      domain: "customer",
+      detail: { cpfCnpj: answers.cpf, cuid: newCustomer.cuid },
+    });
+
     res.redirect(302, `/kyc/new/success?cuid=${newCustomer.cuid}`);
   } catch (e: any) {
     // TODO: logging

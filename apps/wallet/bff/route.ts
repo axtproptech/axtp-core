@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withMiddleware, Middleware } from "@/bff/withMiddleware";
 import { requireApiKey } from "@/bff/middlewares/requireApiKey";
+import { bffLoggingService } from "@/bff/bffLoggingService";
 
 export type RouteHandlerFunction = (
   req: NextApiRequest,
@@ -33,10 +34,15 @@ export async function route(routeArgs: RouteArgs): Promise<void> {
       res.status(404).end();
     }
   } catch (err: any) {
-    console.error(
-      `BFF Errored in [${req.method} ${handlerFunction.name}]`,
-      err
-    );
+    bffLoggingService.error({
+      msg: "Unexpected Exception",
+      domain: "-",
+      detail: {
+        method: req.method,
+        function: handlerFunction.name,
+        ...err,
+      },
+    });
     res.status(500).end();
   } finally {
     res.end();

@@ -1,6 +1,8 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { IncomingMessage } from "http";
 import { NextApiRequestCookies } from "next/dist/server/api-utils";
+import { handleError } from "@/bff/handler/handleError";
+import { bffLoggingService } from "@/bff/bffLoggingService";
 export class BackendForFrontendService {
   private http: Http;
 

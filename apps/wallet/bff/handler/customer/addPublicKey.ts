@@ -2,6 +2,7 @@ import { RouteHandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 import { Address } from "@signumjs/core";
 import { handleError } from "@/bff/handler/handleError";
+import { bffLoggingService } from "@/bff/bffLoggingService";
 
 export const addPublicKey: RouteHandlerFunction = async (req, res) => {
   try {
@@ -16,6 +17,11 @@ export const addPublicKey: RouteHandlerFunction = async (req, res) => {
     });
 
     if (existingAccount) {
+      bffLoggingService.info({
+        msg: "Public Key added already",
+        domain: "customer",
+        detail: { publicKey, cuid: customerId },
+      });
       return res.status(204).end();
     }
 
@@ -32,6 +38,12 @@ export const addPublicKey: RouteHandlerFunction = async (req, res) => {
           },
         },
       },
+    });
+
+    bffLoggingService.info({
+      msg: "Public Key successfully updated",
+      domain: "customer",
+      detail: { publicKey, cuid: customerId },
     });
 
     res.status(201).end();
