@@ -4,7 +4,7 @@ import { notFound, badRequest } from "@hapi/boom";
 
 import { boolean, mixed, object, string, ValidationError } from "yup";
 import { sanitizeUrl } from "@braintree/sanitize-url";
-import { asFullCustomerResponse } from "../../../pages/api/admin/customers/asFullCustomerResponse";
+import { asFullCustomerResponse } from "./asFullCustomerResponse";
 
 let customerRequestSchema = object({ cuid: string() });
 

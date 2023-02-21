@@ -2,5 +2,5 @@ export interface NotificationType {
   title: string;
   message: string;
   link: string;
-  icon: "approval" | "low-balance" | "pending-customer";
+  icon: "approval" | "low-balance" | "pending-customer" | "pending-payment";
 }

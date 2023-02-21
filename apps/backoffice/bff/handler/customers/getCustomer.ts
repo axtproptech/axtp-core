@@ -3,7 +3,7 @@ import { ApiHandler } from "@/bff/types/apiHandler";
 import { notFound, badRequest } from "@hapi/boom";
 
 import { object, string, ValidationError } from "yup";
-import { asFullCustomerResponse } from "../../../pages/api/admin/customers/asFullCustomerResponse";
+import { asFullCustomerResponse } from "./asFullCustomerResponse";
 
 let customerRequestSchema = object({ cuid: string() });
 

@@ -1,7 +1,7 @@
 import { WalletInitializer } from "./walletInitializer";
-import { MasterContractInitializer } from "@/app/components/appInitializer/masterContractInitializer";
-import { PoolsInitializer } from "@/app/components/appInitializer/poolsInitializer";
-import { NotificationsHandler } from "@/app/components/appInitializer/notificationsHandler";
+import { MasterContractInitializer } from "./masterContractInitializer";
+import { PoolsInitializer } from "./poolsInitializer";
+import { NotificationsHandler } from "./notificationsHandler/notificationsHandler";
 
 export const AppInitializer = () => {
   return (
