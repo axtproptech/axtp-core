@@ -64,6 +64,8 @@ export const recordPayment = async (
       type: paymentType,
       transactionId: txId,
       recordId: recordTx.transaction,
+      usd,
+      currency,
       customer: {
         connect: {
           cuid: customerId,

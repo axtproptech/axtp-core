@@ -54,7 +54,7 @@ export const getPaymentStatus: RouteHandlerFunction = async (req, res) => {
   try {
     const { txId } = req.query;
     bffLoggingService.info({
-      msg: "Looking for a PIX Charge for reference",
+      msg: "Looking for a PIX Charge",
       domain: "pix",
       detail: { txId },
     });
