@@ -64,7 +64,7 @@ export const DashboardHeader: FC<Props> = ({
 
   return (
     <Fade triggerOnce>
-      <section className="pt-8 flex-row flex mx-auto justify-center">
+      <section className="pt-12 md:pt-8 flex-row flex mx-auto justify-center">
         <div className="text-center">
           <SafeExternalLink
             href={`${Ledger.ExplorerUrl}/address/${accountData.accountId}`}
