@@ -6,7 +6,6 @@ import { toSafeCustomerResponse } from "@/bff/handler/customer/toSafeCustomerRes
 
 export const getCustomer: RouteHandlerFunction = async (req, res) => {
   try {
-    console.log("getCustomer", req.query);
     const { customerId } = req.query;
 
     const customer = await prisma.customer.findUnique({

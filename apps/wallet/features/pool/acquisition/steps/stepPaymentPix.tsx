@@ -19,6 +19,7 @@ import { formatNumber } from "@/app/formatNumber";
 import { useAppSelector } from "@/states/hooks";
 import { selectPoolContractState } from "@/app/states/poolsState";
 import { ChainValue } from "@signumjs/util";
+import { TrackingEventService } from "@/app/services";
 
 interface Props {
   onStatusChange: (status: "pending" | "confirmed") => void;
@@ -35,7 +36,7 @@ export const StepPaymentPix: FC<Props> = ({
   poolId,
 }) => {
   const { t } = useTranslation();
-  const { PaymentService } = useAppContext();
+  const { PaymentService, TrackingEventService } = useAppContext();
   const { accountId, customer, accountPublicKey } = useAccount();
   const { token } = useAppSelector(selectPoolContractState(poolId));
   const { totalBRL } = usePaymentCalculator(quantity, poolId);
@@ -121,6 +122,11 @@ export const StepPaymentPix: FC<Props> = ({
   }, [totalBRL]);
 
   const handleTimeout = () => {
+    if (!payment) return;
+    TrackingEventService.track({
+      msg: "PIX Payment Cancelled/Timed Out",
+      detail: { reference: payment.txId },
+    });
     setPayment(null);
   };
 
@@ -184,10 +190,20 @@ export const StepPaymentPix: FC<Props> = ({
               </div>
             )}
           </div>
-          <CopyButton
-            textToCopy={payment ? payment.txId : ""}
-            disabled={!payment}
-          />
+          <div className="flex flex-row justify-center items-center">
+            <Button
+              className="w-1/2"
+              color="ghost"
+              onClick={handleTimeout}
+              disabled={!payment}
+            >
+              {t("cancel")}
+            </Button>
+            <CopyButton
+              textToCopy={payment ? payment.txId : ""}
+              disabled={!payment}
+            />
+          </div>
         </section>
       )}
       {paymentStatus && paymentStatus.status === "confirmed" && (

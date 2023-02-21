@@ -142,7 +142,7 @@ export const createNewPayment: RouteHandlerFunction = async (req, res) => {
       validatedPayment
     );
     console.log(
-      "[BFF] - createNewPayment: Successfully create PIX Order",
+      "[BFF] - createNewPayment: Successfully created new PIX Order",
       response
     );
     res.status(200).json({
