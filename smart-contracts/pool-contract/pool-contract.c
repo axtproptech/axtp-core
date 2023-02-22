@@ -3,10 +3,12 @@ This contract must be pre-configured, before being deployed:
 
 1. Approver Account IDs
 2. AXTC_TOKEN_ID - i.e. the token must be issued before this contract can be deployed
+3. AXTC_MASTER_CONTRACT_ID - i.e. implicitely created with previous issuance
+4. Do not forget the SIMULATOR,TESTNET,MAINNET defines!
 
 */
 #define VERSION 1.0
-//  #define SIMULATOR
+// #define SIMULATOR
 #define TESTNET
 // #define MAINNET
 
@@ -20,7 +22,8 @@ This contract must be pre-configured, before being deployed:
     #define APPROVER_2 2
     #define APPROVER_3 3
     #define APPROVER_4 4
-    #define AXTC_TOKEN_ID 100
+    #define AXTC_TOKEN_ID 101011
+    #define AXTC_MASTER_CONTRACT_ID 101
 #endif
 #ifdef TESTNET
     #define APPROVER_1 3549690777743760998
@@ -28,6 +31,7 @@ This contract must be pre-configured, before being deployed:
     #define APPROVER_3 5757380649245251466
     #define APPROVER_4 10746331379201355428
     #define AXTC_TOKEN_ID 17364735717996724982
+    #define AXTC_MASTER_CONTRACT_ID 11140234818474766359
 #endif
 #ifdef MAINNET
 // TO DO
@@ -36,10 +40,16 @@ This contract must be pre-configured, before being deployed:
     #define APPROVER_3 3
     #define APPROVER_4 4
     #define AXTC_TOKEN_ID 100
+    #define AXTC_MASTER_CONTRACT_ID 101
 #endif
 
 // Set public functions magic numbers
+// See: https://gchq.github.io/CyberChef/#recipe=SHA2('256',64,160)Take_bytes(0,16,false)Swap_endianness('Hex',8,true)
+// Enter: MethodName(NumberOfArgs * J)V - example SendAXTPToHolder(JJ)V
+// Convert to Unsigned Longs: https://www.rapidtables.com/convert/number/hex-to-decimal.html
 #define SEND_AXTP_TO_HOLDER 0xe16029b76b056b6b
+#define REQUEST_REFUND_AXTC 0xfca21078f3f8de1d
+#define APPROVE_REFUND_AXTC 0xd4a546516affd4f2
 #define APPROVE_DISTRIBUTION 0x3b15c00ea0519a0a
 #define UPDATE_GMV 0x0d98f95a1a931bc9
 #define DEACTIVATE 0x6a20a7b2b4abec85
@@ -63,10 +73,10 @@ long nominalValueAXTC;
 long poolTokenId;
 long paidAXTC;
 long grossMarketValueAXTC;
+long refundAXTC;
 
 struct APPROVAL {
-  long account,
-    distributionApproved;
+  long account, distributionApproved, refundingApproved;
 } approvals[4];
 
 long isDeactivated = false;
@@ -77,7 +87,6 @@ struct TXINFO {
         timestamp,
         sender,
         quantityAXTP,
-        quantityAXTC,
         message[4];
 } currentTX;
 
@@ -108,6 +117,12 @@ void main(void) {
             case APPROVE_DISTRIBUTION:
                  ApproveDistribution();
                 break;
+            case REQUEST_REFUND_AXTC:
+                 RequestRefundAXTC(currentTX.message[1]);
+                break;
+            case APPROVE_REFUND_AXTC:
+                 ApproveRefundAXTC();
+                break;
             case UPDATE_GMV:
                  UpdateGMV(currentTX.message[1]);
                 break;
@@ -137,6 +152,13 @@ void resetDistributionApproved() {
     approvals[3].distributionApproved = 0;
 }
 
+void resetRefundAXTCApproved() {
+    approvals[0].refundingApproved = 0;
+    approvals[1].refundingApproved = 0;
+    approvals[2].refundingApproved = 0;
+    approvals[3].refundingApproved = 0;
+}
+
 long approveDistributionAction() {
     if( approvals[0].account == currentTX.sender ) {
         approvals[0].distributionApproved = 1;
@@ -154,10 +176,33 @@ long approveDistributionAction() {
         approvals[3].distributionApproved = 1;
     }
 
-    return( approvals[0].distributionApproved +
+    return( (approvals[0].distributionApproved +
             approvals[1].distributionApproved +
             approvals[2].distributionApproved +
-            approvals[3].distributionApproved >= MinimumApproval);
+            approvals[3].distributionApproved) >= MinimumApproval);
+}
+
+long approveRefundAXTCAction() {
+    if( approvals[0].account == currentTX.sender ) {
+        approvals[0].refundingApproved = 1;
+    }
+
+    if( approvals[1].account == currentTX.sender ) {
+        approvals[1].refundingApproved = 1;
+    }
+
+    if( approvals[2].account == currentTX.sender ) {
+        approvals[2].refundingApproved = 1;
+    }
+
+    if( approvals[3].account == currentTX.sender ) {
+        approvals[3].refundingApproved = 1;
+    }
+
+    return( (approvals[0].refundingApproved +
+            approvals[1].refundingApproved +
+            approvals[2].refundingApproved +
+            approvals[3].refundingApproved) >= MinimumApproval);
 }
 
 long isAuthorized() {
@@ -168,10 +213,17 @@ long isAuthorized() {
 }
 
 long refund(){
-   sendAmount(getAmount(currentTX.txId), currentTX.sender);
-   sendQuantity(currentTX.quantityAXTP, poolTokenId, currentTX.sender);
-   sendQuantity(getQuantity(currentTX.txId, AXTC_TOKEN_ID), AXTC_TOKEN_ID, currentTX.sender);
-   sendBalance(getCreator());
+    sendAmount(getAmount(currentTX.txId), currentTX.sender);
+    if(currentTX.quantityAXTP > 0){
+        sendQuantity(currentTX.quantityAXTP, poolTokenId, currentTX.sender);
+    }
+
+    long axtcQuantity = getQuantity(currentTX.txId, AXTC_TOKEN_ID);
+    if(axtcQuantity > 0) {
+        sendQuantity(axtcQuantity, AXTC_TOKEN_ID, currentTX.sender);
+    }
+
+    sendBalance(getCreator());
 }
 
 // ---------------- PUBLIC ---------------------------
@@ -179,16 +231,20 @@ long refund(){
 void Deactivate() {
     if(currentTX.sender == getCreator()){
         isDeactivated = true;
-        sendQuantityAndAmount(getAssetBalance(AXTC_TOKEN_ID), AXTC_TOKEN_ID, getCurrentBalance(), getCreator());
+        long axtcBalance = getAssetBalance(AXTC_TOKEN_ID);
+        if(axtcBalance > 0){
+            sendQuantity(axtcBalance, AXTC_TOKEN_ID, AXTC_MASTER_CONTRACT_ID);
+        }
+        sendBalance(getCreator());
     }
 }
 
 void ApproveDistribution() {
     if(approveDistributionAction()){
-        long payout = getAssetBalance(AXTC_TOKEN_ID);
-        distributeToHolders(1, poolTokenId,0, payout, AXTC_TOKEN_ID);
-        paidAXTC += payout;
         resetDistributionApproved();
+        long payout = getAssetBalance(AXTC_TOKEN_ID);
+        distributeToHolders(1, poolTokenId, 0, AXTC_TOKEN_ID, payout);
+        paidAXTC += payout;
     }
 }
 
@@ -210,4 +266,28 @@ void SendAXTPToHolder(long holderId, long quantityAXTP) {
     }
     mintAsset(quantityAXTP, poolTokenId);
     sendQuantity(quantityAXTP, poolTokenId, holderId);
+}
+
+void RequestRefundAXTC(long quantityAXTC) {
+    if(!isAuthorized()){
+        return;
+    }
+    long balance = getAssetBalance(AXTC_TOKEN_ID);
+    if(quantityAXTC > balance){
+        messageBuffer[]="Not enough AXTC for refunding";
+        sendMessage(messageBuffer, currentTX.sender);
+    }else{
+        refundAXTC = quantityAXTC;
+    }
+}
+
+void ApproveRefundAXTC() {
+    if(!isAuthorized() || refundAXTC == 0){
+        return;
+    }
+    if(approveRefundAXTCAction()){
+        resetRefundAXTCApproved();
+        sendQuantity(refundAXTC, AXTC_TOKEN_ID, AXTC_MASTER_CONTRACT_ID);
+        refundAXTC = 0;
+    }
 }
