@@ -15,19 +15,19 @@ import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { Number } from "@/app/components/number";
 
 const getApprovalState = (status: ApprovalStatus, token: BasicTokenInfo) => {
-  const hasPayoutBalance = parseInt(status.quantity, 10) > 0;
+  const hasPendingQuantity = parseInt(status.quantity, 10) > 0;
   return [
     {
-      label: hasPayoutBalance ? (
+      label: hasPendingQuantity ? (
         <div>
-          Available for Refund&nbsp;
+          Available for Refunding&nbsp;
           <Number value={status.quantity} decimals={2} suffix={token.name} />
         </div>
       ) : (
         `No ${token.name} balance`
       ),
       icon: <Undo />,
-      completed: hasPayoutBalance,
+      completed: hasPendingQuantity,
     },
     {
       label: status.approvedAccounts[0]
@@ -82,10 +82,10 @@ export const RefundApprovalCard: FC<Props> = ({ poolId }) => {
 
   return (
     <ActionCard
-      title={`Approve ${masterToken.name} Refund`}
+      title={`Approve ${masterToken.name} Refunding`}
       description="Here you can see if there's a pending refund request and its current approval state"
       actionIcon={<IconUserCheck />}
-      actionLabel="Approve Refund"
+      actionLabel="Approve Refunding"
       onClick={handleOnApproveAction}
       isLoading={isExecuting}
       disabled={!canApprove}

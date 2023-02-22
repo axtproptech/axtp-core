@@ -75,7 +75,7 @@ export const RefundActionCard: FC<Props> = ({ onRefund, poolId }) => {
   return (
     <ActionCard
       title={`Suggest ${masterToken.name} Refunding`}
-      description={`This action allows to refund the ${masterToken.name} back to the master contract. This reduces the amount of dividend payouts.`}
+      description={`This action allows to refund ${masterToken.name} back to the master contract. This reduces the amount of dividend payouts.`}
       actionIcon={<Undo />}
       actionLabel="Suggest Refunding"
       color="warning"
