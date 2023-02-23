@@ -25,6 +25,8 @@ export const PoolsInitializer = () => {
 
   useEffect(() => {
     if (!data) return;
+
+    dispatch(actions.reset());
     data.forEach((pool: PoolContractData) => {
       dispatch(actions.setPoolData(pool));
     });
