@@ -1,4 +1,4 @@
-import { RiArrowDownSLine } from "react-icons/all";
+import { RiArrowDownSLine } from "react-icons/ri";
 import Link from "next/link";
 import { PoolContractData } from "@/types/poolContractData";
 import { FC, useMemo } from "react";
