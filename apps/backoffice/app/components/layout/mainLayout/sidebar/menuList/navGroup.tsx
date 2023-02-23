@@ -3,7 +3,7 @@ import { Divider, List, Typography } from "@mui/material";
 import { NavItem } from "./navItem";
 import { NavCollapse } from "./navCollapse";
 import { FC, useMemo } from "react";
-import { useAppDispatch, useAppSelector } from "@/states/hooks";
+import { useAppSelector } from "@/states/hooks";
 import { selectAllPools } from "@/app/states/poolsState";
 import { NavigationGroupItem } from "@/types/navigationItem";
 import { IconBuilding } from "@tabler/icons";
@@ -27,7 +27,7 @@ export const NavGroup: FC<Props> = ({ item }) => {
             id: itemId,
             type: "item",
             url: `/admin/pools/${pool.poolId}`,
-            title: `Pool ${pool.token.name}`,
+            title: pool.token.name ? `Pool ${pool.token.name}` : "New Pool",
             icon: IconBuilding,
             breadcrumbs: true,
           });

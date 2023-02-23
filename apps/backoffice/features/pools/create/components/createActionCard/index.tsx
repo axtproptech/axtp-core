@@ -10,6 +10,7 @@ import { styled } from "@mui/material/styles";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { useEffect, useState } from "react";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 const FullBox = styled(Box)(() => ({
   width: "100%",
@@ -21,7 +22,7 @@ type FormValues = {
   description: string;
   rate: number;
   nominalLiquidity: number;
-  url: string;
+  alias: string;
 };
 
 const required = {
@@ -31,6 +32,7 @@ const required = {
 
 export const CreateActionCard = () => {
   const { execute, isExecuting, transactionId } = useLedgerAction();
+  const { Ledger } = useAppContext();
   const { token } = useMasterContract();
   const [numberValues, setNumberValues] = useState({
     rate: 0.0,
@@ -45,11 +47,11 @@ export const CreateActionCard = () => {
   } = useForm<FormValues>({
     mode: "onChange",
     defaultValues: {
-      name: "AXTP0001",
+      name: Ledger.IsTestnet ? "TAXTP001" : "AXTP0001",
       description: "Write a description here...",
       rate: 0.0,
       tokenCount: 0,
-      url: "",
+      alias: "",
     },
   });
 
@@ -63,7 +65,7 @@ export const CreateActionCard = () => {
     await execute((service) =>
       service.poolContract.createPoolInstance({
         name: formValues.name,
-        documentationUrl: formValues.url,
+        alias: formValues.alias,
         description: formValues.description,
         rate: toStableCoinQuantity(numberValues.rate),
         quantity: numberValues.tokenCount,
@@ -112,9 +114,10 @@ export const CreateActionCard = () => {
             variant="outlined"
             rules={{
               pattern: {
-                value: /^AXTP\d{4}$/,
-                message:
-                  "Name must be like AXTP0002 - It's the name of the token",
+                value: Ledger.IsTestnet ? /^TAXTP\d{3}$/ : /^AXTP\d{4}$/,
+                message: Ledger.IsTestnet
+                  ? "Name must be like TAXTP002 - It's the name of the token"
+                  : "Name must be like AXTP0002 - It's the name of the token",
               },
               required,
             }}
@@ -209,12 +212,13 @@ export const CreateActionCard = () => {
         <Controller
           render={({ field, fieldState: { error } }) => (
             <TextInput
-              label="Additional Information URL"
+              label="Alias Name"
               {...field}
               error={error ? error.message : ""}
+              hint="An Alias is a blockchain entity that allows us to maintain mutable data. There we can add and update further pool information, i.e. urls to docs and more."
             />
           )}
-          name="url"
+          name="alias"
           control={control}
           // @ts-ignore
           variant="outlined"

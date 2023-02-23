@@ -21,6 +21,7 @@ export const poolsSlice = createSlice({
       const poolData = action.payload;
       state.pools[poolData.poolId] = poolData;
     },
+    reset: () => initialState,
   },
 });
 

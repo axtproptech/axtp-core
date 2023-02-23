@@ -2,7 +2,6 @@ import { Contract, ContractDataView } from "@signumjs/contracts";
 import { toStableCoinAmount } from "@/app/tokenQuantity";
 import { ApprovalStatus } from "@/types/approvalStatus";
 
-// FIXME: add indices for ApprovedRefund and pendingRefund
 enum PoolContractDataIndex {
   PoolName = 5,
   PoolRate,
@@ -11,14 +10,19 @@ enum PoolContractDataIndex {
   PoolTokenId,
   PaidAXTC,
   GrossMarketValue,
-  ApprovalAccount1 = 13,
+  RefundAXTC,
+  ApprovalAccount1 = 14,
   ApprovalApprovedDistribution1,
+  ApprovalApprovedRefund1,
   ApprovalAccount2,
   ApprovalApprovedDistribution2,
+  ApprovalApprovedRefund2,
   ApprovalAccount3,
   ApprovalApprovedDistribution3,
+  ApprovalApprovedRefund3,
   ApprovalAccount4,
   ApprovalApprovedDistribution4,
+  ApprovalApprovedRefund4,
   IsDeactivated,
 }
 
@@ -94,10 +98,10 @@ export class PoolContractDataView {
   }
 
   getRefundableStableCoins(): number {
-    return 0;
-    // FIXME: implement
-    // const qnt = this.view.getVariableAsDecimal(PoolContractDataIndex.PaidAXTC);
-    // return parseFloat(toStableCoinAmount(qnt));
+    const qnt = this.view.getVariableAsDecimal(
+      PoolContractDataIndex.RefundAXTC
+    );
+    return parseFloat(toStableCoinAmount(qnt));
   }
 
   getDistributionApprovalStatus(): ApprovalStatus {
@@ -131,22 +135,21 @@ export class PoolContractDataView {
   }
 
   getRefundApprovalStatus(): ApprovalStatus {
-    // FIXME: implement
     const approvedAccounts = [];
     const approved1 = this.getApprovedAccount(
-      PoolContractDataIndex.ApprovalApprovedDistribution1,
+      PoolContractDataIndex.ApprovalApprovedRefund1,
       PoolContractDataIndex.ApprovalAccount1
     );
     const approved2 = this.getApprovedAccount(
-      PoolContractDataIndex.ApprovalApprovedDistribution2,
+      PoolContractDataIndex.ApprovalApprovedRefund2,
       PoolContractDataIndex.ApprovalAccount2
     );
     const approved3 = this.getApprovedAccount(
-      PoolContractDataIndex.ApprovalApprovedDistribution3,
+      PoolContractDataIndex.ApprovalApprovedRefund3,
       PoolContractDataIndex.ApprovalAccount3
     );
     const approved4 = this.getApprovedAccount(
-      PoolContractDataIndex.ApprovalApprovedDistribution4,
+      PoolContractDataIndex.ApprovalApprovedRefund4,
       PoolContractDataIndex.ApprovalAccount4
     );
 
@@ -155,12 +158,10 @@ export class PoolContractDataView {
     approved3 && approvedAccounts.push(approved3);
     approved4 && approvedAccounts.push(approved4);
 
-    // FIXME: add
-    // const quantity = this.view.getVariableAsDecimal(PoolContractDataIndex.PendingRefund);
-
+    const quantity = this.getRefundableStableCoins().toString(10);
     return {
       approvedAccounts,
-      quantity: "0",
+      quantity,
     };
   }
 }

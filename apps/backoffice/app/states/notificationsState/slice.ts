@@ -8,9 +8,7 @@ interface NotificationsState {
 
 const initialState: NotificationsState = {
   notifications: [],
-  menuBadges: {
-    "manage-pending-customers": "4",
-  },
+  menuBadges: {},
 };
 
 export const notificationsSlice = createSlice({
@@ -27,6 +25,7 @@ export const notificationsSlice = createSlice({
       const { itemId, value } = action.payload;
       state.menuBadges[itemId] = value;
     },
+    reset: () => initialState,
   },
 });
 
