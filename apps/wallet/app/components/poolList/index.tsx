@@ -7,6 +7,7 @@ import { Zoom } from "react-awesome-reveal";
 import { HintBox } from "@/app/components/hintBox";
 import { useTranslation } from "next-i18next";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
+import { PoolListAquisitionCTA } from "@/app/components/poolList/poolListAquisitionCTA";
 
 interface Props {
   accountData?: AccountData;
@@ -26,6 +27,15 @@ export const PoolList: FC<Props> = ({ accountData }) => {
   }, [pools, accountData]);
 
   const hasPools = relevantPools.length > 0;
+
+  const availablePoolsForAcquisition = useMemo(() => {
+    if (hasPools) return [];
+    return pools.filter((p) => {
+      const soldTokens = parseFloat(p.token.supply);
+      const freeSeats = Math.max(p.maxShareQuantity - soldTokens, 0);
+      return freeSeats > 0;
+    });
+  }, [pools, hasPools]);
   return (
     <div>
       {hasPools && (
@@ -49,6 +59,11 @@ export const PoolList: FC<Props> = ({ accountData }) => {
               <AnimatedIconCoins loopDelay={5000} touchable />
             </div>
           </HintBox>
+          {availablePoolsForAcquisition.length > 0 && (
+            <PoolListAquisitionCTA
+              availablePools={availablePoolsForAcquisition}
+            />
+          )}
         </div>
       )}
     </div>

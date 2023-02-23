@@ -86,10 +86,10 @@ export const PoolHeader: FC<Props> = ({ poolData, showStats = false }) => {
                 <Stat.Item variant="value">
                   <span
                     className={
-                      stats.relGmv > 0 ? "text-green-400" : "text-red-500"
+                      stats.relGmv >= 0 ? "text-green-400" : "text-red-500"
                     }
                   >
-                    {stats.relGmv > 0 ? "↗" : "↘"}&nbsp;
+                    {stats.relGmv >= 0 ? "↗" : "↘"}&nbsp;
                     {stats.relGmv.toFixed(2)}
                     <small className="ml-1 text-xs">%</small>
                   </span>
@@ -97,11 +97,11 @@ export const PoolHeader: FC<Props> = ({ poolData, showStats = false }) => {
                 <Stat.Item
                   variant="desc"
                   className={
-                    stats.relGmv > 0 ? "text-green-400" : "text-red-500"
+                    stats.relGmv >= 0 ? "text-green-400" : "text-red-500"
                   }
                 >
                   <Number
-                    prefix={stats.relGmv > 0 ? "+" : "-"}
+                    prefix={stats.relGmv >= 0 ? "+" : "-"}
                     value={stats.gmv - stats.initial}
                     suffix={axtcToken.name}
                   />

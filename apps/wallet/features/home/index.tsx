@@ -3,7 +3,7 @@ import { DashboardStats } from "./sections/dashboardStats";
 import { TextLogo } from "@/app/components/logo/textLogo";
 import { Fade, Slide } from "react-awesome-reveal";
 import { selectAllPools } from "@/app/states/poolsState";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { PoolList } from "@/app/components/poolList";
 import { useAccount } from "@/app/hooks/useAccount";
 import { VerificationStatus } from "@/app/components/verificationStatus";

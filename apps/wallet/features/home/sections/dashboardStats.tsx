@@ -44,12 +44,12 @@ export const DashboardStats: FC<Props> = ({ stats }) => {
           <Stat.Item
             variant="value"
             className={
-              stats.performancePercent > 0 ? "text-green-400" : "text-red-500"
+              stats.performancePercent >= 0 ? "text-green-400" : "text-red-500"
             }
           >
             <Number
               value={stats.performancePercent}
-              prefix={stats.performancePercent > 0 ? "+" : "-"}
+              prefix={stats.performancePercent >= 0 ? "+" : "-"}
               suffix="%"
               decimals={2}
             />

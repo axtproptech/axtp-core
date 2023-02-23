@@ -94,12 +94,12 @@ export const PoolCard: FC<Props> = ({
             <h2 className="card-title mr-2">{poolData.token.name}</h2>
             <h2
               className={`card-title ${
-                performance > 0 ? "text-green-400" : "text-red-500"
+                performance >= 0 ? "text-green-400" : "text-red-500"
               }`}
             >
               <Number
                 value={performance}
-                prefix={performance > 0 ? "+" : "-"}
+                prefix={performance >= 0 ? "+" : "-"}
                 suffix="%"
                 decimals={2}
               />

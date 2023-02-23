@@ -9,15 +9,7 @@ enum PoolContractDataIndex {
   PoolTokenId,
   PaidAXTC,
   GrossMarketValue,
-  ApprovalAccount1 = 13,
-  ApprovalApprovedDistribution1,
-  ApprovalAccount2,
-  ApprovalApprovedDistribution2,
-  ApprovalAccount3,
-  ApprovalApprovedDistribution3,
-  ApprovalAccount4,
-  ApprovalApprovedDistribution4,
-  IsDeactivated,
+  IsDeactivated = 26,
 }
 
 export class PoolContractDataView {

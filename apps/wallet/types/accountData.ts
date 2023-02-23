@@ -9,7 +9,7 @@ export interface AccountData {
   balanceSigna: string;
   balanceAxt: string;
   balancesPools: (TokenMetaData & { quantity: string })[];
-  transactions: TransactionData[];
+  // transactions: TransactionData[];
 }
 
 export const DefaultAccountData: AccountData = {
@@ -20,5 +20,5 @@ export const DefaultAccountData: AccountData = {
   balanceSigna: "0",
   balanceAxt: "0",
   balancesPools: [],
-  transactions: [],
+  // transactions: [],
 };
