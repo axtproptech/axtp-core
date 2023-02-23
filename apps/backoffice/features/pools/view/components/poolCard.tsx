@@ -5,6 +5,7 @@ import {
   Speed as IconSpeed,
   Payments as IconPayments,
   People as IconPeople,
+  Undo,
 } from "@mui/icons-material";
 import { CardWrapperBlue } from "@/app/components/cards";
 import { NumericFormat } from "react-number-format";
@@ -32,6 +33,7 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
   const {
     poolId,
     paidDistribution,
+    pendingRefund,
     token,
     maxShareQuantity,
     nominalLiquidity,
@@ -140,6 +142,24 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                     </Typography>
                   </Tooltip>
                   <Typography>{masterTokenSymbol}</Typography>
+                  {pendingRefund > 0 && (
+                    <Stack
+                      justifyContent="start"
+                      direction="row"
+                      alignItems="baseline"
+                    >
+                      <Tooltip arrow title="Pending Refund">
+                        <>
+                          <Undo />
+                          &nbsp;
+                          <Typography>
+                            <Number value={pendingRefund} />
+                          </Typography>
+                          <Typography>{masterTokenSymbol}</Typography>
+                        </>
+                      </Tooltip>
+                    </Stack>
+                  )}
                 </Stack>
                 <Stack
                   direction="row"
@@ -205,7 +225,7 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                   >
                     <IconRocket />
                     &nbsp;
-                    <Tooltip arrow title="Gross Market Value">
+                    <Tooltip arrow title="Current Gross Market Value">
                       <Typography>
                         <Number
                           value={grossMarketValue}

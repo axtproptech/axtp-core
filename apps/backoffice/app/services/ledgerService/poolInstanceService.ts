@@ -57,7 +57,7 @@ export class PoolInstanceService extends GenericContractService {
       approvalStatusDistribution.quantity = pendingDistribution;
 
       const approvalStatusRefund = contractDataView.getRefundApprovalStatus();
-
+      const pendingRefund = toStableCoinAmount(approvalStatusRefund.quantity);
       return {
         isDeactivated: contractDataView.getIsDeactivated(),
         poolId: this.poolId,
@@ -66,16 +66,14 @@ export class PoolInstanceService extends GenericContractService {
         masterToken,
         transactions: transactions.transactions,
         approvalStatusDistribution,
-        pendingDistribution: Number(toStableCoinAmount(pendingDistribution)),
+        pendingDistribution: Number(pendingDistribution),
         paidDistribution: contractDataView.getDistributedStableCoins(),
         maxShareQuantity: contractDataView.getPoolTokenMaxQuantity(),
         nominalLiquidity: contractDataView.getNominalLiquidity(),
         tokenRate: contractDataView.getPoolTokenRate(),
         grossMarketValue: contractDataView.getGrossMarketValue(),
         approvalStatusRefund,
-        pendingRefund: Number(
-          toStableCoinAmount(approvalStatusRefund.quantity)
-        ),
+        pendingRefund: Number(pendingRefund),
       };
     });
   }
