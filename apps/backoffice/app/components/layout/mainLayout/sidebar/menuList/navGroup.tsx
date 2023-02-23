@@ -6,8 +6,7 @@ import { FC, useMemo } from "react";
 import { useAppSelector } from "@/states/hooks";
 import { selectAllPools } from "@/app/states/poolsState";
 import { NavigationGroupItem } from "@/types/navigationItem";
-import { IconBuilding } from "@tabler/icons";
-
+import { IconBuilding, IconBuildingHospital } from "@tabler/icons";
 interface Props {
   item: NavigationGroupItem;
 }
@@ -22,13 +21,16 @@ export const NavGroup: FC<Props> = ({ item }) => {
     if (item.id === "pools" && item.children) {
       for (let pool of pools) {
         const itemId = `pool-${pool.poolId}`;
+
         if (!item.children.find(({ id }) => id === itemId)) {
+          const isNew = !pool.token.name;
+
           item.children.push({
             id: itemId,
             type: "item",
             url: `/admin/pools/${pool.poolId}`,
-            title: pool.token.name ? `Pool ${pool.token.name}` : "New Pool",
-            icon: IconBuilding,
+            title: isNew ? "New Pool" : `Pool ${pool.token.name}`,
+            icon: isNew ? IconBuildingHospital : IconBuilding,
             breadcrumbs: true,
           });
         }
