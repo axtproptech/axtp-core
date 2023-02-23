@@ -1,6 +1,7 @@
 import { ServiceContext } from "./serviceContext";
 import { PoolInstanceService } from "./poolInstanceService";
 import { ConfirmedTransaction } from "@signumjs/wallets";
+import { DescriptorDataBuilder } from "@signumjs/standards";
 import { Config } from "@/app/config";
 import {
   Amount,
@@ -13,7 +14,7 @@ import { InputValidationService } from "@/app/services/inputValidationService";
 import { MasterContractService } from "@/app/services/ledgerService/masterContractService";
 
 interface CreatePoolInstanceArgs {
-  documentationUrl: string;
+  alias: string;
   description: string;
   name: string;
   rate: number;
@@ -37,8 +38,6 @@ export class PoolContractService {
   async createPoolInstance(args: CreatePoolInstanceArgs) {
     return withError(async () => {
       const { ledger, accountPublicKey, wallet } = this.context;
-
-      PoolContractService.assertCreationArguments(args);
 
       const description = PoolContractService.createDescriptor(args);
       const data = PoolContractService.createInitialDataStack(args);
@@ -64,11 +63,12 @@ export class PoolContractService {
   }
 
   private static createDescriptor(args: CreatePoolInstanceArgs) {
-    return JSON.stringify({
-      version: 1,
-      description: args.description,
-      documentation: args.documentationUrl,
-    });
+    return DescriptorDataBuilder.create(args.name)
+      .setType("smc")
+      .setDescription(args.description)
+      .setAlias(args.alias)
+      .build()
+      .stringify();
   }
 
   private static createInitialDataStack(args: CreatePoolInstanceArgs) {
@@ -76,11 +76,6 @@ export class PoolContractService {
       convertHexEndianess(convertStringToHexString(args.name))
     );
     return [0, 0, 0, 0, 0, name, args.rate, args.quantity];
-  }
-
-  private static assertCreationArguments(args: CreatePoolInstanceArgs) {
-    InputValidationService.assertTextLessThan(args.description, 512);
-    InputValidationService.assertTextLessThan(args.documentationUrl, 384);
   }
 
   async fetchAllContracts() {

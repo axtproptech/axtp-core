@@ -46,6 +46,7 @@ export const ChargeContractCard: FC<Props> = ({ onRecharge }) => {
 
     if (values.floatValue !== undefined) {
       setFloatAmount(values.floatValue);
+      setError("");
     }
   };
 

@@ -42,6 +42,7 @@ export const masterContractSlice = createSlice({
     ) => {
       state.masterContract = action.payload;
     },
+    reset: () => initialState,
   },
 });
 

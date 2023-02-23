@@ -63,8 +63,7 @@ export const Config = {
     LowBalanceThreshold: Amount.fromSigna(2),
     OriginId: process.env.NEXT_PUBLIC_CONTRACT_POOL_ORIGIN_ID || "",
     Reference: process.env.NEXT_PUBLIC_CONTRACT_POOL_REF || "",
-    CodeHash:
-      process.env.NEXT_PUBLIC_CONTRACT_POOL_CODEHASH || "17934315410939870781",
+    CodeHash: process.env.NEXT_PUBLIC_CONTRACT_POOL_CODEHASH || "",
     CreationCosts:
       process.env.NEXT_PUBLIC_CONTRACT_POOL_CREATION_COSTS || "0.06",
     Basename: process.env.NEXT_PUBLIC_CONTRACT_POOL_NAME || "AXTPoolContract",
@@ -78,14 +77,15 @@ export const Config = {
       toNumber(process.env.NEXT_PUBLIC_CONTRACT_POOL_INTERACTION_FEE) || "0.01",
     Methods: {
       SendShareToHolder:
-        process.env.NEXT_PUBLIC_CONTRACT_POOL_METHOD_SEND_SHARE_TO_HOLDER ||
-        "16240026124049279851",
+        process.env.NEXT_PUBLIC_CONTRACT_POOL_METHOD_SEND_SHARE_TO_HOLDER || "",
       ApproveDistribution:
-        process.env.NEXT_PUBLIC_CONTRACT_POOL_METHOD_APPROVE_DISTRIBUTE ||
-        "4257520191800449546",
+        process.env.NEXT_PUBLIC_CONTRACT_POOL_METHOD_APPROVE_DISTRIBUTE || "",
       UpdateGrossMarketValue:
-        process.env.NEXT_PUBLIC_CONTRACT_POOL_METHOD_UPDATE_GMV ||
-        "14491337967399442445",
+        process.env.NEXT_PUBLIC_CONTRACT_POOL_METHOD_UPDATE_GMV || "",
+      RequestAXTCRefund:
+        process.env.NEXT_PUBLIC_CONTRACT_POOL_METHOD_REQUEST_REFUND_AXTC || "",
+      ApproveAXTCRefund:
+        process.env.NEXT_PUBLIC_CONTRACT_POOL_METHOD_APPROVE_REFUND_AXTC || "",
     },
   },
   Layout: {

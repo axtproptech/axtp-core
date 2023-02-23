@@ -16,7 +16,13 @@ import {
 import { Transition } from "@/app/components/animation";
 import { MainCard, WalletConnectorCard } from "@/app/components/cards";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { IconLogout, IconSettings, IconUser, IconRecycle } from "@tabler/icons";
+import {
+  IconLogout,
+  IconSettings,
+  IconUser,
+  IconRecycle,
+  IconRefreshAlert,
+} from "@tabler/icons";
 import React, { FC, useState } from "react";
 import { VirtualElement } from "@popperjs/core";
 import { useTheme } from "@mui/material/styles";
@@ -24,6 +30,10 @@ import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { adminService } from "@/app/services/adminService";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
+import { actions as poolActions } from "@/app/states/poolsState";
+import { actions as masterContractActions } from "@/app/states/masterContractState";
+import { actions as notificationsActions } from "@/app/states/notificationsState";
+import { useDispatch } from "react-redux";
 
 interface Props {
   anchorElement: VirtualElement;
@@ -40,6 +50,7 @@ export const ProfileMenu: FC<Props> = ({
 }) => {
   const theme = useTheme();
   const router = useRouter();
+  const dispatch = useDispatch();
   const { showError, showSuccess } = useSnackbar();
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
@@ -50,6 +61,13 @@ export const ProfileMenu: FC<Props> = ({
     } catch (e: any) {
       showError("Request failed");
     }
+  };
+
+  const handleReloadApplicationState = () => {
+    dispatch(poolActions.reset());
+    dispatch(masterContractActions.reset());
+    dispatch(notificationsActions.reset());
+    router.reload();
   };
 
   const handleListItemClick = (
@@ -157,6 +175,23 @@ export const ProfileMenu: FC<Props> = ({
                           primary={
                             <Typography variant="body2">
                               Request Password Reset
+                            </Typography>
+                          }
+                        />
+                      </ListItemButton>
+                      <Divider />
+                      <ListItemButton
+                        sx={{ borderRadius: `12px` }}
+                        selected={selectedIndex === 4}
+                        onClick={handleReloadApplicationState}
+                      >
+                        <ListItemIcon>
+                          <IconRefreshAlert stroke={1.5} size="1.3rem" />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Typography variant="body2">
+                              Reload Application State
                             </Typography>
                           }
                         />

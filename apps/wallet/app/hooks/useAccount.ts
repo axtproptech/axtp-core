@@ -26,31 +26,11 @@ export const useAccount = () => {
   const { data, error } = useSWR(
     `/fetchAccount/${accountId}`,
     async () => {
-      const [account, accountTransactions] = await Promise.all([
-        Ledger.Client.account.getAccount({
-          accountId,
-          includeCommittedAmount: false,
-          includeEstimatedCommitment: false,
-        }),
-        // TODO: think of storing transactions and getting them incrementally only
-        Ledger.Client.account.getAccountTransactions({
-          accountId,
-          resolveDistributions: true,
-          firstIndex: 0,
-          lastIndex: 50,
-        }),
-      ]);
-
-      const mappingContext = {
+      const account = await Ledger.Client.account.getAccount({
         accountId,
-        // TODO: gather TokenInfo dynamically
-        poolTokens: [],
-        axtToken: {
-          name: "AXT",
-          decimals: 2,
-          id: AXTTokenId,
-        },
-      };
+        includeCommittedAmount: false,
+        includeEstimatedCommitment: false,
+      });
 
       const axtBalance = account.assetBalances
         ? account.assetBalances.find(({ asset }) => asset === AXTTokenId)
@@ -85,14 +65,10 @@ export const useAccount = () => {
 
       return {
         accountId,
-        // @ts-ignore
         isActive: !!account.publicKey,
         balanceSigna: Amount.fromPlanck(account.balanceNQT).getSigna(),
         name: account.name || "",
         description: account.description || "",
-        transactions: accountTransactions.transactions.map((tx) =>
-          mapLedgerTransaction(tx, mappingContext)
-        ),
         balanceAxt: axtBalance
           ? toStableCoinAmount(axtBalance.balanceQNT)
           : "0",

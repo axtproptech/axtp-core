@@ -56,6 +56,8 @@ export class PoolInstanceService extends GenericContractService {
         contractDataView.getDistributionApprovalStatus();
       approvalStatusDistribution.quantity = pendingDistribution;
 
+      const approvalStatusRefund = contractDataView.getRefundApprovalStatus();
+
       return {
         isDeactivated: contractDataView.getIsDeactivated(),
         poolId: this.poolId,
@@ -70,6 +72,10 @@ export class PoolInstanceService extends GenericContractService {
         nominalLiquidity: contractDataView.getNominalLiquidity(),
         tokenRate: contractDataView.getPoolTokenRate(),
         grossMarketValue: contractDataView.getGrossMarketValue(),
+        approvalStatusRefund,
+        pendingRefund: Number(
+          toStableCoinAmount(approvalStatusRefund.quantity)
+        ),
       };
     });
   }
@@ -93,6 +99,18 @@ export class PoolInstanceService extends GenericContractService {
       Config.PoolContract.Methods.UpdateGrossMarketValue,
       gmvQuantity
     );
+  }
+
+  public async requestAXTCRefund(axtcQuantity: number) {
+    InputValidationService.assertNumberGreaterOrEqualThan(0, axtcQuantity);
+    return this.callMethod(
+      Config.PoolContract.Methods.RequestAXTCRefund,
+      axtcQuantity
+    );
+  }
+
+  public async approveAXTCRefund() {
+    return this.callMethod(Config.PoolContract.Methods.ApproveAXTCRefund);
   }
 
   public async getAllTokenHolders(

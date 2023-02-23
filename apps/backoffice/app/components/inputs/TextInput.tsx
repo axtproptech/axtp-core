@@ -11,14 +11,16 @@ interface Props extends HTMLAttributes<HTMLInputElement> {
   error?: string;
   label: string;
   value?: string;
+  hint?: string;
 }
 
 // eslint-disable-next-line react/display-name
 export const TextInput = forwardRef((props: Props, ref) => {
   const theme = useTheme();
-  const { error, label, ...args } = props;
+  const { error, label, hint, ...args } = props;
 
   const hasError = Boolean(props.error);
+  const hasHint = Boolean(props.hint);
   return (
     <FormControl
       fullWidth
@@ -33,6 +35,9 @@ export const TextInput = forwardRef((props: Props, ref) => {
         <FormHelperText error id={props.id}>
           {error}
         </FormHelperText>
+      )}
+      {!hasError && hasHint && (
+        <FormHelperText id={props.id}>{hint}</FormHelperText>
       )}
     </FormControl>
   );

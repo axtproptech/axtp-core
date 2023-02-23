@@ -9,7 +9,9 @@ export interface PoolContractData {
   masterToken: BasicTokenInfo;
   transactions: Transaction[];
   approvalStatusDistribution: ApprovalStatus;
+  approvalStatusRefund: ApprovalStatus;
   pendingDistribution: number;
+  pendingRefund: number;
   paidDistribution: number;
   maxShareQuantity: number;
   nominalLiquidity: number;

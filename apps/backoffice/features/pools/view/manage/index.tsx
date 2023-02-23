@@ -18,13 +18,18 @@ import {
 } from "@tabler/icons";
 import { WithBadge } from "@/app/components/withBadge";
 import { useMemo, useState } from "react";
-import { Payments } from "@mui/icons-material";
+import { Payments, Undo } from "@mui/icons-material";
 import { UpdateGMVCard } from "@/features/pools/view/manage/updateGMVCard";
 import { SendShareToHolderCard } from "@/features/pools/view/manage/sendShareToHolderCard";
 import { ShowTokenHolders } from "@/features/pools/view/manage/showTokenHolders";
+import { RefundApprovalCard } from "@/features/pools/view/manage/refundApprovalCard";
+import { BurnActionCard } from "@/features/liquidity/manage/components/burnActionCard";
+import { BurnApprovalCard } from "@/features/liquidity/manage/components/burnApprovalCard";
+import { RefundActionCard } from "./refundActionCard";
 
 enum PoolTabs {
   Payout = "payout",
+  Refund = "refund",
   UpdateGMV = "update-gmv",
   SendToken = "send-token",
   Charge = "charge",
@@ -53,36 +58,40 @@ export const ManagePool = () => {
 
   const isPayoutRequested =
     parseInt(poolData.approvalStatusDistribution.quantity, 10) > 0;
+  const isRefundRequested =
+    parseInt(poolData.approvalStatusRefund.quantity, 10) > 0;
   const needCharge = balanceAmount.less(
     Config.PoolContract.LowBalanceThreshold
   );
+
+  const ensureLedger = () => {
+    if (!ledgerService) {
+      throw new Error("No Ledger Service instance available");
+    }
+    return ledgerService;
+  };
 
   const handleTabChange = (_event: React.SyntheticEvent, tab: any) => {
     setCurrentTab(tab);
   };
 
   function handleOnRecharge(amount: Amount) {
-    if (!ledgerService) {
-      throw new Error("No Ledger Service instance available");
-    }
-    return ledgerService.poolContract.with(poolId).rechargeContract(amount);
+    return ensureLedger().poolContract.with(poolId).rechargeContract(amount);
   }
 
   function handleOnUpdateGMV(quantity: number) {
-    if (!ledgerService) {
-      throw new Error("No Ledger Service instance available");
-    }
-    return ledgerService.poolContract
-      .with(poolId)
+    return ensureLedger()
+      .poolContract.with(poolId)
       .updateGrossMarketValue(quantity);
   }
 
+  function handleOnRefund(quantity: number) {
+    return ensureLedger().poolContract.with(poolId).requestAXTCRefund(quantity);
+  }
+
   function handleOnSendToHolders(recipientId: string, quantity: number) {
-    if (!ledgerService) {
-      throw new Error("No Ledger Service instance available");
-    }
-    return ledgerService.poolContract
-      .with(poolId)
+    return ensureLedger()
+      .poolContract.with(poolId)
       .sendShareToHolder(recipientId, quantity);
   }
 
@@ -113,6 +122,16 @@ export const ManagePool = () => {
               }
               iconPosition="start"
               value={PoolTabs.Payout}
+            />
+            <Tab
+              icon={<Undo />}
+              label={
+                <WithBadge value={isRefundRequested ? " " : ""}>
+                  Refund {poolData.masterToken.name}
+                </WithBadge>
+              }
+              iconPosition="start"
+              value={PoolTabs.Refund}
             />
             <Tab
               icon={<IconRocket />}
@@ -151,6 +170,16 @@ export const ManagePool = () => {
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12} md={8}>
                 <PayoutApprovalCard poolId={poolId} />
+              </Grid>
+            </Grid>
+          </TabPanel>
+          <TabPanel value={PoolTabs.Refund} sx={{ p: 0, pt: 1 }}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item xs={12} md={4}>
+                <RefundActionCard onRefund={handleOnRefund} poolId={poolId} />
+              </Grid>
+              <Grid item xs={12} md={8}>
+                <RefundApprovalCard poolId={poolId} />
               </Grid>
             </Grid>
           </TabPanel>
