@@ -93,7 +93,7 @@
   "buy_token_not_registered": "It seems you are not registered yet",
   "setup_account": "Set up Account",
   "acquire_token": "Acquire Token",
-  "acquire_how_many": "How many tokens you like to acquire?",
+  "acquire_how_many": "How many tokens do you like to acquire?",
   "acquire_totalPrice": "Total acquisition costs",
   "acquire_about_to_buy_one": "You are about to acquire {{count}} token for {{amount}}",
   "acquire_about_to_buy_other": "You are about to acquire {{count}} tokens for {{amount}}",
