@@ -32,6 +32,9 @@
 #endif
 
 // Set public functions magic numbers
+// See: https://gchq.github.io/CyberChef/#recipe=SHA2('256',64,160)Take_bytes(0,16,false)Swap_endianness('Hex',8,true)
+// Enter: MethodName(NumberOfArgs * J)V - example SendAXTPToHolder(JJ)V
+// Convert to Unsigned Longs: https://www.rapidtables.com/convert/number/hex-to-decimal.html
 #define REQUEST_MINT_AXTC 0x2ad2251e2c50bb44
 #define APPROVE_MINT_AXTC 0xd29baa091c36518c
 #define REQUEST_BURN_AXTC 0xc71ee27abd19dcf5
@@ -222,10 +225,15 @@ long isAuthorized() {
          (approvals[3].account == currentTX.sender);
 }
 
+
 long refund(){
-   sendAmount(getAmount(currentTX.txId), currentTX.sender);
-   sendQuantity(getQuantity(currentTX.txId, tokenIdAXTC), tokenIdAXTC, currentTX.sender);
-   sendBalance(getCreator());
+    sendAmount(getAmount(currentTX.txId), currentTX.sender);
+    long axtcQuantity = getQuantity(currentTX.txId, tokenIdAXTC);
+    if(axtcQuantity > 0) {
+        sendQuantity(axtcQuantity, tokenIdAXTC, currentTX.sender);
+    }
+
+    sendBalance(getCreator());
 }
 
 // ---------------- PUBLIC ---------------------------
@@ -233,8 +241,11 @@ long refund(){
 void Deactivate() {
     if(currentTX.sender == getCreator()){
         isDeactivated = true;
-        sendQuantityAndAmount(getAssetBalance(tokenIdAXTC), tokenIdAXTC, getCurrentBalance(), getCreator());
-
+        long axtcBalance = getAssetBalance(tokenIdAXTC);
+        if(axtcBalance > 0){
+            sendQuantity(axtcBalance, tokenIdAXTC, getCreator());
+        }
+        sendBalance(getCreator());
     }
 }
 
@@ -242,10 +253,9 @@ void RequestSendToPool(long quantityAXTC, long poolAddress) {
     if(!isAuthorized()){
         return;
     }
-
+    resetPoolSendActionApproval();
     requestedPoolSendAddress = poolAddress;
     pendingPoolSendAXTC = quantityAXTC;
-    resetPoolSendActionApproval();
 }
 
 void ApproveSendToPool(){
@@ -254,10 +264,11 @@ void ApproveSendToPool(){
     }
 
     if(approveSendPoolAction()){
+        resetPoolSendActionApproval();
         sendQuantity(pendingPoolSendAXTC, tokenIdAXTC, requestedPoolSendAddress);
         requestedPoolSendAddress = 0;
         pendingPoolSendAXTC = 0;
-        resetPoolSendActionApproval();
+        
     }
 }
 
@@ -265,8 +276,8 @@ void RequestMintAXTC(long quantityAXTC) {
     if(!isAuthorized()){
         return;
     }
-    pendingMintAXTC = quantityAXTC;
     resetMintActionApproval();
+    pendingMintAXTC = quantityAXTC;
 }
 
 void ApproveMintAXTC(){
@@ -275,9 +286,9 @@ void ApproveMintAXTC(){
     }
 
     if(approveMintAction()){
+        resetMintActionApproval();
         mintAsset(pendingMintAXTC, tokenIdAXTC);
         pendingMintAXTC = 0;
-        resetMintActionApproval();
     }
 }
 
@@ -285,8 +296,8 @@ void RequestBurnAXTC(long quantityAXTC) {
     if(!isAuthorized()){
         return;
     }
-    pendingBurnAXTC = quantityAXTC;
     resetBurnActionApproval();
+    pendingBurnAXTC = quantityAXTC;
 }
 
 void ApproveBurnAXTC(){
@@ -295,9 +306,9 @@ void ApproveBurnAXTC(){
     }
 
     if(approveBurnAction()){
+        resetBurnActionApproval();
         sendQuantity(pendingBurnAXTC, tokenIdAXTC, 0);
         pendingBurnAXTC = 0;
-        resetBurnActionApproval();
     }
 }
 

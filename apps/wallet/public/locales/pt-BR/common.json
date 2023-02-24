@@ -123,5 +123,7 @@
   "qrscan_failure": "Desculpe, não foi possível escanear o QR Code.",
   "clear": "Limpar",
   "download": "Baixar",
-  "regenerate": "Regenerar"
+  "regenerate": "Regenerar",
+  "sold_out": "Vendido!",
+  "sold_out_hint": "Desculpe. Este pool já está esgotado. Escolha outro pool ou aguarde até que forneçamos um novo pool. Iremos informá-lo quando um novo pool estiver disponível."
 }

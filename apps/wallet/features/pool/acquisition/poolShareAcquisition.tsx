@@ -22,6 +22,10 @@ import {
 } from "react-icons/ri";
 import { OnStepChangeArgs } from "@/features/account";
 import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
+import { HintBox } from "@/app/components/hintBox";
+import { Body } from "@/app/components/layout/body";
+import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
+import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
 
 const StepRoutes = {
   pix: ["quantity", "paymentMethod", "paymentPix"],
@@ -75,20 +79,20 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
     await routeStep(newStep);
   };
 
-  const availableShares = Math.max(
-    pool.maxShareQuantity - pool.token.numHolders,
-    0
+  const soldTokens = parseFloat(pool.token.supply);
+  const availableShares = Math.max(pool.maxShareQuantity - soldTokens, 0);
+  const maxAllowedShares = Math.min(
+    availableShares,
+    pool.aliasData.maximumTokensPerCustomer
   );
-  const maxAllowedShares = Math.min(4, availableShares);
 
   useEffect(() => {
-    let canProceed = true;
+    let canProceed = maxAllowedShares > 0;
 
     if (StepRoutes[paymentMethod][currentStep] === "quantity") {
       canProceed = quantity > 0 && quantity <= maxAllowedShares;
     }
 
-    //
     const isFirstStep = currentStep === 0;
     const isLastStep = currentStep === stepCount - 1;
 
@@ -134,6 +138,21 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
   };
 
   if (!pool) return null;
+
+  if (maxAllowedShares === 0)
+    return (
+      <div className="overflow-hidden">
+        <PoolHeader poolData={pool} />
+        <section className="mt-[25%]">
+          <HintBox text={t("sold_out")}>
+            <div className="absolute w-[64px] top-[-48px] bg-base-100">
+              <AnimatedIconError loopDelay={5000} touchable />
+            </div>
+            <p>{t("sold_out_hint")}</p>
+          </HintBox>
+        </section>
+      </div>
+    );
 
   return (
     <div className="overflow-hidden">

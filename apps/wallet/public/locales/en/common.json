@@ -123,5 +123,7 @@
   "qrscan_failure": "Sorry, scanning the QR Code was not possible.",
   "clear": "Clear",
   "download": "Download",
-  "regenerate": "Regenerate"
+  "regenerate": "Regenerate",
+  "sold_out": "Sold Out!",
+  "sold_out_hint": "Sorry. This pool is already sold out. Choose another pool, or wait until we provide a new pool. We will inform you when a new pool is available."
 }
