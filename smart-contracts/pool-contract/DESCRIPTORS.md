@@ -51,3 +51,4 @@ The most important part is the `al` field, which points to the alias. The alias'
 - `x-mxt`: Maximum allowed tokens per account, customer
 - `x-wp`: The URL to the whitepaper for this pool
 
+

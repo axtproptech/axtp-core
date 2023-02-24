@@ -34,13 +34,12 @@ This contract must be pre-configured, before being deployed:
     #define AXTC_MASTER_CONTRACT_ID 11140234818474766359
 #endif
 #ifdef MAINNET
-// TO DO
-    #define APPROVER_1 1
-    #define APPROVER_2 2
-    #define APPROVER_3 3
-    #define APPROVER_4 4
-    #define AXTC_TOKEN_ID 100
-    #define AXTC_MASTER_CONTRACT_ID 101
+    #define APPROVER_1 8797953487734693092
+    #define APPROVER_2 7001023189548812882
+    #define APPROVER_3 3744968806698214868
+    #define APPROVER_4 9467750625510510168
+    #define AXTC_TOKEN_ID 6819420180754712492
+    #define AXTC_MASTER_CONTRACT_ID 16178473761798608633
 #endif
 
 // Set public functions magic numbers

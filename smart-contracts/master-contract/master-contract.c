@@ -1,7 +1,7 @@
 #define VERSION 1
 // #define SIMULATOR
-#define TESTNET
-// #define MAINNET
+// #define TESTNET
+#define MAINNET
 
 #program name AXTMasterContract
 #program activationAmount .25
@@ -23,12 +23,11 @@
     #define APPROVER_4 10746331379201355428
 #endif
 #ifdef MAINNET
-    // TO DO
     #define TOKEN_NAME "AXTC"
-    #define APPROVER_1 1
-    #define APPROVER_2 2
-    #define APPROVER_3 3
-    #define APPROVER_4 4
+    #define APPROVER_1 8797953487734693092
+    #define APPROVER_2 7001023189548812882
+    #define APPROVER_3 3744968806698214868
+    #define APPROVER_4 9467750625510510168
 #endif
 
 // Set public functions magic numbers
