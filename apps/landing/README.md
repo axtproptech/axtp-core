@@ -31,3 +31,5 @@ and open "http://localhost:3000"
 At this moment of writing the entire project is being hosted on [Vercel](https://vercel.com/), a very easy to use
 serverless hosting platform. Its deployment is integrated with Github, such that the deployment is automatically done
 when pushing to the `main` branch
+
+-- force deploy
