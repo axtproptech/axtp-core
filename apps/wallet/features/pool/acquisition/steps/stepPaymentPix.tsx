@@ -145,7 +145,11 @@ export const StepPaymentPix: FC<Props> = ({
             <h3 className="my-1">
               {t("acquire_about_to_buy", {
                 count: quantity,
-                amount: formatNumber({ value: totalBRL, suffix: "BRL" }),
+                amount: formatNumber({
+                  value: totalBRL,
+                  suffix: "BRL",
+                  decimals: 2,
+                }),
               })}
             </h3>
             <small>{t("pix_payments_description")}</small>

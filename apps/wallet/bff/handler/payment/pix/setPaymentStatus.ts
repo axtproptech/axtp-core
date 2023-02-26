@@ -168,7 +168,7 @@ export const setPaymentStatus: RouteHandlerFunction = async (req, res) => {
   // and gathering them all here requires several requests to database. So, no further action here (yet)
   // atm, we might wanna use this function merely for logging/developing reasons...
   // We will use the getPaymentStatus method and check by polling. On the frontend we have all information
-  bffLoggingService.error({
+  bffLoggingService.info({
     msg: "Received PIX Payment Confirmation",
     domain: "pix",
     detail: req.body,

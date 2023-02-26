@@ -67,7 +67,9 @@ export const PoolListAquisitionCTA: FC<Props> = ({ availablePools }) => {
       )}
       {pools.length === 1 && (
         <Button color="primary" className="mt-4">
-          <Link href={`/pool/${pools[0].poolId}`}>{t("buy_token")}</Link>
+          <Link href={`/pool/${pools[0].poolId}/acquisition`}>
+            {t("buy_token")}
+          </Link>
         </Button>
       )}
     </>

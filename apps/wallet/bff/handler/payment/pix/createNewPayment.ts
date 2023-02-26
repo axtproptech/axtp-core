@@ -2,11 +2,12 @@ import { RouteHandlerFunction } from "@/bff/route";
 import { sha256 } from "@/bff/sha256";
 import { NewPixPaymentResponse } from "@/bff/types/newPixPaymentResponse";
 import { prisma } from "@axtp/db";
-import { badRequest, boomify, notFound } from "@hapi/boom";
+import { badRequest, Boom, boomify, notFound } from "@hapi/boom";
 import { getEnvVar } from "@/bff/getEnvVar";
 import { createPixProviderClient } from "@/bff/createPixProviderClient";
 import { array, number, object, string } from "yup";
 import { bffLoggingService } from "@/bff/bffLoggingService";
+import { HttpError } from "@signumjs/http";
 
 /*
 PagSeguro Order Object
@@ -75,7 +76,7 @@ const PaymentSchema = object({
 
 export const createNewPayment: RouteHandlerFunction = async (req, res) => {
   const { customerId, accountId, tokenName, quantity, amountBrl } = req.body;
-  const amount = parseFloat(amountBrl) * 100; // payment is in BRL cent
+  const amount = Math.round(parseFloat(amountBrl) * 100); // payment is in BRL cent
   const qnt = parseFloat(quantity);
 
   if (
@@ -120,7 +121,7 @@ export const createNewPayment: RouteHandlerFunction = async (req, res) => {
       {
         name: tokenName,
         quantity,
-        unit_amount: amount / qnt,
+        unit_amount: Math.round(amount / qnt),
       },
     ],
     qr_codes: [
@@ -138,6 +139,8 @@ export const createNewPayment: RouteHandlerFunction = async (req, res) => {
     const validatedPayment = await PaymentSchema.validate(payment, {
       strict: true,
     });
+
+    console.info("Sending to pix", payment);
     const { response } = await createPixProviderClient().post(
       "/orders",
       validatedPayment
@@ -152,8 +155,21 @@ export const createNewPayment: RouteHandlerFunction = async (req, res) => {
       pixUrl: response.qr_codes[0].text,
     } as NewPixPaymentResponse);
   } catch (e: any) {
-    const boom = boomify(e);
-    boom.output.statusCode = 400;
-    res.status(boom.output.statusCode).json(boom.output);
+    let boom = new Boom(e.message, { statusCode: 400 });
+    if (e instanceof HttpError) {
+      boom = new Boom(e.message, {
+        statusCode: e.status,
+        message: e.data,
+      });
+      res.status(boom.output.statusCode).json(boom.output);
+    } else {
+      res.status(boom.output.statusCode).json(boom.output);
+    }
+
+    bffLoggingService.error({
+      msg: "PIX Order creation failed",
+      domain: "pix",
+      detail: boom.output,
+    });
   }
 };
