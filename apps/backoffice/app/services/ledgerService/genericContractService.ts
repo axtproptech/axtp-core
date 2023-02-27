@@ -43,6 +43,7 @@ export abstract class GenericContractService {
         id: "0",
         balance: "0",
         supply: "0",
+        decimals: 0,
       });
     }
     const { ledger } = this.context;
@@ -60,14 +61,13 @@ export abstract class GenericContractService {
       );
     }
 
-    // TODO: adjust signumjs with new quantityCirculatingQNT
-    // @ts-ignore
     const { name, asset: id, quantityCirculatingQNT } = assetInfo;
     return {
       name,
       id,
       balance,
       supply: fromQuantity(quantityCirculatingQNT, assetInfo.decimals),
+      decimals: assetInfo.decimals,
     };
   }
 
