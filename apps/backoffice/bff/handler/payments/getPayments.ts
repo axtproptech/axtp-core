@@ -38,7 +38,7 @@ export const getPayments: ApiHandler = async ({ req, res }) => {
         },
       },
     });
-    return res.status(200).json(payments.map(asPaymentResponse));
+    res.status(200).json(payments.map(asPaymentResponse));
   } catch (e: any) {
     if (e instanceof ValidationError) {
       throw badRequest(e.errors.join(","));

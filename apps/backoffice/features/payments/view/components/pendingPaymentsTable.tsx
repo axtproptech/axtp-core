@@ -105,7 +105,7 @@ export const PendingPaymentsTable = () => {
     return tableRows.reduce((sum, row) => sum + parseFloat(row.usd || "0"), 0);
   }, [tableRows]);
   const handleRowClick = async (e: GridRowParams) => {
-    //await router.push(`/admin/payments/${e.id}`);
+    await router.push(`/admin/payments/${e.id}`);
   };
 
   return (
