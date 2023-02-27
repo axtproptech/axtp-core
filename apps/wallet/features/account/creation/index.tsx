@@ -78,11 +78,6 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
         onClick: generateSeed,
         icon: <div>{t("regenerate")}</div>,
       },
-      "2": {
-        label: "Download",
-        onClick: download,
-        icon: <div>{t("download")}</div>,
-      },
     };
 
     let canProceed = true;
@@ -129,11 +124,6 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
     const generator = new PassPhraseGenerator();
     const words = await generator.generatePassPhrase(Array.from(arr));
     setSeed(words.join(" "));
-  }
-
-  async function download() {
-    window.print();
-    console.log("Save");
   }
 
   async function storeAccount() {
