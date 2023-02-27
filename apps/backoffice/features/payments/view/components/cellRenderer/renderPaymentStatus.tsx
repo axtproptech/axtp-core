@@ -1,3 +1,4 @@
+import { GridRenderCellParams } from "@mui/x-data-grid";
 import { Chip, Tooltip } from "@mui/material";
 import { PaymentStatus } from "@/types/paymentStatus";
 import { useMemo } from "react";
@@ -18,7 +19,7 @@ export const PaymentStatusChip = ({ status }: Props) => {
     const statusLabel =
       status.substring(0, 1).toUpperCase() + status.substring(1);
     // @ts-ignore
-    const statusColor = StatusColorMap[status] || "default";
+    const statusColor = StatusColorMap[status.toLowerCase()] || "default";
     return {
       statusLabel,
       statusColor,
@@ -31,4 +32,10 @@ export const PaymentStatusChip = ({ status }: Props) => {
       <Chip label={statusLabel} color={statusColor} />
     </Tooltip>
   );
+};
+
+export const renderPaymentStatus = (params: GridRenderCellParams<string>) => {
+  const status = params.value as PaymentStatus;
+  if (!status) return null;
+  return <PaymentStatusChip status={status} />;
 };

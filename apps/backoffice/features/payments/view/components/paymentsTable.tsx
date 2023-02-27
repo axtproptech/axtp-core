@@ -7,108 +7,66 @@ import {
   GridRenderCellParams,
   GridRowParams,
 } from "@mui/x-data-grid";
-import { Grid, Stack, Tooltip, Typography } from "@mui/material";
+import { Button, Grid, Stack, Tooltip, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { VerificationChip } from "@/app/components/chips/verificationChip";
-import { ActivationChip } from "@/app/components/chips/activationChip";
-import { BlockingChip } from "@/app/components/chips/blockingChip";
 import { TextInput } from "@/app/components/inputs";
-import { ActionButton } from "@/app/components/buttons/actionButton";
-import { IconClipboard } from "@tabler/icons";
-import { useSnackbar } from "@/app/hooks/useSnackbar";
-import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
-import { Address } from "@signumjs/core";
 import { paymentsService } from "@/app/services/paymentService/paymentService";
-
-const renderDate = (params: GridRenderCellParams<string>) => {
-  const date = params.value;
-  if (!date) return null;
-  const formattedDate = new Date(date).toLocaleDateString();
-  return <div>{formattedDate}</div>;
-};
-
-const renderVerificationLevel = (params: GridRenderCellParams<string>) => {
-  const verification = params.value;
-  if (!verification) return null;
-  return <VerificationChip level={verification} />;
-};
-
-const renderActive = (params: GridRenderCellParams<boolean>) => {
-  return <ActivationChip isActive={Boolean(params.value)} />;
-};
-
-const renderBlocked = (params: GridRenderCellParams<boolean>) => {
-  return <BlockingChip isBlocked={Boolean(params.value)} alwaysShow />;
-};
-
-const AccountAction = ({ publicKey }: { publicKey: string }) => {
-  const { showSuccess } = useSnackbar();
-  const accountId = useMemo(() => {
-    if (!publicKey) return null;
-    try {
-      return Address.create(publicKey).getNumericId();
-    } catch (e) {
-      return null;
-    }
-  }, [publicKey]);
-
-  if (!accountId) {
-    return (
-      <Tooltip title={"This account has no blockchain account yet"}>
-        <Typography>Missing Key</Typography>
-      </Tooltip>
-    );
-  }
-
-  const handleOnCLick = async (e: React.SyntheticEvent) => {
-    try {
-      e.stopPropagation();
-      await navigator.clipboard.writeText(publicKey);
-      showSuccess("Copied Key successfully");
-    } catch (err: any) {}
-  };
-
-  return (
-    <Stack direction="row" alignItems="center">
-      <Tooltip title="Copy Accounts Public Key into Clipboard">
-        <div>
-          <ActionButton
-            actionLabel={"Key"}
-            actionIcon={<IconClipboard />}
-            onClick={handleOnCLick}
-          />
-        </div>
-      </Tooltip>
-
-      <Tooltip title="Open Account in Blockchain Explorer">
-        <div>
-          <OpenExplorerButton id={accountId} type="address" label="" />
-        </div>
-      </Tooltip>
-    </Stack>
-  );
-};
-
-const renderAccount = (params: GridRenderCellParams<string>) => (
-  <AccountAction publicKey={params.value || ""} />
-);
+import { renderPaymentStatus } from "@/features/payments/view/components/cellRenderer/renderPaymentStatus";
+import { renderCreatedAt } from "@/features/payments/view/components/cellRenderer/renderCreatedAt";
+import { renderDate } from "@/features/payments/view/components/cellRenderer/renderDate";
+import { renderPaymentType } from "@/features/payments/view/components/cellRenderer/renderPaymentType";
+import { renderCurrency } from "@/features/payments/view/components/cellRenderer/renderCurrency";
+import { renderAmountUSD } from "@/features/payments/view/components/cellRenderer/renderAmountUSD";
+import { renderToken } from "@/features/payments/view/components/cellRenderer/renderToken";
+import { renderTransactionId } from "@/features/payments/view/components/cellRenderer/renderTransactionId";
+import { renderPaymentRecordId } from "@/features/payments/view/components/cellRenderer/renderPaymentRecordId";
+import { renderCustomer } from "@/features/payments/view/components/cellRenderer/renderCustomer";
 
 const columns: GridColDef[] = [
-  { field: "createdAt", headerName: "Paid At", renderCell: renderDate },
+  { field: "createdAt", headerName: "Paid At", renderCell: renderCreatedAt },
   { field: "updatedAt", headerName: "Updated At", renderCell: renderDate },
-  { field: "status", headerName: "Situation", flex: 1 },
-  { field: "type", headerName: "Type", flex: 1 },
-  { field: "currency", headerName: "Currency", flex: 1 },
-  { field: "amount", headerName: "Paid", flex: 1 },
-  { field: "usd", headerName: "USD Value", flex: 1 },
-  { field: "poolId", headerName: "Pool Id", flex: 1 }, // as link to pool
-  { field: "tokenId", headerName: "Token", flex: 1 }, // as link to explorer and name
-  { field: "tokenQuantity", headerName: "Quantity", flex: 1 },
-  { field: "transactionId", headerName: "TransactionId", flex: 1 }, // as link to ethscan, evt pix
-  { field: "recordId", headerName: "Paid Id", flex: 1 }, // as link to explorer
-  { field: "processedRecordId", headerName: "Processed Id", flex: 1 }, // as link to explorer
-  { field: "cancelRecordId", headerName: "Cancel Id", flex: 1 }, // as link to explorer
-  { field: "cuid", headerName: "Customer", flex: 1 }, // link to customer, render as name
+  {
+    field: "status",
+    headerName: "Situation",
+    flex: 1,
+    renderCell: renderPaymentStatus,
+  },
+  { field: "type", headerName: "Type", flex: 1, renderCell: renderPaymentType },
+  { flex: 1, field: "amount", headerName: "Paid", renderCell: renderCurrency },
+  {
+    field: "usd",
+    headerName: "USD Value",
+    flex: 1,
+    renderCell: renderAmountUSD,
+  },
+  {
+    flex: 1,
+    field: "tokenQuantity",
+    headerName: "Quantity",
+    renderCell: renderToken,
+  },
+  {
+    flex: 1,
+    field: "transactionId",
+    headerName: "Transaction Id",
+    renderCell: renderTransactionId,
+  },
+  {
+    flex: 1,
+    field: "recordId",
+    headerName: "Record Id",
+    renderCell: renderPaymentRecordId,
+  }, // as link to explorer
+  {
+    field: "cuid",
+    headerName: "Token Holder",
+    renderCell: renderCustomer,
+    sortable: false,
+  },
+
+  // { field: "processedRecordId", headerName: "Processed Id", flex: 1 }, // as link to explorer
+  // { field: "cancelRecordId", headerName: "Cancel Id", flex: 1 }, // as link to explorer
 ];
 
 export const PaymentsTable = () => {
@@ -189,15 +147,22 @@ export const PaymentsTable = () => {
     setSearchValue(e.target.value);
   };
 
+  const handleShowPending = () => {
+    setSearchValue("pending");
+  };
+
   return (
     <MainCard title="Manage Payments">
-      <Grid container>
-        <Grid item md={4}>
+      <Grid container alignItems="center">
+        <Grid item md={4} xs={8}>
           <TextInput
             label="Search"
             onChange={handleSearch}
             value={searchValue}
           />
+        </Grid>
+        <Grid item sx={{ ml: 2 }}>
+          <Button onClick={handleShowPending}>Show Pending</Button>
         </Grid>
       </Grid>
       <div style={{ height: "70vh" }}>
