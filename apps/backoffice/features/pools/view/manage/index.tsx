@@ -11,6 +11,7 @@ import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { Amount } from "@signumjs/util";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
+  IconDiscount2,
   IconRecharging,
   IconRocket,
   IconUserPlus,
@@ -23,8 +24,6 @@ import { UpdateGMVCard } from "@/features/pools/view/manage/updateGMVCard";
 import { SendShareToHolderCard } from "@/features/pools/view/manage/sendShareToHolderCard";
 import { ShowTokenHolders } from "@/features/pools/view/manage/showTokenHolders";
 import { RefundApprovalCard } from "@/features/pools/view/manage/refundApprovalCard";
-import { BurnActionCard } from "@/features/liquidity/manage/components/burnActionCard";
-import { BurnApprovalCard } from "@/features/liquidity/manage/components/burnApprovalCard";
 import { RefundActionCard } from "./refundActionCard";
 
 enum PoolTabs {
@@ -41,8 +40,9 @@ const gridSpacing = Config.Layout.GridSpacing;
 export const ManagePool = () => {
   const { query } = useRouter();
   const { ledgerService } = useLedgerService();
-  const [currentTab, setCurrentTab] = useState(PoolTabs.Payout);
   const poolId = singleQueryArg(query.poolId);
+  const action = singleQueryArg(query.action);
+  const [currentTab, setCurrentTab] = useState(action || PoolTabs.SendToken);
   const poolData = useAppSelector(selectPoolContractState(poolId));
 
   const balanceAmount = useMemo(() => {
@@ -89,7 +89,12 @@ export const ManagePool = () => {
     return ensureLedger().poolContract.with(poolId).requestAXTCRefund(quantity);
   }
 
-  function handleOnSendToHolders(recipientId: string, quantity: number) {
+  function handleOnSendToHolders(
+    recipientId: string,
+    quantity: number,
+    payment?: string
+  ) {
+    // TODO: send payment processing record
     return ensureLedger()
       .poolContract.with(poolId)
       .sendShareToHolder(recipientId, quantity);
@@ -99,7 +104,7 @@ export const ManagePool = () => {
     <Grid container spacing={gridSpacing}>
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
-          <Grid item lg={4} md={6} sm={12}>
+          <Grid item lg={6} md={6} sm={12}>
             <PoolCard data={poolData} showContractBalance />
           </Grid>
           <Grid item lg={3} md={6} sm={6} xs={12}>
@@ -113,6 +118,12 @@ export const ManagePool = () => {
       <Grid item xs={12}>
         <TabContext value={currentTab}>
           <TabList onChange={handleTabChange}>
+            <Tab
+              icon={<IconDiscount2 />}
+              label="Send Token"
+              iconPosition="start"
+              value={PoolTabs.SendToken}
+            />
             <Tab
               icon={<Payments />}
               label={
@@ -138,12 +149,6 @@ export const ManagePool = () => {
               label="Update GMV"
               iconPosition="start"
               value={PoolTabs.UpdateGMV}
-            />
-            <Tab
-              icon={<IconUserPlus />}
-              label="Send Token"
-              iconPosition="start"
-              value={PoolTabs.SendToken}
             />
             <Tab
               icon={<IconUsers />}
@@ -175,7 +180,7 @@ export const ManagePool = () => {
           </TabPanel>
           <TabPanel value={PoolTabs.Refund} sx={{ p: 0, pt: 1 }}>
             <Grid container spacing={gridSpacing}>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={8}>
                 <RefundActionCard onRefund={handleOnRefund} poolId={poolId} />
               </Grid>
               <Grid item xs={12} md={8}>
@@ -185,7 +190,7 @@ export const ManagePool = () => {
           </TabPanel>
           <TabPanel value={PoolTabs.SendToken} sx={{ p: 0, pt: 1 }}>
             <Grid container spacing={gridSpacing}>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={8}>
                 <SendShareToHolderCard
                   onSend={handleOnSendToHolders}
                   poolId={poolId}

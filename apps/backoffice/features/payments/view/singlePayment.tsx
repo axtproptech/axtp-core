@@ -4,9 +4,6 @@ import {
   CircularProgress,
   Divider,
   Grid,
-  Input,
-  TextareaAutosize,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { Config } from "@/app/config";
@@ -14,19 +11,15 @@ import { FC, useMemo } from "react";
 import { customerService } from "@/app/services/customerService/customerService";
 import useSWR, { useSWRConfig } from "swr";
 import { MainCard } from "@/app/components/cards";
-import {
-  CustomerActions,
-  CustomerActionType,
-} from "./components/customerActions";
+import { PaymentActions, PaymentActionType } from "./components/paymentActions";
 import { LabeledTextField } from "@/app/components/labeledTextField";
 import { ExternalLink } from "@/app/components/links/externalLink";
-import { VerificationChip } from "@/app/components/chips/verificationChip";
 import { useExplorerLink } from "@/app/hooks/useExplorerLink";
 import { cpf } from "cpf-cnpj-validator";
 import { useRouter } from "next/router";
 import { paymentsService } from "@/app/services/paymentService/paymentService";
 import { PaymentFullResponse } from "@/bff/types/paymentFullResponse";
-import { PaymentStatusChip } from "@/features/payments/view/components/cellRenderer/renderPaymentStatus";
+import { PaymentStatusChip } from "./components/cellRenderer/renderPaymentStatus";
 import { PaymentStatus } from "@/types/paymentStatus";
 import { usePoolContract } from "@/app/hooks/usePoolContract";
 import { Number } from "@/app/components/number";
@@ -40,7 +33,6 @@ const gridSpacing = Config.Layout.GridSpacing;
 export const SinglePayment = () => {
   const router = useRouter();
   const txid = router.query.txid as string;
-  const { getAccountLink } = useExplorerLink();
   const { mutate } = useSWRConfig();
   const { data: payment, error } = useSWR(
     txid ? `getPayment/${txid}` : null,
@@ -49,14 +41,17 @@ export const SinglePayment = () => {
     }
   );
 
-  // TODO: payment actions
-  const verifyCustomer = async () => {
+  const sendToken = async () => {
     try {
-      await customerService.with(txid).verifyCustomer("Level1");
-      await Promise.all([
-        mutate(`getCustomer/${txid}`),
-        mutate("getPendingTokenHolders"),
-      ]);
+      if (!payment) return;
+
+      const params = new URLSearchParams({
+        action: "send-token",
+        recipient: payment.customer.blockchainAccounts[0].publicKey,
+        quantity: payment.tokenQuantity.toString(10),
+        payment: payment.transactionId,
+      });
+      await router.push(`/admin/pools/${payment.poolId}?${params.toString()}`);
     } catch (e) {
       console.error("Some error", e);
     }
@@ -80,18 +75,14 @@ export const SinglePayment = () => {
     }
   };
 
-  const handleCustomerAction = async (action: CustomerActionType) => {
+  const handleCustomerAction = async (action: PaymentActionType) => {
     switch (action) {
-      case "verify":
-        return verifyCustomer();
-      case "activate":
+      case "send-token":
+        return sendToken();
+      case "set-processed":
         return activateCustomer(true);
-      case "deactivate":
+      case "set-cancelled":
         return activateCustomer(false);
-      case "block":
-        return blockCustomer(true);
-      case "unblock":
-        return blockCustomer(false);
       default:
         return new Promise<void>((resolve) => {
           setTimeout(() => resolve(), 2000);
@@ -99,17 +90,20 @@ export const SinglePayment = () => {
     }
   };
   const availableActions = useMemo(() => {
-    const actions = new Set<CustomerActionType>();
+    const actions = new Set<PaymentActionType>();
     if (!payment) return actions;
-    //
-    // if (
-    //   payment.verificationLevel === "Pending" ||
-    //   payment.verificationLevel === "NotVerified"
-    // ) {
-    //   actions.add("verify");
-    // }
-    // actions.add(payment.isActive ? "deactivate" : "activate");
-    // actions.add(payment.isBlocked ? "unblock" : "block");
+    const { customer } = payment;
+    if (
+      customer.verificationLevel.startsWith("Level") &&
+      customer.isActive &&
+      !customer.isBlocked &&
+      !payment.processedRecordId
+    ) {
+      actions.add("send-token");
+    }
+
+    //TODO: more here
+    actions.add("set-cancelled");
     return actions;
   }, [payment]);
 
@@ -123,7 +117,7 @@ export const SinglePayment = () => {
     <MainCard
       title={payment ? <PaymentHeader payment={payment} /> : ""}
       actions={
-        <CustomerActions
+        <PaymentActions
           onAction={handleCustomerAction}
           availableActions={availableActions}
         />
@@ -156,32 +150,6 @@ const PaymentHeader: FC<PaymentProps> = ({ payment }) => {
         <PaymentStatusChip
           status={payment.status.toLowerCase() as PaymentStatus}
         />
-        {/*<VerificationChip level={verificationLevel} />*/}
-        {/*{isActive ? (*/}
-        {/*  <Chip sx={{ ml: 1 }} label="Active" color="success" />*/}
-        {/*) : (*/}
-        {/*  <Chip sx={{ ml: 1 }} label="Deactivated" color="warning" />*/}
-        {/*)}*/}
-        {/*{isBlocked && <Chip sx={{ ml: 1 }} label="Blocked" color="error" />}*/}
-        {/*{payment.customer.blockchainAccounts.length ? (*/}
-        {/*  <ExternalLink*/}
-        {/*    href={getAccountLink(*/}
-        {/*      payment.customer.blockchainAccounts[0].accountId*/}
-        {/*    )}*/}
-        {/*  >*/}
-        {/*    <Chip*/}
-        {/*      sx={{ ml: 1 }}*/}
-        {/*      label={payment.customer.blockchainAccounts[0].rsAddress}*/}
-        {/*      color="info"*/}
-        {/*      clickable*/}
-        {/*    />*/}
-        {/*  </ExternalLink>*/}
-        {/*) : (*/}
-        {/*  <Chip sx={{ ml: 1 }} label="No Blockchain Account" color="error" />*/}
-        {/*)}*/}
-      </Grid>
-      <Grid item>
-        <Typography variant="h4">Actions here</Typography>
       </Grid>
     </Grid>
   );
