@@ -7,7 +7,10 @@ export const renderCreatedAt = (params: GridRenderCellParams<string>) => {
   if (!createdAt) return null;
 
   const createdAtDate = new Date(createdAt);
-  const overdue = Date.now() - createdAtDate.getTime() > 2 * Days;
+  const overdue =
+    params.row.status === "Pending"
+      ? Date.now() - createdAtDate.getTime() > 2 * Days
+      : false;
   const applied = new Date(createdAt).toLocaleDateString();
 
   let style = {};

@@ -89,6 +89,36 @@ export class PaymentRecordService {
     return records;
   }
 
+  public async sendPaymentCancellationReceiptToCustomer(
+    record: PaymentRecord,
+    customerPublicKey: string
+  ) {
+    const { ledger, sendFee } = this.context;
+    const { publicKey, signPrivateKey, agreementPrivateKey } = this.getKeys();
+    const { tokenId, tokenQuantity, paymentCurrency, paymentAmount } = record;
+    const { name, decimals } = await ledger.asset.getAsset({
+      assetId: tokenId,
+    });
+    const tokenAmount = ChainValue.create(decimals)
+      .setAtomic(tokenQuantity)
+      .getCompound();
+
+    const reimbursed = -parseFloat(paymentAmount); // cancelled value is negative
+    const message = `Your aqcuisition of ${tokenAmount} ${name} was cancelled. The amount of ${reimbursed.toLocaleString()} ${paymentCurrency} was reimbursed.`;
+
+    return (await ledger.message.sendEncryptedMessage({
+      message,
+      messageIsText: true,
+      recipientId: Address.fromPublicKey(customerPublicKey).getNumericId(),
+      recipientPublicKey: customerPublicKey,
+      deadline: 1440,
+      feePlanck: sendFee.getPlanck(),
+      senderPublicKey: publicKey,
+      senderPrivateKey: signPrivateKey,
+      senderAgreementKey: agreementPrivateKey,
+    })) as TransactionId;
+  }
+
   public async sendPaymentReceiptToCustomer(
     record: PaymentRecord,
     customerPublicKey: string

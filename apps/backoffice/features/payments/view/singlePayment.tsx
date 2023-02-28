@@ -36,6 +36,7 @@ const gridSpacing = Config.Layout.GridSpacing;
 
 export const SinglePayment = () => {
   const router = useRouter();
+  const { showError, showSuccess } = useSnackbar();
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const txid = router.query.txid as string;
   const { data: payment, error } = useSWR(
@@ -62,8 +63,19 @@ export const SinglePayment = () => {
   };
 
   const confirmCancelPayment = async (args: CancellationArgs) => {
-    console.log("confirmCancelPayment", args);
-    return setCancelModalOpen(false);
+    try {
+      if (!payment) {
+        throw new Error("No payment available");
+      }
+      await paymentsService
+        .with(payment.transactionId)
+        .setCancelled(args.transactionId, args.reason);
+      showSuccess("Successfully cancelled payment");
+      setCancelModalOpen(false);
+    } catch (e: any) {
+      console.error("confirmCancelPayment", e.message);
+      showError("Failure while cancelling the payment");
+    }
   };
 
   const handleCustomerAction = async (action: PaymentActionType) => {
@@ -109,6 +121,7 @@ export const SinglePayment = () => {
           open={cancelModalOpen}
           payment={payment}
           onClose={confirmCancelPayment}
+          onCancel={() => setCancelModalOpen(false)}
         />
       )}
       <MainCard

@@ -21,9 +21,15 @@ interface Props {
   open: boolean;
   payment: PaymentFullResponse;
   onClose: (args: CancellationArgs) => void;
+  onCancel: () => void;
 }
 
-export const CancelPaymentDialog = ({ payment, open, onClose }: Props) => {
+export const CancelPaymentDialog = ({
+  payment,
+  open,
+  onClose,
+  onCancel,
+}: Props) => {
   const { control, reset, getValues, watch } = useForm<CancellationArgs>({
     defaultValues: {
       reason: "",
@@ -34,10 +40,15 @@ export const CancelPaymentDialog = ({ payment, open, onClose }: Props) => {
   const txIdValue = watch("transactionId");
   const reasonValue = watch("reason");
 
-  const handleClose = () => {
+  const handleConfirm = () => {
     const { reason, transactionId } = getValues();
     reset();
     onClose({ transactionId, reason });
+  };
+
+  const handleCancel = () => {
+    reset();
+    onCancel();
   };
 
   const canConfirm = !!txIdValue && !!reasonValue;
@@ -45,7 +56,7 @@ export const CancelPaymentDialog = ({ payment, open, onClose }: Props) => {
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      onClose={handleCancel}
       aria-labelledby="form-dialog-title"
     >
       <DialogTitle id="form-dialog-title">
@@ -103,8 +114,8 @@ export const CancelPaymentDialog = ({ payment, open, onClose }: Props) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Abort</Button>
-        <Button onClick={handleClose} disabled={!canConfirm}>
+        <Button onClick={handleCancel}>Abort</Button>
+        <Button onClick={handleConfirm} disabled={!canConfirm}>
           Confirm
         </Button>
       </DialogActions>
