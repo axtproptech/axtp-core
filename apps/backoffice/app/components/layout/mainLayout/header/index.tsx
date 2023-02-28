@@ -1,11 +1,12 @@
 import { useTheme } from "@mui/material/styles";
-import { Avatar, Box, ButtonBase } from "@mui/material";
+import { Avatar, Box, ButtonBase, Typography } from "@mui/material";
 
 import LogoSection from "../logoSection";
 import { ProfileSection } from "./profileSection";
 import { IconMenu2 } from "@tabler/icons";
 import { FC, MouseEventHandler } from "react";
 import { NotificationSection } from "./notificationSection";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 interface Props {
   handleLeftDrawerToggle: MouseEventHandler;
@@ -13,6 +14,7 @@ interface Props {
 
 export const Header: FC<Props> = ({ handleLeftDrawerToggle }) => {
   const theme = useTheme();
+  const { Ledger } = useAppContext();
   const avatar = {
     // @ts-ignore
     ...theme.typography.commonAvatar,
@@ -59,7 +61,14 @@ export const Header: FC<Props> = ({ handleLeftDrawerToggle }) => {
       {/* header search */}
       {/*<SearchSection />*/}
       <Box sx={{ flexGrow: 1 }} />
-      <Box sx={{ flexGrow: 1 }} />
+      <Box sx={{ flexGrow: 1 }}>
+        {Ledger.IsTestnet && (
+          <Typography variant="h2" color="error">
+            {" "}
+            STAGING{" "}
+          </Typography>
+        )}
+      </Box>
       <NotificationSection />
       <ProfileSection />
     </>

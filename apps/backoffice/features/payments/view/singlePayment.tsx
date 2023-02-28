@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Config } from "@/app/config";
-import { FC, useMemo } from "react";
+import { FC, useMemo, useState } from "react";
 import { customerService } from "@/app/services/customerService/customerService";
 import useSWR, { useSWRConfig } from "swr";
 import { MainCard } from "@/app/components/cards";
@@ -27,13 +27,17 @@ import { useAppContext } from "@/app/hooks/useAppContext";
 import { shortenHash } from "@/app/shortenHash";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { IconCopy } from "@tabler/icons";
+import {
+  CancellationArgs,
+  CancelPaymentDialog,
+} from "@/features/payments/view/components/cancelPaymentDialog";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
 export const SinglePayment = () => {
   const router = useRouter();
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const txid = router.query.txid as string;
-  const { mutate } = useSWRConfig();
   const { data: payment, error } = useSWR(
     txid ? `getPayment/${txid}` : null,
     () => {
@@ -57,32 +61,17 @@ export const SinglePayment = () => {
     }
   };
 
-  const activateCustomer = async (isActive: boolean) => {
-    try {
-      await customerService.with(txid).setCustomerActivationState(isActive);
-      await mutate(`getCustomer/${txid}`);
-    } catch (e) {
-      console.error("Some error", e);
-    }
-  };
-
-  const blockCustomer = async (isBlocked: boolean) => {
-    try {
-      await customerService.with(txid).setCustomerBlockingState(isBlocked);
-      await mutate(`getCustomer/${txid}`);
-    } catch (e) {
-      console.error("Some error", e);
-    }
+  const confirmCancelPayment = async (args: CancellationArgs) => {
+    console.log("confirmCancelPayment", args);
+    return setCancelModalOpen(false);
   };
 
   const handleCustomerAction = async (action: PaymentActionType) => {
     switch (action) {
       case "send-token":
         return sendToken();
-      case "set-processed":
-        return activateCustomer(true);
-      case "set-cancelled":
-        return activateCustomer(false);
+      case "cancel-payment":
+        return setCancelModalOpen(true);
       default:
         return new Promise<void>((resolve) => {
           setTimeout(() => resolve(), 2000);
@@ -101,9 +90,9 @@ export const SinglePayment = () => {
     ) {
       actions.add("send-token");
     }
-
-    //TODO: more here
-    actions.add("set-cancelled");
+    if (!payment.processedRecordId) {
+      actions.add("cancel-payment");
+    }
     return actions;
   }, [payment]);
 
@@ -114,23 +103,32 @@ export const SinglePayment = () => {
   if (error) return null;
 
   return (
-    <MainCard
-      title={payment ? <PaymentHeader payment={payment} /> : ""}
-      actions={
-        <PaymentActions
-          onAction={handleCustomerAction}
-          availableActions={availableActions}
+    <>
+      {payment && (
+        <CancelPaymentDialog
+          open={cancelModalOpen}
+          payment={payment}
+          onClose={confirmCancelPayment}
         />
-      }
-    >
-      {loading && (
-        <Box>
-          {" "}
-          <CircularProgress />
-        </Box>
       )}
-      {!loading && <PaymentDetails payment={payment!} />}
-    </MainCard>
+      <MainCard
+        title={payment ? <PaymentHeader payment={payment} /> : ""}
+        actions={
+          <PaymentActions
+            onAction={handleCustomerAction}
+            availableActions={availableActions}
+          />
+        }
+      >
+        {loading && (
+          <Box>
+            {" "}
+            <CircularProgress />
+          </Box>
+        )}
+        {!loading && <PaymentDetails payment={payment!} />}
+      </MainCard>
+    </>
   );
 };
 

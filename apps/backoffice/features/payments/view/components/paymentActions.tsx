@@ -1,17 +1,13 @@
 import { FC, useState } from "react";
 import { Box } from "@mui/material";
 import { ActionButton } from "@/app/components/buttons/actionButton";
-import { IconDiscount2 } from "@tabler/icons";
+import { IconCashBanknoteOff, IconDiscount2 } from "@tabler/icons";
 
-export type PaymentActionType =
-  | "send-token"
-  | "set-processed"
-  | "set-cancelled";
+export type PaymentActionType = "send-token" | "cancel-payment";
 
 const DefaultAvailableActions = new Set<PaymentActionType>([
   "send-token",
-  "set-processed",
-  "set-cancelled",
+  "cancel-payment",
 ]);
 
 interface Props {
@@ -41,6 +37,18 @@ export const PaymentActions: FC<Props> = ({
             color="success"
             onClick={handleActionClick("send-token")}
             isLoading={actionsLoading}
+          />
+        </Box>
+      )}
+      {availableActions.has("cancel-payment") && (
+        <Box sx={{ ml: 2 }}>
+          <ActionButton
+            actionLabel="Cancel Payment"
+            actionIcon={<IconCashBanknoteOff />}
+            color="warning"
+            onClick={handleActionClick("cancel-payment")}
+            isLoading={actionsLoading}
+            tooltip="Reimburse paid amount if customer is not eligible for token"
           />
         </Box>
       )}

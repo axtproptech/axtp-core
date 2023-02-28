@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { singleQueryArg } from "@/app/singleQueryArg";
 import { paymentsService } from "@/app/services/paymentService/paymentService";
+import { useSWRConfig } from "swr";
 
 type FormValues = {
   amount: number;
@@ -51,6 +52,7 @@ export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [transactionId, setTransactionId] = useState("");
   const [floatAmount, setFloatAmount] = useState(amount);
+  const { mutate } = useSWRConfig();
 
   // @ts-ignore
   const { control, reset, watch } = useForm<FormValues>({
@@ -105,6 +107,8 @@ export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
       const tx = await onSend(accountId, value);
       if (payService) {
         await payService.setProcessed(tx.transactionId);
+        // tell swr that the payment was updated
+        await mutate(`getPayment/${payService.transactionId}`);
       }
       setTransactionId(tx.transactionId);
       reset();
