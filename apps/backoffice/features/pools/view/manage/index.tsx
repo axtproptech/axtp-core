@@ -89,12 +89,7 @@ export const ManagePool = () => {
     return ensureLedger().poolContract.with(poolId).requestAXTCRefund(quantity);
   }
 
-  function handleOnSendToHolders(
-    recipientId: string,
-    quantity: number,
-    payment?: string
-  ) {
-    // TODO: send payment processing record
+  function handleOnSendToHolders(recipientId: string, quantity: number) {
     return ensureLedger()
       .poolContract.with(poolId)
       .sendShareToHolder(recipientId, quantity);

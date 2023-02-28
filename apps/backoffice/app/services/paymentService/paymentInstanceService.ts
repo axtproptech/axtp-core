@@ -1,7 +1,6 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
 import { PaymentStatus } from "@/types/paymentStatus";
-import { CustomerResponse } from "@/bff/types/customerResponse";
 import { PaymentFullResponse } from "@/bff/types/paymentFullResponse";
 
 export class PaymentInstanceService {
@@ -17,8 +16,20 @@ export class PaymentInstanceService {
     return this.txid;
   }
 
-  async setPaymentStatus(status: PaymentStatus) {
-    const { response } = await this.http.put("", { status });
+  async setProcessed(recordId: string) {
+    const { response } = await this.http.put("", {
+      status: "Processed",
+      recordId,
+    });
+    return response as CustomerFullResponse;
+  }
+
+  async setCancelled(recordId: string, reason: string) {
+    const { response } = await this.http.put("", {
+      status: "Cancelled",
+      recordId,
+      observation: reason,
+    });
     return response as CustomerFullResponse;
   }
 

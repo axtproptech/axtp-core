@@ -13,7 +13,6 @@ import { renderPaymentType } from "./cellRenderer/renderPaymentType";
 import { renderAmountUSD } from "./cellRenderer/renderAmountUSD";
 import { renderToken } from "./cellRenderer/renderToken";
 import { renderTransactionId } from "./cellRenderer/renderTransactionId";
-import { renderPaymentRecordId } from "./cellRenderer/renderPaymentRecordId";
 
 const columns: GridColDef[] = [
   {
@@ -42,12 +41,6 @@ const columns: GridColDef[] = [
     headerName: "Transaction Id",
     renderCell: renderTransactionId,
   },
-  {
-    flex: 1,
-    field: "recordId",
-    headerName: "Record Id",
-    renderCell: renderPaymentRecordId,
-  }, // as link to explorer
   {
     field: "cuid",
     headerName: "Token Holder",

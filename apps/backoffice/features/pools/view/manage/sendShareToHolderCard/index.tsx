@@ -28,8 +28,7 @@ type FormValues = {
 interface Props {
   onSend: (
     recipientId: string,
-    quantity: number,
-    payment?: string
+    quantity: number
   ) => Promise<ConfirmedTransaction>;
   poolId: string;
 }
@@ -98,11 +97,15 @@ export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
       if (!foundCustomer) {
         throw new Error("Given account is not registered");
       }
-      if (paymentValue) {
-        // checking for payment
-        await paymentsService.with(paymentValue).fetchPayment();
+      let payService = paymentValue ? paymentsService.with(paymentValue) : null;
+      if (payService) {
+        // checking for existing payment
+        await payService.fetchPayment();
       }
-      const tx = await onSend(accountId, value, paymentValue);
+      const tx = await onSend(accountId, value);
+      if (payService) {
+        await payService.setProcessed(tx.transactionId);
+      }
       setTransactionId(tx.transactionId);
       reset();
       showSuccess("Successfully requested token send");
