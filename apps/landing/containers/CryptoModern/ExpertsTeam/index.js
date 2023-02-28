@@ -28,7 +28,8 @@ const Items = {
   },
   osman: {
     title: "Osman Lima, COO",
-    description: "Osman Lime é ...",
+    description:
+      "Osman Lima se conecta com todas as áreas do negócio e sua gestão. Formado em Engenharia da Computação, professor, desenvolvedor de software, gestor, investidor. Entusiasta de tecnologia e suas aplicações.",
     link: "https://www.linkedin.com/in/osman-lima",
   },
   daniel: {
