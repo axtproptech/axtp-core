@@ -1,7 +1,19 @@
-export interface PaymentResponse {
+import { BlockchainAccountResponse } from "@/bff/types/blockchainAccountResponse";
+
+interface CustomerData {
+  cuid: string;
+  cpfCnpj: string;
+  firstName: string;
+  lastName: string;
+  isActive: boolean;
+  isBlocked: boolean;
+  verificationLevel: string;
+  blockchainAccounts: BlockchainAccountResponse[];
+}
+
+export interface PaymentFullResponse {
   id: number;
   createdAt: string;
-  cuid: string;
   updatedAt: string;
   accountId: string;
   type: string;
@@ -20,4 +32,5 @@ export interface PaymentResponse {
 
   cancelTransactionId?: string;
   observations?: string;
+  customer: CustomerData;
 }

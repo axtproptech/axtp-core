@@ -13,6 +13,7 @@ const DefaultTokenData: BasicTokenInfo = {
   id: "",
   balance: "0",
   supply: "0",
+  decimals: 0,
 };
 
 export interface MasterContractState {

@@ -163,7 +163,7 @@ enum PaymentStatus {
     Pending
     Received
     Processed // entire process concluded, i.e. transferred token
-    Cancelled //
+    Cancelled // reimbursement
 }
 
 model Payment {
@@ -180,7 +180,8 @@ model Payment {
   poolId               String
   tokenId              String
   tokenQuantity        Int
-  transactionId        String  @unique
+  transactionId        String  @unique // payment transaction, i.e. pix, or usdc, etc.
+  cancelTransactionId  String? // reimbursement transaction id
   status               PaymentStatus
   recordId             String  @unique // transaction id on Signum
   processedRecordId    String? // proof of processing

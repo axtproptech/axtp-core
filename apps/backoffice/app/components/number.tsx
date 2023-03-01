@@ -5,10 +5,17 @@ interface Props {
   value: string | number;
   suffix?: string;
   decimals?: number;
+  style?: object;
 }
 
-export const Number: FC<Props> = ({ suffix, value, decimals = 2 }) => (
-  <span style={{ cursor: "default" }}>
+const DefaultStyle = { cursor: "default" };
+export const Number: FC<Props> = ({
+  suffix,
+  value,
+  decimals = 2,
+  style = DefaultStyle,
+}) => (
+  <span style={style}>
     {suffix ? (
       <NumericFormat
         value={value}

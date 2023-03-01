@@ -1,12 +1,5 @@
 import { IconUsers, IconUserSearch } from "@tabler/icons";
-import {
-  Box,
-  Button,
-  Stack,
-  Tooltip,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Stack, Tooltip, Typography, useTheme } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
 import { TextInput } from "@/app/components/inputs";
@@ -23,10 +16,14 @@ import { customerService } from "@/app/services/customerService/customerService"
 import { ActionButton } from "@/app/components/buttons/actionButton";
 import { useRouter } from "next/router";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { singleQueryArg } from "@/app/singleQueryArg";
+import { paymentsService } from "@/app/services/paymentService/paymentService";
+import { useSWRConfig } from "swr";
 
 type FormValues = {
   amount: number;
   recipient: string;
+  payment: string;
 };
 
 interface Props {
@@ -40,6 +37,13 @@ interface Props {
 export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
   const theme = useTheme();
   const router = useRouter();
+  const { query } = router;
+  const amount = query.quantity
+    ? parseFloat(singleQueryArg(query.quantity))
+    : 1;
+  const recipient = query.recipient ? singleQueryArg(query.recipient) : "";
+  const payment = query.payment ? singleQueryArg(query.payment) : "";
+
   const { Ledger } = useAppContext();
   const { ledgerService } = useLedgerService();
   const { token } = usePoolContract(poolId);
@@ -47,16 +51,20 @@ export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [transactionId, setTransactionId] = useState("");
-  const [floatAmount, setFloatAmount] = useState(1);
+  const [floatAmount, setFloatAmount] = useState(amount);
+  const { mutate } = useSWRConfig();
 
   // @ts-ignore
   const { control, reset, watch } = useForm<FormValues>({
     defaultValues: {
-      amount: 1,
+      amount,
+      recipient,
+      payment,
     },
   });
 
   const recipientValue = watch("recipient");
+  const paymentValue = watch("payment");
   const address = useMemo(() => {
     if (!recipientValue) return null;
     try {
@@ -85,11 +93,22 @@ export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
     try {
       const value = toPoolShareQuantity(floatAmount);
       const accountId = address.getNumericId();
-      const found = await customerService.fetchCustomerByAccountId(accountId);
-      if (!found) {
+      const foundCustomer = await customerService.fetchCustomerByAccountId(
+        accountId
+      );
+      if (!foundCustomer) {
         throw new Error("Given account is not registered");
       }
+      let payService = paymentValue ? paymentsService.with(paymentValue) : null;
+      if (payService) {
+        // checking for existing payment
+        await payService.fetchPayment();
+      }
       const tx = await onSend(accountId, value);
+      if (payService) {
+        await payService.setProcessed(tx.transactionId);
+        await mutate(`getPayment/${payService.transactionId}`);
+      }
       setTransactionId(tx.transactionId);
       reset();
       showSuccess("Successfully requested token send");
@@ -156,6 +175,15 @@ export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
             />
           )}
           name="amount"
+          control={control}
+          // @ts-ignore
+          variant="outlined"
+        />
+
+        <Box sx={{ py: 1 }} />
+        <Controller
+          render={({ field }) => <TextInput label="Payment Id" {...field} />}
+          name="payment"
           control={control}
           // @ts-ignore
           variant="outlined"

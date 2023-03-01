@@ -3,4 +3,6 @@ export interface BasicTokenInfo {
   supply: string;
   balance: string;
   id: string;
+
+  decimals: number;
 }

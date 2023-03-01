@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { route } from "@/bff/route";
 import { requireAuth } from "@/bff/middlewares/requireAuth";
-import { getCustomer, updateCustomer } from "@/bff/handler/customers";
+import { getPayment, updatePayment } from "@/bff/handler/payments";
 
 export default function handler(
   req: NextApiRequest,
@@ -10,8 +10,8 @@ export default function handler(
   return route({
     req,
     res,
-    get: getCustomer,
-    put: updateCustomer,
+    get: getPayment,
+    put: updatePayment,
     middlewares: [requireAuth],
   });
 }

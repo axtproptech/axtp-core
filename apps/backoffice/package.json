@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@axtp/db": "*",
+    "@axtp/core": "*",
     "@braintree/sanitize-url": "^6.0.0",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",

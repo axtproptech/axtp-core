@@ -1,5 +1,5 @@
-import { FC, ReactNode, MouseEvent } from "react";
-import { Box, Button, CircularProgress, SxProps } from "@mui/material";
+import { FC, ReactNode } from "react";
+import { Box, Button, CircularProgress, SxProps, Tooltip } from "@mui/material";
 
 export interface ActionButtonProps {
   actionLabel: string;
@@ -10,6 +10,7 @@ export interface ActionButtonProps {
   isLoading?: boolean;
   sx?: SxProps;
   sxButton?: SxProps;
+  tooltip?: string;
 }
 
 export const ActionButton: FC<ActionButtonProps> = ({
@@ -21,6 +22,7 @@ export const ActionButton: FC<ActionButtonProps> = ({
   disabled = false,
   sx = {},
   sxButton = {},
+  tooltip = "",
 }) => (
   <Box sx={{ display: "flex", flexDirection: "row", ...sx }}>
     {isLoading ? (
@@ -35,15 +37,17 @@ export const ActionButton: FC<ActionButtonProps> = ({
         &nbsp;{actionLabel}
       </Button>
     ) : (
-      <Button
-        variant="contained"
-        color={color}
-        onClick={onClick}
-        disabled={disabled}
-        sx={sxButton}
-      >
-        {actionIcon}&nbsp;{actionLabel}
-      </Button>
+      <Tooltip title={tooltip}>
+        <Button
+          variant="contained"
+          color={color}
+          onClick={onClick}
+          disabled={disabled}
+          sx={sxButton}
+        >
+          {actionIcon}&nbsp;{actionLabel}
+        </Button>
+      </Tooltip>
     )}
   </Box>
 );
