@@ -2,6 +2,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { DashboardHeader } from "@/features/account/dashboard/sections/dashboardHeader";
+import { PaymentStatus } from "@/features/account/components/paymentStatus";
 import { Body } from "@/app/components/layout/body";
 import { PoolList } from "@/app/components/poolList";
 import { HintBox } from "@/app/components/hintBox";
@@ -11,6 +12,9 @@ import { useTranslation } from "next-i18next";
 import { Button } from "react-daisyui";
 import { useDispatch } from "react-redux";
 import { accountActions } from "@/app/states/accountState";
+import useSWR from "swr";
+import { useAppContext } from "@/app/hooks/useAppContext";
+import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 
 const StatusSlugMap = {
   NotVerified: "kyc-not-registered-hint",
@@ -30,6 +34,19 @@ export const AccountDashboard = () => {
     showVerificationStatus,
   } = useAccount();
   const dispatch = useDispatch();
+  const { KycService } = useAppContext();
+
+  const { data: payments, error } = useSWR(
+    customer && customer.customerId
+      ? `getCustomerPayments/${customer.customerId}`
+      : null,
+    () => {
+      if (customer && customer.customerId) {
+        return KycService.fetchCustomerPayments(customer.customerId);
+      }
+      return null;
+    }
+  );
 
   useEffect(() => {
     if (!accountId && router) {
@@ -59,9 +76,9 @@ export const AccountDashboard = () => {
         />
       </section>
       <div className="relative">
-        <div className="absolute z-10 top-[-1px] bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
+        <div className="absolute z-10 top-4 bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
       </div>
-      <Body className="overflow-x-auto h-[calc(100vh_-_240px_-_64px)]">
+      <Body className="overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh_-_440px)]">
         {!customer && (
           <HintBox
             className="mx-auto"
@@ -93,6 +110,11 @@ export const AccountDashboard = () => {
               )}
             </div>
           </HintBox>
+        )}
+        {payments && (
+          <div className="mt-4">
+            <PaymentStatus payments={payments} />
+          </div>
         )}
         {isVerified && (
           <div className="mt-2">
