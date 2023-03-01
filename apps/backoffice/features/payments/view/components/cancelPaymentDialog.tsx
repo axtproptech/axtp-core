@@ -11,6 +11,8 @@ import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "@/app/components/inputs";
 import { PaymentFullResponse } from "@/bff/types/paymentFullResponse";
 import { Number } from "@/app/components/number";
+import { useState } from "react";
+import { ActionButton } from "@/app/components/buttons/actionButton";
 
 export interface CancellationArgs {
   reason: string;
@@ -20,7 +22,7 @@ export interface CancellationArgs {
 interface Props {
   open: boolean;
   payment: PaymentFullResponse;
-  onClose: (args: CancellationArgs) => void;
+  onClose: (args: CancellationArgs) => Promise<void>;
   onCancel: () => void;
 }
 
@@ -30,6 +32,7 @@ export const CancelPaymentDialog = ({
   onClose,
   onCancel,
 }: Props) => {
+  const [isClosing, setIsClosing] = useState(false);
   const { control, reset, getValues, watch } = useForm<CancellationArgs>({
     defaultValues: {
       reason: "",
@@ -40,10 +43,15 @@ export const CancelPaymentDialog = ({
   const txIdValue = watch("transactionId");
   const reasonValue = watch("reason");
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const { reason, transactionId } = getValues();
-    reset();
-    onClose({ transactionId, reason });
+    try {
+      setIsClosing(true);
+      await onClose({ transactionId, reason });
+      reset();
+    } finally {
+      setIsClosing(false);
+    }
   };
 
   const handleCancel = () => {
@@ -115,9 +123,12 @@ export const CancelPaymentDialog = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCancel}>Abort</Button>
-        <Button onClick={handleConfirm} disabled={!canConfirm}>
-          Confirm
-        </Button>
+        <ActionButton
+          actionLabel="Confirm"
+          onClick={handleConfirm}
+          disabled={!canConfirm}
+          isLoading={isClosing}
+        />
       </DialogActions>
     </Dialog>
   );

@@ -24,10 +24,13 @@ export interface PaymentFullResponse {
   tokenId: string;
   tokenQuantity: number;
   transactionId: string;
+
   status: string;
   recordId: string;
   processedRecordId?: string;
   cancelRecordId?: string;
+
+  cancelTransactionId?: string;
   observations?: string;
   customer: CustomerData;
 }

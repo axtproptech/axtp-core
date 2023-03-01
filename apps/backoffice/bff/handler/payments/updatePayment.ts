@@ -19,8 +19,11 @@ const paymentUpdateBodySchema = object({
 export const updatePayment: ApiHandler = async ({ req, res }) => {
   try {
     const { txid } = paymentRequestSchema.validateSync(req.query);
-    const { transactionId, status, observations } =
-      paymentUpdateBodySchema.validateSync(req.body);
+    const {
+      transactionId: reference,
+      status,
+      observations,
+    } = paymentUpdateBodySchema.validateSync(req.body);
 
     let payment;
     if (status === "Processed") {
@@ -28,7 +31,7 @@ export const updatePayment: ApiHandler = async ({ req, res }) => {
         where: { transactionId: txid },
         data: {
           status,
-          processedRecordId: transactionId, // this is the signum txid for the contract call
+          processedRecordId: reference, // this is the signum txid for the contract call
           observations,
         },
         include: {
@@ -120,7 +123,7 @@ export const updatePayment: ApiHandler = async ({ req, res }) => {
         where: { transactionId: txid },
         data: {
           status,
-          cancelTransactionId: transactionId, // this is the reimbursement payment id, i.e. pix, usdeth, etc.
+          cancelTransactionId: reference, // this is the reimbursement payment id, i.e. pix, usdeth, etc.
           cancelRecordId: recordTx.transaction,
           observations,
         },

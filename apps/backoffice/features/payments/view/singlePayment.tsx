@@ -8,8 +8,7 @@ import {
 } from "@mui/material";
 import { Config } from "@/app/config";
 import { FC, useMemo, useState } from "react";
-import { customerService } from "@/app/services/customerService/customerService";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import { MainCard } from "@/app/components/cards";
 import { PaymentActions, PaymentActionType } from "./components/paymentActions";
 import { LabeledTextField } from "@/app/components/labeledTextField";
@@ -98,11 +97,12 @@ export const SinglePayment = () => {
       customer.verificationLevel.startsWith("Level") &&
       customer.isActive &&
       !customer.isBlocked &&
-      !payment.processedRecordId
+      !payment.processedRecordId &&
+      !payment.cancelRecordId
     ) {
       actions.add("send-token");
     }
-    if (!payment.processedRecordId) {
+    if (!payment.processedRecordId && !payment.cancelRecordId) {
       actions.add("cancel-payment");
     }
     return actions;
@@ -166,6 +166,10 @@ const PaymentHeader: FC<PaymentProps> = ({ payment }) => {
   );
 };
 
+const getEthereumTransactionLink = (isTestnet: boolean, txId: string) =>
+  (isTestnet ? `https://goerli.etherscan.io/tx/` : `https://etherscan.io/tx/`) +
+  txId;
+
 const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
   const { getAccountLink, getTransactionLink } = useExplorerLink();
   const { showError, showSuccess } = useSnackbar();
@@ -179,12 +183,19 @@ const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
   const amountCurrency = parseFloat(payment.amount);
   const exchangeRate = amountUsd > 0 ? amountCurrency / amountUsd : 0;
 
-  let url = "";
+  let transactionUrl = "";
+  let cancelTransactionUrl = "";
   if (payment.type === "usdeth") {
-    url =
-      (Ledger.IsTestnet
-        ? `https://goerli.etherscan.io/tx/`
-        : `https://etherscan.io/tx/`) + payment.id;
+    transactionUrl = getEthereumTransactionLink(
+      Ledger.IsTestnet,
+      payment.transactionId
+    );
+    cancelTransactionUrl = payment.cancelTransactionId
+      ? getEthereumTransactionLink(
+          Ledger.IsTestnet,
+          payment.cancelTransactionId
+        )
+      : "";
   }
 
   const handleCopy = async (data: string) => {
@@ -241,8 +252,8 @@ const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
               text={payment.type.toUpperCase()}
             />
             <LabeledTextField label="Transaction Id">
-              {url ? (
-                <ExternalLink href={url}>
+              {transactionUrl ? (
+                <ExternalLink href={transactionUrl}>
                   <>{shortenHash(payment.transactionId)}</>
                 </ExternalLink>
               ) : (
@@ -285,6 +296,31 @@ const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
                 "Not cancelled"
               )}
             </LabeledTextField>
+            {payment.cancelTransactionId && (
+              <LabeledTextField label="Cancel Transaction Id">
+                {cancelTransactionUrl && (
+                  <ExternalLink href={cancelTransactionUrl}>
+                    <>{shortenHash(payment.cancelTransactionId)}</>
+                  </ExternalLink>
+                )}
+                {!cancelTransactionUrl && (
+                  <Box
+                    sx={{
+                      cursor: "pointer",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                    onClick={() =>
+                      handleCopy(payment.cancelTransactionId || "")
+                    }
+                  >
+                    {shortenHash(payment.cancelTransactionId)}
+                    <IconCopy />
+                  </Box>
+                )}
+              </LabeledTextField>
+            )}
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
             <LabeledTextField label="Customer">

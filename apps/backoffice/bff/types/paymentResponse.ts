@@ -12,9 +12,12 @@ export interface PaymentResponse {
   tokenId: string;
   tokenQuantity: number;
   transactionId: string;
+
   status: string;
   recordId: string;
   processedRecordId?: string;
   cancelRecordId?: string;
+
+  cancelTransactionId?: string;
   observations?: string;
 }
