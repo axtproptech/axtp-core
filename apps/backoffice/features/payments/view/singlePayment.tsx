@@ -38,12 +38,13 @@ export const SinglePayment = () => {
   const { showError, showSuccess } = useSnackbar();
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const txid = router.query.txid as string;
-  const { data: payment, error } = useSWR(
-    txid ? `getPayment/${txid}` : null,
-    () => {
-      return paymentsService.with(txid).fetchPayment();
-    }
-  );
+  const {
+    data: payment,
+    error,
+    mutate,
+  } = useSWR(txid ? `getPayment/${txid}` : null, () => {
+    return paymentsService.with(txid).fetchPayment();
+  });
 
   const sendToken = async () => {
     try {
@@ -69,6 +70,7 @@ export const SinglePayment = () => {
       await paymentsService
         .with(payment.transactionId)
         .setCancelled(args.transactionId, args.reason);
+      mutate().then(); // revalidate async'ly
       showSuccess("Successfully cancelled payment");
       setCancelModalOpen(false);
     } catch (e: any) {

@@ -107,7 +107,6 @@ export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
       const tx = await onSend(accountId, value);
       if (payService) {
         await payService.setProcessed(tx.transactionId);
-        // tell swr that the payment was updated
         await mutate(`getPayment/${payService.transactionId}`);
       }
       setTransactionId(tx.transactionId);
