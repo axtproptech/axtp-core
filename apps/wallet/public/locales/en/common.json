@@ -125,5 +125,7 @@
   "download": "Download",
   "regenerate": "Regenerate",
   "sold_out": "Sold Out!",
-  "sold_out_hint": "Sorry. This pool is already sold out. Choose another pool, or wait until we provide a new pool. We will inform you when a new pool is available."
+  "sold_out_hint": "Sorry. This pool is already sold out. Choose another pool, or wait until we provide a new pool. We will inform you when a new pool is available.",
+  "acquisition_in_progress_one": "Your acquisition is being processed",
+  "acquisition_in_progress_other": "Your acquisitions are being processed"
 }

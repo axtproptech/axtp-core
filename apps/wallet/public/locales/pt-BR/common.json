@@ -125,5 +125,7 @@
   "download": "Baixar",
   "regenerate": "Regenerar",
   "sold_out": "Vendido!",
-  "sold_out_hint": "Desculpe. Este pool já está esgotado. Escolha outro pool ou aguarde até que forneçamos um novo pool. Iremos informá-lo quando um novo pool estiver disponível."
+  "sold_out_hint": "Desculpe. Este pool já está esgotado. Escolha outro pool ou aguarde até que forneçamos um novo pool. Iremos informá-lo quando um novo pool estiver disponível.",
+  "acquisition_in_progress_one": "Sua aquisição está sendo processada",
+  "acquisition_in_progress_other": "Suas aquisições estão sendo processadas"
 }

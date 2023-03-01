@@ -1,6 +1,7 @@
 import { Http } from "@signumjs/http";
 import retry from "p-retry";
 import { CustomerSafeData } from "@/types/customerSafeData";
+import { CustomerPaymentData } from "@/types/customerPaymentData";
 
 export class KycService {
   constructor(private bffClient: Http) {}
@@ -44,6 +45,15 @@ export class KycService {
         `/customer?publicKey=${publicKey}`
       );
       return response as CustomerSafeData;
+    });
+  }
+
+  async fetchCustomerPayments(customerId: string) {
+    return retry(async () => {
+      const { response } = await this.bffClient.get(
+        `/customer/${customerId}/payments`
+      );
+      return response as CustomerPaymentData[];
     });
   }
 }
