@@ -8,7 +8,7 @@ import Heading from "common/components/Heading";
 import FeatureBlock from "common/components/FeatureBlock";
 import Container from "common/components/UI/Container";
 import ExpertsTeamWrapper, { CounterUpArea } from "./expertsTeam.style";
-import oliver from "common/assets/image/cryptoModern/oliver-hager-colored.webp";
+import oliver from "common/assets/image/cryptoModern/oliver-hager.webp";
 import danniel from "common/assets/image/cryptoModern/danniel-covo.webp";
 import osman from "common/assets/image/cryptoModern/osman-lima.webp";
 import danielh from "common/assets/image/cryptoModern/daniel-heuri.webp";

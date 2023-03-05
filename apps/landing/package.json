@@ -37,5 +37,8 @@
     "styled-components": "^5.2.1",
     "styled-system": "5.1.5",
     "swiper": "^7.0.6"
+  },
+  "devDependencies": {
+    "sharp": "^0.31.3"
   }
 }
