@@ -61,6 +61,8 @@ export const StepPaymentUsdc3: FC<Props> = ({
       switch (p) {
         case "algo":
           return "usdalg";
+        case "matic":
+          return "usdmat";
         case "sol":
           return "usdsol";
         case "eth":

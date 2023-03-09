@@ -1,4 +1,9 @@
-export type RegisterPaymentType = "pix" | "usdeth" | "usdsol" | "usdalg";
+export type RegisterPaymentType =
+  | "pix"
+  | "usdeth"
+  | "usdsol"
+  | "usdalg"
+  | "usdmat";
 
 export interface RegisterPaymentRequest {
   customerId: string;
