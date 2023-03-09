@@ -6,7 +6,7 @@ import { HttpClientFactory } from "@signumjs/http";
 const isTestnet = process.env.NEXT_PUBLIC_LEDGER_IS_TESTNET === "true";
 
 interface ProtocolContext {
-  protocol: "ethereum" | "solana" | "algorand";
+  protocol: "ethereum" | "solana" | "algorand" | "polygon";
   network: string;
   recipient: string;
   denomination: string;
@@ -55,6 +55,8 @@ function verifyTransaction(
     return false;
   }
 
+  console.log("verify", tx.events, denomination, recipient);
+
   const event = tx.events.find(
     (e: any) =>
       e.destination &&
@@ -83,7 +85,7 @@ function getProtocolContext(protocol: string): ProtocolContext {
     case "sol":
       return {
         protocol: "solana",
-        network: "mainnet", // no testnet supported yet
+        network: isTestnet ? "testnet" : "mainnet",
         recipient: process.env.NEXT_PUBLIC_USDC_DEPOSIT_ACCOUNT_SOL || "",
         denomination: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       };
@@ -93,6 +95,14 @@ function getProtocolContext(protocol: string): ProtocolContext {
         network: "mainnet", // no testnet supported yet
         recipient: process.env.NEXT_PUBLIC_USDC_DEPOSIT_ACCOUNT_ALGO || "",
         denomination: "USDC",
+      };
+    case "matic":
+      return {
+        protocol: "polygon",
+        network: "mainnet", // no testnet supported yet
+        recipient: process.env.NEXT_PUBLIC_USDC_DEPOSIT_ACCOUNT_MATIC || "",
+        denomination:
+          "ethereum/contract/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/erc-20",
       };
     default:
       throw new Error(`Unknown Protocol:  ${protocol}`);

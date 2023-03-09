@@ -29,6 +29,8 @@ export const Config = {
       DepositAccountAlgo:
         process.env.NEXT_PUBLIC_USDC_DEPOSIT_ACCOUNT_ALGO || "",
       DepositAccountSol: process.env.NEXT_PUBLIC_USDC_DEPOSIT_ACCOUNT_SOL || "",
+      DepositAccountMatic:
+        process.env.NEXT_PUBLIC_USDC_DEPOSIT_ACCOUNT_MATIC || "",
     },
   },
   Ledger: {

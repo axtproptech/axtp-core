@@ -66,8 +66,8 @@ export const StepPaymentUsdc1: FC<Props> = ({
                 <div>
                   <div className="text-lg">Ethereum (ERC-20)</div>
                   <div className="text-xs flex flex-row items-center">
-                    {t("address_look_like")}
-                    <pre className="m-0 ml-1 p-1">0xab4f...744f</pre>
+                    {t("blockchain_hint_eth")}
+                    {/*<pre className="m-0 ml-1 p-1">0xab4f...744f</pre>*/}
                   </div>
                 </div>
               </div>
@@ -82,54 +82,79 @@ export const StepPaymentUsdc1: FC<Props> = ({
           </div>
           <div className="form-control">
             <label className="label cursor-pointer">
-              <div className="text-lg flex flex-row items-center m-0 p-0">
+              <div className="flex flex-row items-center m-0 p-0">
                 <img
-                  src="/assets/img/solanaLogoMark.svg"
+                  src="/assets/img/polygon-matic-logo.svg"
                   className="h-[32px] m-0 mr-2 scale-[0.8]"
-                  alt="Solana Logo"
+                  alt="Polygon Logo"
                 />
                 <div>
-                  <div className="text-lg">Solana</div>
+                  <div className="text-lg">Polygon (ERC-20)</div>
                   <div className="text-xs flex flex-row items-center">
-                    {t("address_look_like")}&nbsp;
-                    <pre className="m-0 ml-1 p-1">4zWa...87b8</pre>
+                    {t("blockchain_hint_mat")}
+                    {/*<pre className="m-0 ml-1 p-1">0xab4f...744f</pre>*/}
                   </div>
                 </div>
               </div>
               <input
                 type="radio"
                 className="radio"
-                name="sol"
-                checked={protocol === "sol"}
+                name="matic"
+                checked={protocol === "matic"}
                 onChange={handleProtocolChange}
               />
             </label>
           </div>
-          <div className="form-control">
-            <label className="label cursor-pointer">
-              <div className="text-lg flex flex-row items-center">
-                <img
-                  src="/assets/img/algorand-logo.svg"
-                  className="h-[32px] m-0 mr-2 scale-[0.9]"
-                  alt="Algorand Logo"
-                />
-                <div>
-                  <div className="text-lg">Algorand</div>
-                  <div className="text-xs flex flex-row items-center">
-                    {t("address_look_like")}&nbsp;
-                    <pre className="m-0 ml-1 p-0">Y7QK....5LYQ</pre>
-                  </div>
-                </div>
-              </div>
-              <input
-                type="radio"
-                className="radio"
-                name="algo"
-                checked={protocol === "algo"}
-                onChange={handleProtocolChange}
-              />
-            </label>
-          </div>
+          {/*<div className="form-control">*/}
+          {/*  <label className="label cursor-pointer">*/}
+          {/*    <div className="text-lg flex flex-row items-center m-0 p-0">*/}
+          {/*      <img*/}
+          {/*        src="/assets/img/solanaLogoMark.svg"*/}
+          {/*        className="h-[32px] m-0 mr-2 scale-[0.8]"*/}
+          {/*        alt="Solana Logo"*/}
+          {/*      />*/}
+          {/*      <div>*/}
+          {/*        <div className="text-lg">Solana</div>*/}
+          {/*        <div className="text-xs flex flex-row items-center">*/}
+          {/*          {t("address_look_like")}&nbsp;*/}
+          {/*          <pre className="m-0 ml-1 p-1">4zWa...87b8</pre>*/}
+          {/*        </div>*/}
+          {/*      </div>*/}
+          {/*    </div>*/}
+          {/*    <input*/}
+          {/*      type="radio"*/}
+          {/*      className="radio"*/}
+          {/*      name="sol"*/}
+          {/*      checked={protocol === "sol"}*/}
+          {/*      onChange={handleProtocolChange}*/}
+          {/*    />*/}
+          {/*  </label>*/}
+          {/*</div>*/}
+          {/*  <div className="form-control">*/}
+          {/*    <label className="label cursor-pointer">*/}
+          {/*      <div className="text-lg flex flex-row items-center">*/}
+          {/*        <img*/}
+          {/*          src="/assets/img/algorand-logo.svg"*/}
+          {/*          className="h-[32px] m-0 mr-2 scale-[0.9]"*/}
+          {/*          alt="Algorand Logo"*/}
+          {/*        />*/}
+          {/*        <div>*/}
+          {/*          <div className="text-lg">Algorand</div>*/}
+          {/*          <div className="text-xs flex flex-row items-center">*/}
+          {/*            {t("address_look_like")}&nbsp;*/}
+          {/*            <pre className="m-0 ml-1 p-0">Y7QK....5LYQ</pre>*/}
+          {/*          </div>*/}
+          {/*        </div>*/}
+          {/*      </div>*/}
+          {/*      <input*/}
+          {/*        type="radio"*/}
+          {/*        className="radio"*/}
+          {/*        name="algo"*/}
+          {/*        checked={protocol === "algo"}*/}
+          {/*        onChange={handleProtocolChange}*/}
+          {/*      />*/}
+          {/*    </label>*/}
+          {/*  </div>*/}
         </div>
       </section>
       <section></section>
