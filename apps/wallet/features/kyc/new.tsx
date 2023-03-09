@@ -1,6 +1,7 @@
 // @ts-ignore
 import JotForm from "jotform-react";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { isIOS } from "mobile-device-detect";
 
 export const NewKYC = () => {
   const { JotFormId } = useAppContext();
@@ -15,7 +16,7 @@ export const NewKYC = () => {
         formURL={`https://form.jotform.com/${JotFormId}`}
         formID={JotFormId}
         onSubmit={handleOnSubmit}
-        style={{ height: "calc(100vh - 64px)" }}
+        style={{ height: isIOS ? "calc(100vh - 128px)" : "calc(100vh - 64px)" }}
       />
     </div>
   );
