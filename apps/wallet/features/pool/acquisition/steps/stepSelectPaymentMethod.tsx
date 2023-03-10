@@ -25,10 +25,20 @@ export const StepSelectPaymentMethod: FC<Props> = ({ onMethodChange }) => {
     switch (method) {
       case "usdc":
         return (
-          <img className="m-2 h-[32px]" src="/assets/img/usd-coin-logo.svg" />
+          <img
+            className="m-2 h-[32px]"
+            src="/assets/img/usd-coin-logo.svg"
+            alt="USDC Logo"
+          />
         );
       case "pix":
-        return <img className="m-2 h-[32px]" src="/assets/img/pix-logo.svg" />;
+        return (
+          <img
+            className="m-2 h-[32px]"
+            src="/assets/img/pix-logo.svg"
+            alt="PIX Logo"
+          />
+        );
       default:
     }
   }, [method]);

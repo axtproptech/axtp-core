@@ -24,6 +24,10 @@ const NetworkResourceMap = {
     img: "/assets/img/solanaLogoMark.svg",
     label: "Solana",
   },
+  matic: {
+    img: "/assets/img/polygon-matic-logo.svg",
+    label: "Polygon",
+  },
 };
 
 interface Props {
@@ -48,6 +52,8 @@ export const StepPaymentUsdc2: FC<Props> = ({ quantity, poolId, protocol }) => {
         return setDepositAddress(Usdc.DepositAccountAlgo);
       case "sol":
         return setDepositAddress(Usdc.DepositAccountSol);
+      case "matic":
+        return setDepositAddress(Usdc.DepositAccountMatic);
       case "eth":
       default:
         return setDepositAddress(Usdc.DepositAccountEth);

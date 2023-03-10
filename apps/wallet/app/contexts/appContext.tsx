@@ -43,6 +43,7 @@ export interface AppContextType {
       DepositAccountEth: string;
       DepositAccountAlgo: string;
       DepositAccountSol: string;
+      DepositAccountMatic: string;
     };
   };
 }
@@ -73,6 +74,7 @@ const config: AppContextType = {
       DepositAccountEth: Config.Payment.Usdc.DepositAccountEth,
       DepositAccountAlgo: Config.Payment.Usdc.DepositAccountAlgo,
       DepositAccountSol: Config.Payment.Usdc.DepositAccountSol,
+      DepositAccountMatic: Config.Payment.Usdc.DepositAccountMatic,
     },
   },
   Ledger: {

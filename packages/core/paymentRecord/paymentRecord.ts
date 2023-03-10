@@ -1,4 +1,4 @@
-export type PaymentType = "pix" | "usdeth" | "usdsol" | "usdalg";
+export type PaymentType = "pix" | "usdeth" | "usdsol" | "usdalg" | "usdmat";
 
 export interface PaymentRecord {
   customerId: string;

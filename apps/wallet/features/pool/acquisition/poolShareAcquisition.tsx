@@ -12,6 +12,7 @@ import {
   StepSelectPaymentMethod,
   StepPaymentUsdc2,
   StepPaymentUsdc3,
+  StepPaymentUsdc1,
 } from "./steps";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import {
@@ -32,7 +33,7 @@ const StepRoutes = {
   usdc: [
     "quantity",
     "paymentMethod",
-    // "paymentUsdc-1",
+    "paymentUsdc-1",
     "paymentUsdc-2",
     "paymentUsdc-3",
   ],
@@ -158,7 +159,10 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
     <div className="overflow-hidden">
       <PoolHeader poolData={pool} />
       <Stepper currentStep={currentStep} steps={stepCount} />
-      <div className="carousel w-full touch-none">
+      <div
+        className="carousel w-full touch-none"
+        onTouchMove={(e) => e.preventDefault()}
+      >
         <div id="quantity" className="carousel-item relative w-full">
           <StepSelectQuantity
             onQuantityChange={(q) => setQuantity(q)}
@@ -182,13 +186,13 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
         )}
         {paymentMethod === "usdc" && (
           <>
-            {/*<div id="paymentUsdc-1" className="carousel-item relative w-full">*/}
-            {/*  <StepPaymentUsdc1*/}
-            {/*    onProtocolChange={(network) => setUsdcProtocol(network)}*/}
-            {/*    quantity={quantity}*/}
-            {/*    poolId={pool.poolId}*/}
-            {/*  />*/}
-            {/*</div>*/}
+            <div id="paymentUsdc-1" className="carousel-item relative w-full">
+              <StepPaymentUsdc1
+                onProtocolChange={(network) => setUsdcProtocol(network)}
+                quantity={quantity}
+                poolId={pool.poolId}
+              />
+            </div>
             <div id="paymentUsdc-2" className="carousel-item relative w-full">
               <StepPaymentUsdc2
                 quantity={quantity}

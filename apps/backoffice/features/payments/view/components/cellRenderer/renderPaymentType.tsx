@@ -7,6 +7,7 @@ const StatusTypeLabelMap = {
   usdeth: "Ethereum",
   usdsol: "Solana",
   usdalg: "Algorand",
+  usdmat: "Polygon",
 };
 
 interface Props {
