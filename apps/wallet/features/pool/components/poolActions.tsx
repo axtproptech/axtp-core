@@ -82,9 +82,11 @@ export const PoolActions: FC<Props> = ({ poolData }) => {
   return (
     <div>
       <div className="p-2 flex-row flex mx-auto justify-center">
-        <Button color="primary" onClick={handleAcquireShare} disabled={!canBuy}>
-          {t("buy_token")}
-        </Button>
+        {canBuy && (
+          <Button color="primary" onClick={handleAcquireShare}>
+            {t("buy_token")}
+          </Button>
+        )}
         {reasonKey === "buy_token_no_account" && (
           <Button className="ml-4" color="primary" onClick={handleSetupAccount}>
             {t("setup_account")}
@@ -95,13 +97,13 @@ export const PoolActions: FC<Props> = ({ poolData }) => {
             {t("join_club")}
           </Button>
         )}
-        <Button
-          className="ml-4"
-          color="accent"
-          onClick={handleOpenDocumentation}
-        >
-          {t("show_doc")}
-        </Button>
+        {/*<Button*/}
+        {/*  className="ml-4"*/}
+        {/*  color="accent"*/}
+        {/*  onClick={handleOpenDocumentation}*/}
+        {/*>*/}
+        {/*  {t("show_doc")}*/}
+        {/*</Button>*/}
       </div>
       {reasonKey && (
         <p className="text-sm text-error text-center my-1">{t(reasonKey)}</p>

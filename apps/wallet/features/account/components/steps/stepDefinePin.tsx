@@ -1,45 +1,26 @@
 import { useTranslation } from "next-i18next";
-import { Input } from "react-daisyui";
-import { ChangeEvent, FC, useState } from "react";
+import { FC } from "react";
 import { HintBox } from "@/app/components/hintBox";
+import { PinInput } from "@/app/components/pinInput";
 
 interface Props {
   onPinChange: (e: string) => void;
 }
 
-const MinPinLength = 4;
-
 export const StepDefinePin: FC<Props> = ({ onPinChange }) => {
   const { t } = useTranslation();
-  const [pin, setPin] = useState("");
-
-  const handlePinChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const p = e.target.value;
-    setPin(p);
-    onPinChange(p);
-  };
 
   return (
     <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full mx-auto">
       <section>
         <h2>{t("define_pin")}</h2>
       </section>
-      <section className="mb-2">
-        <div className="relative flex flex-col w-[75%] mx-auto">
-          <Input
-            className="text-center border-base-content"
-            type={"password"}
-            size="lg"
-            minLength={MinPinLength}
-            onChange={handlePinChange}
-            placeholder={t("pin_input_placeholder")}
-          />
-          <small className="absolute right-[4px]">
-            {pin.length}/{MinPinLength}+
-          </small>
+      <section>
+        <div className="flex justify-center">
+          <PinInput onPinChange={onPinChange} />
         </div>
       </section>
-      <section>
+      <section className="mb-2">
         <HintBox text={t("define_pin_hint")} />
       </section>
     </div>

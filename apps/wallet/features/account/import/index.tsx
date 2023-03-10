@@ -4,6 +4,7 @@ import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigati
 import {
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
+  RiHome6Line,
   RiUserAddLine,
   RiUserReceivedLine,
 } from "react-icons/ri";
@@ -62,11 +63,15 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
     await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
   };
 
+  const navigateHome = async () => {
+    await router.push(`/`);
+  };
+
   useEffect(() => {
     let canProceed = true;
 
     if (currentStep === Steps.DefinePin) {
-      canProceed = pin.length > 4;
+      canProceed = pin.length >= 5;
     } else if (currentStep === Steps.ImportSeed) {
       canProceed = seed.length > 0;
     } else if (currentStep === Steps.Confirm) {
@@ -78,10 +83,10 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
 
     const bottomNav: BottomNavigationItem[] = [
       {
-        label: !isFirstStep ? t("back") : "",
-        onClick: !isFirstStep ? previousStep : voidFn,
-        icon: !isFirstStep ? <RiArrowLeftCircleLine /> : <div />,
-        disabled: isFirstStep,
+        label: !isFirstStep ? t("back") : t("home"),
+        onClick: !isFirstStep ? previousStep : navigateHome,
+        icon: !isFirstStep ? <RiArrowLeftCircleLine /> : <RiHome6Line />,
+        disabled: false,
       },
       {
         onClick: voidFn,
@@ -142,9 +147,9 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
     onStepChange({
       bottomNav: [
         {
-          onClick: voidFn,
-          label: "",
-          icon: <div />,
+          onClick: navigateHome,
+          label: t("home"),
+          icon: <RiHome6Line />,
         },
         {
           onClick: voidFn,

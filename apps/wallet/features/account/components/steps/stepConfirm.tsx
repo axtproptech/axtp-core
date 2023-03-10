@@ -4,6 +4,7 @@ import { Checkbox, Input } from "react-daisyui";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { RiCheckboxCircleLine } from "react-icons/ri";
 import { HintBox } from "@/app/components/hintBox";
+import { PinInput } from "@/app/components/pinInput";
 
 interface Props {
   pin: string;
@@ -15,10 +16,6 @@ export const StepConfirm: FC<Props> = ({ pin, onConfirmationChange }) => {
   const [accepted, setAccepted] = useState(false);
   const [confirmedPin, setConfirmedPin] = useState("");
   const [verified, setVerified] = useState(false);
-
-  const handlePinChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setConfirmedPin(e.target.value);
-  };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setAccepted(e.target.checked);
@@ -56,15 +53,10 @@ export const StepConfirm: FC<Props> = ({ pin, onConfirmationChange }) => {
           )}
         </HintBox>
       </section>
-      <section className="relative mt-2">
-        <Input
-          className="text-center border-base-content"
-          type={"password"}
-          size="lg"
-          maxLength={7}
-          onChange={handlePinChange}
-          placeholder={t("pin_input_placeholder")}
-        />
+      <section className="mt-2">
+        <div className="flex justify-center">
+          <PinInput onPinChange={setConfirmedPin} />
+        </div>
       </section>
     </div>
   );

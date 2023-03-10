@@ -1,7 +1,7 @@
 {
   "pin_input_placeholder": "Enter your PIN",
   "define_pin": "Define your PIN",
-  "define_pin_hint": "The PIN is your digital signature and secures your data on this device.",
+  "define_pin_hint": "Enter 5 to 9 letters or digits as your PIN to secure your data on this device.",
   "your_account": "Your new account",
   "your_account_hint": "This will be your unique address on the Signum blockchain, where you receive the tokens and payouts. Use [Regenerate] to get another random address.",
   "your_imported_account": "Your imported account",

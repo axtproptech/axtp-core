@@ -4,6 +4,7 @@ import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigati
 import {
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
+  RiHome6Line,
   RiUserAddLine,
 } from "react-icons/ri";
 import { voidFn } from "@/app/voidFn";
@@ -65,6 +66,10 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
     await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
   };
 
+  const navigateHome = async () => {
+    await router.push(`/`);
+  };
+
   useEffect(() => {
     const EmptyItem: BottomNavigationItem = {
       onClick: voidFn,
@@ -96,10 +101,10 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
 
     const bottomNav: BottomNavigationItem[] = [
       {
-        label: !isFirstStep ? t("back") : "",
-        onClick: !isFirstStep ? previousStep : voidFn,
-        icon: !isFirstStep ? <RiArrowLeftCircleLine /> : <div />,
-        disabled: isFirstStep,
+        label: !isFirstStep ? t("back") : t("home"),
+        onClick: !isFirstStep ? previousStep : navigateHome,
+        icon: !isFirstStep ? <RiArrowLeftCircleLine /> : <RiHome6Line />,
+        disabled: false,
       },
       menuMiddleMap[currentStep] || EmptyItem,
       {
@@ -157,9 +162,9 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
   useEffect(() => {
     const InitialBottomNav: BottomNavigationItem[] = [
       {
-        onClick: voidFn,
-        label: "",
-        icon: <div />,
+        onClick: navigateHome,
+        label: t("home"),
+        icon: <RiHome6Line />,
       },
       {
         onClick: voidFn,

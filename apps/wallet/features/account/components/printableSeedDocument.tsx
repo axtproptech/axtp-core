@@ -10,7 +10,7 @@ interface Props {
 export const PrintableSeedDocument = ({ seed, address }: Props) => {
   const { t } = useTranslation();
   return (
-    <div className="hidden print:block flex flex-col justify-between relative prose w-full mx-auto bg-white text-black mx-2">
+    <div className="hidden print:block flex flex-col justify-between relative prose w-full mx-auto bg-white text-black p-0 m-0">
       <section className="text-center">
         <TextLogo className="w-1/2 mx-auto" />
         <h2>{t("your_seed")}</h2>

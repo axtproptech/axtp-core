@@ -1,6 +1,6 @@
 {
   "define_pin": "Defina seu PIN",
-  "define_pin_hint": "O PIN é sua assinatura digital e protege seus dados neste dispositivo",
+  "define_pin_hint": "Insira de 5 a 9 letras ou dígitos como seu PIN para proteger seus dados neste dispositivo.",
   "account_stored_success": "Sua conta agora está armazenada neste dispositivo",
   "back": "Anterior",
   "confirmation": "Confirmação",
