@@ -17,7 +17,7 @@ export const PinInput = ({ onPinChange }: Props) => {
         type={"password"}
         size="lg"
         minLength={5}
-        maxLength={7}
+        maxLength={9}
         onChange={(e) => {
           setPin(e.target.value);
           onPinChange(e.target.value);
