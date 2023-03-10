@@ -160,7 +160,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
       <PoolHeader poolData={pool} />
       <Stepper currentStep={currentStep} steps={stepCount} />
       <div
-        className="carousel w-full touch-none"
+        className="carousel w-full overflow-x-hidden"
         onTouchMove={(e) => e.preventDefault()}
       >
         <div id="quantity" className="carousel-item relative w-full">

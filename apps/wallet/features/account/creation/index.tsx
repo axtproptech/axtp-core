@@ -208,7 +208,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
       <PrintableSeedDocument seed={seed} address={accountAddress} />
       <div className="print:hidden mt-4">
         <Stepper currentStep={currentStep} steps={StepCount} />
-        <div className="carousel w-full touch-none mx-[2px]">
+        <div className="carousel w-full mx-[2px] overflow-x-hidden">
           <div id="step0" className="carousel-item relative w-full">
             <StepDefinePin onPinChange={setPin} />
           </div>

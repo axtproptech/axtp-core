@@ -180,7 +180,7 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
     <>
       <div className="mt-4">
         <Stepper currentStep={currentStep} steps={StepCount}></Stepper>
-        <div className="carousel w-full touch-none">
+        <div className="carousel w-full overflow-x-hidden">
           <div id="step0" className="carousel-item relative w-full">
             <StepDefinePin onPinChange={setPin} />
           </div>

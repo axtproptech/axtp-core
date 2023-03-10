@@ -3,8 +3,6 @@ import { FC } from "react";
 import { AnimatedIconWarn } from "@/app/components/animatedIcons/animatedIconWarn";
 import { HintBox } from "@/app/components/hintBox";
 import { CopyButton } from "@/app/components/buttons/copyButton";
-import QRCode from "react-qr-code";
-import { TextLogo } from "@/app/components/logo/textLogo";
 import { Button } from "react-daisyui";
 import { RiFileDownloadLine } from "react-icons/ri";
 

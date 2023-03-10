@@ -16,7 +16,10 @@ export const StepSeeNewAccount: FC<Props> = ({ account }) => {
       <section>
         <h2>{t("your_account")}</h2>
       </section>
-      <section className="relative mt-[15%] mb-2">
+      <section>
+        <HintBox text={t("your_account_hint")} />
+      </section>
+      <section className="relative mb-2">
         <Input
           className="w-full lg:w-[75%] text-center border-base-content"
           size="lg"
@@ -25,9 +28,7 @@ export const StepSeeNewAccount: FC<Props> = ({ account }) => {
           readOnly
         />
       </section>
-      <section>
-        <HintBox text={t("your_account_hint")} />
-      </section>
+      <section />
     </div>
   );
 };

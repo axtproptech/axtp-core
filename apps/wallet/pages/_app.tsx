@@ -13,8 +13,6 @@ import * as React from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "@/features/error";
 import { log } from "next-axiom";
-import { useEffect } from "react";
-import { useAppContext } from "@/app/hooks/useAppContext";
 
 export { reportWebVitals } from "next-axiom";
 
