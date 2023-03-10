@@ -20,7 +20,7 @@ export const StepDefinePin: FC<Props> = ({ onPinChange }) => {
   };
 
   return (
-    <div className="print:hidden flex flex-col justify-between text-center h-[80vh] relative prose w-full mx-auto">
+    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full mx-auto">
       <section>
         <h2>{t("define_pin")}</h2>
       </section>

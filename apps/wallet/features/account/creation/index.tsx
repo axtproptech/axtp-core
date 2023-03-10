@@ -24,6 +24,7 @@ import { accountActions } from "@/app/states/accountState";
 import { useNotification } from "@/app/hooks/useNotification";
 import { OnStepChangeArgs } from "@/features/account";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { PrintableSeedDocument } from "@/features/account/components/printableSeedDocument";
 
 enum Steps {
   DefinePin,
@@ -126,6 +127,10 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
     setSeed(words.join(" "));
   }
 
+  function handleDownload() {
+    window.print();
+  }
+
   async function storeAccount() {
     try {
       setIsCreating(true);
@@ -200,7 +205,8 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
 
   return (
     <>
-      <div className="mt-4">
+      <PrintableSeedDocument seed={seed} address={accountAddress} />
+      <div className="print:hidden mt-4">
         <Stepper currentStep={currentStep} steps={StepCount} />
         <div className="carousel w-full touch-none mx-[2px]">
           <div id="step0" className="carousel-item relative w-full">
@@ -210,7 +216,7 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
             <StepSeeNewAccount account={accountAddress} />
           </div>
           <div id="step2" className="carousel-item relative w-full">
-            <StepViewSeed seed={seed} address={accountAddress} />
+            <StepViewSeed seed={seed} onDownloadClick={handleDownload} />
           </div>
           <div id="step3" className="carousel-item relative w-full">
             <StepVerifySeed seed={seed} onVerificationChange={setIsVerified} />
