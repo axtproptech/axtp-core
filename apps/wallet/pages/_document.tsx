@@ -6,7 +6,7 @@ interface Props {}
 export default class MyDocument extends Document<Props> {
   render() {
     return (
-      <Html data-theme="luxury">
+      <Html data-theme="luxury" className="print:bg-white">
         <Head>
           {/* PWA primary color */}
           <meta name="theme-color" content="#000000" />
