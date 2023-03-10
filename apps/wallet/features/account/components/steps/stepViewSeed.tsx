@@ -22,6 +22,16 @@ export const StepViewSeed: FC<Props> = ({ seed, onDownloadClick }) => {
         <section>
           <h2>{t("your_seed")}</h2>
         </section>
+        <section>
+          <HintBox text={""}>
+            <div className="w-20 m-auto absolute bg-base-100 top-[-48px]">
+              <AnimatedIconWarn touchable loopDelay={3000} />
+            </div>
+            <p>
+              <strong className="mt-2">{t("your_seed_hint")}</strong>
+            </p>
+          </HintBox>
+        </section>
         <section className="relative">
           <div className="relative w-full lg:w-[75%] mx-auto text-justify">
             <div className="border border-base-content p-4 rounded relative text-xl">
@@ -40,14 +50,7 @@ export const StepViewSeed: FC<Props> = ({ seed, onDownloadClick }) => {
             </div>
           </div>
         </section>
-        <section>
-          <HintBox text={""}>
-            <div className="w-20 m-auto absolute bg-base-100 top-[-48px]">
-              <AnimatedIconWarn touchable loopDelay={3000} />
-            </div>
-            <p>{t("your_seed_hint")}</p>
-          </HintBox>
-        </section>
+        <section />
       </div>
     </>
   );
