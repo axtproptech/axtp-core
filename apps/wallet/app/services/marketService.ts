@@ -17,7 +17,7 @@ export class MarketService {
   }
 
   public getUsdBrlMarket() {
-    return this.getCrossMarket("usd", "brl");
+    return this.getCrossMarket("tether", "brl");
   }
 
   public getCrossMarket(
