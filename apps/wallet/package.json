@@ -1,5 +1,5 @@
 {
-  "name": "@axtp/wallet",
+  "name": "wallet",
   "description": "The wallet for this very cool project",
   "authors": [
     "ohager"
