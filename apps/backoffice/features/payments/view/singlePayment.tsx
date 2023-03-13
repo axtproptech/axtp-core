@@ -237,12 +237,20 @@ const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
               text={new Date(payment.updatedAt).toLocaleDateString()}
             />
             <LabeledTextField label="Pool Token" text={token.name} />
+            <LabeledTextField label="Token Quantity">
+              <Typography variant="h5">
+                <Number
+                  value={payment.tokenQuantity}
+                  decimals={token.decimals}
+                />
+              </Typography>
+            </LabeledTextField>
             <LabeledTextField label="Paid Amount">
               <Typography variant="h5">
                 <Number
                   value={payment.amount}
                   decimals={2}
-                  suffix={payment.currency}
+                  suffix={payment.currency.toUpperCase()}
                 />
               </Typography>
             </LabeledTextField>
@@ -257,7 +265,7 @@ const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
                 <Number
                   value={exchangeRate}
                   decimals={2}
-                  suffix={payment.currency}
+                  suffix={payment.currency.toUpperCase()}
                 />
               </Typography>
             </LabeledTextField>

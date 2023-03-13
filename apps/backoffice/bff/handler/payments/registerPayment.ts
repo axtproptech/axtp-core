@@ -15,9 +15,6 @@ const registerPaymentBodySchema = object({
   tokenId: string().required(),
   tokenQnt: number().required(),
   amount: number().required(),
-  // paymentType: mixed()
-  //   .required()
-  //   .oneOf(["pix", "usdeth", "usdsol", "usdalg", "usdmat"]),
   paymentType: string().required(),
   txId: string().required(),
   usd: number().required(),
@@ -84,7 +81,7 @@ export const registerPayment: ApiHandler = async ({ req, res }) => {
         transactionId: txId,
         recordId: recordTx.transaction,
         usd,
-        currency,
+        currency: currency.toUpperCase(),
         customer: {
           connect: {
             cuid: customerId,

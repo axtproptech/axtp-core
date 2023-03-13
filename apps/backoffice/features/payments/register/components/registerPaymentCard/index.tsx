@@ -111,6 +111,7 @@ export const RegisterPaymentCard = () => {
   useEffect(() => {
     if (selectedPool && !tokenPrice) {
       setValue("tokenPrice", selectedPool.tokenRate);
+      setNumberValues({ ...numberValues, tokenPrice: selectedPool.tokenRate });
     }
   }, [selectedPool, tokenPrice]);
 
@@ -148,7 +149,10 @@ export const RegisterPaymentCard = () => {
 
     const formValues = getValues();
     const currency = getCurrency(formValues.paymentType);
-    const usd = currency === "usd" ? numberValues.paidAmount.toString() : ""; // FIXME: get usd value somehow
+    const usd =
+      currency === "usd"
+        ? numberValues.paidAmount.toString()
+        : (numberValues.tokenPrice * numberValues.tokenCount).toString();
     const amount = numberValues.paidAmount.toString();
     const tokenQnt = numberValues.tokenCount.toString();
     setIsExecuting(true);
