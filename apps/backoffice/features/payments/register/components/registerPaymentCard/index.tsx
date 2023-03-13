@@ -19,6 +19,8 @@ import { Address } from "@signumjs/core";
 import { customerService } from "@/app/services/customerService/customerService";
 import { CustomerResponse } from "@/bff/types/customerResponse";
 import { formatCpfCnpj } from "@/app/formatCpfCnpj";
+import { useSnackbar } from "@/app/hooks/useSnackbar";
+import { paymentsService } from "@/app/services/paymentService/paymentService";
 
 const FullBox = styled(Box)(() => ({
   width: "100%",
@@ -29,6 +31,7 @@ type FormValues = {
   poolId: string;
 
   tokenCount: number;
+  tokenPrice: number;
   paymentType: string;
   paidAmount: number;
   paymentReference: string;
@@ -45,23 +48,30 @@ const paymentOptions = Object.entries(PaymentTypesLabelMap).map(([k, v]) => ({
 }));
 
 const PublicKeyPattern = /^[a-fA-F0-9]{64}$/;
+
+const getCurrency = (paymentType: string): "brl" | "usd" =>
+  paymentType.startsWith("usd") ? "usd" : "brl";
+
 export const RegisterPaymentCard = () => {
   const router = useRouter();
   const { Ledger } = useAppContext();
   const { token } = useMasterContract();
+  const { showError, showSuccess } = useSnackbar();
   const pools = useAppSelector(selectAllPools);
   const [resolvedCustomer, setResolvedCustomer] =
     useState<CustomerResponse | null>(null);
-
+  const [isExecuting, setIsExecuting] = useState(false);
   const [numberValues, setNumberValues] = useState({
     paidAmount: 0.0,
     tokenCount: 0,
+    tokenPrice: 0,
   });
 
   const {
     control,
     reset,
     getValues,
+    setValue,
     watch,
     formState: { isValid },
   } = useForm<FormValues>({
@@ -70,6 +80,7 @@ export const RegisterPaymentCard = () => {
       customerPubKey: (router.query.pk as string) || "",
       poolId: pools.length ? pools[0].poolId : "",
       tokenCount: 0,
+      tokenPrice: pools.length ? pools[0].tokenRate : 0,
       paidAmount: 0,
       paymentType: "pix",
       paymentReference: "",
@@ -78,6 +89,8 @@ export const RegisterPaymentCard = () => {
 
   const customerPubKey = watch("customerPubKey");
   const paymentType = watch("paymentType");
+  const poolId = watch("poolId");
+  const tokenPrice = watch("tokenPrice");
 
   const poolOptions = useMemo(() => {
     if (!pools) return [];
@@ -89,8 +102,21 @@ export const RegisterPaymentCard = () => {
       } as SelectOption;
     });
   }, [pools]);
+
+  const selectedPool = useMemo(() => {
+    if (!(pools && poolId)) return;
+    return pools.find((p) => p.poolId === poolId);
+  }, [pools, poolId]);
+
+  useEffect(() => {
+    if (selectedPool && !tokenPrice) {
+      setValue("tokenPrice", selectedPool.tokenRate);
+    }
+  }, [selectedPool, tokenPrice]);
+
   const resetForm = () => {
     reset();
+    setNumberValues({ paidAmount: 0, tokenCount: 0, tokenPrice: 0 });
   };
 
   const resolvedCustomerName = useMemo(() => {
@@ -117,13 +143,36 @@ export const RegisterPaymentCard = () => {
   }, [customerPubKey]);
 
   const handleRegisterPayment = async () => {
+    if (!resolvedCustomer) return;
+    if (!selectedPool) return;
+
     const formValues = getValues();
-
-    // TODO
-
-    console.log("FormValues", formValues);
-
-    resetForm();
+    const currency = getCurrency(formValues.paymentType);
+    const usd = currency === "usd" ? numberValues.paidAmount.toString() : ""; // FIXME: get usd value somehow
+    const amount = numberValues.paidAmount.toString();
+    const tokenQnt = numberValues.tokenCount.toString();
+    setIsExecuting(true);
+    try {
+      await paymentsService.registerPayment({
+        customerId: resolvedCustomer?.cuid,
+        accountPk: formValues.customerPubKey,
+        usd,
+        paymentType,
+        txId: formValues.paymentReference,
+        poolId: formValues.poolId,
+        tokenId: selectedPool.token.id,
+        tokenQnt,
+        currency,
+        amount,
+      });
+      showSuccess("Successfully registered payment");
+      resetForm();
+    } catch (e: any) {
+      showError(`Something failed: ${e.message}`);
+      throw e;
+    } finally {
+      setIsExecuting(false);
+    }
   };
 
   const handleSearch = () => {
@@ -131,7 +180,8 @@ export const RegisterPaymentCard = () => {
   };
 
   const handleNumberChange =
-    (field: "tokenCount" | "paidAmount") => (values: NumberFormatValues) => {
+    (field: "tokenCount" | "paidAmount" | "tokenPrice") =>
+    (values: NumberFormatValues) => {
       setNumberValues({ ...numberValues, [field]: values.floatValue });
     };
 
@@ -228,6 +278,32 @@ export const RegisterPaymentCard = () => {
             }}
           />
         </FullBox>
+        <FullBox>
+          <Controller
+            render={({ field }) => (
+              <NumericFormat
+                label="Price per Token"
+                color="primary"
+                decimalScale={token.decimals}
+                suffix={` ${token.name}`}
+                fixedDecimalScale
+                thousandSeparator
+                // @ts-ignore
+                control={control}
+                {...field}
+                customInput={TextInput}
+                onValueChange={handleNumberChange("tokenPrice")}
+              />
+            )}
+            name="tokenPrice"
+            control={control}
+            // @ts-ignore
+            variant="outlined"
+            rules={{
+              required,
+            }}
+          />
+        </FullBox>
       </Stack>
       <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 0, md: 2 }}>
         <FullBox>
@@ -251,7 +327,7 @@ export const RegisterPaymentCard = () => {
               <NumericFormat
                 label="Received Amount"
                 color="primary"
-                suffix={paymentType === "pix" ? " BRL" : " USDC"}
+                suffix={` ${getCurrency(paymentType).toUpperCase()}`}
                 decimalScale={2}
                 fixedDecimalScale
                 thousandSeparator

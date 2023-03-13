@@ -172,6 +172,11 @@ const getEthereumTransactionLink = (isTestnet: boolean, txId: string) =>
   (isTestnet ? `https://goerli.etherscan.io/tx/` : `https://etherscan.io/tx/`) +
   txId;
 
+const getPolygonTransactionLink = (isTestnet: boolean, txId: string) =>
+  (isTestnet
+    ? `https://mumbai.polygonscan.com/tx/`
+    : `https://polygonscan.com/tx/`) + txId;
+
 const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
   const { getAccountLink, getTransactionLink } = useExplorerLink();
   const { showError, showSuccess } = useSnackbar();
@@ -187,6 +192,7 @@ const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
 
   let transactionUrl = "";
   let cancelTransactionUrl = "";
+  // TODO: refoctor
   if (payment.type === "usdeth") {
     transactionUrl = getEthereumTransactionLink(
       Ledger.IsTestnet,
@@ -197,6 +203,14 @@ const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
           Ledger.IsTestnet,
           payment.cancelTransactionId
         )
+      : "";
+  } else if (payment.type === "usdmat") {
+    transactionUrl = getPolygonTransactionLink(
+      Ledger.IsTestnet,
+      payment.transactionId
+    );
+    cancelTransactionUrl = payment.cancelTransactionId
+      ? getPolygonTransactionLink(Ledger.IsTestnet, payment.cancelTransactionId)
       : "";
   }
 
