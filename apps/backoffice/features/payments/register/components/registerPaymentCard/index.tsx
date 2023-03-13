@@ -196,7 +196,7 @@ export const RegisterPaymentCard = () => {
       actionIcon={<IconCirclePlus />}
       actionLabel="Register Payment"
       onClick={handleRegisterPayment}
-      // isLoading={isExecuting}
+      isLoading={isExecuting}
       disabled={!isValid}
     >
       <Stack
