@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/states/hooks";
 import { selectPoolContractState } from "@/app/states/poolsState";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { PoolHeader } from "../components/poolHeader";
 import { useTranslation } from "next-i18next";
@@ -25,6 +25,8 @@ import { OnStepChangeArgs } from "@/features/account";
 import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
 import { HintBox } from "@/app/components/hintBox";
 import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
+import { useAccount } from "@/app/hooks/useAccount";
+import { ChainValue } from "@signumjs/util";
 
 const StepRoutes = {
   pix: ["quantity", "paymentMethod", "paymentPix"],
@@ -45,6 +47,7 @@ interface Props {
 export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const { accountData } = useAccount();
   const pool = useAppSelector(selectPoolContractState(poolId));
   const [stepCount, setStepCount] = useState<number>(3);
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -79,10 +82,24 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
 
   const soldTokens = parseFloat(pool.token.supply);
   const availableShares = Math.max(pool.maxShareQuantity - soldTokens, 0);
-  const maxAllowedShares = Math.min(
-    availableShares,
-    pool.aliasData.maximumTokensPerCustomer
-  );
+  const maxAllowedShares = useMemo(() => {
+    const poolBalance = accountData.balancesPools.find(
+      (p) => p.id === pool.token.id
+    );
+
+    if (!poolBalance) return 0;
+
+    const maxTokenPerCustomer = Math.min(
+      availableShares,
+      pool.aliasData.maximumTokensPerCustomer
+    );
+    const customerHoldings = parseFloat(
+      ChainValue.create(poolBalance.decimals)
+        .setAtomic(poolBalance.quantity)
+        .getCompound()
+    );
+    return Math.max(maxTokenPerCustomer - customerHoldings, 0);
+  }, [availableShares, accountData, pool]);
 
   useEffect(() => {
     let canProceed = maxAllowedShares > 0;
@@ -137,7 +154,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
 
   if (!pool) return null;
 
-  if (maxAllowedShares === 0)
+  if (availableShares === 0) {
     return (
       <div className="overflow-hidden">
         <PoolHeader poolData={pool} />
@@ -151,6 +168,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
         </section>
       </div>
     );
+  }
 
   return (
     <div className="overflow-hidden">
