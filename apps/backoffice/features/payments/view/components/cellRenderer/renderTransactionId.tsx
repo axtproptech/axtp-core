@@ -2,9 +2,10 @@ import { PaymentType } from "@axtp/core";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { openExternalUrl } from "@/app/openExternalUrl";
-import { Tooltip } from "@mui/material";
+import { Chip, Tooltip } from "@mui/material";
 import { shortenHash } from "@/app/shortenHash";
 import { GridRenderCellParams } from "@mui/x-data-grid";
+import { PaymentTypesLabelMap } from "@/features/payments/paymentTypesLabelMap";
 
 const TransactionLink = ({
   txId,
@@ -56,5 +57,7 @@ const TransactionLink = ({
 export const renderTransactionId = (params: GridRenderCellParams<string>) => {
   return params.value ? (
     <TransactionLink txId={params.value} type={params.row.type} />
-  ) : null;
+  ) : (
+    <Chip label="Not Registered" color="error" />
+  );
 };

@@ -1,3 +1,6 @@
+import { placeOrder } from "@signumjs/core/out/api/factories/asset/placeOrder";
+import * as process from "process";
+
 const toNumber = (v: any): number => {
   const n = parseFloat(v);
   return Number.isNaN(n) ? -1 : n;
@@ -31,6 +34,14 @@ export const Config = {
       DepositAccountSol: process.env.NEXT_PUBLIC_USDC_DEPOSIT_ACCOUNT_SOL || "",
       DepositAccountMatic:
         process.env.NEXT_PUBLIC_USDC_DEPOSIT_ACCOUNT_MATIC || "",
+    },
+    PixKey: process.env.NEXT_PUBLIC_PIX_KEY || "",
+    BankAccountInfo: {
+      Name:
+        process.env.NEXT_PUBLIC_BANK_ACCOUNT_NAME || "AXT PropTech Company S/A",
+      Bank: process.env.NEXT_PUBLIC_BANK_ACCOUNT_BANK || "",
+      Agency: process.env.NEXT_PUBLIC_BANK_ACCOUNT_AGENCY || "",
+      Account: process.env.NEXT_PUBLIC_BANK_ACCOUNT_ACCOUNT || "",
     },
   },
   Ledger: {

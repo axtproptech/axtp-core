@@ -38,7 +38,7 @@
   "overall_performance": "Desempenho Global",
   "settings": "Configurações",
   "disconnect": "Desconectar",
-  "disconnect_hint": "Desconectar sua conta é como deslogar. Para fazer login novamente, você precisa importar sua conta usando a Frase de Recuperação",
+  "disconnect_hint": "Desconectar sua conta é como sair. Todas as suas informações pessoais e chaves serão removidas deste dispositivo. Para fazer login novamente, você precisa importar sua conta usando a Frase de Recuperação",
   "you_own_n_shares_one": "Possui um token",
   "you_own_n_shares_other": "Possui {{count}} tokens",
   "account_unregistered": "Conta não registrada",
@@ -106,7 +106,7 @@
   "pix_error_create_record": "Vish! Algo falhou durante o processamento do pagamento.",
   "pix_error_creating_charge": "Oh não! Não foi possível gerar as informações de pagamento. Tente novamente e, eventualmente, recarregue a página.",
   "pix_generate": "Gerar",
-  "pix_payments_description": "Clique no botão para gerar um código de pagamento e escaneá-lo com seu aplicativo bancário favorito. O status do pagamento está sendo verificado em tempo real.",
+  "pix_payments_description": "Copie a chave PIX e cole no app do seu banco preferido. Clique em [Pagamento Efetuado] quando você fez o pagamento.",
   "pix_success": "Oba 🎉, Pagamento efetuado com sucesso.",
   "setup_account": "Configurar conta",
   "transaction_timedout": "Oh não. a transação não pôde ser verificada.",
@@ -129,5 +129,7 @@
   "acquisition_in_progress_one": "Sua aquisição está sendo processada",
   "acquisition_in_progress_other": "Suas aquisições estão sendo processadas",
   "blockchain_hint_eth": "Ethereum é o mais utilizado, mas caro.",
-  "blockchain_hint_mat": "Polygon é rápido e tem taxas muito baixas."
+  "blockchain_hint_mat": "Polygon é rápido e tem taxas muito baixas.",
+  "confirm_payment": "Pagamento efetuado",
+  "confirm_payment_success": "Seu pagamento foi registrado com sucesso e será processado nas próximas horas."
 }

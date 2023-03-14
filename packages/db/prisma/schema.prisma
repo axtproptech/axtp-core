@@ -180,10 +180,10 @@ model Payment {
   poolId               String
   tokenId              String
   tokenQuantity        Int
-  transactionId        String  @unique // payment transaction, i.e. pix, or usdc, etc.
+  transactionId        String? // payment transaction, i.e. pix, or usdc, etc.
   cancelTransactionId  String? // reimbursement transaction id
   status               PaymentStatus
-  recordId             String  @unique // transaction id on Signum
+  recordId             String? // transaction id on Signum
   processedRecordId    String? // proof of processing
   cancelRecordId       String? // proof of cancellation
   observations         String? @db.Text

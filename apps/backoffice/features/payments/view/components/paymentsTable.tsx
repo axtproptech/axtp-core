@@ -27,6 +27,7 @@ import { renderCustomer } from "@/features/payments/view/components/cellRenderer
 import { Number } from "@/app/components/number";
 
 const columns: GridColDef[] = [
+  { field: "id", headerName: "Id" },
   { field: "createdAt", headerName: "Paid At", renderCell: renderCreatedAt },
   { field: "updatedAt", headerName: "Updated At", renderCell: renderDate },
   {
@@ -78,6 +79,7 @@ export const PaymentsTable = () => {
     }
     return data.map(
       ({
+        id,
         cuid,
         transactionId,
         createdAt,
@@ -95,7 +97,7 @@ export const PaymentsTable = () => {
         usd,
       }) => {
         return {
-          id: transactionId,
+          id,
           transactionId,
           cuid,
           updatedAt,
@@ -122,8 +124,13 @@ export const PaymentsTable = () => {
     const term = searchValue.toLowerCase();
     const isLike = (a: string, b: string) => a.toLowerCase().indexOf(b) !== -1;
 
-    return tableRows.filter(({ status, id, type }) => {
-      return isLike(status, term) || isLike(id, term) || isLike(type, term);
+    return tableRows.filter(({ status, id, type, transactionId }) => {
+      return (
+        isLike(status, term) ||
+        isLike(id.toString(), term) ||
+        isLike(transactionId, term) ||
+        isLike(type, term)
+      );
     });
   }, [tableRows, searchValue]);
 

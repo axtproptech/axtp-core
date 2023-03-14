@@ -4,6 +4,7 @@ import {
   CircularProgress,
   Divider,
   Grid,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { Config } from "@/app/config";
@@ -25,11 +26,15 @@ import { Number } from "@/app/components/number";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { shortenHash } from "@/app/shortenHash";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
-import { IconCopy } from "@tabler/icons";
+import { IconCopy, IconEdit } from "@tabler/icons";
 import {
   CancellationArgs,
   CancelPaymentDialog,
 } from "@/features/payments/view/components/cancelPaymentDialog";
+import {
+  RegisterTransactionIdDialog,
+  RegistrationArgs,
+} from "./components/registerTransactionIdDialog";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
@@ -37,13 +42,14 @@ export const SinglePayment = () => {
   const router = useRouter();
   const { showError, showSuccess } = useSnackbar();
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
-  const txid = router.query.txid as string;
+  const [registerModalOpen, setRegisterModalOpen] = useState(false);
+  const paymentId = parseInt(router.query.id as string);
   const {
     data: payment,
     error,
     mutate,
-  } = useSWR(txid ? `getPayment/${txid}` : null, () => {
-    return paymentsService.with(txid).fetchPayment();
+  } = useSWR(paymentId ? `getPayment/${paymentId}` : null, () => {
+    return paymentsService.with(paymentId).fetchPayment();
   });
 
   const sendToken = async () => {
@@ -54,7 +60,7 @@ export const SinglePayment = () => {
         action: "send-token",
         recipient: payment.customer.blockchainAccounts[0].publicKey,
         quantity: payment.tokenQuantity.toString(10),
-        payment: payment.transactionId,
+        payment: payment.id.toString(10),
       });
       await router.push(`/admin/pools/${payment.poolId}?${params.toString()}`);
     } catch (e) {
@@ -68,7 +74,7 @@ export const SinglePayment = () => {
         throw new Error("No payment available");
       }
       await paymentsService
-        .with(payment.transactionId)
+        .with(payment.id)
         .setCancelled(args.transactionId, args.reason);
       mutate().then(); // revalidate async'ly
       showSuccess("Successfully cancelled payment");
@@ -78,11 +84,30 @@ export const SinglePayment = () => {
       showError("Failure while cancelling the payment");
     }
   };
+  const confirmRegisterTransactionId = async (args: RegistrationArgs) => {
+    try {
+      if (!payment) {
+        throw new Error("No payment available");
+      }
+
+      await paymentsService
+        .with(payment.id)
+        .updateTransactionId(args.transactionId);
+      mutate().then(); // revalidate async'ly
+      showSuccess("Successfully updated payment");
+      setRegisterModalOpen(false);
+    } catch (e: any) {
+      console.error("confirmRegisterPayment", e.message);
+      showError("Failure while updating the payment");
+    }
+  };
 
   const handleCustomerAction = async (action: PaymentActionType) => {
     switch (action) {
       case "send-token":
         return sendToken();
+      case "register-transaction-id":
+        return setRegisterModalOpen(true);
       case "cancel-payment":
         return setCancelModalOpen(true);
       default:
@@ -95,15 +120,31 @@ export const SinglePayment = () => {
     const actions = new Set<PaymentActionType>();
     if (!payment) return actions;
     const { customer } = payment;
-    if (
+
+    const isCustomerEligible =
       customer.verificationLevel.startsWith("Level") &&
       customer.isActive &&
       !customer.isBlocked &&
+      customer.blockchainAccounts.length;
+
+    if (
+      isCustomerEligible &&
+      payment.transactionId &&
       !payment.processedRecordId &&
       !payment.cancelRecordId
     ) {
       actions.add("send-token");
     }
+
+    if (
+      isCustomerEligible &&
+      !payment.transactionId &&
+      !payment.processedRecordId &&
+      !payment.cancelRecordId
+    ) {
+      actions.add("register-transaction-id");
+    }
+
     if (!payment.processedRecordId && !payment.cancelRecordId) {
       actions.add("cancel-payment");
     }
@@ -119,12 +160,19 @@ export const SinglePayment = () => {
   return (
     <>
       {payment && (
-        <CancelPaymentDialog
-          open={cancelModalOpen}
-          payment={payment}
-          onClose={confirmCancelPayment}
-          onCancel={() => setCancelModalOpen(false)}
-        />
+        <>
+          <CancelPaymentDialog
+            open={cancelModalOpen}
+            payment={payment}
+            onClose={confirmCancelPayment}
+            onCancel={() => setCancelModalOpen(false)}
+          />
+          <RegisterTransactionIdDialog
+            open={registerModalOpen}
+            onClose={confirmRegisterTransactionId}
+            onCancel={() => setRegisterModalOpen(false)}
+          />
+        </>
       )}
       <MainCard
         title={payment ? <PaymentHeader payment={payment} /> : ""}
@@ -172,6 +220,11 @@ const getEthereumTransactionLink = (isTestnet: boolean, txId: string) =>
   (isTestnet ? `https://goerli.etherscan.io/tx/` : `https://etherscan.io/tx/`) +
   txId;
 
+const getPolygonTransactionLink = (isTestnet: boolean, txId: string) =>
+  (isTestnet
+    ? `https://mumbai.polygonscan.com/tx/`
+    : `https://polygonscan.com/tx/`) + txId;
+
 const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
   const { getAccountLink, getTransactionLink } = useExplorerLink();
   const { showError, showSuccess } = useSnackbar();
@@ -187,6 +240,7 @@ const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
 
   let transactionUrl = "";
   let cancelTransactionUrl = "";
+  // TODO: refoctor
   if (payment.type === "usdeth") {
     transactionUrl = getEthereumTransactionLink(
       Ledger.IsTestnet,
@@ -197,6 +251,14 @@ const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
           Ledger.IsTestnet,
           payment.cancelTransactionId
         )
+      : "";
+  } else if (payment.type === "usdmat") {
+    transactionUrl = getPolygonTransactionLink(
+      Ledger.IsTestnet,
+      payment.transactionId
+    );
+    cancelTransactionUrl = payment.cancelTransactionId
+      ? getPolygonTransactionLink(Ledger.IsTestnet, payment.cancelTransactionId)
       : "";
   }
 
@@ -223,12 +285,20 @@ const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
               text={new Date(payment.updatedAt).toLocaleDateString()}
             />
             <LabeledTextField label="Pool Token" text={token.name} />
+            <LabeledTextField label="Token Quantity">
+              <Typography variant="h5">
+                <Number
+                  value={payment.tokenQuantity}
+                  decimals={token.decimals}
+                />
+              </Typography>
+            </LabeledTextField>
             <LabeledTextField label="Paid Amount">
               <Typography variant="h5">
                 <Number
                   value={payment.amount}
                   decimals={2}
-                  suffix={payment.currency}
+                  suffix={payment.currency.toUpperCase()}
                 />
               </Typography>
             </LabeledTextField>
@@ -243,7 +313,7 @@ const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
                 <Number
                   value={exchangeRate}
                   decimals={2}
-                  suffix={payment.currency}
+                  suffix={payment.currency.toUpperCase()}
                 />
               </Typography>
             </LabeledTextField>
@@ -253,30 +323,40 @@ const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
               label="Payment Method"
               text={payment.type.toUpperCase()}
             />
-            <LabeledTextField label="Transaction Id">
-              {transactionUrl ? (
-                <ExternalLink href={transactionUrl}>
-                  <>{shortenHash(payment.transactionId)}</>
+            {payment.transactionId ? (
+              <LabeledTextField label="Transaction Id">
+                {transactionUrl ? (
+                  <ExternalLink href={transactionUrl}>
+                    <>{shortenHash(payment.transactionId)}</>
+                  </ExternalLink>
+                ) : (
+                  <Box
+                    sx={{
+                      cursor: "pointer",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                    onClick={() => handleCopy(payment.transactionId)}
+                  >
+                    {shortenHash(payment.transactionId)}
+                    <IconCopy />
+                  </Box>
+                )}
+              </LabeledTextField>
+            ) : (
+              <LabeledTextField label="Transaction Id">
+                <Chip label="Not Registered" color="error" />
+              </LabeledTextField>
+            )}
+            <LabeledTextField label="Permanent Record Id">
+              {payment.recordId ? (
+                <ExternalLink href={getTransactionLink(payment.recordId)}>
+                  <>{shortenHash(payment.recordId)}</>
                 </ExternalLink>
               ) : (
-                <Box
-                  sx={{
-                    cursor: "pointer",
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                  onClick={() => handleCopy(payment.transactionId)}
-                >
-                  {shortenHash(payment.transactionId)}
-                  <IconCopy />
-                </Box>
+                "Not registered yet"
               )}
-            </LabeledTextField>
-            <LabeledTextField label="Permanent Record Id">
-              <ExternalLink href={getTransactionLink(payment.recordId)}>
-                <>{shortenHash(payment.recordId)}</>
-              </ExternalLink>
             </LabeledTextField>
             <LabeledTextField label="Permanent Processed Id">
               {payment.processedRecordId ? (

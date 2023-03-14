@@ -1,14 +1,7 @@
 import { GridRenderCellParams } from "@mui/x-data-grid";
 import { Chip, Tooltip } from "@mui/material";
 import { PaymentType } from "@axtp/core";
-
-const StatusTypeLabelMap = {
-  pix: "PIX",
-  usdeth: "Ethereum",
-  usdsol: "Solana",
-  usdalg: "Algorand",
-  usdmat: "Polygon",
-};
+import { PaymentTypesLabelMap } from "@/features/payments/paymentTypesLabelMap";
 
 interface Props {
   type: PaymentType;
@@ -17,7 +10,7 @@ interface Props {
 export const PaymentTypeChip = ({ type }: Props) => {
   return (
     <Tooltip title="Payment Type">
-      <Chip label={StatusTypeLabelMap[type] || ""} color="info" />
+      <Chip label={PaymentTypesLabelMap[type] || ""} color="info" />
     </Tooltip>
   );
 };

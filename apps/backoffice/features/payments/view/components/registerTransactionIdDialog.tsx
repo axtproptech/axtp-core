@@ -10,44 +10,38 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "@/app/components/inputs";
 import { PaymentFullResponse } from "@/bff/types/paymentFullResponse";
-import { Number } from "@/app/components/number";
 import { useState } from "react";
 import { ActionButton } from "@/app/components/buttons/actionButton";
 
-export interface CancellationArgs {
-  reason: string;
+export interface RegistrationArgs {
   transactionId: string;
 }
 
 interface Props {
   open: boolean;
-  payment: PaymentFullResponse;
-  onClose: (args: CancellationArgs) => Promise<void>;
+  onClose: (args: RegistrationArgs) => Promise<void>;
   onCancel: () => void;
 }
 
-export const CancelPaymentDialog = ({
-  payment,
+export const RegisterTransactionIdDialog = ({
   open,
   onClose,
   onCancel,
 }: Props) => {
   const [isClosing, setIsClosing] = useState(false);
-  const { control, reset, getValues, watch } = useForm<CancellationArgs>({
+  const { control, reset, getValues, watch } = useForm<RegistrationArgs>({
     defaultValues: {
-      reason: "",
       transactionId: "",
     },
   });
 
   const txIdValue = watch("transactionId");
-  const reasonValue = watch("reason");
 
   const handleConfirm = async () => {
-    const { reason, transactionId } = getValues();
+    const { transactionId } = getValues();
     try {
       setIsClosing(true);
-      await onClose({ transactionId, reason });
+      await onClose({ transactionId });
       reset();
     } finally {
       setIsClosing(false);
@@ -59,8 +53,9 @@ export const CancelPaymentDialog = ({
     onCancel();
   };
 
-  const canConfirm = !!txIdValue && !!reasonValue;
+  const canConfirm = !!txIdValue;
 
+  // @ts-ignore
   return (
     <Dialog
       open={open}
@@ -68,20 +63,13 @@ export const CancelPaymentDialog = ({
       aria-labelledby="form-dialog-title"
     >
       <DialogTitle id="form-dialog-title">
-        <Typography variant="h3">Cancel Payment</Typography>
+        <Typography variant="h3">Register Payment Transaction</Typography>
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
           <Typography variant="subtitle1">
-            You are about to cancel the payment of&nbsp;
-            <Number value={payment.usd} decimals={2} suffix="USD" />
-            <ol>
-              <li>
-                Do the reimbursement transaction and provide the transaction
-                identifier
-              </li>
-              <li>Enter a reason for the cancellation</li>
-            </ol>
+            Verify, if the payment was done and enter the transaction reference
+            here, i.e. PIX transaction code, DOC/TED reference etc.
           </Typography>
         </DialogContentText>
         <Controller
@@ -89,7 +77,7 @@ export const CancelPaymentDialog = ({
             <TextInput
               {...field}
               label="Transaction Id"
-              placeholder="Enter the transaction id (PIX or USDC)"
+              placeholder="Enter the transaction id (PIX Code, DOC, TED)"
               aria-autocomplete="none"
             />
           )}
@@ -98,26 +86,6 @@ export const CancelPaymentDialog = ({
           // @ts-ignore
           variant="outlined"
           rules={{
-            required: true,
-          }}
-        />
-        <Controller
-          render={({ field }) => (
-            <TextInput
-              {...field}
-              label="Reason"
-              // @ts-ignore
-              multiline
-              maxRows={6}
-              placeholder="Enter the reason of cancellation"
-            />
-          )}
-          name="reason"
-          control={control}
-          // @ts-ignore
-          variant="outlined"
-          rules={{
-            maxLength: 512,
             required: true,
           }}
         />

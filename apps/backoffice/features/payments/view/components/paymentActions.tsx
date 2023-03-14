@@ -1,12 +1,20 @@
 import { FC, useState } from "react";
 import { Box } from "@mui/material";
 import { ActionButton } from "@/app/components/buttons/actionButton";
-import { IconCashBanknoteOff, IconDiscount2 } from "@tabler/icons";
+import {
+  IconCashBanknoteOff,
+  IconCirclePlus,
+  IconDiscount2,
+} from "@tabler/icons";
 
-export type PaymentActionType = "send-token" | "cancel-payment";
+export type PaymentActionType =
+  | "send-token"
+  | "cancel-payment"
+  | "register-transaction-id";
 
 const DefaultAvailableActions = new Set<PaymentActionType>([
   "send-token",
+  "register-transaction-id",
   "cancel-payment",
 ]);
 
@@ -36,6 +44,17 @@ export const PaymentActions: FC<Props> = ({
             actionIcon={<IconDiscount2 />}
             color="success"
             onClick={handleActionClick("send-token")}
+            isLoading={actionsLoading}
+          />
+        </Box>
+      )}
+      {availableActions.has("register-transaction-id") && (
+        <Box sx={{ ml: 2 }}>
+          <ActionButton
+            actionLabel="Register Transaction"
+            actionIcon={<IconCirclePlus />}
+            color="success"
+            onClick={handleActionClick("register-transaction-id")}
             isLoading={actionsLoading}
           />
         </Box>

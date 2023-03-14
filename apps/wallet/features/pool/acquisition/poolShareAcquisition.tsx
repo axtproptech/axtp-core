@@ -24,8 +24,6 @@ import {
 import { OnStepChangeArgs } from "@/features/account";
 import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
 import { HintBox } from "@/app/components/hintBox";
-import { Body } from "@/app/components/layout/body";
-import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
 
 const StepRoutes = {
@@ -53,7 +51,6 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
   const [quantity, setQuantity] = useState<number>(1);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
 
-  // TODO: atm, we support only one network - ETH. But  code for more is already implemented
   const [usdcProtocol, setUsdcProtocol] =
     useState<BlockchainProtocolType>("eth");
   const [paid, setPaid] = useState<boolean>(false);

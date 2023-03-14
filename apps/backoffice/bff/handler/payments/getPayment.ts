@@ -3,10 +3,10 @@ import { ApiHandler } from "@/bff/types/apiHandler";
 
 export const getPayment: ApiHandler = async ({ req, res }) => {
   try {
-    const { txid } = req.query;
+    const { id } = req.query;
     const payment = await prisma.payment.findUnique({
       where: {
-        transactionId: txid as string,
+        id: Number(id),
       },
       include: {
         customer: {

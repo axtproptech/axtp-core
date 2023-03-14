@@ -12,6 +12,7 @@ import {
   trackingEventService,
 } from "@/app/services";
 import { HttpClientFactory } from "@signumjs/http";
+import * as diagnostics_channel from "diagnostics_channel";
 
 type AddressPrefixType = "TS" | "S";
 type SignaPrefixType = "TSIGNA" | "SIGNA";
@@ -39,6 +40,13 @@ export interface AppContextType {
     BrlUsdAdjustment: number;
   };
   Payment: {
+    PixKey: string;
+    BankAccountInfo: {
+      Name: string;
+      Bank: string;
+      Agency: string;
+      Account: string;
+    };
     Usdc: {
       DepositAccountEth: string;
       DepositAccountAlgo: string;
@@ -70,12 +78,9 @@ const config: AppContextType = {
     BrlUsdAdjustment: Config.Market.BrlUsdAdjustment,
   },
   Payment: {
-    Usdc: {
-      DepositAccountEth: Config.Payment.Usdc.DepositAccountEth,
-      DepositAccountAlgo: Config.Payment.Usdc.DepositAccountAlgo,
-      DepositAccountSol: Config.Payment.Usdc.DepositAccountSol,
-      DepositAccountMatic: Config.Payment.Usdc.DepositAccountMatic,
-    },
+    PixKey: Config.Payment.PixKey,
+    BankAccountInfo: Config.Payment.BankAccountInfo,
+    Usdc: Config.Payment.Usdc,
   },
   Ledger: {
     IsTestNet: Config.Ledger.IsTestNet,

@@ -3,10 +3,14 @@ import { jsonToQueryString } from "@/app/jsonToQueryString";
 import { PaymentInstanceService } from "./paymentInstanceService";
 import { PaymentStatus } from "@/types/paymentStatus";
 import { PaymentResponse } from "@/bff/types/paymentResponse";
+import { RegisterPaymentRequest } from "@/bff/types/registerPaymentRequest";
+import { RegisterPaymentResponse } from "@/bff/types/registerPaymentResponse";
 
 interface FetchPendingPaymentArgs {
   status?: PaymentStatus;
 }
+
+interface RegisterPaymentArgs extends RegisterPaymentRequest {}
 
 export class PaymentService {
   private http: Http;
@@ -22,12 +26,17 @@ export class PaymentService {
     return response as PaymentResponse[];
   }
 
+  async registerPayment(args: RegisterPaymentArgs) {
+    const { response } = await this.http.post("/payments", args);
+    return response as RegisterPaymentResponse;
+  }
+
   fetchPendingPayments() {
     return this.fetchPayments({ status: "pending" });
   }
 
-  with(txid: string): PaymentInstanceService {
-    return new PaymentInstanceService(txid);
+  with(id: number): PaymentInstanceService {
+    return new PaymentInstanceService(id);
   }
 }
 

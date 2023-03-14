@@ -1,4 +1,9 @@
-import { IconUserPlus, IconCoin, IconBusinessplan } from "@tabler/icons";
+import {
+  IconUserPlus,
+  IconCoin,
+  IconBusinessplan,
+  IconCirclePlus,
+} from "@tabler/icons";
 import { NavigationItem } from "@/types/navigationItem";
 
 export const payments: NavigationItem = {
@@ -6,6 +11,14 @@ export const payments: NavigationItem = {
   title: "Payments",
   type: "group",
   children: [
+    {
+      id: "register-payment",
+      title: "Register Payment",
+      type: "item",
+      url: "/admin/payments/new",
+      icon: IconCirclePlus,
+      breadcrumbs: false,
+    },
     {
       id: "manage-payments",
       title: "Manage Payments",

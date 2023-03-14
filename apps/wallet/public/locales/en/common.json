@@ -40,7 +40,7 @@
   "overall_performance": "Overall Performance",
   "settings": "Settings",
   "disconnect": "Disconnect",
-  "disconnect_hint": "Disconnecting your account is like logging out. To log in again you need to import your account using the Recovery Phrase",
+  "disconnect_hint": "Disconnecting your account is like logging out. All your personal information and keys will be removed from this device. To log in again you need to import your account using the Recovery Phrase",
   "you_own_n_shares_one": "You own one token",
   "you_own_n_shares_other": "You own {{count}} tokens",
   "account_unregistered": "Inactive Account",
@@ -100,7 +100,7 @@
   "acquire_select_method": "Select your payment method",
   "acquire_method_pix": "PIX is a convenient way to pay with Brazilian Real. Our PIX payments are powered by PagSeguro.",
   "acquire_method_usdc": "USDC is a transparent and regulated stable coin fixed at one US Dollar. At the moment, we support USDC on Ethereum, and Polygon blockchains.",
-  "pix_payments_description": "Click the button to generate a payment code and scan it with your favorite banking app. The payment status is being verified at real time.",
+  "pix_payments_description": "Copy the PIX key and paste it in your favorite banking app. Click [Payment Done] when you did the payment. ",
   "pix_error_creating_charge": "Oh no! It was not possible to generate the payment information. Try again and eventually reload the page.",
   "pix_error_create_record": "Oh snap! Something failed while payment processing.",
   "pix_success": "Yay 🎉, Payment successfully executed.",
@@ -129,5 +129,7 @@
   "acquisition_in_progress_one": "Your acquisition is being processed",
   "acquisition_in_progress_other": "Your acquisitions are being processed",
   "blockchain_hint_eth": "Ethereum is most widely used, but expensive.",
-  "blockchain_hint_mat": "Polygon is fast and has very low transaction fees."
+  "blockchain_hint_mat": "Polygon is fast and has very low transaction fees.",
+  "confirm_payment": "Payment Done",
+  "confirm_payment_success": "Your payment was registered successfully and will be processed within the next few hours. "
 }
