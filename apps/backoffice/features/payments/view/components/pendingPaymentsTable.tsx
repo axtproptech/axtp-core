@@ -15,6 +15,7 @@ import { renderToken } from "./cellRenderer/renderToken";
 import { renderTransactionId } from "./cellRenderer/renderTransactionId";
 
 const columns: GridColDef[] = [
+  { field: "id", headerName: "Id" },
   {
     flex: 1,
     field: "createdAt",
@@ -72,9 +73,10 @@ export const PendingPaymentsTable = () => {
         transactionId,
         recordId,
         cuid,
+        id,
       }) => {
         return {
-          id: transactionId,
+          id,
           transactionId,
           cuid,
           createdAt,

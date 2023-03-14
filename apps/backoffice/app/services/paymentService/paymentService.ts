@@ -35,8 +35,8 @@ export class PaymentService {
     return this.fetchPayments({ status: "pending" });
   }
 
-  with(txid: string): PaymentInstanceService {
-    return new PaymentInstanceService(txid);
+  with(id: number): PaymentInstanceService {
+    return new PaymentInstanceService(id);
   }
 }
 

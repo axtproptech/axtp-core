@@ -99,7 +99,9 @@ export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
       if (!foundCustomer) {
         throw new Error("Given account is not registered");
       }
-      let payService = paymentValue ? paymentsService.with(paymentValue) : null;
+      let payService = paymentValue
+        ? paymentsService.with(parseInt(paymentValue))
+        : null;
       if (payService) {
         // checking for existing payment
         await payService.fetchPayment();
@@ -107,7 +109,7 @@ export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
       const tx = await onSend(accountId, value);
       if (payService) {
         await payService.setProcessed(tx.transactionId);
-        await mutate(`getPayment/${payService.transactionId}`);
+        await mutate(`getPayment/${payService.paymentId}`);
       }
       setTransactionId(tx.transactionId);
       reset();

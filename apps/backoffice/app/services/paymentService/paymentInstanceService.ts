@@ -5,14 +5,12 @@ import { PaymentFullResponse } from "@/bff/types/paymentFullResponse";
 export class PaymentInstanceService {
   private http: Http;
 
-  constructor(private txid: string) {
-    this.http = HttpClientFactory.createHttpClient(
-      `/api/admin/payments/${txid}`
-    );
+  constructor(private id: number) {
+    this.http = HttpClientFactory.createHttpClient(`/api/admin/payments/${id}`);
   }
 
-  get transactionId() {
-    return this.txid;
+  get paymentId() {
+    return this.id;
   }
 
   async setProcessed(transactionId: string) {
@@ -28,6 +26,14 @@ export class PaymentInstanceService {
       status: "Cancelled",
       transactionId,
       observations: reason,
+    });
+    return response as CustomerFullResponse;
+  }
+
+  async updateTransactionId(transactionId: string) {
+    const { response } = await this.http.put("", {
+      status: "Pending",
+      transactionId,
     });
     return response as CustomerFullResponse;
   }
