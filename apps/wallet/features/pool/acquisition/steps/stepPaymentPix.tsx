@@ -63,8 +63,6 @@ export const StepPaymentPix: FC<Props> = ({
     }
   };
 
-  // TODO: Success when payment is done successfully
-
   return (
     <div className="flex flex-col justify-between text-center h-[75vh] relative prose w-full mx-auto">
       <section className="mt-8">
@@ -89,9 +87,12 @@ export const StepPaymentPix: FC<Props> = ({
       </section>
       <section>
         {paymentDone ? (
-          <AttentionSeeker effect="tada" className="text-center">
-            <RiCheckboxCircleLine size={92} className="w-full" />
-          </AttentionSeeker>
+          <HintBox className="my-0">
+            <AttentionSeeker effect="tada" className="text-center">
+              <RiCheckboxCircleLine size={92} className="w-full" />
+            </AttentionSeeker>
+            <div>{t("confirm_payment_success")}</div>
+          </HintBox>
         ) : (
           <>
             <HintBox className="my-0">

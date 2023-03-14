@@ -38,7 +38,7 @@
   "overall_performance": "Desempenho Global",
   "settings": "Configurações",
   "disconnect": "Desconectar",
-  "disconnect_hint": "Desconectar sua conta é como deslogar. Para fazer login novamente, você precisa importar sua conta usando a Frase de Recuperação",
+  "disconnect_hint": "Desconectar sua conta é como sair. Todas as suas informações pessoais e chaves serão removidas deste dispositivo. Para fazer login novamente, você precisa importar sua conta usando a Frase de Recuperação",
   "you_own_n_shares_one": "Possui um token",
   "you_own_n_shares_other": "Possui {{count}} tokens",
   "account_unregistered": "Conta não registrada",
@@ -130,5 +130,6 @@
   "acquisition_in_progress_other": "Suas aquisições estão sendo processadas",
   "blockchain_hint_eth": "Ethereum é o mais utilizado, mas caro.",
   "blockchain_hint_mat": "Polygon é rápido e tem taxas muito baixas.",
-  "confirm_payment": "Pagamento efetuado"
+  "confirm_payment": "Pagamento efetuado",
+  "confirm_payment_success": "Seu pagamento foi registrado com sucesso e será processado nas próximas horas."
 }
