@@ -131,5 +131,7 @@
   "blockchain_hint_eth": "Ethereum é o mais utilizado, mas caro.",
   "blockchain_hint_mat": "Polygon é rápido e tem taxas muito baixas.",
   "confirm_payment": "Pagamento efetuado",
-  "confirm_payment_success": "Seu pagamento foi registrado com sucesso e será processado nas próximas horas."
+  "confirm_payment_success": "Seu pagamento foi registrado com sucesso e será processado nas próximas horas.",
+  "max_token_reached": "Token Máximo Permitido Adquirido",
+  "max_token_reached_hint": "Você já adquiriu a quantidade máxima permitida de tokens por cliente para este pool. Por favor, escolha outro pool ou aguarde até que forneçamos um novo."
 }

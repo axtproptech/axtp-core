@@ -26,7 +26,7 @@ import { Number } from "@/app/components/number";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { shortenHash } from "@/app/shortenHash";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
-import { IconCopy, IconEdit } from "@tabler/icons";
+import { IconCopy } from "@tabler/icons";
 import {
   CancellationArgs,
   CancelPaymentDialog,

@@ -6,6 +6,8 @@ import { selectAXTToken } from "@/app/states/tokenState";
 import { Number } from "@/app/components/number";
 import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePaymentCalculator";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
+import { PoolHeader } from "@/features/pool/components/poolHeader";
+import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
 
 interface Props {
   maxAllowedShares: number;
@@ -35,6 +37,20 @@ export const StepSelectQuantity: FC<Props> = ({
     }
     return a;
   }, [maxAllowedShares]);
+
+  if (maxAllowedShares === 0)
+    return (
+      <div className="overflow-hidden">
+        <section className="mt-[25%]">
+          <HintBox text={t("max_token_reached")}>
+            <div className="absolute w-[64px] top-[-48px] bg-base-100">
+              <AnimatedIconCoins loopDelay={5000} touchable />
+            </div>
+            <p>{t("max_token_reached_hint")}</p>
+          </HintBox>
+        </section>
+      </div>
+    );
 
   return (
     <div className="flex flex-col justify-between h-[50vh] text-center relative prose w-full mx-auto">
