@@ -62,7 +62,7 @@ export async function cancelPayment(id: any, body: any) {
     paymentUsd: (-Number(usd || 0)).toString(),
     paymentAmount: (-Number(amount || 0)).toString(),
     paymentCurrency: currency || "",
-    paymentTransactionId: transactionId,
+    paymentTransactionId: transactionId || "",
     paymentType: type as PaymentType,
     customerId: customer.cuid,
   };
