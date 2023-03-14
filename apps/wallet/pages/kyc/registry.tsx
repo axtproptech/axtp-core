@@ -3,6 +3,7 @@ import { MetaTags } from "@/app/components/metaTags";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { NewKYC } from "@/features/kyc/new";
 import { RiHome6Line } from "react-icons/ri";
+import { JotformRegistry } from "@/features/kyc/jotformRegistry";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -15,15 +16,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
 
 export default function NewKYCPage() {
   return (
-    <Layout
-      bottomNav={[
-        {
-          route: "/",
-          label: "Home",
-          icon: <RiHome6Line />,
-        },
-      ]}
-    >
+    <Layout>
       <MetaTags
         title="AXT PropTech S/A"
         description={""}
@@ -31,7 +24,7 @@ export default function NewKYCPage() {
         // imgUrl={some image url}
         keywords="tokenomics, real estate, blockchain, signum, sustainable"
       />
-      <NewKYC />
+      <JotformRegistry />
     </Layout>
   );
 }

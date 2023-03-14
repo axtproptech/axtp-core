@@ -19,7 +19,7 @@
   "copy_clipboard_failure": "Hmm, couldn't copy to clipboard",
   "create_account": "Create Account",
   "create_account_hint": "Choose this if you have no Signum account and you want to create one",
-  "import_account_hint": "Choose this if you have an account already, and you want to import using the Recovery Phrase",
+  "import_account_hint": "Choose this, if you have an account already, and you want to import using the Recovery Phrase",
   "import_account": "Import Account",
   "back": "Back",
   "next": "Next",
@@ -133,5 +133,7 @@
   "confirm_payment": "Payment Done",
   "confirm_payment_success": "Your payment was registered successfully and will be processed within the next few hours. ",
   "max_token_reached": "Maximum Allowed Tokens Acquired",
-  "max_token_reached_hint": "You acquired already the maximum allowed amount of tokens per customer for this pool. Please, choose another pool, or wait until we provide a new one. "
+  "max_token_reached_hint": "You acquired already the maximum allowed amount of tokens per customer for this pool. Please, choose another pool, or wait until we provide a new one. ",
+  "register_customer": "Register",
+  "register_customer_hint": "If you haven't done yet, you need to fill out the registration form to have access to the club!"
 }

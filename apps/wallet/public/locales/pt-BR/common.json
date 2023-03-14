@@ -133,5 +133,7 @@
   "confirm_payment": "Pagamento efetuado",
   "confirm_payment_success": "Seu pagamento foi registrado com sucesso e será processado nas próximas horas.",
   "max_token_reached": "Token Máximo Permitido Adquirido",
-  "max_token_reached_hint": "Você já adquiriu a quantidade máxima permitida de tokens por cliente para este pool. Por favor, escolha outro pool ou aguarde até que forneçamos um novo."
+  "max_token_reached_hint": "Você já adquiriu a quantidade máxima permitida de tokens por cliente para este pool. Por favor, escolha outro pool ou aguarde até que forneçamos um novo.",
+  "register_customer": "Cadastro",
+  "register_customer_hint": "Se você ainda não fez, precisa preencher o cadastro para ter acesso ao clube!"
 }
