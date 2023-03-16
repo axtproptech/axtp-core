@@ -19,7 +19,7 @@ export interface BottomNavigationItem {
   back?: boolean;
   onClick?: (n: BottomNavigationItem) => void;
   disabled?: boolean;
-  showLabel?: boolean;
+  hideLabel?: boolean;
 }
 
 interface Props {
@@ -54,11 +54,12 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
             <button
               key={index}
               onClick={() => handleOnClick(n)}
-              className={`flex-row flex-shrink btn h-full ${btnColor} ${active} ${loading}`}
+              className={`flex-col flex-shrink items-center btn h-full ${btnColor} ${active} ${loading}`}
               disabled={n.disabled || false}
               aria-label={n.label}
             >
               {React.cloneElement(n.icon, { size: 32 })}
+              {!n.hideLabel && <small>{n.label.toUpperCase()}</small>}
             </button>
           );
         })}

@@ -23,8 +23,12 @@ export const CopyButton: FC<Props> = ({ textToCopy, disabled = false }) => {
 
   return (
     <div className="w-full my-2">
-      <Button color="secondary" onClick={handleOnCLick} disabled={disabled}>
-        <RiClipboardLine className="mr-2" />
+      <Button
+        color="secondary"
+        onClick={handleOnCLick}
+        disabled={disabled}
+        startIcon={<RiClipboardLine />}
+      >
         {t("copy")}
       </Button>
     </div>

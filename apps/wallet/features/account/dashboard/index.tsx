@@ -6,7 +6,6 @@ import { PaymentStatus } from "@/features/account/components/paymentStatus";
 import { Body } from "@/app/components/layout/body";
 import { PoolList } from "@/app/components/poolList";
 import { HintBox } from "@/app/components/hintBox";
-import { JoinClubButton } from "@/app/components/buttons/joinClubButton";
 import { VerificationStatus } from "@/app/components/verificationStatus";
 import { useTranslation } from "next-i18next";
 import { Button } from "react-daisyui";
@@ -14,7 +13,8 @@ import { useDispatch } from "react-redux";
 import { accountActions } from "@/app/states/accountState";
 import useSWR from "swr";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
+import Link from "next/link";
+import { RiSurveyLine } from "react-icons/ri";
 
 const StatusSlugMap = {
   NotVerified: "kyc-not-registered-hint",
@@ -80,14 +80,29 @@ export const AccountDashboard = () => {
       </div>
       <Body className="overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh_-_440px)]">
         {!customer && (
-          <HintBox
-            className="mx-auto"
-            text={t(StatusSlugMap[verificationLevel])}
-          >
-            <div className="text-center">
-              <JoinClubButton />
+          <>
+            <HintBox
+              className="mx-auto"
+              text={t(StatusSlugMap[verificationLevel])}
+            >
+              <div className="text-center">
+                <div className="animate-wiggle py-2">
+                  <Link href="/kyc/registry">
+                    <Button
+                      color="primary"
+                      size="lg"
+                      startIcon={<RiSurveyLine />}
+                    >
+                      {t("register")}
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </HintBox>
+            <div className="text-center underline mt-2">
+              <Link href="/kyc/link">{t("kyc_i_have_a_registry")}</Link>
             </div>
-          </HintBox>
+          </>
         )}
         {customer && showVerificationStatus && (
           <HintBox

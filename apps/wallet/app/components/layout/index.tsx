@@ -8,19 +8,7 @@ import {
 import { Body } from "./body";
 import { RiHome6Line, RiWallet3Line } from "react-icons/ri";
 import { Notification } from "@/app/components/notification";
-
-const DefaultNav: BottomNavigationItem[] = [
-  {
-    route: "/",
-    label: "Home",
-    icon: <RiHome6Line />,
-  },
-  {
-    route: "/account",
-    label: "Account",
-    icon: <RiWallet3Line />,
-  },
-];
+import { useTranslation } from "next-i18next";
 
 interface Props extends ChildrenProps {
   bottomNav?: BottomNavigationItem[];
@@ -28,6 +16,21 @@ interface Props extends ChildrenProps {
 }
 
 export const Layout: FC<Props> = ({ children, bottomNav, noBody = false }) => {
+  const { t } = useTranslation();
+
+  const DefaultNav: BottomNavigationItem[] = [
+    {
+      route: "/",
+      label: t("home"),
+      icon: <RiHome6Line />,
+    },
+    {
+      route: "/account",
+      label: t("account"),
+      icon: <RiWallet3Line />,
+    },
+  ];
+
   return (
     <Container>
       {noBody ? children : <Body>{children}</Body>}

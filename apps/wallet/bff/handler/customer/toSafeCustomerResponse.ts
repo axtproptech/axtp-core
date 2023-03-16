@@ -8,11 +8,15 @@ export const toSafeCustomerResponse = (customer: any): CustomerSafeData => {
     termsOfUse,
     isActive,
     isBlocked,
+    blockchainAccounts,
   } = customer;
   const acceptedTerms =
     termsOfUse.length === 0
       ? false
       : termsOfUse[termsOfUse.length - 1].accepted;
+
+  const publicKey =
+    blockchainAccounts.length > 0 ? blockchainAccounts[0].publicKey : "";
   return {
     firstName,
     verificationLevel,
@@ -20,5 +24,6 @@ export const toSafeCustomerResponse = (customer: any): CustomerSafeData => {
     acceptedTerms,
     isActive,
     isBlocked,
+    publicKey,
   };
 };

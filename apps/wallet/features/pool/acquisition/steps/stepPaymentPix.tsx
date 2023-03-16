@@ -107,8 +107,11 @@ export const StepPaymentPix: FC<Props> = ({
               </div>
             </HintBox>
             <div className="animate-wiggle mt-8">
-              <Button color="primary" onClick={handleConfirmPayment}>
-                <RiMoneyDollarCircleLine className="mr-2" />
+              <Button
+                color="primary"
+                onClick={handleConfirmPayment}
+                startIcon={<RiMoneyDollarCircleLine />}
+              >
                 {t("confirm_payment")}
               </Button>
             </div>

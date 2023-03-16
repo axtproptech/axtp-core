@@ -23,7 +23,7 @@ import { encrypt, stretchKey } from "@/app/sec";
 import { useDispatch } from "react-redux";
 import { accountActions } from "@/app/states/accountState";
 import { useNotification } from "@/app/hooks/useNotification";
-import { OnStepChangeArgs } from "@/features/account";
+import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { PrintableSeedDocument } from "@/features/account/components/printableSeedDocument";
 

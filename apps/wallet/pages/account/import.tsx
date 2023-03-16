@@ -5,7 +5,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useState } from "react";
 
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
-import { AccountImport, OnStepChangeArgs } from "@/features/account";
+import { AccountImport } from "@/features/account";
+import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {

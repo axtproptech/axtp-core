@@ -23,7 +23,7 @@ import {
   StepImportSeed,
   StepSeeImportAccount,
 } from "@/features/account/components/steps";
-import { OnStepChangeArgs } from "@/features/account/types/onStepChangeArgs";
+import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
 import { useAppContext } from "@/app/hooks/useAppContext";
 
 enum Steps {

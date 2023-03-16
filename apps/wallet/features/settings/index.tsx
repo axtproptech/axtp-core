@@ -5,6 +5,7 @@ import { useAppDispatch } from "@/states/hooks";
 import { useTranslation } from "next-i18next";
 import { HintBox } from "@/app/components/hintBox";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export const Settings = () => {
   const { accountAddress } = useAccount();
@@ -18,7 +19,16 @@ export const Settings = () => {
   };
 
   return (
-    <div>
+    <div className="relative">
+      <header className="h-12 mb-4">
+        <a href="https://signum.network" target="_blank" rel="noopener">
+          <img
+            className="mx-auto h-full"
+            src="/assets/img/powered.svg"
+            alt="AXT Logo"
+          />
+        </a>
+      </header>
       {accountAddress && (
         <div className="mt-2 mx-auto">
           <HintBox text={t("disconnect_hint")}>

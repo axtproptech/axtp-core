@@ -25,8 +25,12 @@ export const useNotification = () => {
     closeTimer.current = setTimeout(hide, 5_000);
   }
 
-  function showError(e: Error) {
-    show(e.message, "error");
+  function showError(e: Error | string) {
+    if (e instanceof Error) {
+      show(e.message, "error");
+    } else {
+      show(e, "error");
+    }
   }
 
   function showWarning(msg: string) {

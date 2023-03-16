@@ -51,8 +51,11 @@ export const ErrorFallback: FC<FallbackProps> = ({
           )}
         </article>
         <div className="mt-8 w-full flex flex-row justify-evenly items-center">
-          <Button color="warning" onClick={resetErrorBoundary}>
-            <RiRestartLine className="mr-2" />
+          <Button
+            color="warning"
+            onClick={resetErrorBoundary}
+            startIcon={<RiRestartLine />}
+          >
             {t("try_again")}
           </Button>
         </div>
