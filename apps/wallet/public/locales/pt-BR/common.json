@@ -148,5 +148,11 @@
   "wrong_pin": "O PIN digitado está errado",
   "kyc_link_account_hint": "Informe seu CPF para verificar se você já é cadastrado.",
   "account": "Conta",
-  "confirm": "Confirmar"
+  "confirm": "Confirmar",
+  "buy_you_are_not_eligible": "Você ainda não está qualificado para comprar nenhum token, pois algo está faltando em sua conta ou registro.",
+  "pin_weak_pin": "Sério!? Este é um PIN muito fraco! Use por sua conta e risco!",
+  "kyc_account_linked_successfully": "Conta vinculada com sucesso",
+  "kyc_account_linked_failed": "Não foi possível vincular a conta ao registro!",
+  "try_again": "Tente novamente",
+  "reset_app": "Reiniciar tudo"
 }

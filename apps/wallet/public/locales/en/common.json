@@ -148,5 +148,11 @@
   "wrong_pin": "The entered PIN is wrong",
   "kyc_link_account_hint": "Please enter your CPF to verify if you are registered already. ",
   "account": "Account",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "buy_you_are_not_eligible": "You are not eligible to buy any token yet, as something is missing on your account or registry.",
+  "pin_weak_pin": "Oh really!? This a really weak pin! Use at your own risk!",
+  "kyc_account_linked_successfully": "Account linked successfully",
+  "kyc_account_linked_failed": "Could not link account to registry!",
+  "try_again": "Try Again",
+  "reset_app": "Reset All"
 }

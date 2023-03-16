@@ -5,7 +5,6 @@ import { useAppDispatch } from "@/states/hooks";
 import { useTranslation } from "next-i18next";
 import { HintBox } from "@/app/components/hintBox";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 export const Settings = () => {
   const { accountAddress } = useAccount();

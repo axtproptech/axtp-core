@@ -15,6 +15,7 @@ import useSWR from "swr";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import Link from "next/link";
 import { RiSurveyLine } from "react-icons/ri";
+import { RegisterCustomerButton } from "@/app/components/buttons/registerCustomerButton";
 
 const StatusSlugMap = {
   NotVerified: "kyc-not-registered-hint",
@@ -85,23 +86,10 @@ export const AccountDashboard = () => {
               className="mx-auto"
               text={t(StatusSlugMap[verificationLevel])}
             >
-              <div className="text-center">
-                <div className="animate-wiggle py-2">
-                  <Link href="/kyc/registry">
-                    <Button
-                      color="primary"
-                      size="lg"
-                      startIcon={<RiSurveyLine />}
-                    >
-                      {t("register")}
-                    </Button>
-                  </Link>
-                </div>
+              <div className="text-center py-2">
+                <RegisterCustomerButton />
               </div>
             </HintBox>
-            <div className="text-center underline mt-2">
-              <Link href="/kyc/link">{t("kyc_i_have_a_registry")}</Link>
-            </div>
           </>
         )}
         {customer && showVerificationStatus && (

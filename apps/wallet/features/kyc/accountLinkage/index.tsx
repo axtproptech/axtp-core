@@ -6,8 +6,6 @@ import {
   RiArrowRightCircleLine,
   RiHome6Line,
   RiSurveyLine,
-  RiUserReceivedLine,
-  RiUserStarLine,
   RiWallet3Line,
 } from "react-icons/ri";
 import { voidFn } from "@/app/voidFn";
@@ -20,6 +18,7 @@ import { StepEnterCpf, StepConfirm } from "@/features/kyc/accountLinkage/steps";
 import { CustomerSafeData } from "@/types/customerSafeData";
 import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
 import { useAccount } from "@/app/hooks/useAccount";
+import { accountActions } from "@/app/states/accountState";
 
 enum Steps {
   EnterCpf,
@@ -73,16 +72,20 @@ export const AccountLinkage: FC<Props> = ({ onStepChange }) => {
     }
 
     try {
-      // await KycService.assignPublicKeyToCustomer(
-      //   customer.customerId,
-      //   accountPublicKey,
-      //   Ledger.IsTestNet
-      // );
-      showSuccess("kyc_account_linked_successfully");
+      const updatedCustomer = await KycService.assignPublicKeyToCustomer(
+        customer.customerId,
+        accountPublicKey,
+        Ledger.IsTestNet
+      );
+
+      console.log("customer", updatedCustomer);
+
+      dispatch(accountActions.setCustomer(updatedCustomer));
+      showSuccess(t("kyc_account_linked_successfully"));
       setIsConfirmed(true);
       await router.replace("/account");
     } catch (e) {
-      showError("kyc_account_linked_failed");
+      showError(t("kyc_account_linked_failed"));
     }
   };
 

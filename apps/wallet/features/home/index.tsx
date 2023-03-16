@@ -9,6 +9,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { VerificationStatus } from "@/app/components/verificationStatus";
 import { JoinClubButton } from "@/app/components/buttons/joinClubButton";
 import { ShowAccountButton } from "@/app/components/buttons/showAccountButton";
+import { RegisterCustomerButton } from "@/app/components/buttons/registerCustomerButton";
 
 export const Home = () => {
   const pools = useAppSelector(selectAllPools);
@@ -55,7 +56,11 @@ export const Home = () => {
         </section>
         <section className="prose text-center mx-auto mt-4">
           {!customer ? (
-            <JoinClubButton />
+            accountId ? (
+              <RegisterCustomerButton />
+            ) : (
+              <JoinClubButton />
+            )
           ) : (
             <VerificationStatus
               verificationLevel={customer?.verificationLevel || ""}

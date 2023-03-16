@@ -16,7 +16,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
 
 export default function NewKYCPage() {
   return (
-    <Layout>
+    <Layout noBody>
       <MetaTags
         title="AXT PropTech S/A"
         description={""}

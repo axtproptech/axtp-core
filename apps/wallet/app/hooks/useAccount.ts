@@ -7,7 +7,6 @@ import { Amount } from "@signumjs/util";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { Keys } from "@signumjs/crypto";
 import useSWR from "swr";
-import { mapLedgerTransaction } from "@/app/mapLedgerTransaction";
 import { AccountData, DefaultAccountData } from "@/types/accountData";
 import { toQuantity, toStableCoinAmount } from "@/app/tokenQuantity";
 import { TokenMetaData } from "@/types/tokenMetaData";

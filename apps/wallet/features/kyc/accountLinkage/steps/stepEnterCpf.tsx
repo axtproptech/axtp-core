@@ -28,12 +28,12 @@ export const StepEnterCpf: FC<Props> = ({
     try {
       setIsFetching(true);
       const c = await KycService.fetchCustomerDataByCpf(unmaskedValue);
-      // if (c.publicKey) {
-      //   showWarning(t("kyc_cpf_has_pk"));
-      // } else {
-      onAllowRegistry(false);
-      setCustomer(c);
-      // }
+      if (c.publicKey) {
+        showWarning(t("kyc_cpf_has_pk"));
+      } else {
+        onAllowRegistry(false);
+        setCustomer(c);
+      }
     } catch (e) {
       showError(t("kyc_cpf_not_found"));
       onAllowRegistry(true);
@@ -58,10 +58,15 @@ export const StepEnterCpf: FC<Props> = ({
         <h2>{t("enter_cpf_hint")}</h2>
       </section>
       <section>
-        <HintBox text={t("kyc_link_account_hint")} />
+        <HintBox text={customer ? undefined : t("kyc_link_account_hint")}>
+          {customer && (
+            <p className="text-xl font-bold text-center">
+              {t("hello", { name: customer.firstName })}
+            </p>
+          )}
+        </HintBox>
       </section>
       <section>
-        {customer && <h2>{t("hello", { name: customer.firstName })}</h2>}
         <div className="relative w-fit mx-auto mb-4">
           <Input
             ref={ref}
