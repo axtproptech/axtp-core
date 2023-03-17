@@ -49,18 +49,21 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
           const btnColor = n.color
             ? `rounded-lg btn-${n.color}`
             : "bg-transparent border-0";
-          const loading = n.loading ? "loading" : "";
+
+          const loading = n.loading ? "animate-pulse" : "";
           return (
-            <button
-              key={index}
-              onClick={() => handleOnClick(n)}
-              className={`flex-col flex-shrink items-center btn h-full ${btnColor} ${active} ${loading}`}
-              disabled={n.disabled || false}
-              aria-label={n.label}
-            >
-              {React.cloneElement(n.icon, { size: 32 })}
-              {!n.hideLabel && <small>{n.label.toUpperCase()}</small>}
-            </button>
+            <>
+              <button
+                key={index}
+                onClick={() => handleOnClick(n)}
+                className={`flex flex-col items-center flex-shrink btn h-full ${btnColor} ${active} ${loading}`}
+                disabled={n.disabled || false}
+                aria-label={n.label}
+              >
+                {React.cloneElement(n.icon, { size: 32 })}
+                {!n.hideLabel && <small>{n.label.toUpperCase()}</small>}
+              </button>
+            </>
           );
         })}
       </div>

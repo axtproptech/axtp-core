@@ -6,37 +6,42 @@ import { PoolHeader } from "../components/poolHeader";
 import { useTranslation } from "next-i18next";
 import { Stepper } from "@/app/components/stepper";
 import {
-  StepPaymentPix,
-  StepSelectQuantity,
   PaymentMethod,
-  StepSelectPaymentMethod,
+  StepPaymentPix,
+  StepPaymentUsdc1,
   StepPaymentUsdc2,
   StepPaymentUsdc3,
-  StepPaymentUsdc1,
+  StepSelectPaymentMethod,
+  StepSelectQuantity,
 } from "./steps";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import {
-  RiWallet3Line,
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
   RiHome6Line,
+  RiWallet3Line,
 } from "react-icons/ri";
 import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
 import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
 import { HintBox } from "@/app/components/hintBox";
-import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
 import { useAccount } from "@/app/hooks/useAccount";
 import { ChainValue } from "@signumjs/util";
+import { IfEligibleForAcquisition } from "./ifEligibleForAcquisition";
+import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 
+// const StepRoutes = {
+//   pix: ["quantity", "paymentMethod", "paymentPix"],
+//   usdc: [
+//     "quantity",
+//     "paymentMethod",
+//     "paymentUsdc-1",
+//     "paymentUsdc-2",
+//     "paymentUsdc-3",
+//   ],
+// };
 const StepRoutes = {
-  pix: ["quantity", "paymentMethod", "paymentPix"],
-  usdc: [
-    "quantity",
-    "paymentMethod",
-    "paymentUsdc-1",
-    "paymentUsdc-2",
-    "paymentUsdc-3",
-  ],
+  pix: ["quantity", "paymentPix"],
+  usdc: ["quantity", "paymentUsdc-1", "paymentUsdc-2", "paymentUsdc-3"],
 };
 
 interface Props {
@@ -49,7 +54,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
   const router = useRouter();
   const { accountData } = useAccount();
   const pool = useAppSelector(selectPoolContractState(poolId));
-  const [stepCount, setStepCount] = useState<number>(3);
+  const [stepCount, setStepCount] = useState<number>(StepRoutes["pix"].length);
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
@@ -162,7 +167,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
         <section className="mt-[25%]">
           <HintBox text={t("sold_out")}>
             <div className="absolute w-[64px] top-[-48px] bg-base-100">
-              <AnimatedIconError loopDelay={5000} touchable />
+              <AnimatedIconCoins loopDelay={5000} touchable />
             </div>
             <p>{t("sold_out_hint")}</p>
           </HintBox>
@@ -174,59 +179,61 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
   return (
     <div className="overflow-hidden">
       <PoolHeader poolData={pool} />
-      <Stepper currentStep={currentStep} steps={stepCount} />
-      <div
-        className="carousel w-full overflow-x-hidden"
-        onTouchMove={(e) => e.preventDefault()}
-      >
-        <div id="quantity" className="carousel-item relative w-full">
-          <StepSelectQuantity
-            onQuantityChange={(q) => setQuantity(q)}
-            maxAllowedShares={maxAllowedShares}
-            poolId={pool.poolId}
-          />
-        </div>
-        <div id="paymentMethod" className="carousel-item relative w-full">
-          <StepSelectPaymentMethod
-            onMethodChange={(m) => setPaymentMethod(m)}
-          />
-        </div>
-        {paymentMethod === "pix" && (
-          <div id="paymentPix" className="carousel-item relative w-full">
-            <StepPaymentPix
-              onStatusChange={handleStatus}
-              quantity={quantity}
+      <IfEligibleForAcquisition>
+        <Stepper currentStep={currentStep} steps={stepCount} />
+        <div
+          className="carousel w-full overflow-x-hidden"
+          onTouchMove={(e) => e.preventDefault()}
+        >
+          <div id="quantity" className="carousel-item relative w-full">
+            <StepSelectQuantity
+              onQuantityChange={(q) => setQuantity(q)}
+              maxAllowedShares={maxAllowedShares}
               poolId={pool.poolId}
             />
           </div>
-        )}
-        {paymentMethod === "usdc" && (
-          <>
-            <div id="paymentUsdc-1" className="carousel-item relative w-full">
-              <StepPaymentUsdc1
-                onProtocolChange={(network) => setUsdcProtocol(network)}
-                quantity={quantity}
-                poolId={pool.poolId}
-              />
-            </div>
-            <div id="paymentUsdc-2" className="carousel-item relative w-full">
-              <StepPaymentUsdc2
-                quantity={quantity}
-                poolId={pool.poolId}
-                protocol={usdcProtocol}
-              />
-            </div>
-            <div id="paymentUsdc-3" className="carousel-item relative w-full">
-              <StepPaymentUsdc3
+          {/*<div id="paymentMethod" className="carousel-item relative w-full">*/}
+          {/*  <StepSelectPaymentMethod*/}
+          {/*    onMethodChange={(m) => setPaymentMethod(m)}*/}
+          {/*  />*/}
+          {/*</div>*/}
+          {paymentMethod === "pix" && (
+            <div id="paymentPix" className="carousel-item relative w-full">
+              <StepPaymentPix
                 onStatusChange={handleStatus}
                 quantity={quantity}
                 poolId={pool.poolId}
-                protocol={usdcProtocol}
               />
             </div>
-          </>
-        )}
-      </div>
+          )}
+          {paymentMethod === "usdc" && (
+            <>
+              <div id="paymentUsdc-1" className="carousel-item relative w-full">
+                <StepPaymentUsdc1
+                  onProtocolChange={(network) => setUsdcProtocol(network)}
+                  quantity={quantity}
+                  poolId={pool.poolId}
+                />
+              </div>
+              <div id="paymentUsdc-2" className="carousel-item relative w-full">
+                <StepPaymentUsdc2
+                  quantity={quantity}
+                  poolId={pool.poolId}
+                  protocol={usdcProtocol}
+                />
+              </div>
+              <div id="paymentUsdc-3" className="carousel-item relative w-full">
+                <StepPaymentUsdc3
+                  onStatusChange={handleStatus}
+                  quantity={quantity}
+                  poolId={pool.poolId}
+                  protocol={usdcProtocol}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </IfEligibleForAcquisition>
     </div>
   );
 };
