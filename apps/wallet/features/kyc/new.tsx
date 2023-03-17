@@ -60,24 +60,5 @@ export const NewKYC = () => {
         />
       </div>
     </div>
-    // <div className="overflow-hidden">
-    //   <section className="mt-8 prose">
-    //     <h2 className="my-1">{t("kyc_new_register_hint")}</h2>
-    //   </section>
-    //   <section>
-    //     <Link href="/kyc/new/registry">
-    //       <Button color="primary" size="lg">
-    //         <RiUserAddLine className="mr-2" size="28" />
-    //         {t("kyc_first_time")}
-    //       </Button>
-    //     </Link>
-    //     <Link href="/account/import">
-    //       <Button color="primary" size="lg">
-    //         <RiUserAddLine className="mr-2" size="28" />
-    //         {t("kyc_done_already")}
-    //       </Button>
-    //     </Link>
-    //   </section>
-    // </div>
   );
 };

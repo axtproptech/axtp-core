@@ -12,7 +12,7 @@ export class KycService {
         return await fetchFn();
       } catch (e: any) {
         if (e instanceof HttpError) {
-          if (e.status === 404) {
+          if (e.status === 404 || e.status === 400) {
             throw new AbortError(e.message);
           }
         }
@@ -61,7 +61,7 @@ export class KycService {
       return response as CustomerSafeData;
     });
   }
-  //
+
   async fetchCustomerDataByCpf(cpf: string) {
     return this.tryFetch(async () => {
       const { response } = await this.bffClient.get(`/customer?cpf=${cpf}`);
