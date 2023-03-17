@@ -5,6 +5,7 @@ import {
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
   RiHome6Line,
+  RiRecycleLine,
   RiUserAddLine,
 } from "react-icons/ri";
 import { voidFn } from "@/app/voidFn";
@@ -80,9 +81,9 @@ export const AccountCreation: FC<Props> = ({ onStepChange }) => {
 
     const menuMiddleMap: any = {
       "1": {
-        label: "Regenerate",
+        label: t("regenerate"),
         onClick: generateSeed,
-        icon: <div>{t("regenerate")}</div>,
+        icon: <RiRecycleLine />,
       },
     };
 

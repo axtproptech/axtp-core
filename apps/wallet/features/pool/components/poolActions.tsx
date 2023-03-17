@@ -10,6 +10,7 @@ import { RegisterCustomerButton } from "@/app/components/buttons/registerCustome
 import { HintBox } from "@/app/components/hintBox";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
+import { VerificationStatus } from "@/app/components/verificationStatus";
 
 interface Props {
   poolData: PoolContractData;
@@ -47,33 +48,26 @@ export const PoolActions: FC<Props> = ({ poolData }) => {
 
   const { canBuy, reasonKey } = useMemo(() => {
     let reasonKey = "";
-    let canBuy = true;
-
     if (!customer) {
       reasonKey = "buy_token_not_registered";
-      canBuy = false;
     } else if (!customer?.verificationLevel.startsWith("Level")) {
       reasonKey = "buy_token_not_verified";
-      canBuy = false;
     } else if (customer?.isBlocked) {
       reasonKey = "buy_token_blocked";
-      canBuy = false;
     } else if (!customer?.isActive) {
       reasonKey = "buy_token_not_active";
-      canBuy = false;
     } else if (!accountPublicKey) {
       reasonKey = "buy_token_no_account";
-      canBuy = false;
     }
     return {
-      canBuy,
+      canBuy: reasonKey.length === 0,
       reasonKey,
     };
   }, [accountPublicKey, customer]);
 
   return (
     <div>
-      <div className="p-2 flex-col flex mx-auto justify-center">
+      <div className="p-2 flex-col flex mx-auto justify-center w-fit">
         {canBuy && (
           <Button color="primary" onClick={handleAcquireShare}>
             {t("buy_token")}
@@ -101,6 +95,11 @@ export const PoolActions: FC<Props> = ({ poolData }) => {
                 )}
                 {reasonKey === "buy_token_not_registered" && (
                   <RegisterCustomerButton />
+                )}
+                {reasonKey === "buy_token_not_verified" && (
+                  <VerificationStatus
+                    verificationLevel={customer!.verificationLevel}
+                  />
                 )}
               </div>
             </div>

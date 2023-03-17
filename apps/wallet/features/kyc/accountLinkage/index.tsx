@@ -78,8 +78,6 @@ export const AccountLinkage: FC<Props> = ({ onStepChange }) => {
         Ledger.IsTestNet
       );
 
-      console.log("customer", updatedCustomer);
-
       dispatch(accountActions.setCustomer(updatedCustomer));
       showSuccess(t("kyc_account_linked_successfully"));
       setIsConfirmed(true);

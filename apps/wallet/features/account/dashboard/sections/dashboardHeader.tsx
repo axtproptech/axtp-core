@@ -21,12 +21,14 @@ import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { useAppContext } from "@/app/hooks/useAppContext";
 
 interface Props {
+  customerName: string;
   accountAddress: string;
   accountData: AccountData;
   verificationLevel: VerificationLevelType;
 }
 
 export const DashboardHeader: FC<Props> = ({
+  customerName,
   accountAddress,
   accountData,
   verificationLevel,
@@ -66,6 +68,7 @@ export const DashboardHeader: FC<Props> = ({
     <Fade triggerOnce>
       <section className="pt-12 md:pt-8 flex-row flex mx-auto justify-center">
         <div className="text-center">
+          <h3>{t("hello", { name: customerName })}</h3>
           <SafeExternalLink
             href={`${Ledger.ExplorerUrl}/address/${accountData.accountId}`}
           >

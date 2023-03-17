@@ -9,6 +9,8 @@ import { useAppDispatch } from "@/states/hooks";
 import { accountActions } from "@/app/states/accountState";
 import { useRouter } from "next/router";
 import { CustomerSafeData } from "@/types/customerSafeData";
+import { RiHome6Line, RiWallet3Line } from "react-icons/ri";
+import { useAccount } from "@/app/hooks/useAccount";
 
 interface Props {
   customer: CustomerSafeData;
@@ -18,6 +20,7 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const { KycService } = useAppContext();
+  const { accountId } = useAccount();
   const dispatch = useAppDispatch();
   const [submitting, setSubmitting] = useState(false);
   const [accepted, setAccepted] = useState(false);
@@ -39,10 +42,6 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const handleRouteHome = async () => {
-    await router.push("/");
   };
 
   const { firstName } = customer;
@@ -70,15 +69,30 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
               <Link href="/#">{t("terms_of_use")}</Link>
             </div>
           </div>
-          <div className="text-center">
-            <Button
-              className="px-8"
-              color="primary"
-              onClick={handleRouteHome}
-              disabled={!accepted && !submitting}
-            >
-              {t("home")}
-            </Button>
+          <div className="text-center mt-4">
+            {accountId ? (
+              <Link href="/">
+                <Button
+                  color="primary"
+                  disabled={!accepted && !submitting}
+                  startIcon={<RiHome6Line />}
+                >
+                  {t("home")}
+                </Button>
+              </Link>
+            ) : (
+              <div className="w-fit mx-auto">
+                <Link href="/account/setup">
+                  <Button
+                    color="primary"
+                    disabled={!accepted && !submitting}
+                    startIcon={<RiWallet3Line />}
+                  >
+                    {t("setup_account")}
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </HintBox>
         <div className="mt-2">
