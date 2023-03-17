@@ -6,6 +6,6 @@ interface Props {
 
 export const TextLogo: FC<Props> = ({ className = "" }) => (
   <div className={className}>
-    <img src="/assets/img/axt-text-logo.svg" alt="AXT Logo" />
+    <img src="/assets/img/axt-text-logo-2.svg" alt="AXT Logo" />
   </div>
 );
