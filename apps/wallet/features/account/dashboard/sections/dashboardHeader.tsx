@@ -17,19 +17,16 @@ import { selectAXTToken } from "@/app/states/tokenState";
 import { selectBrlUsdMarketData } from "@/app/states/marketState";
 import { SafeExternalLink } from "@/app/components/navigation/externalLink";
 import { RiExternalLinkLine } from "react-icons/ri";
-import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { Greeting } from "@/app/components/greeting";
 
 interface Props {
-  customerName: string;
   accountAddress: string;
   accountData: AccountData;
   verificationLevel: VerificationLevelType;
 }
 
 export const DashboardHeader: FC<Props> = ({
-  customerName,
   accountAddress,
   accountData,
   verificationLevel,
