@@ -61,7 +61,7 @@ export const PoolCard: FC<Props> = ({
 
   const randomDelay = useMemo(() => {
     return 2_000 + Math.floor(Math.random() * 3_000);
-  }, [poolData.poolId]);
+  }, [poolData.poolId]); // triggers on pool changes
 
   const handleCardClick = () => {
     const detail = {

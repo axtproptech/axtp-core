@@ -43,7 +43,7 @@ export const PoolList: FC<Props> = ({ accountData }) => {
           {relevantPools.map((p) => {
             return (
               <PoolCard
-                className="mt-4 bg-gradient-to-r from-base-100 to-secondary isolate"
+                className="mt-4 bg-gradient-to-r from-base-100 to-secondary isolate rounded-xl"
                 key={p.poolId}
                 poolData={p}
                 accountData={accountData}
