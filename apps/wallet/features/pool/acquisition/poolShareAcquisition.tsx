@@ -24,11 +24,9 @@ import {
 import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
 import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
 import { HintBox } from "@/app/components/hintBox";
-import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
 import { useAccount } from "@/app/hooks/useAccount";
 import { ChainValue } from "@signumjs/util";
-import { IfEligibleForAcquisition } from "@/features/pool/acquisition/ifEligibleForAcquisition";
-import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
+import { IfEligibleForAcquisition } from "./ifEligibleForAcquisition";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 
 const StepRoutes = {
