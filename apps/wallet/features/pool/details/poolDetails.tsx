@@ -30,17 +30,15 @@ export const PoolDetails: FC<Props> = ({ poolId }) => {
           <PoolActions poolData={pool} />
         </Fade>
       </Zoom>
-      <Slide direction="up">
-        <Fade>
-          <div className="divider">{t("details")}</div>
-          <div className="relative">
-            <div className="absolute z-10 top-[-1px] bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
-          </div>
-          <Body className="overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh_-_600px)]">
-            <PoolData poolData={pool} />
-          </Body>
-        </Fade>
-      </Slide>
+      <Fade>
+        <div className="divider">{t("details")}</div>
+        <div className="relative">
+          <div className="absolute z-10 top-[-1px] bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
+        </div>
+        <Body className="overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh_-_600px)]">
+          <PoolData poolData={pool} />
+        </Body>
+      </Fade>
     </div>
   );
 };

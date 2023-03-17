@@ -36,8 +36,8 @@ export const VerificationStatus = memo<Props>(function VerificationStatus({
           <Steps.Step color="info" value="">
             <span className="px-4 lg:px-8">{t("kyc-analyzing")}</span>
           </Steps.Step>
-          <Steps.Step color="info" value="L1">
-            {t("kyc-accepted")}
+          <Steps.Step color="info" value="">
+            {t("kyc-accepted")}&nbsp;L1
           </Steps.Step>
         </Steps>
       );
@@ -50,8 +50,8 @@ export const VerificationStatus = memo<Props>(function VerificationStatus({
           <Steps.Step color="info" value="">
             <span className="px-4 lg:px-8">{t("kyc-analyzing")}</span>
           </Steps.Step>
-          <Steps.Step color="info" value="L2">
-            {t("kyc-accepted")}
+          <Steps.Step color="info" value="">
+            {t("kyc-accepted")}&nbsp;L2
           </Steps.Step>
         </Steps>
       );

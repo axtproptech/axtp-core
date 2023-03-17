@@ -41,7 +41,7 @@ export const StepSelectQuantity: FC<Props> = ({
   if (maxAllowedShares === 0)
     return (
       <div className="overflow-hidden">
-        <section className="mt-[25%]">
+        <section className="mt-[25%] px-4">
           <HintBox text={t("max_token_reached")}>
             <div className="absolute w-[64px] top-[-48px] bg-base-100">
               <AnimatedIconCoins loopDelay={5000} touchable />
