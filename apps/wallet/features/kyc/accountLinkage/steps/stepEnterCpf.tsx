@@ -7,6 +7,7 @@ import { useNotification } from "@/app/hooks/useNotification";
 import { useIMask } from "react-imask";
 import { RiRestartLine, RiSearchLine } from "react-icons/ri";
 import { HintBox } from "@/app/components/hintBox";
+import { Greeting } from "@/app/components/greeting";
 
 interface Props {
   onCustomerChanged: (c: CustomerSafeData | null) => void;
@@ -59,11 +60,7 @@ export const StepEnterCpf: FC<Props> = ({
       </section>
       <section>
         <HintBox text={customer ? undefined : t("kyc_link_account_hint")}>
-          {customer && (
-            <p className="text-xl font-bold text-center">
-              {t("hello", { name: customer.firstName })}
-            </p>
-          )}
+          {customer && <Greeting />}
         </HintBox>
       </section>
       <section>

@@ -10,9 +10,12 @@ import { VerificationStatus } from "@/app/components/verificationStatus";
 import { JoinClubButton } from "@/app/components/buttons/joinClubButton";
 import { ShowAccountButton } from "@/app/components/buttons/showAccountButton";
 import { RegisterCustomerButton } from "@/app/components/buttons/registerCustomerButton";
+import { useTranslation } from "next-i18next";
+import { Greeting } from "@/app/components/greeting";
 
 export const Home = () => {
   const pools = useAppSelector(selectAllPools);
+  const { t } = useTranslation();
   const { accountId, customer } = useAccount();
   const stats = useMemo(() => {
     let totalCurrentGMV = 0;
@@ -55,6 +58,7 @@ export const Home = () => {
           <DashboardStats stats={stats} />
         </section>
         <section className="prose text-center mx-auto mt-4">
+          <Greeting />
           {!customer ? (
             accountId ? (
               <RegisterCustomerButton />
@@ -63,7 +67,7 @@ export const Home = () => {
             )
           ) : (
             <VerificationStatus
-              verificationLevel={customer?.verificationLevel || ""}
+              verificationLevel={customer.verificationLevel}
               hideIfAccepted
             />
           )}

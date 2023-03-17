@@ -19,6 +19,7 @@ import { SafeExternalLink } from "@/app/components/navigation/externalLink";
 import { RiExternalLinkLine } from "react-icons/ri";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { Greeting } from "@/app/components/greeting";
 
 interface Props {
   customerName: string;
@@ -68,7 +69,7 @@ export const DashboardHeader: FC<Props> = ({
     <Fade triggerOnce>
       <section className="pt-12 md:pt-8 flex-row flex mx-auto justify-center">
         <div className="text-center">
-          <h3>{t("hello", { name: customerName })}</h3>
+          <Greeting />
           <SafeExternalLink
             href={`${Ledger.ExplorerUrl}/address/${accountData.accountId}`}
           >

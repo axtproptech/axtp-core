@@ -154,5 +154,9 @@
   "kyc_account_linked_successfully": "Conta vinculada com sucesso",
   "kyc_account_linked_failed": "Não foi possível vincular a conta ao registro!",
   "try_again": "Tente novamente",
-  "reset_app": "Reiniciar tudo"
+  "reset_app": "Reiniciar tudo",
+  "good_morning": "🌞 Bom dia, {{name}}",
+  "good_afternoon": "🌻Boa tarde, {{name}}",
+  "good_evening": "🌇 Boa noite, {{name}}",
+  "good_night": "🌙 Boa noite, {{name}}"
 }

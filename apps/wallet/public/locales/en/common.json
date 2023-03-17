@@ -154,5 +154,9 @@
   "kyc_account_linked_successfully": "Account linked successfully",
   "kyc_account_linked_failed": "Could not link account to registry!",
   "try_again": "Try Again",
-  "reset_app": "Reset All"
+  "reset_app": "Reset All",
+  "good_morning": "🌞 Good Morning, {{name}}",
+  "good_afternoon": "🌻Good Afternoon, {{name}}",
+  "good_evening": "🌇 Good Evening, {{name}}",
+  "good_night": "🌙 Good Night, {{name}}"
 }
