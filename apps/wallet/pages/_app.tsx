@@ -21,6 +21,7 @@ const persistor = persistStore(store);
 const handleError = (error: Error, info: { componentStack: string }) => {
   log.error("[Frontend] Error Boundary", { error, info });
 };
+
 function App({ Component, pageProps }: AppProps) {
   return (
     <AppContextProvider>
@@ -32,14 +33,14 @@ function App({ Component, pageProps }: AppProps) {
         description=""
         viewport="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
       />
-      <ErrorBoundary FallbackComponent={ErrorFallback} onError={handleError}>
-        <ReduxProvider store={store}>
+      <ReduxProvider store={store}>
+        <ErrorBoundary FallbackComponent={ErrorFallback} onError={handleError}>
           <PersistGate loading={null} persistor={persistor}>
             <AppInitializer />
             <Component {...pageProps} />
           </PersistGate>
-        </ReduxProvider>
-      </ErrorBoundary>
+        </ErrorBoundary>
+      </ReduxProvider>
     </AppContextProvider>
   );
 }

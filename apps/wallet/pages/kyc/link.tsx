@@ -1,12 +1,10 @@
 import { Layout } from "@/app/components/layout";
 import { MetaTags } from "@/app/components/metaTags";
-
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useState } from "react";
-
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
-import { AccountImport } from "@/features/account";
 import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
+import { AccountLinkage } from "@/features/kyc/accountLinkage";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -17,23 +15,22 @@ export async function getStaticProps({ locale }: { locale: string }) {
   };
 }
 
-export default function Page() {
+export default function LinkPage() {
   const [bottomNav, setBottomNav] = useState<BottomNavigationItem[]>([]);
 
   const handleStepChange = (args: OnStepChangeArgs) => {
     setBottomNav(args.bottomNav);
   };
-
   return (
     <Layout bottomNav={bottomNav}>
       <MetaTags
-        title="AXT PropTech S/A Account"
+        title="AXT PropTech S/A"
         description={""}
         // add here an image for SEO
         // imgUrl={some image url}
         keywords="tokenomics, real estate, blockchain, signum, sustainable"
       />
-      <AccountImport onStepChange={handleStepChange} />
+      <AccountLinkage onStepChange={handleStepChange} />
     </Layout>
   );
 }

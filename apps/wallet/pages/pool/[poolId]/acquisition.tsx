@@ -5,7 +5,7 @@ import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigati
 import { Config } from "@/app/config";
 import { PoolShareAcquisition } from "@/features/pool";
 import { useState } from "react";
-import { OnStepChangeArgs } from "@/features/account";
+import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
 
 export async function getStaticPaths({ locales }: any) {
   const paths = Config.Contracts.PoolContractIds.flatMap((poolId) =>

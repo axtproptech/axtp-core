@@ -6,7 +6,6 @@ import { PaymentStatus } from "@/features/account/components/paymentStatus";
 import { Body } from "@/app/components/layout/body";
 import { PoolList } from "@/app/components/poolList";
 import { HintBox } from "@/app/components/hintBox";
-import { JoinClubButton } from "@/app/components/buttons/joinClubButton";
 import { VerificationStatus } from "@/app/components/verificationStatus";
 import { useTranslation } from "next-i18next";
 import { Button } from "react-daisyui";
@@ -14,7 +13,9 @@ import { useDispatch } from "react-redux";
 import { accountActions } from "@/app/states/accountState";
 import useSWR from "swr";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
+import Link from "next/link";
+import { RiSurveyLine } from "react-icons/ri";
+import { RegisterCustomerButton } from "@/app/components/buttons/registerCustomerButton";
 
 const StatusSlugMap = {
   NotVerified: "kyc-not-registered-hint",
@@ -70,6 +71,7 @@ export const AccountDashboard = () => {
     <div className="overflow-hidden h-[100vh]">
       <section>
         <DashboardHeader
+          customerName={customer!.firstName}
           accountAddress={accountAddress || ""}
           accountData={accountData}
           verificationLevel={verificationLevel}
@@ -80,14 +82,16 @@ export const AccountDashboard = () => {
       </div>
       <Body className="overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh_-_440px)]">
         {!customer && (
-          <HintBox
-            className="mx-auto"
-            text={t(StatusSlugMap[verificationLevel])}
-          >
-            <div className="text-center">
-              <JoinClubButton />
-            </div>
-          </HintBox>
+          <>
+            <HintBox
+              className="mx-auto"
+              text={t(StatusSlugMap[verificationLevel])}
+            >
+              <div className="text-center py-2">
+                <RegisterCustomerButton />
+              </div>
+            </HintBox>
+          </>
         )}
         {customer && showVerificationStatus && (
           <HintBox

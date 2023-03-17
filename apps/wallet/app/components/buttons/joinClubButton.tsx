@@ -16,8 +16,12 @@ export const JoinClubButton = () => {
 
   return (
     <div className="animate-wiggle">
-      <Button color="primary" size="lg" onClick={handleOnJoinClick}>
-        <RiGroupLine className="mr-2" size="28" />
+      <Button
+        color="primary"
+        size="lg"
+        onClick={handleOnJoinClick}
+        startIcon={<RiGroupLine />}
+      >
         {t("join_club")}
       </Button>
     </div>

@@ -4,12 +4,15 @@ import { useTranslation } from "next-i18next";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { FallbackProps } from "react-error-boundary";
 import { Button } from "react-daisyui";
-import { RiHome6Line, RiRestartLine } from "react-icons/ri";
+import { RiHome6Line, RiRestartFill, RiRestartLine } from "react-icons/ri";
 import { Container } from "@/app/components/layout/container";
 import {
   BottomNavigation,
   BottomNavigationItem,
 } from "@/app/components/navigation/bottomNavigation";
+import { useAppDispatch } from "@/states/hooks";
+import { accountActions } from "@/app/states/accountState";
+import { useRouter } from "next/router";
 
 const FallbackNav: BottomNavigationItem[] = [
   {
@@ -25,6 +28,12 @@ export const ErrorFallback: FC<FallbackProps> = ({
 }) => {
   const { t } = useTranslation();
   const { Ledger } = useAppContext();
+  const dispatch = useAppDispatch();
+
+  const resetApplication = () => {
+    dispatch(accountActions.resetAccount());
+    resetErrorBoundary();
+  };
 
   return (
     <Container>
@@ -51,9 +60,19 @@ export const ErrorFallback: FC<FallbackProps> = ({
           )}
         </article>
         <div className="mt-8 w-full flex flex-row justify-evenly items-center">
-          <Button color="warning" onClick={resetErrorBoundary}>
-            <RiRestartLine className="mr-2" />
+          <Button
+            color="warning"
+            onClick={resetErrorBoundary}
+            startIcon={<RiRestartLine />}
+          >
             {t("try_again")}
+          </Button>
+          <Button
+            color="error"
+            onClick={resetApplication}
+            startIcon={<RiRestartFill />}
+          >
+            {t("reset_app")}
           </Button>
         </div>
       </div>

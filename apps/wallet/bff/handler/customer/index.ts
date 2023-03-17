@@ -1,4 +1,4 @@
 export * from "./registerCustomer";
 export * from "./getCustomer";
-export * from "./getCustomerByPublicKey";
+export * from "./searchCustomer";
 export * from "./addPublicKey";

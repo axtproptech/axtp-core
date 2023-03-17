@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { protectedRoute } from "@/bff/route";
-import { getCustomerByPublicKey } from "@/bff/handler/customer";
+import { searchCustomer } from "@/bff/handler/customer";
 
 export default function handler(
   req: NextApiRequest,
@@ -9,6 +9,6 @@ export default function handler(
   return protectedRoute({
     req,
     res,
-    get: getCustomerByPublicKey,
+    get: searchCustomer,
   });
 }

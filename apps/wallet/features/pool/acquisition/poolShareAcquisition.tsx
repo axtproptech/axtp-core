@@ -21,7 +21,7 @@ import {
   RiArrowRightCircleLine,
   RiHome6Line,
 } from "react-icons/ri";
-import { OnStepChangeArgs } from "@/features/account";
+import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
 import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
 import { HintBox } from "@/app/components/hintBox";
 import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
@@ -87,12 +87,13 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
       (p) => p.id === pool.token.id
     );
 
-    if (!poolBalance) return 0;
-
     const maxTokenPerCustomer = Math.min(
       availableShares,
       pool.aliasData.maximumTokensPerCustomer
     );
+
+    if (!poolBalance) return maxTokenPerCustomer;
+
     const customerHoldings = parseFloat(
       ChainValue.create(poolBalance.decimals)
         .setAtomic(poolBalance.quantity)

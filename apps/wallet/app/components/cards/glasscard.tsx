@@ -1,5 +1,6 @@
 import { FC, MouseEventHandler } from "react";
 import { voidFn } from "@/app/voidFn";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 interface Props {
   title: string;
@@ -16,8 +17,14 @@ export const Glasscard: FC<Props> = ({
   text,
   className = "",
 }) => {
+  const { TrackingEventService } = useAppContext();
+
+  const handleOnClick = async () => {
+    TrackingEventService.track({ msg: `${title} Button Pushed` });
+  };
+
   return (
-    <div className={className}>
+    <div className={className} onClick={handleOnClick}>
       <div
         className="card w-full glass cursor-pointer h-full"
         onClick={onClick}

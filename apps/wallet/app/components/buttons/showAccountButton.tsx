@@ -3,23 +3,28 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { RiWallet3Line } from "react-icons/ri";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import Link from "next/link";
 
 export const ShowAccountButton = () => {
   const { t } = useTranslation();
   const { TrackingEventService } = useAppContext();
-  const router = useRouter();
 
-  const handleOnJoinClick = async () => {
+  const handleOnClick = async () => {
     TrackingEventService.track({ msg: "Show Portfolio Pushed" });
-    await router.push("/account");
   };
 
   return (
     <div className="animate-wiggle">
-      <Button color="accent" size="lg" onClick={handleOnJoinClick}>
-        <RiWallet3Line className="mr-2" size="28" />
-        {t("my_portfolio")}
-      </Button>
+      <Link href={"/account"}>
+        <Button
+          color="accent"
+          size="lg"
+          onClick={handleOnClick}
+          startIcon={<RiWallet3Line />}
+        >
+          {t("my_portfolio")}
+        </Button>
+      </Link>
     </div>
   );
 };

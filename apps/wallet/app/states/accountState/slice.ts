@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Address } from "@signumjs/core";
-import { VerificationLevelType } from "@/types/verificationLevelType";
 import { CustomerSafeData } from "@/types/customerSafeData";
 
 export interface AccountState {

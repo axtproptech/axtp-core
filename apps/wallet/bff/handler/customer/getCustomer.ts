@@ -24,7 +24,7 @@ export const getCustomer: RouteHandlerFunction = async (req, res) => {
       },
     });
 
-    if (!customer) {
+    if (!customer || customer.isBlocked) {
       const { output } = notFound();
       return res.status(output.statusCode).json(output.payload);
     }

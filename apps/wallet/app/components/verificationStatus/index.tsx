@@ -18,10 +18,10 @@ export const VerificationStatus = memo<Props>(function VerificationStatus({
     case "Pending":
       return (
         <Steps>
-          <Steps.Step color="success" value="✓">
+          <Steps.Step color="success" value="">
             {t("kyc-registered")}
           </Steps.Step>
-          <Steps.Step color="success" value="⃝">
+          <Steps.Step color="success" value="">
             <span className="px-4 lg:px-8">{t("kyc-analyzing")}</span>
           </Steps.Step>
           <Steps.Step value="">{t("kyc-accepted")}</Steps.Step>
@@ -30,10 +30,10 @@ export const VerificationStatus = memo<Props>(function VerificationStatus({
     case "Level1":
       return hideIfAccepted ? null : (
         <Steps>
-          <Steps.Step color="info" value="✓">
+          <Steps.Step color="info" value="">
             {t("kyc-registered")}
           </Steps.Step>
-          <Steps.Step color="info" value="✓">
+          <Steps.Step color="info" value="">
             <span className="px-4 lg:px-8">{t("kyc-analyzing")}</span>
           </Steps.Step>
           <Steps.Step color="info" value="L1">
@@ -44,10 +44,10 @@ export const VerificationStatus = memo<Props>(function VerificationStatus({
     case "Level2":
       return hideIfAccepted ? null : (
         <Steps>
-          <Steps.Step color="info" value="✓">
+          <Steps.Step color="info" value="">
             {t("kyc-registered")}
           </Steps.Step>
-          <Steps.Step color="info" value="✓">
+          <Steps.Step color="info" value="">
             <span className="px-4 lg:px-8">{t("kyc-analyzing")}</span>
           </Steps.Step>
           <Steps.Step color="info" value="L2">
@@ -59,7 +59,7 @@ export const VerificationStatus = memo<Props>(function VerificationStatus({
     default:
       return (
         <Steps>
-          <Steps.Step color="primary" value="!">
+          <Steps.Step color="primary" value="">
             {t("kyc-registered")}
           </Steps.Step>
           <Steps.Step value="">

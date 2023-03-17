@@ -68,12 +68,18 @@ export const StepImportSeed: FC<Props> = ({ onSeedChange }) => {
               rows={3}
             />
             <div className="flex flex-row justify-evenly align-middle">
-              <Button color="ghost" onClick={handleClear}>
-                <RiDeleteBinLine className="mr-2" />
+              <Button
+                color="ghost"
+                onClick={handleClear}
+                startIcon={<RiDeleteBinLine />}
+              >
                 {t("clear")}
               </Button>
-              <Button color="secondary" onClick={handleScan}>
-                <RiQrScanLine className="mr-2" />
+              <Button
+                color="secondary"
+                onClick={handleScan}
+                startIcon={<RiQrScanLine />}
+              >
                 {t("scan")}
               </Button>
             </div>
