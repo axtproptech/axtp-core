@@ -29,15 +29,19 @@ import { ChainValue } from "@signumjs/util";
 import { IfEligibleForAcquisition } from "./ifEligibleForAcquisition";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 
+// const StepRoutes = {
+//   pix: ["quantity", "paymentMethod", "paymentPix"],
+//   usdc: [
+//     "quantity",
+//     "paymentMethod",
+//     "paymentUsdc-1",
+//     "paymentUsdc-2",
+//     "paymentUsdc-3",
+//   ],
+// };
 const StepRoutes = {
-  pix: ["quantity", "paymentMethod", "paymentPix"],
-  usdc: [
-    "quantity",
-    "paymentMethod",
-    "paymentUsdc-1",
-    "paymentUsdc-2",
-    "paymentUsdc-3",
-  ],
+  pix: ["quantity", "paymentPix"],
+  usdc: ["quantity", "paymentUsdc-1", "paymentUsdc-2", "paymentUsdc-3"],
 };
 
 interface Props {
@@ -50,7 +54,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
   const router = useRouter();
   const { accountData } = useAccount();
   const pool = useAppSelector(selectPoolContractState(poolId));
-  const [stepCount, setStepCount] = useState<number>(3);
+  const [stepCount, setStepCount] = useState<number>(StepRoutes["pix"].length);
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
@@ -188,11 +192,11 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
               poolId={pool.poolId}
             />
           </div>
-          <div id="paymentMethod" className="carousel-item relative w-full">
-            <StepSelectPaymentMethod
-              onMethodChange={(m) => setPaymentMethod(m)}
-            />
-          </div>
+          {/*<div id="paymentMethod" className="carousel-item relative w-full">*/}
+          {/*  <StepSelectPaymentMethod*/}
+          {/*    onMethodChange={(m) => setPaymentMethod(m)}*/}
+          {/*  />*/}
+          {/*</div>*/}
           {paymentMethod === "pix" && (
             <div id="paymentPix" className="carousel-item relative w-full">
               <StepPaymentPix

@@ -24,7 +24,7 @@ export const IfEligibleForAcquisition: FC<ChildrenProps> = ({ children }) => {
   };
 
   const { canBuy, reasonKey } = useMemo(() => {
-    let reasonKey = "buy_token_not_registered";
+    let reasonKey = "";
 
     if (!customer) {
       reasonKey = "buy_token_not_registered";
