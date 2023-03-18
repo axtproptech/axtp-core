@@ -31,7 +31,9 @@ export const Greeting = () => {
 
   return (
     <div>
-      <h3>{t(`good_${dayTime}`, { name: customer.firstName })}</h3>
+      <p className="text-lg font-bold my-1">
+        {t(`good_${dayTime}`, { name: customer.firstName })}
+      </p>
     </div>
   );
 };

@@ -18,6 +18,7 @@ export const Config = {
   // this is not "security", but at least some obstacle
   // we don't need fully fledged auth as the BFF returns only minimum, safe data
   BffApiKey: process.env.NEXT_PUBLIC_BFF_API_KEY || "",
+  TermsOfUsePdfUrl: process.env.NEXT_PUBLIC_TERMS_OF_USE_PDF_URL || "",
   JotForm: {
     Id: process.env.NEXT_PUBLIC_JOTFORM_ID || "",
   },

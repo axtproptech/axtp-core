@@ -66,7 +66,7 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
             />
             <div>
               <span className="mt-2 mr-1">{t("accept_terms")}</span>
-              <Link href="/#">{t("terms_of_use")}</Link>
+              <Link href="/terms/usage/v1">{t("terms_of_use")}</Link>
             </div>
           </div>
           <div className="text-center mt-4">
@@ -95,9 +95,9 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
             )}
           </div>
         </HintBox>
-        <div className="mt-2">
-          <Link href="/#">{t("privacy_policy")}</Link>
-        </div>
+        {/*<div className="mt-2">*/}
+        {/*  <Link href="/#">{t("privacy_policy")}</Link>*/}
+        {/*</div>*/}
       </section>
     </div>
   );

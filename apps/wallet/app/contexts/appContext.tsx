@@ -27,6 +27,10 @@ export interface AppContextType {
   PaymentService: PaymentService;
   ActivationService: AccountActivationService;
   TrackingEventService: TrackingEventService;
+  Terms: {
+    Use: string;
+    Privacy: string;
+  };
   Ledger: {
     IsTestNet: boolean;
     Client: Ledger;
@@ -74,6 +78,11 @@ const config: AppContextType = {
   PaymentService: new PaymentService(bffClient),
   ActivationService: new AccountActivationService(),
   TrackingEventService: trackingEventService,
+  Terms: {
+    Use: Config.TermsOfUsePdfUrl,
+    // TODO:
+    Privacy: "",
+  },
   Market: {
     BrlUsdAdjustment: Config.Market.BrlUsdAdjustment,
   },

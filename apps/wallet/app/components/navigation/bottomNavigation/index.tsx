@@ -54,7 +54,7 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
           return (
             <>
               <button
-                key={index}
+                key={"nav-" + index}
                 onClick={() => handleOnClick(n)}
                 className={`flex flex-col items-center flex-shrink btn h-full ${btnColor} ${active} ${loading}`}
                 disabled={n.disabled || false}

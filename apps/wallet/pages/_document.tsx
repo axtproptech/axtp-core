@@ -49,7 +49,7 @@ export default class MyDocument extends Document<Props> {
           <link rel="manifest" href="/manifest.json" />
           <link rel="shortcut icon" href="/favicon.ico" />
         </Head>
-        <body>
+        <body className="scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent">
           <Main />
           <NextScript />
         </body>

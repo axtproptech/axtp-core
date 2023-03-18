@@ -5,6 +5,7 @@ import { useAppDispatch } from "@/states/hooks";
 import { useTranslation } from "next-i18next";
 import { HintBox } from "@/app/components/hintBox";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export const Settings = () => {
   const { accountAddress } = useAccount();
@@ -39,6 +40,11 @@ export const Settings = () => {
           </HintBox>
         </div>
       )}
+      <section className="text-center mt-8">
+        <u>
+          <Link href="/terms/usage/v1">{t("terms_of_use")}</Link>
+        </u>
+      </section>
     </div>
   );
 };
