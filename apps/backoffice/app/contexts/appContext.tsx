@@ -13,6 +13,7 @@ export interface AppContextType {
     Deeplink: DeeplinkableWallet;
   };
   Ledger: {
+    DefaultNode: string;
     IsTestnet: boolean;
     Network: string;
     ExploreBaseUrl: string;
@@ -32,6 +33,7 @@ const config: AppContextType = {
   },
   Ledger: {
     IsTestnet: Config.Signum.IsTestnet,
+    DefaultNode: Config.Signum.DefaultNode,
     Network: Config.Signum.Network,
     ExploreBaseUrl: Config.Signum.IsTestnet
       ? "https://t-chain.signum.network"

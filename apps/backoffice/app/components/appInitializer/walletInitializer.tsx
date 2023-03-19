@@ -27,7 +27,7 @@ export const WalletInitializer = () => {
       listenerRef.current?.unlisten();
       connectionRef.current = null;
       dispatch(appActions.setIsWalletConnected(false));
-      dispatch(appActions.setNodeHost(""));
+      dispatch(appActions.setNodeHost(Ledger.DefaultNode));
       dispatch(accountActions.setPublicKey(""));
       Wallet.Extension = new GenericExtensionWallet();
     }
