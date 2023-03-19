@@ -42,7 +42,7 @@ export const Settings = () => {
       )}
       <section className="text-center mt-8">
         <u>
-          <Link href="/terms/usage/v1">{t("terms_of_use")}</Link>
+          <Link href="/terms/usage">{t("terms_of_use")}</Link>
         </u>
       </section>
     </div>
