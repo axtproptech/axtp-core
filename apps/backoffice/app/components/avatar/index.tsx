@@ -21,7 +21,11 @@ export const Avatar: FC<Props> = ({ alt }) => {
   return (
     <div
       className={styles.avatarContainer}
-      style={{ backgroundColor: theme.palette.warning.main }}
+      style={{
+        backgroundColor: accountId
+          ? theme.palette.success.main
+          : theme.palette.warning.main,
+      }}
     >
       {iconUrl ? (
         <img className={styles.avatarImage} src={iconUrl} alt={alt} />

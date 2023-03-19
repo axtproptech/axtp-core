@@ -6,6 +6,8 @@ import { IconSettings } from "@tabler/icons";
 import { useSession } from "next-auth/react";
 import { ProfileMenu } from "./profileMenu";
 import { Avatar } from "@/app/components/avatar";
+import { useAppSelector } from "@/states/hooks";
+import { selectIsWalletConnected } from "@/app/states/appState";
 
 export const ProfileSection = () => {
   const theme = useTheme();

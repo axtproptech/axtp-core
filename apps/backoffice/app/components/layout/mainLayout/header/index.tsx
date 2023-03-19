@@ -1,5 +1,13 @@
 import { useTheme } from "@mui/material/styles";
-import { Avatar, Box, ButtonBase, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  ButtonBase,
+  Chip,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import LogoSection from "../logoSection";
 import { ProfileSection } from "./profileSection";
@@ -7,6 +15,8 @@ import { IconMenu2 } from "@tabler/icons";
 import { FC, MouseEventHandler } from "react";
 import { NotificationSection } from "./notificationSection";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { useAppSelector } from "@/states/hooks";
+import { selectIsWalletConnected } from "@/app/states/appState";
 
 interface Props {
   handleLeftDrawerToggle: MouseEventHandler;
@@ -15,6 +25,7 @@ interface Props {
 export const Header: FC<Props> = ({ handleLeftDrawerToggle }) => {
   const theme = useTheme();
   const { Ledger } = useAppContext();
+  const isWalletConnected = useAppSelector(selectIsWalletConnected);
   const avatar = {
     // @ts-ignore
     ...theme.typography.commonAvatar,
@@ -61,14 +72,21 @@ export const Header: FC<Props> = ({ handleLeftDrawerToggle }) => {
       {/* header search */}
       {/*<SearchSection />*/}
       <Box sx={{ flexGrow: 1 }} />
-      <Box sx={{ flexGrow: 1 }}>
+      <Stack
+        sx={{ flexGrow: 1, alignItems: "center", flexDirection: "row", gap: 2 }}
+      >
         {Ledger.IsTestnet && (
           <Typography variant="h2" color="error">
             {" "}
             STAGING{" "}
           </Typography>
         )}
-      </Box>
+        {!isWalletConnected && (
+          <Tooltip title="Go to Account Menu and connect to wallet">
+            <Chip label="Wallet not connected" color="warning" />
+          </Tooltip>
+        )}
+      </Stack>
       <NotificationSection />
       <ProfileSection />
     </>
