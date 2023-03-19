@@ -27,7 +27,7 @@ export const StepConfirm: FC<Props> = ({ pin, onConfirmationChange }) => {
 
   useEffect(() => {
     onConfirmationChange(verified);
-  }, [verified]);
+  }, [onConfirmationChange, verified]);
 
   return (
     <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full mx-auto">
@@ -58,6 +58,7 @@ export const StepConfirm: FC<Props> = ({ pin, onConfirmationChange }) => {
           <PinInput onPinChange={setConfirmedPin} />
         </div>
       </section>
+      <section />
     </div>
   );
 };
