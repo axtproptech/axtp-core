@@ -44,13 +44,17 @@ export const Settings = () => {
           </HintBox>
         </div>
       )}
-      <section className="text-center mt-8">
-        <u>
-          <Link href="/terms/usage">{t("terms_of_use")}</Link>
-        </u>
-        <u>
-          <Link href="/terms/privacy">{t("privacy_policy")}</Link>
-        </u>
+      <section className="text-center mt-8 block">
+        <div>
+          <u>
+            <Link href="/terms/usage">{t("terms_of_use")}</Link>
+          </u>
+        </div>
+        <div>
+          <u>
+            <Link href="/terms/privacy">{t("privacy_policy")}</Link>
+          </u>
+        </div>
       </section>
     </div>
   );

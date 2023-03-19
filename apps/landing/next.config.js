@@ -1,9 +1,24 @@
 /** @type {import('next').NextConfig} */
 
-const path = require("path");
-
 const nextConfig = {
   reactStrictMode: true,
+  async headers() {
+    return [
+      {
+        source: "/public/policies/:path",
+        headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "*",
+          },
+          {
+            key: "Access-Control-Allow-Methods",
+            value: "GET, OPTIONS",
+          },
+        ],
+      },
+    ];
+  },
   // sassOptions: {
   //   includePaths: [path.join(__dirname, "styles/scss")],
   // },
