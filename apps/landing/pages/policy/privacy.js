@@ -24,7 +24,7 @@ export const TextWrapper = styled.div`
 const CryptoModern = () => {
   const [policyText, setPolicyText] = useState("");
   useEffect(() => {
-    fetch("./policies/privacy_policy_pt.md")
+    fetch("/policies/privacy_policy_pt.md")
       .then((response) => response.text())
       .then(setPolicyText);
   }, []);

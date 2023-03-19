@@ -19,12 +19,20 @@ export const TextWrapper = styled.div`
   margin: 64px auto 0;
   color: white;
   opacity: 0.8;
+
+  a {
+    color: #69c9ff;
+  }
+  li {
+    list-style-type: auto;
+    margin-left: 1rem;
+  }
 `;
 
 const CryptoModern = () => {
   const [policyText, setPolicyText] = useState("");
   useEffect(() => {
-    fetch("./policies/terms_of_use_pt.md")
+    fetch("/policies/terms_of_use_pt.md")
       .then((response) => response.text())
       .then(setPolicyText);
   }, []);
