@@ -79,9 +79,8 @@ const config: AppContextType = {
   ActivationService: new AccountActivationService(),
   TrackingEventService: trackingEventService,
   Terms: {
-    Use: Config.TermsOfUsePdfUrl,
-    // TODO:
-    Privacy: "",
+    Use: Config.TermsOfUsefUrl,
+    Privacy: Config.PrivacyfUrl,
   },
   Market: {
     BrlUsdAdjustment: Config.Market.BrlUsdAdjustment,
