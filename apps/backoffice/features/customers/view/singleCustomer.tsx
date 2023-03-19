@@ -173,7 +173,8 @@ interface DetailsProps {
 
 const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
   const address = customer.addresses.length && customer.addresses[0];
-  const account = customer.addresses.length && customer.blockchainAccounts[0];
+  const account =
+    customer.blockchainAccounts.length && customer.blockchainAccounts[0];
   const documents = customer.documents;
 
   const cpfValid = useMemo(() => {
@@ -273,7 +274,12 @@ const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
                 <OpenExplorerButton id={account.accountId} type="address" />
               </>
             ) : (
-              <Typography variant="h4">No Blockchain Account yet</Typography>
+              <>
+                <Typography variant="h4">No Blockchain Account yet</Typography>
+                <Typography variant="subtitle2">
+                  (Or wallet not connected)
+                </Typography>
+              </>
             )}
           </Grid>
         </Grid>

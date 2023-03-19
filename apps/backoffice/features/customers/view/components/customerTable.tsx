@@ -55,7 +55,11 @@ const AccountAction = ({ publicKey }: { publicKey: string }) => {
 
   if (!accountId) {
     return (
-      <Tooltip title={"This account has no blockchain account yet"}>
+      <Tooltip
+        title={
+          "This account has no blockchain account yet, or wallet is not connected"
+        }
+      >
         <Typography>Missing Key</Typography>
       </Tooltip>
     );
