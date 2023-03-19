@@ -8,6 +8,10 @@ const nextConfig = {
         source: "/public/policies/:path",
         headers: [
           {
+            key: "Content-Type",
+            value: "text/markdown",
+          },
+          {
             key: "Access-Control-Allow-Origin",
             value: "*",
           },
