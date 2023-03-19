@@ -21,7 +21,11 @@ export const Settings = () => {
   return (
     <div className="relative">
       <header className="h-12 mb-4">
-        <a href="https://signum.network" target="_blank" rel="noopener">
+        <a
+          href="https://signum.network"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <img
             className="mx-auto h-full"
             src="/assets/img/powered.svg"
@@ -43,6 +47,9 @@ export const Settings = () => {
       <section className="text-center mt-8">
         <u>
           <Link href="/terms/usage">{t("terms_of_use")}</Link>
+        </u>
+        <u>
+          <Link href="/terms/privacy">{t("privacy_policy")}</Link>
         </u>
       </section>
     </div>
