@@ -1,8 +1,7 @@
 import { useTranslation } from "next-i18next";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePaymentCalculator";
 import { HintBox } from "@/app/components/hintBox";
-import QRCode from "react-qr-code";
 import { CopyButton } from "@/app/components/buttons/copyButton";
 import { AnimatedIconQrCode } from "@/app/components/animatedIcons/animatedIconQrCode";
 import { useAppContext } from "@/app/hooks/useAppContext";
@@ -16,6 +15,7 @@ import { formatNumber } from "@/app/formatNumber";
 import { useAppSelector } from "@/states/hooks";
 import { selectPoolContractState } from "@/app/states/poolsState";
 import { ChainValue } from "@signumjs/util";
+import { RegisterPaymentRequest } from "@/bff/types/registerPaymentRequest";
 
 interface Props {
   onStatusChange: (status: "pending" | "confirmed") => void;
@@ -29,18 +29,21 @@ export const StepPaymentPix: FC<Props> = ({
   poolId,
 }) => {
   const { t } = useTranslation();
-  const { PaymentService, Payment } = useAppContext();
+  const { PaymentService, Payment, TrackingEventService } = useAppContext();
   const { customer, accountPublicKey } = useAccount();
   const { token } = useAppSelector(selectPoolContractState(poolId));
   const { totalBRL, totalAXTC } = usePaymentCalculator(quantity, poolId);
   const [paymentDone, setPaymentDone] = useState(false);
+  const [isConfirming, setIsConfirming] = useState(false);
   const { showError, showSuccess } = useNotification();
 
   const handleConfirmPayment = async () => {
     if (!customer) return;
 
     try {
-      await PaymentService.createPaymentRecord({
+      setIsConfirming(true);
+
+      const payment = {
         paymentType: "pix",
         currency: "BRL",
         usd: totalAXTC.toString(),
@@ -53,13 +56,22 @@ export const StepPaymentPix: FC<Props> = ({
         customerId: customer.customerId,
         poolId,
         accountPk: accountPublicKey,
+      } as RegisterPaymentRequest;
+
+      TrackingEventService.track({
+        msg: "Confirm Payment Button Clicked",
+        detail: payment,
       });
+
+      await PaymentService.createPaymentRecord(payment);
       showSuccess(t("pix_success"));
       onStatusChange("confirmed");
       setPaymentDone(true);
     } catch (e: any) {
       console.error("Problems while payment", e.message);
       showError(t("pix_error_create_record"));
+    } finally {
+      setIsConfirming(false);
     }
   };
 
@@ -111,6 +123,7 @@ export const StepPaymentPix: FC<Props> = ({
                 color="primary"
                 onClick={handleConfirmPayment}
                 startIcon={<RiMoneyDollarCircleLine />}
+                loading={isConfirming}
               >
                 {t("confirm_payment")}
               </Button>
