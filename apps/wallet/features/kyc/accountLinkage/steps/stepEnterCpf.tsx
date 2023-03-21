@@ -8,6 +8,7 @@ import { useIMask } from "react-imask";
 import { RiRestartLine, RiSearchLine } from "react-icons/ri";
 import { HintBox } from "@/app/components/hintBox";
 import { Greeting } from "@/app/components/greeting";
+import { useAccount } from "@/app/hooks/useAccount";
 
 interface Props {
   onCustomerChanged: (c: CustomerSafeData | null) => void;
@@ -20,6 +21,7 @@ export const StepEnterCpf: FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const { KycService } = useAppContext();
+  const { accountAddress } = useAccount();
   const [customer, setCustomer] = useState<CustomerSafeData | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const { showError, showWarning } = useNotification();
@@ -29,11 +31,11 @@ export const StepEnterCpf: FC<Props> = ({
     try {
       setIsFetching(true);
       const c = await KycService.fetchCustomerDataByCpf(unmaskedValue);
-      if (c.publicKey) {
+      if (c?.publicKey) {
         showWarning(t("kyc_cpf_has_pk"));
       } else {
         onAllowRegistry(false);
-        setCustomer(c);
+        setCustomer(c || null);
       }
     } catch (e) {
       showError(t("kyc_cpf_not_found"));
@@ -57,6 +59,10 @@ export const StepEnterCpf: FC<Props> = ({
     <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full mx-auto">
       <section>
         <h2>{t("enter_cpf_hint")}</h2>
+        <p>
+          <small>{t("your_address")}</small>
+          <div className="text-2xl font-bold">{accountAddress}</div>
+        </p>
       </section>
       <section>
         <HintBox text={customer ? undefined : t("kyc_link_account_hint")}>

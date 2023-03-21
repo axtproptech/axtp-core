@@ -78,7 +78,7 @@ export const AccountLinkage: FC<Props> = ({ onStepChange }) => {
         Ledger.IsTestNet
       );
 
-      dispatch(accountActions.setCustomer(updatedCustomer));
+      dispatch(accountActions.setCustomer(updatedCustomer!));
       showSuccess(t("kyc_account_linked_successfully"));
       setIsConfirmed(true);
       await router.replace("/account");

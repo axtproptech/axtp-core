@@ -20,6 +20,9 @@ export const StepDefinePin: FC<Props> = ({ onPinChange }) => {
       <section>
         <h2>{t("define_pin")}</h2>
       </section>
+      <section className="mb-2">
+        <HintBox text={t("define_pin_hint")} />
+      </section>
       <section>
         <div className="flex flex-col justify-center">
           <PinInput onPinChange={handlePinChange} />
@@ -27,9 +30,6 @@ export const StepDefinePin: FC<Props> = ({ onPinChange }) => {
             <small className="text-error mt-2">{t("pin_weak_pin")}</small>
           )}
         </div>
-      </section>
-      <section className="mb-2">
-        <HintBox text={t("define_pin_hint")} />
       </section>
       <section />
     </div>

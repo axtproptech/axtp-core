@@ -5,7 +5,7 @@ import {
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
   RiHome6Line,
-  RiUserAddLine,
+  RiSurveyLine,
   RiUserReceivedLine,
 } from "react-icons/ri";
 import { voidFn } from "@/app/voidFn";
@@ -19,18 +19,17 @@ import { accountActions } from "@/app/states/accountState";
 import { useNotification } from "@/app/hooks/useNotification";
 import {
   StepDefinePin,
-  StepConfirm,
   StepImportSeed,
-  StepSeeImportAccount,
 } from "@/features/account/components/steps";
 import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { StepCheckForRegistry } from "@/features/account/components/steps/stepCheckForRegistry";
+import useSWR from "swr";
 
 enum Steps {
   DefinePin,
   ImportSeed,
-  SeeAccount,
-  Confirm,
+  CheckRegistry,
 }
 
 interface Props {
@@ -38,7 +37,7 @@ interface Props {
 }
 
 export const AccountImport: FC<Props> = ({ onStepChange }) => {
-  const StepCount = 4;
+  const StepCount = 3;
   const router = useRouter();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -47,9 +46,22 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [seed, setSeed] = useState<string>("");
   const [pin, setPin] = useState<string>("");
-  const [accountAddress, setAccountAddress] = useState<string>("");
-  const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
+  const [accountPublicKey, setAccountPublicKey] = useState<string>("");
   const [isCreating, setIsCreating] = useState<boolean>(false);
+
+  const { data: customerData } = useSWR(
+    accountPublicKey
+      ? `fetchCustomerDataByPublicKey/${accountPublicKey}`
+      : null,
+    async () => {
+      try {
+        if (!accountPublicKey) return undefined;
+        return await KycService.fetchCustomerDataByPublicKey(accountPublicKey);
+      } catch (e: any) {
+        return undefined;
+      }
+    }
+  );
 
   const nextStep = async () => {
     const newStep = Math.min(currentStep + 1, StepCount - 1);
@@ -67,6 +79,11 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
     await router.push(`/`);
   };
 
+  const navigateRegisterAccount = async () => {
+    await createAccount();
+    await router.push(`/kyc/registry`);
+  };
+
   useEffect(() => {
     let canProceed = true;
 
@@ -74,12 +91,24 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
       canProceed = pin.length >= 5;
     } else if (currentStep === Steps.ImportSeed) {
       canProceed = seed.length > 0;
-    } else if (currentStep === Steps.Confirm) {
-      canProceed = isConfirmed;
     }
 
     const isFirstStep = currentStep === 0;
     const isLastStep = currentStep === StepCount - 1;
+    let rightSideIcon = <RiArrowRightCircleLine />;
+    let rightSideLabel = t("next");
+    let rightSideAction = nextStep;
+    if (isLastStep) {
+      if (Boolean(customerData)) {
+        rightSideIcon = <RiUserReceivedLine />;
+        rightSideLabel = t("import_account");
+        rightSideAction = createAccount;
+      } else {
+        rightSideIcon = <RiSurveyLine />;
+        rightSideLabel = t("register_customer");
+        rightSideAction = navigateRegisterAccount;
+      }
+    }
 
     const bottomNav: BottomNavigationItem[] = [
       {
@@ -95,30 +124,16 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
         label: "",
       },
       {
-        label: !isLastStep ? t("next") : t("import_account"),
-        onClick: !isLastStep ? nextStep : createAccount,
+        label: rightSideLabel,
+        onClick: rightSideAction,
         disabled: !canProceed,
         color: canProceed ? "secondary" : undefined,
         loading: isCreating,
-        icon: !isLastStep ? <RiArrowRightCircleLine /> : <RiUserReceivedLine />,
+        icon: rightSideIcon,
       },
     ];
     onStepChange({ steps: StepCount, currentStep, bottomNav });
-  }, [currentStep, pin, isConfirmed, isCreating, seed]);
-
-  const tryImportCustomer = useCallback(
-    async (publicKey: string) => {
-      try {
-        const data = await KycService.fetchCustomerDataByPublicKey(publicKey);
-        if (data) {
-          dispatch(accountActions.setCustomer(data));
-        }
-      } catch (e: any) {
-        console.error(e);
-      }
-    },
-    [KycService, dispatch]
-  );
+  }, [currentStep, pin, customerData, isCreating, seed]);
 
   async function createAccount() {
     try {
@@ -126,7 +141,9 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
       const keys = generateMasterKeys(seed);
       const { salt, key } = await stretchKey(pin);
       const securedKeys = await encrypt(key, JSON.stringify(keys));
-      await tryImportCustomer(keys.publicKey);
+      if (customerData) {
+        dispatch(accountActions.setCustomer(customerData));
+      }
 
       dispatch(
         accountActions.setAccount({
@@ -169,16 +186,12 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
   }, []);
 
   useEffect(() => {
-    if (!seed) return;
-
-    const { publicKey } = generateMasterKeys(seed);
-
-    try {
-      const address = Address.fromPublicKey(publicKey, Ledger.AddressPrefix);
-      setAccountAddress(address.getReedSolomonAddress());
-    } catch (e: any) {
-      console.error("Something failed", e.message);
+    if (!seed) {
+      setAccountPublicKey("");
+      return;
     }
+    const { publicKey } = generateMasterKeys(seed);
+    setAccountPublicKey(publicKey);
   }, [Ledger.AddressPrefix, seed]);
 
   return (
@@ -190,13 +203,13 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
             <StepDefinePin onPinChange={setPin} />
           </div>
           <div id="step1" className="carousel-item relative w-full">
-            <StepImportSeed onSeedChange={setSeed} />
+            <StepImportSeed
+              onSeedChange={setSeed}
+              publicKey={accountPublicKey}
+            />
           </div>
           <div id="step2" className="carousel-item relative w-full">
-            <StepSeeImportAccount account={accountAddress} />
-          </div>
-          <div id="step3" className="carousel-item relative w-full">
-            <StepConfirm pin={pin} onConfirmationChange={setIsConfirmed} />
+            <StepCheckForRegistry customer={customerData} />
           </div>
         </div>
       </div>

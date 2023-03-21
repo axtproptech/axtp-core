@@ -10,7 +10,7 @@ export const HintBox: FC<Props> = ({ className = "", text = "", children }) => (
   <section
     className={`w-full lg:w-[75%] mx-auto text-justify border border-base-content/50 p-4 rounded relative`}
   >
-    {text && <p className={`mb-2 ${className}`}>{text}</p>}
+    {text && <div className={`${className}`}>{text}</div>}
     {children}
   </section>
 );
