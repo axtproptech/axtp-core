@@ -36,7 +36,7 @@ export const Settings = () => {
       {accountAddress && (
         <div className="mt-2 mx-auto">
           <HintBox text={t("disconnect_hint")}>
-            <div className="text-center">
+            <div className="text-center mt-2">
               <Button color="error" onClick={handleOnClickDisconnect}>
                 {t("disconnect")}
               </Button>

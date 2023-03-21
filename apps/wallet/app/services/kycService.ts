@@ -6,10 +6,10 @@ import { CustomerPaymentData } from "@/types/customerPaymentData";
 export class KycService {
   constructor(private bffClient: Http) {}
 
-  private tryFetch(fetchFn: Function) {
+  private tryFetch<T>(fetchFn: Function) {
     return retry(async () => {
       try {
-        return await fetchFn();
+        return (await fetchFn()) as T;
       } catch (e: any) {
         if (e instanceof HttpError) {
           if (e.status === 404 || e.status === 400) {
@@ -34,7 +34,7 @@ export class KycService {
     publicKey: string,
     isTestnet: boolean
   ) {
-    return this.tryFetch(async () => {
+    return this.tryFetch<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.post(
         `/customer/${customerId}/publicKey`,
         {
@@ -47,14 +47,14 @@ export class KycService {
   }
 
   async fetchCustomerData(customerId: string) {
-    return this.tryFetch(async () => {
+    return this.tryFetch<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.get(`/customer/${customerId}`);
       return response as CustomerSafeData;
     });
   }
 
   async fetchCustomerDataByPublicKey(publicKey: string) {
-    return this.tryFetch(async () => {
+    return this.tryFetch<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.get(
         `/customer?publicKey=${publicKey}`
       );
@@ -63,14 +63,14 @@ export class KycService {
   }
 
   async fetchCustomerDataByCpf(cpf: string) {
-    return this.tryFetch(async () => {
+    return this.tryFetch<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.get(`/customer?cpf=${cpf}`);
-      return response;
+      return response as CustomerSafeData;
     });
   }
 
   async fetchCustomerPayments(customerId: string) {
-    return this.tryFetch(async () => {
+    return this.tryFetch<CustomerPaymentData[]>(async () => {
       const { response } = await this.bffClient.get(
         `/customer/${customerId}/payments`
       );

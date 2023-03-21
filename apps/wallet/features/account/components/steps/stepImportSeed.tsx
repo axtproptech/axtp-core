@@ -1,24 +1,39 @@
 import { useTranslation } from "next-i18next";
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useMemo, useState } from "react";
 import { Button, Textarea } from "react-daisyui";
 import { HintBox } from "@/app/components/hintBox";
 import { RiClipboardLine, RiDeleteBinLine, RiQrScanLine } from "react-icons/ri";
 import { QrReader, OnResultFunction } from "react-qr-reader";
 import { useNotification } from "@/app/hooks/useNotification";
+import { Address } from "@signumjs/core";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 interface Props {
   onSeedChange: (seed: string) => void;
+  publicKey: string;
 }
 
-export const StepImportSeed: FC<Props> = ({ onSeedChange }) => {
+export const StepImportSeed: FC<Props> = ({ onSeedChange, publicKey }) => {
   const { t } = useTranslation();
   const { showError } = useNotification();
   const [openQrCodeScanner, setOpenQrCodeScanner] = useState(false);
   const [value, setValue] = useState("");
+  const { Ledger } = useAppContext();
 
+  const account = useMemo(
+    () =>
+      publicKey
+        ? Address.fromPublicKey(
+            publicKey,
+            Ledger.AddressPrefix
+          ).getReedSolomonAddress()
+        : "",
+    [publicKey, Ledger.AddressPrefix]
+  );
   const handleSeedChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(e.target.value);
-    onSeedChange(e.target.value);
+    const prunedSeed = e.target.value.replace(/[\t\n\r]/g, " ").trim();
+    setValue(prunedSeed);
+    onSeedChange(prunedSeed);
   };
 
   const handleScan = () => {
@@ -59,6 +74,16 @@ export const StepImportSeed: FC<Props> = ({ onSeedChange }) => {
       </section>
       {!openQrCodeScanner ? (
         <>
+          <section>
+            <HintBox text={!account ? t("enter_your_seed_hint") : undefined}>
+              {account && (
+                <>
+                  <div className="text-center text-lg font-bold">{account}</div>
+                  <small>{t("verify_your_account_hint")}</small>
+                </>
+              )}
+            </HintBox>
+          </section>
           <section className="relative mt-[15%] mb-2">
             <Textarea
               className="w-full lg:w-[75%] text-justify border-base-content text-lg"
@@ -84,9 +109,7 @@ export const StepImportSeed: FC<Props> = ({ onSeedChange }) => {
               </Button>
             </div>
           </section>
-          <section>
-            <HintBox text={t("enter_your_seed_hint")} />
-          </section>
+          <section />
         </>
       ) : (
         <>

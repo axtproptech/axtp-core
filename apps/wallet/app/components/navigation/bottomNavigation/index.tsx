@@ -57,11 +57,13 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
                 key={"nav-" + index}
                 onClick={() => handleOnClick(n)}
                 className={`flex flex-col items-center flex-shrink btn h-full ${btnColor} ${active} ${loading}`}
-                disabled={n.disabled || false}
+                disabled={n.disabled || n.loading || false}
                 aria-label={n.label}
               >
-                {React.cloneElement(n.icon, { size: 32 })}
-                {!n.hideLabel && <small>{n.label.toUpperCase()}</small>}
+                {React.cloneElement(n.icon, { size: 28 })}
+                {!n.hideLabel && (
+                  <small className="text-[10px]">{n.label.toUpperCase()}</small>
+                )}
               </button>
             </>
           );

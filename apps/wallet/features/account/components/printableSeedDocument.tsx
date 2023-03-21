@@ -14,7 +14,9 @@ export const PrintableSeedDocument = ({ seed, address }: Props) => {
       <section className="text-center">
         <TextLogo className="w-1/2 mx-auto" />
         <h2>{t("your_seed")}</h2>
-        <h4>{address}</h4>
+        <h3>
+          {t("your_address")}:&nbsp;{address}
+        </h3>
       </section>
       <section>
         <HintBox text={""}>
