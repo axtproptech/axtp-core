@@ -29,7 +29,7 @@ const HasCustomerDataView: FC<Props> = ({ customer }) => {
           text={t("kyc_registry_found_hint", { name: customer?.firstName })}
         >
           <div className="absolute w-[64px] bottom-[-40px] right-[12px] bg-base-100">
-            <AnimatedIconConfetti loopDelay={5000} touchable />
+            <AnimatedIconConfetti loopDelay={2500} touchable />
           </div>
         </HintBox>
       </section>
@@ -48,7 +48,7 @@ const HasNoCustomerDataView = () => {
       <section>
         <HintBox text={t("kyc-not-registered-next")}>
           <div className="absolute w-[64px] bottom-[-40px] right-[12px] bg-base-100">
-            <AnimatedIconWarn loopDelay={5000} touchable />
+            <AnimatedIconWarn loopDelay={2500} touchable />
           </div>
         </HintBox>
       </section>
