@@ -29,8 +29,8 @@ import { DownloadButton } from "@/app/components/buttons/downloadButton";
 import { cpf } from "cpf-cnpj-validator";
 import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
 import { useRouter } from "next/router";
+import { toDateStr } from "@/app/toDateStr";
 const gridSpacing = Config.Layout.GridSpacing;
-
 export const SingleCustomer = () => {
   const { query } = useRouter();
   const cuid = query.cuid as string;
@@ -215,7 +215,7 @@ const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
             <LabeledTextField label="Email" text={customer.email1} />
             <LabeledTextField
               label="Date and Place of Birth"
-              text={`${new Date(customer.dateOfBirth).toLocaleDateString()}, ${
+              text={`${toDateStr(new Date(customer.dateOfBirth))}, ${
                 customer.placeOfBirth
               }`}
             />
@@ -233,7 +233,7 @@ const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
             />
             <LabeledTextField
               label="Applied on"
-              text={new Date(customer.createdAt).toLocaleDateString()}
+              text={toDateStr(new Date(customer.createdAt))}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
@@ -294,7 +294,7 @@ const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
                 <LabeledTextField label="Type" text={d.type} />
                 <LabeledTextField
                   label="Upload Date"
-                  text={new Date(d.createdAt).toLocaleDateString()}
+                  text={toDateStr(new Date(d.createdAt))}
                 />
                 <DownloadButton url={d.url} />
               </Grid>

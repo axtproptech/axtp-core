@@ -35,6 +35,7 @@ import {
   RegisterTransactionIdDialog,
   RegistrationArgs,
 } from "./components/registerTransactionIdDialog";
+import { toDateStr } from "@/app/toDateStr";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
@@ -278,11 +279,11 @@ const PaymentDetails: FC<PaymentProps> = ({ payment }) => {
           <Grid item xs={12} md={6} lg={4}>
             <LabeledTextField
               label="Paid at"
-              text={new Date(payment.createdAt).toLocaleDateString()}
+              text={toDateStr(new Date(payment.createdAt))}
             />
             <LabeledTextField
               label="Last updated"
-              text={new Date(payment.updatedAt).toLocaleDateString()}
+              text={toDateStr(new Date(payment.updatedAt))}
             />
             <LabeledTextField label="Pool Token" text={token.name} />
             <LabeledTextField label="Token Quantity">

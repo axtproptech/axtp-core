@@ -1,4 +1,5 @@
 import { GridRenderCellParams } from "@mui/x-data-grid";
+import { toDateStr } from "@/app/toDateStr";
 
 const Days = 1000 * 60 * 60 * 24;
 
@@ -11,7 +12,7 @@ export const renderCreatedAt = (params: GridRenderCellParams<string>) => {
     params.row.status === "Pending"
       ? Date.now() - createdAtDate.getTime() > 2 * Days
       : false;
-  const applied = new Date(createdAt).toLocaleDateString();
+  const applied = toDateStr(createdAtDate);
 
   let style = {};
   if (overdue) {

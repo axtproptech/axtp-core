@@ -20,11 +20,12 @@ import { IconClipboard } from "@tabler/icons";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
 import { Address } from "@signumjs/core";
+import { toDateStr } from "@/app/toDateStr";
 
 const renderCreatedAt = (params: GridRenderCellParams<string>) => {
   const createdAt = params.value;
   if (!createdAt) return null;
-  const applied = new Date(createdAt).toLocaleDateString();
+  const applied = toDateStr(new Date(createdAt));
   return <div>{applied}</div>;
 };
 

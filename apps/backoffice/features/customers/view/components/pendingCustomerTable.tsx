@@ -10,6 +10,7 @@ import {
 } from "@mui/x-data-grid";
 import { useRouter } from "next/router";
 import { cpf } from "cpf-cnpj-validator";
+import { toDateStr } from "@/app/toDateStr";
 
 const Days = 1000 * 60 * 60 * 24;
 
@@ -19,7 +20,7 @@ const renderCreatedAt = (params: GridRenderCellParams<string>) => {
 
   const createdAtDate = new Date(createdAt);
   const overdue = Date.now() - createdAtDate.getTime() > 10 * Days;
-  const applied = new Date(createdAt).toLocaleDateString();
+  const applied = toDateStr(new Date(createdAt));
 
   let style = {};
   if (overdue) {
