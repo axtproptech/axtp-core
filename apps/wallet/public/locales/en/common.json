@@ -161,7 +161,7 @@
   "good_night": "🌙 Good Night, {{name}}",
   "verify_your_account_hint": "If the address does not match your document's address, check for typing errors!",
   "your_address": "Account Address",
-  "kyc-not-registered-next": "We could not find any registry for the imported account. By clicking the lower right button, we redirect you to the registration process.",
+  "kyc-not-registered-next": "No registry for the imported account found. Click [Register] to navigate the registration process.",
   "kyc_registry_found": "Registry Found",
   "kyc_registry_found_hint": "Welcome back, {{name}}. Your registry was loaded successfully."
 }

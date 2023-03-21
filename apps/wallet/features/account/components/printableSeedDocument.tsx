@@ -15,7 +15,7 @@ export const PrintableSeedDocument = ({ seed, address }: Props) => {
         <TextLogo className="w-1/2 mx-auto" />
         <h2>{t("your_seed")}</h2>
         <h3>
-          {t("your_address")}&nbsp;{address}
+          {t("your_address")}:&nbsp;{address}
         </h3>
       </section>
       <section>

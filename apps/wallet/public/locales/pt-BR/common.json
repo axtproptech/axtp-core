@@ -134,7 +134,7 @@
   "confirm_payment_success": "Seu pagamento foi registrado com sucesso e será processado nas próximas horas.",
   "max_token_reached": "Token Máximo Permitido Adquirido",
   "max_token_reached_hint": "Você já adquiriu a quantidade máxima permitida de tokens por cliente para este pool. Por favor, escolha outro pool ou aguarde até que forneçamos um novo.",
-  "register_customer": "Cadastro",
+  "register_customer": "Cadastrar",
   "register_customer_hint": "Se você ainda não fez, precisa preencher o cadastro para ter acesso ao clube!",
   "kyc_i_have_a_registry": "Já sou cadastrado!",
   "kyc_cpf_not_found": "Não foi possível encontrar o cliente para o CPF fornecido",
@@ -161,7 +161,7 @@
   "good_night": "🌙 Boa noite, {{name}}",
   "verify_your_account_hint": "Se o endereço não corresponder ao endereço de seu documento, verifique se há erros de digitação!",
   "your_address": "Endereço da conta",
-  "kyc-not-registered-next": "Não encontramos nenhum registro para a conta importada. Ao clicar no botão inferior direito, redirecionamos você para o processo de registro.",
+  "kyc-not-registered-next": "Nenhum registro para a conta importada encontrado. Clique em [Cadastrar] para ir ao processo de registro.",
   "kyc_registry_found": "Cadastro encontrado",
   "kyc_registry_found_hint": "Bem-vindo de volta, {{name}}. Seu registro foi carregado com sucesso."
 }
