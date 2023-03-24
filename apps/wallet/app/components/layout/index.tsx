@@ -47,6 +47,8 @@ export const Layout: FC<Props> = ({ children, bottomNav, noBody = false }) => {
         copyAddHomeButtonLabel={t("pwa-ios-add-button-label")}
         copyShareButtonLabel={t("pwa-ios-share-button-label")}
         copyClosePrompt={t("close")}
+        permanentlyHideOnDismiss={false}
+        timesToShow={3}
       />
     </Container>
   );

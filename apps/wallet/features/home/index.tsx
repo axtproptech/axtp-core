@@ -30,7 +30,6 @@ export const Home = () => {
       initialGMV += p.nominalLiquidity;
     }
 
-    // TODO: calc the correct values
     return {
       totalCurrentGMV,
       performancePercent:
@@ -46,7 +45,7 @@ export const Home = () => {
       <section className="relative">
         <Slide direction="down">
           <Fade>
-            <TextLogo className="py-4 mx-auto w-[50%] lg:w-[33%]" />
+            <TextLogo className="py-4 mx-auto w-[40%] lg:w-[33%]" />
           </Fade>
         </Slide>
       </section>
