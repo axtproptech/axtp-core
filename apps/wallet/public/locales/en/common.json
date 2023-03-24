@@ -15,6 +15,7 @@
   "verification_hint": "Enter Word {{word}} from your Recovery Phrase. Please, be sure you downloaded or wrote it down!",
   "confirmation": "Confirmation",
   "confirmation_text": "Hereby, I confirm that I have stored the Recovery Phrase in a secure place. I understand that I lose access to my account, in case I lose my Recovery Phrase.",
+  "confirmation_acquisition_text": "I hereby confirm that I have read and understood the terms of use for the purchase of the tokens.",
   "copy_clipboard_success": "Copied to clipboard",
   "copy_clipboard_failure": "Hmm, couldn't copy to clipboard",
   "create_account": "Create Account",

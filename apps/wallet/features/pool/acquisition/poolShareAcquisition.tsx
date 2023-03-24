@@ -28,6 +28,7 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { ChainValue } from "@signumjs/util";
 import { IfEligibleForAcquisition } from "./ifEligibleForAcquisition";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
+import { StepConfirmTerms } from "@/features/pool/acquisition/steps/stepConfirmTerms";
 
 // const StepRoutes = {
 //   pix: ["quantity", "paymentMethod", "paymentPix"],
@@ -40,8 +41,14 @@ import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCo
 //   ],
 // };
 const StepRoutes = {
-  pix: ["quantity", "paymentPix"],
-  usdc: ["quantity", "paymentUsdc-1", "paymentUsdc-2", "paymentUsdc-3"],
+  pix: ["terms", "quantity", "paymentPix"],
+  usdc: [
+    "terms",
+    "quantity",
+    "paymentUsdc-1",
+    "paymentUsdc-2",
+    "paymentUsdc-3",
+  ],
 };
 
 interface Props {
@@ -57,6 +64,7 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
   const [stepCount, setStepCount] = useState<number>(StepRoutes["pix"].length);
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
+  const [termsConfirmed, setTermsConfirmed] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
 
   const [usdcProtocol, setUsdcProtocol] =
@@ -113,6 +121,9 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
     if (StepRoutes[paymentMethod][currentStep] === "quantity") {
       canProceed = quantity > 0 && quantity <= maxAllowedShares;
     }
+    if (StepRoutes[paymentMethod][currentStep] === "terms") {
+      canProceed = termsConfirmed;
+    }
 
     const isFirstStep = currentStep === 0;
     const isLastStep = currentStep === stepCount - 1;
@@ -146,7 +157,14 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
       },
     ];
     onStepChange({ steps: stepCount, currentStep, bottomNav });
-  }, [currentStep, maxAllowedShares, paid, quantity, stepCount]); // keep this, or you have a dead loop here
+  }, [
+    currentStep,
+    maxAllowedShares,
+    paid,
+    quantity,
+    stepCount,
+    termsConfirmed,
+  ]); // keep this, or you have a dead loop here
 
   useEffect(() => {
     setStepCount(StepRoutes[paymentMethod].length);
@@ -185,6 +203,12 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
           className="carousel w-full overflow-x-hidden"
           onTouchMove={(e) => e.preventDefault()}
         >
+          <div id="terms" className="carousel-item relative w-full">
+            <StepConfirmTerms
+              onConfirmChange={(confirmed) => setTermsConfirmed(confirmed)}
+              poolName={pool.token.name}
+            />
+          </div>
           <div id="quantity" className="carousel-item relative w-full">
             <StepSelectQuantity
               onQuantityChange={(q) => setQuantity(q)}

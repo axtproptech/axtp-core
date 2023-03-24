@@ -5,6 +5,7 @@
   "back": "Anterior",
   "confirmation": "Confirmação",
   "confirmation_text": "Por meio deste, confirmo que armazenei a frase de recuperação em um local seguro. Entendo que perco o acesso à minha conta, caso perca minha frase de recuperação.",
+  "confirmation_acquisition_text": "Por meio deste, confirmo que li e compreendi os termos de uso para a compra dos tokens.",
   "copy_clipboard_failure": "Hmm, não foi possível copiar para a área de transferência",
   "copy_clipboard_success": "Copiado para a área de transferência",
   "create_account": "Criar uma conta",

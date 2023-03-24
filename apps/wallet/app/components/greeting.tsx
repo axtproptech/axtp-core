@@ -16,7 +16,7 @@ function getDayTime() {
     return "evening";
   }
 
-  if (hours >= 22 && hours < 4) {
+  if (hours >= 22) {
     return "night";
   }
 }
