@@ -164,5 +164,10 @@
   "your_address": "Endereço da conta",
   "kyc-not-registered-next": "Nenhum registro para a conta importada encontrado. Clique em [Cadastrar] para ir ao processo de registro.",
   "kyc_registry_found": "Cadastro encontrado",
-  "kyc_registry_found_hint": "Bem-vindo de volta, {{name}}. Seu registro foi carregado com sucesso."
+  "kyc_registry_found_hint": "Bem-vindo de volta, {{name}}. Seu registro foi carregado com sucesso.",
+  "pwa-ios-copy-title": "Adicionar à Tela de Início",
+  "pwa-ios-copy-body": "Este site tem funcionalidade de aplicativo. Adicione-o à sua tela inicial para usá-lo em tela cheia e offline.",
+  "pwa-ios-share-button-label": "Pressione o botão [Compartilhar]",
+  "pwa-ios-add-button-label": "Pressione o botão [Adicionar à Tela de Início]",
+  "close": "Fechar"
 }

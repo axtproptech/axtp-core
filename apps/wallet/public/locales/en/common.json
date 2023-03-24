@@ -164,5 +164,10 @@
   "your_address": "Account Address",
   "kyc-not-registered-next": "No registry for the imported account found. Click [Register] to navigate the registration process.",
   "kyc_registry_found": "Registry Found",
-  "kyc_registry_found_hint": "Welcome back, {{name}}. Your registry was loaded successfully."
+  "kyc_registry_found_hint": "Welcome back, {{name}}. Your registry was loaded successfully.",
+  "pwa-ios-copy-title": "Add to Home Screen",
+  "pwa-ios-copy-body": "This website has app functionality. Add it to your home screen to use it in fullscreen and while offline.",
+  "pwa-ios-share-button-label": "Press the [Share] button",
+  "pwa-ios-add-button-label": "Press the [Add to Home Screen] button",
+  "close": "Close"
 }

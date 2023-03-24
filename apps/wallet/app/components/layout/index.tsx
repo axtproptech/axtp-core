@@ -9,6 +9,11 @@ import { Body } from "./body";
 import { RiHome6Line, RiWallet3Line } from "react-icons/ri";
 import { Notification } from "@/app/components/notification";
 import { useTranslation } from "next-i18next";
+import dynamic from "next/dynamic";
+import { useAppContext } from "@/app/hooks/useAppContext";
+
+// @ts-ignore
+const PWAPrompt = dynamic(() => import("react-ios-pwa-prompt"), { ssr: false });
 
 interface Props extends ChildrenProps {
   bottomNav?: BottomNavigationItem[];
@@ -17,7 +22,6 @@ interface Props extends ChildrenProps {
 
 export const Layout: FC<Props> = ({ children, bottomNav, noBody = false }) => {
   const { t } = useTranslation();
-
   const DefaultNav: BottomNavigationItem[] = [
     {
       route: "/",
@@ -36,6 +40,14 @@ export const Layout: FC<Props> = ({ children, bottomNav, noBody = false }) => {
       {noBody ? children : <Body>{children}</Body>}
       <BottomNavigation nav={bottomNav || DefaultNav} />
       <Notification />
+      <PWAPrompt
+        /* @ts-ignore */
+        copyTitle={t("pwa-ios-copy-title")}
+        copyBody={t("pwa-ios-copy-body")}
+        copyAddHomeButtonLabel={t("pwa-ios-add-button-label")}
+        copyShareButtonLabel={t("pwa-ios-share-button-label")}
+        copyClosePrompt={t("close")}
+      />
     </Container>
   );
 };

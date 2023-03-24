@@ -4,6 +4,7 @@ import { PoolsInitializer } from "@/app/components/appInitializer/poolsInitializ
 import { KycInitializer } from "@/app/components/appInitializer/kycInitializer";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useEffect } from "react";
+
 export const AppInitializer = () => {
   const { TrackingEventService } = useAppContext();
 
