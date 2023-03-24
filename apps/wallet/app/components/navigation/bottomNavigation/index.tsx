@@ -41,7 +41,7 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
   return (
     <IconContext.Provider value={{ size: "1.5em" }}>
       <div className="btm-nav max-w-[768px] mx-auto print:hidden">
-        {nav.map((n, index) => {
+        {nav.map((n) => {
           const active = router.route === n.route ? "active" : "";
           if (n.route) {
             router.prefetch(n.route);
@@ -54,7 +54,7 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
           return (
             <>
               <button
-                key={"nav-" + index}
+                key={"nav-" + n.label}
                 onClick={() => handleOnClick(n)}
                 className={`flex flex-col items-center flex-shrink btn h-full ${btnColor} ${active} ${loading}`}
                 disabled={n.disabled || n.loading || false}
