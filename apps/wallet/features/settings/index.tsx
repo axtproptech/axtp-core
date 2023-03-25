@@ -6,12 +6,15 @@ import { useTranslation } from "next-i18next";
 import { HintBox } from "@/app/components/hintBox";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { SafeExternalLink } from "@/app/components/navigation/externalLink";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 export const Settings = () => {
   const { accountAddress } = useAccount();
   const router = useRouter();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const { Documents } = useAppContext();
 
   const handleOnClickDisconnect = async () => {
     dispatch(accountActions.resetAccount());
@@ -44,6 +47,11 @@ export const Settings = () => {
           </HintBox>
         </div>
       )}
+      <section className="mt-8 py-2 mx-auto text-center">
+        <SafeExternalLink href={Documents.Manual}>
+          <Button color="accent">{t("manual")}</Button>
+        </SafeExternalLink>
+      </section>
       <section className="text-center mt-8 block">
         <div>
           <u>

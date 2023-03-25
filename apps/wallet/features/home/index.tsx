@@ -15,7 +15,6 @@ import { Greeting } from "@/app/components/greeting";
 
 export const Home = () => {
   const pools = useAppSelector(selectAllPools);
-  const { t } = useTranslation();
   const { accountId, customer } = useAccount();
   const stats = useMemo(() => {
     let totalCurrentGMV = 0;

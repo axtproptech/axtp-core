@@ -20,6 +20,7 @@ export const Config = {
   BffApiKey: process.env.NEXT_PUBLIC_BFF_API_KEY || "",
   TermsOfUsefUrl: process.env.NEXT_PUBLIC_TERMS_OF_USE_URL || "",
   PrivacyfUrl: process.env.NEXT_PUBLIC_PRIVACY_URL || "",
+  ManualUrl: process.env.NEXT_PUBLIC_MANUAL_URL || "",
   JotForm: {
     Id: process.env.NEXT_PUBLIC_JOTFORM_ID || "",
   },

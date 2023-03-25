@@ -6,11 +6,12 @@ import {
   BottomNavigationItem,
 } from "../navigation/bottomNavigation";
 import { Body } from "./body";
-import { RiHome6Line, RiWallet3Line } from "react-icons/ri";
+import { RiHome6Line, RiQuestionLine, RiWallet3Line } from "react-icons/ri";
 import { Notification } from "@/app/components/notification";
 import { useTranslation } from "next-i18next";
 import dynamic from "next/dynamic";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { openExternalUrl } from "@/app/openExternalUrl";
 
 // @ts-ignore
 const PWAPrompt = dynamic(() => import("react-ios-pwa-prompt"), { ssr: false });
@@ -22,11 +23,22 @@ interface Props extends ChildrenProps {
 
 export const Layout: FC<Props> = ({ children, bottomNav, noBody = false }) => {
   const { t } = useTranslation();
+  const { Documents } = useAppContext();
+
+  const navigateToManual = () => {
+    openExternalUrl(Documents.Manual);
+  };
+
   const DefaultNav: BottomNavigationItem[] = [
     {
       route: "/",
       label: t("home"),
       icon: <RiHome6Line />,
+    },
+    {
+      onClick: navigateToManual,
+      label: t("manual"),
+      icon: <RiQuestionLine />,
     },
     {
       route: "/account",

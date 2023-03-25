@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 export const TermsOfUse = () => {
-  const { Terms } = useAppContext();
+  const { Documents } = useAppContext();
   const [policyText, setPolicyText] = useState("");
   useEffect(() => {
-    fetch(Terms.Use)
+    fetch(Documents.Use)
       .then((response) => response.text())
       .then(setPolicyText);
   }, []);

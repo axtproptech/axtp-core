@@ -4,6 +4,9 @@ import { useAccount } from "@/app/hooks/useAccount";
 function getDayTime() {
   const date = new Date();
   const hours = date.getHours();
+  if (hours < 4) {
+    return "night";
+  }
   if (hours >= 4 && hours < 12) {
     return "morning";
   }
@@ -15,7 +18,6 @@ function getDayTime() {
   if (hours >= 18 && hours < 22) {
     return "evening";
   }
-
   if (hours >= 22) {
     return "night";
   }

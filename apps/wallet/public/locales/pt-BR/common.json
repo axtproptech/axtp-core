@@ -169,5 +169,6 @@
   "pwa-ios-copy-body": "Este site tem funcionalidade de aplicativo. Adicione-o à sua tela inicial para usá-lo em tela cheia e offline.",
   "pwa-ios-share-button-label": "Pressione o botão [Compartilhar]",
   "pwa-ios-add-button-label": "Pressione o botão [Adicionar à Tela de Início]",
-  "close": "Fechar"
+  "close": "Fechar",
+  "manual": "Manual"
 }
