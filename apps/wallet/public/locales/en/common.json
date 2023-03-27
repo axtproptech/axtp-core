@@ -170,5 +170,6 @@
   "pwa-ios-share-button-label": "Press the [Share] button",
   "pwa-ios-add-button-label": "Press the [Add to Home Screen] button",
   "close": "Close",
-  "manual": "Manual"
+  "manual": "Manual",
+  "effective_rate": "Effective Rate"
 }

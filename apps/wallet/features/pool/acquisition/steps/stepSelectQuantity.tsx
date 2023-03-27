@@ -23,7 +23,10 @@ export const StepSelectQuantity: FC<Props> = ({
   const { t } = useTranslation();
   const { name } = useAppSelector(selectAXTToken);
   const [quantity, setQuantity] = useState(1);
-  const { totalAXTC, totalBRL } = usePaymentCalculator(quantity, poolId);
+  const { totalAXTC, totalBRL, adjustedBrlUsdPrice } = usePaymentCalculator(
+    quantity,
+    poolId
+  );
 
   const handleQuantityChange = (q: number) => () => {
     setQuantity(q);
@@ -85,6 +88,11 @@ export const StepSelectQuantity: FC<Props> = ({
               <Number value={totalAXTC} suffix="USD" /> ={" "}
               <Number value={totalBRL} suffix="BRL" />
             </h4>
+            <small>
+              {`${t("effective_rate")} - 1 USD :`}
+              &nbsp;
+              <Number value={adjustedBrlUsdPrice} suffix="BRL" />
+            </small>
           </div>
         </HintBox>
       </section>

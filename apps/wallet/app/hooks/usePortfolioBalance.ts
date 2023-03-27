@@ -4,7 +4,6 @@ import {
   selectBrlUsdMarketData,
 } from "@/app/states/marketState";
 import { useAccount } from "@/app/hooks/useAccount";
-import { useAppContext } from "@/app/hooks/useAppContext";
 import { selectAXTToken } from "@/app/states/tokenState";
 import { useMemo } from "react";
 import { selectAllPools } from "@/app/states/poolsState";

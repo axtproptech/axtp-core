@@ -22,5 +22,6 @@ export const usePaymentCalculator = (quantity: number, poolId: string) => {
   return {
     totalAXTC,
     totalBRL: totalAXTC * adjustedBrlUsdPrice,
+    adjustedBrlUsdPrice,
   };
 };
