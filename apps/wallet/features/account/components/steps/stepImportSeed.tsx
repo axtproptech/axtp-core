@@ -31,7 +31,7 @@ export const StepImportSeed: FC<Props> = ({ onSeedChange, publicKey }) => {
     [publicKey, Ledger.AddressPrefix]
   );
   const handleSeedChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const prunedSeed = e.target.value.replace(/[\t\n\r]/g, " ").trim();
+    const prunedSeed = e.target.value.replace(/[\t\n\r]/g, " ");
     setValue(prunedSeed);
     onSeedChange(prunedSeed);
   };
