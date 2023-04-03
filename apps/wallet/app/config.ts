@@ -21,6 +21,8 @@ export const Config = {
   TermsOfUsefUrl: process.env.NEXT_PUBLIC_TERMS_OF_USE_URL || "",
   PrivacyfUrl: process.env.NEXT_PUBLIC_PRIVACY_URL || "",
   ManualUrl: process.env.NEXT_PUBLIC_MANUAL_URL || "",
+  CanonicalUrl:
+    process.env.NEXT_PUBLIC_CANONICAL_URL || "https://wallet.axtp.com.br",
   JotForm: {
     Id: process.env.NEXT_PUBLIC_JOTFORM_ID || "",
   },

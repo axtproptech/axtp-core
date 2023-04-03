@@ -2,6 +2,7 @@ import Head from "next/head";
 
 export interface MetaTagsProps {
   title?: string;
+  siteName?: string;
   description?: string;
   canonical?: string;
   keywords?: string;
@@ -34,7 +35,7 @@ export const MetaTags = (props: MetaTagsProps) => {
       <meta property="og:type" content="website" key="defaultWebsite" />
       <meta
         property="og:site_name"
-        content="https://axt-proptech.com"
+        content={props.siteName || ""}
         key="defaultSiteName"
       />
 
@@ -117,8 +118,8 @@ export const MetaTags = (props: MetaTagsProps) => {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebSite",
-            alternateName: "AXT PropTech S/A",
-            url: "https://axt-proptech.com/",
+            alternateName: props.siteName,
+            url: props.canonical,
           }),
         }}
       />

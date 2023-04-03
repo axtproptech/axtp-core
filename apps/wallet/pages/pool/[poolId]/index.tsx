@@ -1,5 +1,4 @@
 import { Layout } from "@/app/components/layout";
-import { MetaTags } from "@/app/components/metaTags";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import {
@@ -68,13 +67,6 @@ export default function Page({ poolId }: any) {
 
   return (
     <Layout noBody bottomNav={bottomNav}>
-      <MetaTags
-        title="AXT PropTech S/A Pool"
-        description={""}
-        // add here an image for SEO
-        // imgUrl={some image url}
-        keywords="tokenomics, real estate, blockchain, signum, sustainable"
-      />
       <PoolDetails poolId={poolId} />
     </Layout>
   );

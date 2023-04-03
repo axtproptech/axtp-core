@@ -1,5 +1,4 @@
 import { Layout } from "@/app/components/layout";
-import { MetaTags } from "@/app/components/metaTags";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BackendForFrontendService } from "@/bff/backendForFrontendService";
 import useSWR, { SWRConfig } from "swr";
@@ -27,13 +26,6 @@ const SuccessPage = ({ url }: any) => {
   const { data } = useSWR(url);
   return (
     <Layout>
-      <MetaTags
-        title="AXT PropTech S/A"
-        description={""}
-        // add here an image for SEO
-        // imgUrl={some image url}
-        keywords="tokenomics, real estate, blockchain, signum, sustainable"
-      />
       <RegisterSuccess customer={data} />
     </Layout>
   );

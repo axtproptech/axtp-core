@@ -1,5 +1,4 @@
 import { Layout } from "@/app/components/layout";
-import { MetaTags } from "@/app/components/metaTags";
 import { AccountSetup } from "@/features/account/accountSetup";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
@@ -15,13 +14,6 @@ export async function getStaticProps({ locale }: { locale: string }) {
 export default function Page() {
   return (
     <Layout>
-      <MetaTags
-        title="AXT PropTech S/A Account"
-        description={""}
-        // add here an image for SEO
-        // imgUrl={some image url}
-        keywords="tokenomics, real estate, blockchain, signum, sustainable"
-      />
       <AccountSetup />
     </Layout>
   );

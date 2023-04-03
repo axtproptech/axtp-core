@@ -1,5 +1,4 @@
 import { Layout } from "@/app/components/layout";
-import { MetaTags } from "@/app/components/metaTags";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { NewKYC } from "@/features/kyc/new";
 import { RiHome6Line } from "react-icons/ri";
@@ -24,13 +23,6 @@ export default function NewKYCPage() {
         },
       ]}
     >
-      <MetaTags
-        title="AXT PropTech S/A"
-        description={""}
-        // add here an image for SEO
-        // imgUrl={some image url}
-        keywords="tokenomics, real estate, blockchain, signum, sustainable"
-      />
       <NewKYC />
     </Layout>
   );

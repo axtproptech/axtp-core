@@ -1,5 +1,4 @@
 import { Layout } from "@/app/components/layout";
-import { MetaTags } from "@/app/components/metaTags";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { RiArrowLeftCircleLine, RiHome6Line } from "react-icons/ri";
@@ -32,13 +31,6 @@ export default function Page() {
   ];
   return (
     <Layout bottomNav={bottomNav}>
-      <MetaTags
-        title="AXT PropTech S/A"
-        description={""}
-        // add here an image for SEO
-        // imgUrl={some image url}
-        keywords="tokenomics, real estate, blockchain, signum, sustainable"
-      />
       <Settings />
     </Layout>
   );

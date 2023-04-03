@@ -1,5 +1,4 @@
 import { Layout } from "@/app/components/layout";
-import { MetaTags } from "@/app/components/metaTags";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useState } from "react";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
@@ -23,13 +22,6 @@ export default function LinkPage() {
   };
   return (
     <Layout bottomNav={bottomNav}>
-      <MetaTags
-        title="AXT PropTech S/A"
-        description={""}
-        // add here an image for SEO
-        // imgUrl={some image url}
-        keywords="tokenomics, real estate, blockchain, signum, sustainable"
-      />
       <AccountLinkage onStepChange={handleStepChange} />
     </Layout>
   );
