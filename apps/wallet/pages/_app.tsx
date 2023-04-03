@@ -32,6 +32,7 @@ function App({ Component, pageProps }: AppProps) {
         imgUrl={Config.CanonicalUrl + "/assets/img/seo-wallet.jpg"}
         keywords="axt, axtp, tokenomics, real estate, blockchain, signum, sustainable, tax deed, tax lien"
         description="The AXT Wallet opens you the door to a new world of digital assets."
+        siteName="AXT PropTech Wallet"
         viewport="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
       />
       <ReduxProvider store={store}>
