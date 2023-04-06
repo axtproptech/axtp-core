@@ -21,7 +21,10 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
     bffLoggingService.info({
       msg: "Registering customer",
       domain: "customer",
-      detail: answers,
+      detail: {
+        answers,
+        submission,
+      },
     });
 
     const existingCustomer = await prisma.customer.findUnique({
