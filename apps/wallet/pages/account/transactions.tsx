@@ -8,10 +8,11 @@ import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigati
 import { useTranslation } from "next-i18next";
 import {
   RiArrowLeftCircleLine,
-  RiFileListLine,
   RiHome6Line,
   RiSettings4Line,
+  RiFileListLine,
 } from "react-icons/ri";
+import { AccountTransactions } from "@/features/account/transactions";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -42,9 +43,9 @@ export default function Page() {
       icon: <RiArrowLeftCircleLine />,
     },
     {
-      label: t("transactions"),
-      route: "/account/transactions",
-      icon: <RiFileListLine />,
+      label: t("home"),
+      route: "/",
+      icon: <RiHome6Line />,
     },
     {
       label: t("settings"),
@@ -55,7 +56,7 @@ export default function Page() {
 
   return (
     <Layout noBody bottomNav={bottomNav}>
-      <AccountDashboard />
+      <AccountTransactions />
     </Layout>
   );
 }
