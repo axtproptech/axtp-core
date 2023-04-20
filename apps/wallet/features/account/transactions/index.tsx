@@ -21,9 +21,12 @@ export const AccountTransactions = () => {
       </div>
       <Body
         ref={bodyRef}
-        className="overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh_-_440px)]"
+        // className="overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh_-_440px)]"
       >
         <FixedSizeList
+          className={
+            "overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh_-_440px)]"
+          }
           height={600}
           width="100%"
           itemCount={tx.transactions.length}

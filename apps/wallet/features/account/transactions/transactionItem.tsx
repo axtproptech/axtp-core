@@ -1,6 +1,12 @@
-export const TransactionItem = () => {
+import { CSSProperties } from "react";
+
+interface Props {
+  style: CSSProperties;
+}
+
+export const TransactionItem = ({ style }: Props) => {
   return (
-    <div className="card card-side bg-base-100 shadow-xl">
+    <div className="card card-side bg-base-100 shadow-xl" style={style}>
       <figure>
         <img src="/assets/img/signumjs.svg" alt="Movie" />
       </figure>

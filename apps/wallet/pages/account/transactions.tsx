@@ -17,7 +17,7 @@ import { AccountTransactions } from "@/features/account/transactions";
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale)),
+      ...(await serverSideTranslations(locale, ["common", "transactions"])),
       // Will be passed to the page component as props
     },
   };
@@ -25,7 +25,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
 
 export default function Page() {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t } = useTranslation("common");
   const { accountId } = useAccount();
 
   useEffect(() => {
