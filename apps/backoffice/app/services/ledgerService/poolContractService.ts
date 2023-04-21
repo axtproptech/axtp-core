@@ -10,7 +10,6 @@ import {
   convertStringToHexString,
 } from "@signumjs/util";
 import { withError } from "./withError";
-import { InputValidationService } from "@/app/services/inputValidationService";
 import { MasterContractService } from "@/app/services/ledgerService/masterContractService";
 
 interface CreatePoolInstanceArgs {
@@ -49,9 +48,6 @@ export class PoolContractService {
           referencedTransactionHash: Config.PoolContract.Reference,
           feePlanck: Amount.fromSigna(
             Config.PoolContract.CreationCosts
-          ).getPlanck(),
-          activationAmountPlanck: Amount.fromSigna(
-            Config.PoolContract.ActivationCosts
           ).getPlanck(),
           name: `${Config.PoolContract.Basename}${args.name}`,
           data,
