@@ -4,26 +4,34 @@ import {
   isMultiOutSameTransaction,
   isMultiOutTransaction,
   Transaction,
+  TransactionArbitrarySubtype,
   TransactionAssetSubtype,
+  TransactionEscrowSubtype,
+  TransactionMiningSubtype,
+  TransactionPaymentSubtype,
+  TransactionSmartContractSubtype,
   TransactionType,
 } from "@signumjs/core";
 import { TransactionData } from "@/types/transactionData";
-import { ChainTime, Amount } from "@signumjs/util";
+import { ChainTime, Amount, ChainValue } from "@signumjs/util";
 import { Config } from "@/app/config";
 import { TokenMetaData } from "@/types/tokenMetaData";
 import { toQuantity, toStableCoinAmount } from "@/app/tokenQuantity";
 
 interface MappingContext {
   accountId: string;
-  axtToken: TokenMetaData;
-  poolTokens: TokenMetaData[];
+  relevantTokens: TokenMetaData[];
 }
 
 function tryExtractmessage(tx: Transaction) {
-  if (isAttachmentVersion(tx, "message")) {
+  if (isAttachmentVersion(tx, "Message")) {
     return tx.attachment.messageIsText ? tx.attachment.message : "";
   }
   return "";
+}
+
+function isEncryptedMessage(tx: Transaction) {
+  return isAttachmentVersion(tx, "EncryptedMessage");
 }
 
 function tryExtractAmount(tx: Transaction, accountId: string) {
@@ -38,58 +46,107 @@ function tryExtractAmount(tx: Transaction, accountId: string) {
     }
   }
 
+  if (
+    tx.type === TransactionType.Asset &&
+    tx.subtype === TransactionAssetSubtype.AssetDistributeToHolders &&
+    tx.distribution
+  ) {
+    return Number(Amount.fromPlanck(tx.distribution.amountNQT || "0"));
+  }
+
   return Number(Amount.fromPlanck(tx.amountNQT).getSigna());
 }
 
-function tryExtractAxtAmount(tx: Transaction, axtToken: TokenMetaData) {
+function tryExtractTokenAmounts(tx: Transaction, tokens: TokenMetaData[]) {
   if (
     tx.type === TransactionType.Asset &&
     tx.subtype === TransactionAssetSubtype.AssetTransfer
   ) {
     const transferredAsset = tx.attachment.asset;
-    if (transferredAsset === axtToken.id) {
-      return Number(toStableCoinAmount(tx.attachment.quantityQNT));
+    const tokenMetaData = tokens.find((t) => t.id === transferredAsset);
+    if (tokenMetaData) {
+      return [
+        {
+          name: tokenMetaData.name,
+          amount: Number(
+            ChainValue.create(tokenMetaData.decimals)
+              .setAtomic(tx.attachment.quantityQNT)
+              .getCompound()
+          ),
+        },
+      ];
     }
   }
-  return undefined;
-}
 
-function tryExtractPoolToken(tx: Transaction, poolTokens: TokenMetaData[]) {
   if (
     tx.type === TransactionType.Asset &&
-    tx.subtype === TransactionAssetSubtype.AssetTransfer
+    tx.subtype === TransactionAssetSubtype.AssetDistributeToHolders &&
+    tx.distribution
   ) {
-    const poolToken = poolTokens.find(({ id }) => id === tx.attachment.asset);
-    if (poolToken) {
-      return {
-        ...poolToken,
-        quantity: toQuantity(tx.attachment.quantityQNT, poolToken.decimals),
-      };
+    const transferredAsset = tx.distribution.distributedAssetId;
+    const tokenMetaData = tokens.find((t) => t.id === transferredAsset);
+    if (tokenMetaData) {
+      return [
+        {
+          name: tokenMetaData.name,
+          amount: Number(
+            ChainValue.create(tokenMetaData.decimals)
+              .setAtomic(tx.distribution.quantityQNT)
+              .getCompound()
+          ),
+        },
+      ];
     }
   }
 
-  return undefined;
+  // TODO: multiasset transfer
+
+  return [];
+}
+
+function getDirectionType(
+  tx: Transaction,
+  accountId: string
+): "out" | "in" | "burn" | "self" {
+  if (tx.recipient === "0") {
+    return "burn";
+  }
+
+  if (!tx.recipient || tx.recipient === tx.sender) {
+    return "self";
+  }
+
+  if (tx.recipient === accountId) {
+    return "in";
+  }
+
+  return "out";
 }
 
 export const mapLedgerTransaction = (
   tx: Transaction,
   context: MappingContext
 ): TransactionData => {
-  const { accountId, axtToken, poolTokens } = context;
+  const { accountId, relevantTokens } = context;
   return {
     id: tx.transaction,
     timestamp: tx.timestamp,
+    type: tx.type,
+    subtype: tx.subtype,
     dateTime: ChainTime.fromChainTimestamp(tx.timestamp)
       .getDate()
       .toISOString(),
     receiver: tx.recipient || "",
+    receiverAddress: tx.recipientRS || "",
     sender: tx.sender,
+    senderAddress: tx.senderRS,
     explorerUrl: `${Config.Ledger.ExplorerUrl}/tx/${tx.transaction}`,
-    isPending: !tx.confirmations,
-    type: accountId === tx.sender ? "out" : "in",
+    isPending: tx.confirmations === undefined,
+    direction: getDirectionType(tx, accountId),
     signa: tryExtractAmount(tx, accountId),
+    feeSigna: Number(Amount.fromPlanck(tx.feeNQT).getSigna()),
+    tokens: tryExtractTokenAmounts(tx, relevantTokens),
     message: tryExtractmessage(tx),
-    axt: tryExtractAxtAmount(tx, axtToken),
-    poolToken: tryExtractPoolToken(tx, poolTokens),
+    hasEncryptedMessage: isEncryptedMessage(tx),
   };
 };

@@ -28,5 +28,10 @@
   "typeRemoveCommitment": "Commitment Removal",
   "typeContractCreation": "Smart Contract Creation",
   "typeContractPayment": "Smart Contract Payment",
-  "typeUnknown": "Unknown"
+  "typeUnknown": "Unknown",
+  "sentTo": "To",
+  "gotFrom": "From",
+  "burnt": "Burn",
+  "hasMoreTokens": "More Tokens are attached...",
+  "encryptedMessage": "<Private Message>"
 }

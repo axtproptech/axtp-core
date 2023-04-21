@@ -12,7 +12,6 @@ import {
   trackingEventService,
 } from "@/app/services";
 import { HttpClientFactory } from "@signumjs/http";
-import * as diagnostics_channel from "diagnostics_channel";
 
 type AddressPrefixType = "TS" | "S";
 type SignaPrefixType = "TSIGNA" | "SIGNA";
