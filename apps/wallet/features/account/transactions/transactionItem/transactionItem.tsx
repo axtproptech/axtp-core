@@ -13,6 +13,7 @@ interface Props {
   style: CSSProperties;
   data: any;
   index: number;
+  // onClick: (index: number) => void;
 }
 
 export const PaddingSize = 8;
@@ -27,6 +28,12 @@ export const TransactionItem = ({ style, data, index }: Props) => {
     return getTransactionUiElements(txData);
   }, [data, index]);
 
+  function handleOnClick() {
+    document.dispatchEvent(
+      new CustomEvent("tx-item-clicked", { detail: { index } })
+    );
+  }
+
   return (
     <div
       className="card card-side bg-base-200"
@@ -37,6 +44,7 @@ export const TransactionItem = ({ style, data, index }: Props) => {
         // @ts-ignore
         height: style.height - PaddingSize,
       }}
+      onClick={handleOnClick}
     >
       <figure className="p-6">
         {txData.isPending ? (

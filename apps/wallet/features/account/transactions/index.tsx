@@ -1,5 +1,5 @@
 import { Body } from "@/app/components/layout/body";
-import { ComponentType, useEffect, useRef, useState } from "react";
+import { ComponentType, useEffect, useRef } from "react";
 import {
   FixedSizeList as _FixedSizeList,
   FixedSizeListProps,
@@ -29,6 +29,19 @@ export const AccountTransactions = () => {
   const height = bodyRef.current
     ? bodyRef.current.clientHeight - 112 - 64 - 32
     : 600;
+
+  useEffect(() => {
+    function handleItemClick(e: Event) {
+      //@ts-ignore
+      const { index } = e.detail;
+      console.log("clicked", index, allTransactions[index]);
+    }
+
+    document.addEventListener("tx-item-clicked", handleItemClick);
+    return () => {
+      document.removeEventListener("tx-item-clicked", handleItemClick);
+    };
+  }, []);
 
   return (
     <div ref={bodyRef} className="overflow-hidden h-[100vh]">
