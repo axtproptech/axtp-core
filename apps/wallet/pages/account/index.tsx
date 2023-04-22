@@ -12,6 +12,7 @@ import {
   RiHome6Line,
   RiSettings4Line,
 } from "react-icons/ri";
+import { WithAccountOnly } from "@/app/components/withAccountOnly";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -23,17 +24,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
 }
 
 export default function Page() {
-  const router = useRouter();
   const { t } = useTranslation();
-  const { accountId } = useAccount();
-
-  useEffect(() => {
-    if (!accountId && router) {
-      router.replace("/account/setup");
-    }
-  }, [accountId, router]);
-
-  if (!accountId) return null;
 
   const bottomNav: BottomNavigationItem[] = [
     {
@@ -54,8 +45,10 @@ export default function Page() {
   ];
 
   return (
-    <Layout noBody bottomNav={bottomNav}>
-      <AccountDashboard />
-    </Layout>
+    <WithAccountOnly>
+      <Layout noBody bottomNav={bottomNav}>
+        <AccountDashboard />
+      </Layout>
+    </WithAccountOnly>
   );
 }

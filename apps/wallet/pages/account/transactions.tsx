@@ -1,5 +1,4 @@
 import { Layout } from "@/app/components/layout";
-import { AccountDashboard } from "@/features/account/dashboard";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useRouter } from "next/router";
@@ -10,9 +9,9 @@ import {
   RiArrowLeftCircleLine,
   RiHome6Line,
   RiSettings4Line,
-  RiFileListLine,
 } from "react-icons/ri";
 import { AccountTransactions } from "@/features/account/transactions";
+import { WithAccountOnly } from "@/app/components/withAccountOnly";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -24,17 +23,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
 }
 
 export default function Page() {
-  const router = useRouter();
   const { t } = useTranslation("common");
-  const { accountId } = useAccount();
-
-  useEffect(() => {
-    if (!accountId && router) {
-      router.replace("/account/setup");
-    }
-  }, [accountId, router]);
-
-  if (!accountId) return null;
 
   const bottomNav: BottomNavigationItem[] = [
     {
@@ -55,8 +44,10 @@ export default function Page() {
   ];
 
   return (
-    <Layout noBody bottomNav={bottomNav}>
-      <AccountTransactions />
-    </Layout>
+    <WithAccountOnly>
+      <Layout noBody bottomNav={bottomNav}>
+        <AccountTransactions />
+      </Layout>
+    </WithAccountOnly>
   );
 }

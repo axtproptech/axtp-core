@@ -33,5 +33,7 @@
   "gotFrom": "From",
   "burnt": "Burn",
   "hasMoreTokens": "More Tokens are attached...",
-  "encryptedMessage": "<Private Message>"
+  "encryptedMessage": "<Private Message>",
+  "loadingTransactions": "Loading Transactions",
+  "loadingTransactionsHint": "Your transactions are being loaded from the Signum Blockchain..."
 }
