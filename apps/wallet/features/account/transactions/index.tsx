@@ -1,5 +1,5 @@
 import { Body } from "@/app/components/layout/body";
-import { ComponentType, useEffect, useRef } from "react";
+import { ComponentType, useEffect, useRef, useState } from "react";
 import {
   FixedSizeList as _FixedSizeList,
   FixedSizeListProps,
@@ -15,6 +15,7 @@ import { HintBox } from "@/app/components/hintBox";
 import { AnimatedIconGlobe } from "@/app/components/animatedIcons/animatedIconGlobe";
 import * as React from "react";
 import { useTranslation } from "next-i18next";
+import { TransactionDetailsModal } from "@/features/account/transactions/transactionItem/transactionDetailsModal";
 
 const FixedSizeList = _FixedSizeList as ComponentType<FixedSizeListProps>;
 
@@ -24,6 +25,7 @@ export const AccountTransactions = () => {
   const { accountData } = useAccount();
   const { transactions, error, isLoading, pendingTransactions } =
     useAccountTransactions();
+  const [detailIndex, setDetailIndex] = useState(-1);
 
   const allTransactions = [...pendingTransactions, ...transactions];
   const height = bodyRef.current
@@ -34,7 +36,8 @@ export const AccountTransactions = () => {
     function handleItemClick(e: Event) {
       //@ts-ignore
       const { index } = e.detail;
-      console.log("clicked", index, allTransactions[index]);
+      setDetailIndex(index);
+      // console.log("clicked", index, allTransactions[index]);
     }
 
     document.addEventListener("tx-item-clicked", handleItemClick);
@@ -48,6 +51,11 @@ export const AccountTransactions = () => {
       <section className="pt-12 md:pt-8 flex-row flex mx-auto justify-center">
         <AccountHeader account={accountData} />
       </section>
+      <TransactionDetailsModal
+        txData={detailIndex !== -1 ? allTransactions[detailIndex] : null}
+        open={detailIndex !== -1}
+        onClose={() => setDetailIndex(-1)}
+      />
       <Body className="relative">
         {isLoading && (
           <section className="mt-[30%]">
