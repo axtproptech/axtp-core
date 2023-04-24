@@ -2,7 +2,6 @@ import { CSSProperties, useMemo } from "react";
 import { TransactionData } from "@/types/transactionData";
 import { getTransactionUiElements } from "../getTransactionUiElements";
 import { useTranslation } from "next-i18next";
-import { useAppContext } from "@/app/hooks/useAppContext";
 import { DirectionItem } from "./directionItem";
 import { ContentItem } from "@/features/account/transactions/transactionItem/contentItem";
 import { formatDate } from "@/app/formatDate";
@@ -13,15 +12,13 @@ interface Props {
   style: CSSProperties;
   data: any;
   index: number;
-  // onClick: (index: number) => void;
 }
 
 export const PaddingSize = 8;
 
-export const TransactionItem = ({ style, data, index }: Props) => {
+export const TransactionItemCard = ({ style, data, index }: Props) => {
   const { locale } = useRouter();
   const { t } = useTranslation("transactions");
-  const { Ledger } = useAppContext();
 
   const txData = useMemo(() => {
     const txData = data[index] as TransactionData;
@@ -36,7 +33,7 @@ export const TransactionItem = ({ style, data, index }: Props) => {
 
   return (
     <div
-      className="card card-side bg-base-200"
+      className="card card-side bg-base-200 hover:!cursor-zoom-in"
       style={{
         ...style,
         // @ts-ignore

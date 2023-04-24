@@ -18,5 +18,9 @@ export interface TransactionData {
   receiver: string;
   receiverAddress: string;
   message: string;
-  hasEncryptedMessage: boolean;
+  encryptedMessage?: {
+    data: string;
+    nonce: string;
+    isText: boolean;
+  };
 }

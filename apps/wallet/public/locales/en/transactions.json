@@ -29,11 +29,17 @@
   "typeContractCreation": "Smart Contract Creation",
   "typeContractPayment": "Smart Contract Payment",
   "typeUnknown": "Unknown",
+  "amount": "Amount",
+  "fee": "Fee",
   "sentTo": "To",
   "gotFrom": "From",
   "burnt": "Burn",
   "hasMoreTokens": "More Tokens are attached...",
   "encryptedMessage": "<Private Message>",
   "loadingTransactions": "Loading Transactions",
-  "loadingTransactionsHint": "Your transactions are being loaded from the Signum Blockchain..."
+  "loadingTransactionsHint": "Your transactions are being loaded from the Signum Blockchain...",
+  "openInExplorer": "Open Explorer",
+  "messageIsEncryptedHint": "This is a private message. Enter your PIN to reveal the message",
+  "reveal": "Reveal",
+  "wrongPin": "You entered a wrong PIN."
 }

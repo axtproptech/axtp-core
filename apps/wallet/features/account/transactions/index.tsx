@@ -6,8 +6,8 @@ import {
 } from "react-window";
 import {
   PaddingSize,
-  TransactionItem,
-} from "@/features/account/transactions/transactionItem/transactionItem";
+  TransactionItemCard,
+} from "@/features/account/transactions/transactionItem/transactionItemCard";
 import { AccountHeader } from "@/features/account/components/accountHeader";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useAccountTransactions } from "@/app/hooks/useAccountTransactions";
@@ -15,7 +15,7 @@ import { HintBox } from "@/app/components/hintBox";
 import { AnimatedIconGlobe } from "@/app/components/animatedIcons/animatedIconGlobe";
 import * as React from "react";
 import { useTranslation } from "next-i18next";
-import { TransactionDetailsModal } from "@/features/account/transactions/transactionItem/transactionDetailsModal";
+import { TransactionDetailsModal } from "./transactionItem/transactionDetailsModal";
 
 const FixedSizeList = _FixedSizeList as ComponentType<FixedSizeListProps>;
 
@@ -84,7 +84,7 @@ export const AccountTransactions = () => {
               itemSize={80 + PaddingSize * 2}
               itemData={allTransactions}
             >
-              {TransactionItem}
+              {TransactionItemCard}
             </FixedSizeList>
             <div className="absolute z-10 bottom-4 bg-gradient-to-t from-base-100 h-4 w-full opacity-80" />
           </>

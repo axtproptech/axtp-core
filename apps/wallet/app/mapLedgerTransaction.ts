@@ -18,6 +18,12 @@ import { Config } from "@/app/config";
 import { TokenMetaData } from "@/types/tokenMetaData";
 import { toQuantity, toStableCoinAmount } from "@/app/tokenQuantity";
 
+type Direction = "out" | "in" | "burn" | "self";
+
+function d(n: number, dir: Direction): number {
+  return dir === "in" ? n : -n;
+}
+
 interface MappingContext {
   accountId: string;
   relevantTokens: TokenMetaData[];
@@ -30,11 +36,21 @@ function tryExtractmessage(tx: Transaction) {
   return "";
 }
 
+function tryExtractEncryptedMessage(tx: Transaction) {
+  const isEncrypted = isAttachmentVersion(tx, "EncryptedMessage");
+  if (!isEncrypted) return null;
+  return tx.attachment.encryptedMessage;
+}
+
 function isEncryptedMessage(tx: Transaction) {
   return isAttachmentVersion(tx, "EncryptedMessage");
 }
 
-function tryExtractAmount(tx: Transaction, accountId: string) {
+function tryExtractAmount(
+  tx: Transaction,
+  accountId: string,
+  direction: Direction
+) {
   if (
     tx.sender !== accountId &&
     (isMultiOutSameTransaction(tx) || isMultiOutTransaction(tx))
@@ -42,7 +58,10 @@ function tryExtractAmount(tx: Transaction, accountId: string) {
     const multiout = getRecipientAmountsFromMultiOutPayment(tx);
     const found = multiout.find(({ recipient }) => recipient === accountId);
     if (found) {
-      return Number(Amount.fromPlanck(found.amountNQT).getSigna());
+      return d(
+        Number(Amount.fromPlanck(found.amountNQT).getSigna()),
+        direction
+      );
     }
   }
 
@@ -51,13 +70,20 @@ function tryExtractAmount(tx: Transaction, accountId: string) {
     tx.subtype === TransactionAssetSubtype.AssetDistributeToHolders &&
     tx.distribution
   ) {
-    return Number(Amount.fromPlanck(tx.distribution.amountNQT || "0"));
+    return d(
+      Number(Amount.fromPlanck(tx.distribution.amountNQT || "0")),
+      direction
+    );
   }
 
-  return Number(Amount.fromPlanck(tx.amountNQT).getSigna());
+  return d(Number(Amount.fromPlanck(tx.amountNQT).getSigna()), direction);
 }
 
-function tryExtractTokenAmounts(tx: Transaction, tokens: TokenMetaData[]) {
+function tryExtractTokenAmounts(
+  tx: Transaction,
+  tokens: TokenMetaData[],
+  direction: Direction
+) {
   if (
     tx.type === TransactionType.Asset &&
     tx.subtype === TransactionAssetSubtype.AssetTransfer
@@ -68,10 +94,13 @@ function tryExtractTokenAmounts(tx: Transaction, tokens: TokenMetaData[]) {
       return [
         {
           name: tokenMetaData.name,
-          amount: Number(
-            ChainValue.create(tokenMetaData.decimals)
-              .setAtomic(tx.attachment.quantityQNT)
-              .getCompound()
+          amount: d(
+            Number(
+              ChainValue.create(tokenMetaData.decimals)
+                .setAtomic(tx.attachment.quantityQNT)
+                .getCompound()
+            ),
+            direction
           ),
         },
       ];
@@ -128,6 +157,7 @@ export const mapLedgerTransaction = (
   context: MappingContext
 ): TransactionData => {
   const { accountId, relevantTokens } = context;
+  const direction = getDirectionType(tx, accountId);
   return {
     id: tx.transaction,
     timestamp: tx.timestamp,
@@ -142,11 +172,11 @@ export const mapLedgerTransaction = (
     senderAddress: tx.senderRS,
     explorerUrl: `${Config.Ledger.ExplorerUrl}/tx/${tx.transaction}`,
     isPending: tx.confirmations === undefined,
-    direction: getDirectionType(tx, accountId),
-    signa: tryExtractAmount(tx, accountId),
+    direction,
+    signa: tryExtractAmount(tx, accountId, direction),
     feeSigna: Number(Amount.fromPlanck(tx.feeNQT).getSigna()),
-    tokens: tryExtractTokenAmounts(tx, relevantTokens),
+    tokens: tryExtractTokenAmounts(tx, relevantTokens, direction),
     message: tryExtractmessage(tx),
-    hasEncryptedMessage: isEncryptedMessage(tx),
+    encryptedMessage: tryExtractEncryptedMessage(tx),
   };
 };
