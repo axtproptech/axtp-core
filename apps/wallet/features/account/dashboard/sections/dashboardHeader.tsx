@@ -19,6 +19,7 @@ import { SafeExternalLink } from "@/app/components/navigation/externalLink";
 import { RiExternalLinkLine } from "react-icons/ri";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { Greeting } from "@/app/components/greeting";
+import { AccountHeader } from "@/features/account/components/accountHeader";
 
 interface Props {
   accountAddress: string;
@@ -65,18 +66,7 @@ export const DashboardHeader: FC<Props> = ({
   return (
     <Fade triggerOnce>
       <section className="pt-12 md:pt-8 flex-row flex mx-auto justify-center">
-        <div className="text-center">
-          <Greeting />
-          <SafeExternalLink
-            href={`${Ledger.ExplorerUrl}/address/${accountData.accountId}`}
-          >
-            <span className="flex flex-row items-center">
-              <h2 className="text-xl font-bold">{accountAddress}</h2>
-              &nbsp;
-              <RiExternalLinkLine />
-            </span>
-          </SafeExternalLink>
-        </div>
+        <AccountHeader account={accountData} />
       </section>
       <div className={`h-[240px] relative mt-4 p-0 ${loadingClassName}`}>
         <div className="absolute h-[240px] w-full">

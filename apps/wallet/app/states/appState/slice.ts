@@ -5,11 +5,13 @@ import { NotificationType } from "@/types/notificationType";
 export interface AppState {
   themeMode: "light" | "dark";
   notification: NotificationType | null;
+  agreementKey: string;
 }
 
 const initialState: AppState = {
   themeMode: getSystemTheme(),
   notification: null,
+  agreementKey: "",
 };
 
 export const appSlice = createSlice({
@@ -18,6 +20,12 @@ export const appSlice = createSlice({
   reducers: {
     setTheme: (state, action: PayloadAction<"dark" | "light">) => {
       state.themeMode = action.payload;
+    },
+    setAgreementKey: (state, action: PayloadAction<string>) => {
+      state.agreementKey = action.payload;
+    },
+    clearAgreementKey: (state) => {
+      state.agreementKey = "";
     },
     showNotification: (
       state,

@@ -5,6 +5,9 @@ import { NotificationType } from "@/types/notificationType";
 export const selectThemeMode = (state: RootState): "dark" | "light" =>
   state.appState.themeMode;
 
+export const selectAgreementKey = (state: RootState): string =>
+  state.appState.agreementKey;
+
 export const selectIsDarkMode = createSelector(
   selectThemeMode,
   (mode) => mode === "dark"

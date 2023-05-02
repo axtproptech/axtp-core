@@ -1,16 +1,26 @@
-import { TokenMetaData } from "@/types/tokenMetaData";
-
 export interface TransactionData {
   id: string;
+  type: number;
+  subtype: number;
   explorerUrl: string;
   dateTime: string; // ISO-DATE
   timestamp: number;
   isPending: boolean;
-  type: "out" | "in";
+  direction: "out" | "in" | "self" | "burn";
   signa: number;
-  axt?: number; // AXT quantity
-  poolToken?: TokenMetaData; // for pool tokens
+  feeSigna: number;
+  tokens: {
+    name: string;
+    amount: number;
+  }[];
   sender: string;
+  senderAddress: string;
   receiver: string;
-  message?: string;
+  receiverAddress: string;
+  message: string;
+  encryptedMessage?: {
+    data: string;
+    nonce: string;
+    isText: boolean;
+  };
 }

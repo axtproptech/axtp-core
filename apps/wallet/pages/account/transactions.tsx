@@ -1,5 +1,4 @@
 import { Layout } from "@/app/components/layout";
-import { AccountDashboard } from "@/features/account/dashboard";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useRouter } from "next/router";
@@ -8,23 +7,23 @@ import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigati
 import { useTranslation } from "next-i18next";
 import {
   RiArrowLeftCircleLine,
-  RiFileListLine,
   RiHome6Line,
   RiSettings4Line,
 } from "react-icons/ri";
+import { AccountTransactions } from "@/features/account/transactions";
 import { WithAccountOnly } from "@/app/components/withAccountOnly";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale)),
+      ...(await serverSideTranslations(locale, ["common", "transactions"])),
       // Will be passed to the page component as props
     },
   };
 }
 
 export default function Page() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("common");
 
   const bottomNav: BottomNavigationItem[] = [
     {
@@ -33,9 +32,9 @@ export default function Page() {
       icon: <RiArrowLeftCircleLine />,
     },
     {
-      label: t("transactions"),
-      route: "/account/transactions",
-      icon: <RiFileListLine />,
+      label: t("home"),
+      route: "/",
+      icon: <RiHome6Line />,
     },
     {
       label: t("settings"),
@@ -47,7 +46,7 @@ export default function Page() {
   return (
     <WithAccountOnly>
       <Layout noBody bottomNav={bottomNav}>
-        <AccountDashboard />
+        <AccountTransactions />
       </Layout>
     </WithAccountOnly>
   );
