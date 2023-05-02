@@ -136,13 +136,13 @@ const Navbar = ({ noMenu }) => {
             {/*</Search>*/}
             {/* end of search */}
 
-            {/*<Button*/}
-            {/*  className="text"*/}
-            {/*  variant="textButton"*/}
-            {/*  title="Área Exclusiva"*/}
-            {/*  style={{ marginLeft: "2rem" }}*/}
-            {/*  onClick={handleLogin}*/}
-            {/*/>*/}
+            <Button
+              className="text"
+              variant="textButton"
+              title="Área Exclusiva"
+              style={{ marginLeft: "2rem" }}
+              onClick={handleLogin}
+            />
 
             <Button
               className="menubar"
