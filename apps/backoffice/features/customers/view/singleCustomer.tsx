@@ -30,6 +30,7 @@ import { cpf } from "cpf-cnpj-validator";
 import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
 import { useRouter } from "next/router";
 import { toDateStr } from "@/app/toDateStr";
+import { auth0Service } from "@/app/services/auth0Service";
 const gridSpacing = Config.Layout.GridSpacing;
 export const SingleCustomer = () => {
   const { query } = useRouter();
@@ -42,7 +43,8 @@ export const SingleCustomer = () => {
 
   const verifyCustomer = async () => {
     try {
-      await customerService.with(cuid).verifyCustomer("Level1");
+      // await customerService.with(cuid).verifyCustomer("Level1");
+      await auth0Service.createUser(cuid);
       await Promise.all([
         mutate(`getCustomer/${cuid}`),
         mutate("getPendingTokenHolders"),

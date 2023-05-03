@@ -4,11 +4,6 @@ import { withMiddleware, Middleware } from "@/bff/withMiddleware";
 import { ApiHandler } from "./types/apiHandler";
 import { handleError } from "@/bff/handleError";
 
-// export type HandlerFunction = (
-//   req: NextApiRequest,
-//   res: NextApiResponse
-// ) => unknown | Promise<unknown>;
-
 interface RouteArgs {
   req: NextApiRequest;
   res: NextApiResponse;
