@@ -35,8 +35,9 @@ const NavbarWrapper = styled.nav`
     }
 
     .user {
-      cursor: pointer;
-      display: block;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
       color: white;
       font-size: 16px;
       font-weight: 400;
@@ -45,13 +46,24 @@ const NavbarWrapper = styled.nav`
     }
 
     .user-alt {
-      cursor: pointer;
       display: none;
+      align-items: center;
       color: black;
       font-size: 16px;
       font-weight: 400;
       transition: all 0.3s ease;
       filter: drop-shadow(0px 0px 10px #ffb343);
+    }
+
+    .logout {
+      cursor: pointer;
+      margin: 0 0.5rem;
+      padding: 0.25rem 0.5rem;
+      color: #888888;
+      border: 1px solid #888888;
+      border-radius: 4px;
+      font-size: 10px;
+      user-select: none;
     }
   }
 
