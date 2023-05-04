@@ -2,9 +2,8 @@ import { ApiHandler } from "@/bff/types/apiHandler";
 import { prisma } from "@axtp/db";
 import { notFound, badRequest, notAcceptable } from "@hapi/boom";
 import { object, string, ValidationError } from "yup";
-import { getAccessToken } from "@/bff/handler/auth0/getAccessToken";
-import { provideAuth0ApiClient } from "@/bff/handler/auth0/provideAuth0ApiClient";
-import { randomUUID } from "crypto";
+import { mailService } from "@/bff/mailService";
+
 const loadCustomer = async (cuid: string) => {
   const customer = await prisma.customer.findUnique({
     where: { cuid },
@@ -40,23 +39,23 @@ export const createAuth0User: ApiHandler = async ({ req, res }) => {
       throw notAcceptable(`User ${cuid} is blocked or not active`);
     }
 
-    const userToBeCreated = {
-      connection: process.env.NEXT_SERVER_AUTH0_LANDING_CONNECTION,
-      email: customer.email1,
-      given_name: customer.firstName,
-      family_name: customer.lastName,
-      name: customer.firstName,
-      password: randomUUID(),
-      user_metadata: {
-        cuid,
+    // const token = await Auth0Service.getAccessToken();
+    // const auth0Service = new Auth0Service(token);
+    // const { firstName, lastName, email1 } = customer;
+    // await auth0Service.createUser({
+    //   cuid,
+    //   email: email1,
+    //   firstName,
+    //   lastName,
+    // });
+    await mailService.sendExclusiveAreaInvitation({
+      to: customer.email1,
+      params: {
+        firstName: customer.firstName,
       },
-      email_verified: false,
-    };
+    });
 
-    const token = await getAccessToken();
-    const auth0Client = provideAuth0ApiClient(token);
-    const { response } = await auth0Client.post("/users", userToBeCreated);
-    console.log("createAuth0User", userToBeCreated, token, response);
+    // console.log("createAuth0User", createdUser, token, response);
     res.status(201).end();
   } catch (e: any) {
     if (e instanceof ValidationError) {
