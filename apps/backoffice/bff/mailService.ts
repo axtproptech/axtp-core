@@ -8,6 +8,8 @@ eta.configure({
 });
 interface InvitationParams {
   firstName: string;
+  accessLink: string;
+  exclusiveAreaUrl: string;
 }
 
 interface SendAuth0InvitationArgs {
@@ -15,8 +17,6 @@ interface SendAuth0InvitationArgs {
   params: InvitationParams; // tbd
 }
 
-// Check how to setup OAuth for gmail
-// https://docs.emailengine.app/gmail-oauth-service-accounts
 export class MailService {
   private transporter: Transporter;
 
@@ -32,11 +32,14 @@ export class MailService {
 
   async sendExclusiveAreaInvitation(args: SendAuth0InvitationArgs) {
     try {
-      const html = await eta.renderFile("./test.html", args.params);
+      const html = await eta.renderFile(
+        "./welcome-exclusive-area.html",
+        args.params
+      );
       return this.transporter.sendMail({
         from: process.env.NEXT_SERVER_MAIL_SERVICE_SENDER_ADDRESS,
         to: args.to,
-        subject: "Test Mail",
+        subject: "[AXT PropTech] Convite para Área Exclusiva",
         html,
       });
     } catch (e: any) {

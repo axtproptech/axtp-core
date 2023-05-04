@@ -68,5 +68,6 @@ export class Auth0Service {
         includeEmailInRedirect: false,
       }
     );
+    return invitationLink.ticket + "type=invite";
   }
 }
