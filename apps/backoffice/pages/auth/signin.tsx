@@ -1,6 +1,6 @@
 import { Login } from "@/features/auth/login";
 import { getProviders } from "next-auth/react";
-import { unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { GetServerSidePropsContext } from "next";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { MinimumLayout } from "@/app/components/layout/minimumLayout";
@@ -9,7 +9,7 @@ export async function getServerSideProps({
   req,
   res,
 }: GetServerSidePropsContext) {
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await getServerSession(req, res, authOptions);
   if (session) {
     return {
       redirect: {

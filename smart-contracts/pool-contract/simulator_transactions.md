@@ -1,6 +1,6 @@
 # Simulator Steps
 
-Use this scenarios to test the contract with the [SmartC Simulator](https://deleterium.info/sc-simulator/)
+Use these scenarios to test the contract with the [SmartC Simulator](https://deleterium.info/sc-simulator/)
 
 
 ```js
