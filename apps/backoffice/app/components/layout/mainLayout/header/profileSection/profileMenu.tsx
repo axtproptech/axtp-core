@@ -70,6 +70,12 @@ export const ProfileMenu: FC<Props> = ({
     router.reload();
   };
 
+  const handleLogout = async () => {
+    await signOut({
+      callbackUrl: `${window.location.origin}/api/admin/me/logout`,
+    });
+  };
+
   const handleListItemClick = (
     event: React.MouseEvent,
     index: number,
@@ -152,7 +158,7 @@ export const ProfileMenu: FC<Props> = ({
                       <ListItemButton
                         sx={{ borderRadius: `12px` }}
                         selected={selectedIndex === 4}
-                        onClick={() => signOut()}
+                        onClick={handleLogout}
                       >
                         <ListItemIcon>
                           <IconLogout stroke={1.5} size="1.3rem" />
