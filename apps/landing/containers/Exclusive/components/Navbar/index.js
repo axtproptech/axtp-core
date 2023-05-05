@@ -1,9 +1,9 @@
-import { useMemo, useState } from "react";
+import { useState, useMemo } from "react";
+import { useSession, signOut } from "next-auth/react";
 import { Icon } from "react-icons-kit";
 import { x } from "react-icons-kit/feather/x";
 import { menu } from "react-icons-kit/feather/menu";
-import { ic_account_balance_wallet } from "react-icons-kit/md/ic_account_balance_wallet";
-import { ic_logout } from "react-icons-kit/md/ic_logout";
+import { logOut } from "react-icons-kit/feather/logOut";
 
 import Link from "next/link";
 import Fade from "react-reveal/Fade";
@@ -11,21 +11,18 @@ import Sidebar from "./components/Sidebar";
 import Button from "common/components/Button";
 import NextImage from "common/components/NextImage";
 import LogoImage from "common/assets/image/axt-white-text-logo.svg";
-import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
 
-  const firstName = useMemo(() => {
+  const handleSidebar = () => setIsOpenSidebar(!isOpenSidebar);
+
+  const userName = useMemo(() => {
     if (!session) return "";
     if (!session.user) return "";
-    console.log("session", session);
 
-    return (
-      session.user.firstName[0].toUpperCase() +
-      session.user.firstName.substring(1)
-    );
+    return session.user.name[0].toUpperCase() + session.user.name.substring(1);
   }, [session]);
 
   const handleLogout = async () => {
@@ -35,8 +32,6 @@ const Navbar = () => {
       });
     }
   };
-
-  const handleSidebar = () => setIsOpenSidebar(!isOpenSidebar);
 
   return (
     <header
@@ -87,38 +82,30 @@ const Navbar = () => {
               </Link>
             </div>
 
-            <div className="xs:hidden md:flex flex-row items-center justify-center gap-4">
-              {firstName && (
+            {session && (
+              <div className="xs:hidden md:flex flex-row items-center justify-center gap-4">
                 <div className="flex flex-row items-center justify-center gap-2">
                   <span className="text-white opacity-80 text-center">
-                    Hello, {firstName}
+                    {userName}
                   </span>
 
-                  {/*<div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-md dark:bg-gray-600">*/}
-                  {/*  <span class="font-medium text-gray-600 dark:text-gray-300">*/}
-                  {/*    AH*/}
-                  {/*  </span>*/}
-                  {/*</div>*/}
-
-                  <div
-                    class="relative inline-flex items-center justify-center w-8 h-8 overflow-hidden bg-transparent border rounded-md dark:bg-gray-600"
-                    onClick={handleLogout}
-                    title={"Logout"}
-                  >
-                    <span class="font-medium text-gray-100 dark:text-gray-300">
-                      <Icon icon={ic_logout} />
+                  <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-md dark:bg-gray-600">
+                    <span class="font-medium text-gray-600 dark:text-gray-300">
+                      {userName.substring(0, 2).toLocaleUpperCase()}
                     </span>
                   </div>
                 </div>
-              )}
-              <Button
-                icon={<Icon icon={ic_account_balance_wallet} />}
-                iconPosition="left"
-                variant="extenfabvdedFab"
-                title="Get Started"
-                onClick={() => alert("Click now")}
-              />
-            </div>
+
+                <Button
+                  icon={<Icon icon={logOut} />}
+                  iconPosition="left"
+                  variant="extenfabvdedFab"
+                  colors="secondaryWithBg"
+                  title="Sair"
+                  onClick={handleLogout}
+                />
+              </div>
+            )}
 
             <div className="xs:flex md:hidden">
               <Button
@@ -140,7 +127,9 @@ const Navbar = () => {
         </ul>
       </nav>
 
-      {isOpenSidebar && <Sidebar />}
+      {isOpenSidebar && (
+        <Sidebar userName={userName} handleLogout={handleLogout} />
+      )}
     </header>
   );
 };

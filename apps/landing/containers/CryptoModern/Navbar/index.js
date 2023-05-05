@@ -10,18 +10,16 @@ import Logo from "common/components/UIElements/Logo";
 import Button from "common/components/Button";
 import Container from "common/components/UI/Container";
 import useOnClickOutside from "common/hooks/useOnClickOutside";
-import NavbarWrapper, { MenuArea, MobileMenu, Search } from "./navbar.style";
+import NavbarWrapper, { MenuArea, MobileMenu } from "./navbar.style";
 import LogoImage from "common/assets/image/cryptoModern/logo-light.svg";
 import LogoImageAlt from "common/assets/image/cryptoModern/logo.svg";
-import { signIn, useSession, signOut } from "next-auth/react";
-
+import { signIn, useSession } from "next-auth/react";
 import { navbar } from "common/data/CryptoModern";
 import { useRouter } from "next/router";
 
 const Navbar = ({ noMenu }) => {
   const { navMenu } = navbar;
-
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   const [state, setState] = useState({
@@ -29,14 +27,6 @@ const Navbar = ({ noMenu }) => {
     searchToggle: false,
     mobileMenu: false,
   });
-
-  const userName = useMemo(() => {
-    if (!session) return "";
-    if (!session.user) return "";
-    console.log("session", session);
-
-    return session.user.name[0].toUpperCase() + session.user.name.substring(1);
-  }, [session]);
 
   const searchRef = useRef(null);
   useOnClickOutside(searchRef, () =>
@@ -86,14 +76,6 @@ const Navbar = ({ noMenu }) => {
     }
   };
 
-  const handleLogout = async () => {
-    if (status === "authenticated") {
-      await signOut({
-        callbackUrl: `${window.location.origin}/api/logout`,
-      });
-    }
-  };
-
   return (
     <NavbarWrapper className="navbar">
       <Container>
@@ -111,22 +93,6 @@ const Navbar = ({ noMenu }) => {
         />
         {/* end of logo */}
 
-        {session && (
-          <>
-            <div className="user">
-              {`Bem vindo, ${userName}`}
-              <div className="logout" onClick={handleLogout}>
-                Sair
-              </div>
-            </div>
-            <div className="user-alt">
-              {`Bem vindo, ${userName}`}
-              <div className="logout" onClick={handleLogout}>
-                Sair
-              </div>
-            </div>
-          </>
-        )}
         {!noMenu && (
           <MenuArea className={state.searchToggle ? "active" : ""}>
             <ScrollSpyMenu className="menu" menuItems={navMenu} offset={-84} />

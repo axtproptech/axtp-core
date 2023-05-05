@@ -5,7 +5,9 @@ const ErrorWrapper = styled.div`
   height: 100vh;
   display: flex;
   align-items: center;
+  background: white;
 `;
+
 export default ErrorWrapper;
 
 export const ErrorContent = styled.div`
