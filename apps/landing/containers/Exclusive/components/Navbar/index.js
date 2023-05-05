@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Icon } from "react-icons-kit";
 import { x } from "react-icons-kit/feather/x";
 import { menu } from "react-icons-kit/feather/menu";
 import { ic_account_balance_wallet } from "react-icons-kit/md/ic_account_balance_wallet";
+import { ic_logout } from "react-icons-kit/md/ic_logout";
 
 import Link from "next/link";
 import Fade from "react-reveal/Fade";
@@ -10,9 +11,31 @@ import Sidebar from "./components/Sidebar";
 import Button from "common/components/Button";
 import NextImage from "common/components/NextImage";
 import LogoImage from "common/assets/image/axt-white-text-logo.svg";
+import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
+  const { data: session, status } = useSession();
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
+
+  const firstName = useMemo(() => {
+    if (!session) return "";
+    if (!session.user) return "";
+    console.log("session", session);
+
+    return (
+      session.user.firstName[0].toUpperCase() +
+      session.user.firstName.substring(1)
+    );
+  }, [session]);
+
+  const handleLogout = async () => {
+    if (status === "authenticated") {
+      await signOut({
+        callbackUrl: `${window.location.origin}/api/logout`,
+      });
+    }
+  };
+
   const handleSidebar = () => setIsOpenSidebar(!isOpenSidebar);
 
   return (
@@ -65,18 +88,29 @@ const Navbar = () => {
             </div>
 
             <div className="xs:hidden md:flex flex-row items-center justify-center gap-4">
-              <div className="flex flex-row items-center justify-center gap-2">
-                <span className="text-white opacity-80 text-center">
-                  Hello, Armando
-                </span>
-
-                <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-md dark:bg-gray-600">
-                  <span class="font-medium text-gray-600 dark:text-gray-300">
-                    AH
+              {firstName && (
+                <div className="flex flex-row items-center justify-center gap-2">
+                  <span className="text-white opacity-80 text-center">
+                    Hello, {firstName}
                   </span>
-                </div>
-              </div>
 
+                  {/*<div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-md dark:bg-gray-600">*/}
+                  {/*  <span class="font-medium text-gray-600 dark:text-gray-300">*/}
+                  {/*    AH*/}
+                  {/*  </span>*/}
+                  {/*</div>*/}
+
+                  <div
+                    class="relative inline-flex items-center justify-center w-8 h-8 overflow-hidden bg-transparent border rounded-md dark:bg-gray-600"
+                    onClick={handleLogout}
+                    title={"Logout"}
+                  >
+                    <span class="font-medium text-gray-100 dark:text-gray-300">
+                      <Icon icon={ic_logout} />
+                    </span>
+                  </div>
+                </div>
+              )}
               <Button
                 icon={<Icon icon={ic_account_balance_wallet} />}
                 iconPosition="left"

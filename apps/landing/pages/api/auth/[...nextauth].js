@@ -1,8 +1,10 @@
 import NextAuth from "next-auth";
 import Auth0Provider from "next-auth/providers/auth0";
 
+const NS = "axtp.com.br";
 const CustomClaims = {
-  cuid: "axtp.com.br/cuid",
+  cuid: `${NS}/cuid`,
+  firstName: `${NS}/firstName`,
 };
 
 export const authOptions = {
@@ -20,6 +22,7 @@ export const authOptions = {
     async session({ session, user, token }) {
       if (session && session.user && token.cuid) {
         session.user.cuid = token.cuid;
+        session.user.firstName = token.firstName;
         delete session.email;
       }
       return session;
@@ -27,6 +30,7 @@ export const authOptions = {
     async jwt({ token, profile }) {
       if (profile && profile[CustomClaims.cuid]) {
         token.cuid = profile[CustomClaims.cuid];
+        token.firstName = profile[CustomClaims.firstName];
       }
       return token;
     },
