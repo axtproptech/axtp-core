@@ -61,8 +61,8 @@ export class Auth0Service {
     const { response: invitationLink } = await this.auth0Client.post(
       "/tickets/password-change",
       {
-        result_url: `${process.env.NEXTAUTH_URL}/exclusive`,
         user_id: createdUser.user_id,
+        client_id: process.env.NEXT_SERVER_AUTH0_EXCLUSIVE_AREA_CLIENT_ID,
         ttl_sec: 7 * Days,
         mark_email_as_verified: true,
         includeEmailInRedirect: false,
