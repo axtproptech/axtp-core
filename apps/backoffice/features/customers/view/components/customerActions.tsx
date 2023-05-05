@@ -10,10 +10,12 @@ import {
   IconUserExclamation,
   IconUserOff,
   IconUserX,
+  IconMailForward,
 } from "@tabler/icons";
 
 export type CustomerActionType =
   | "verify"
+  | "invite"
   | "block"
   | "unblock"
   | "deactivate"
@@ -51,6 +53,17 @@ export const CustomerActions: FC<Props> = ({
             actionIcon={<IconUserCheck />}
             color="success"
             onClick={handleActionClick("verify")}
+            isLoading={actionsLoading}
+          />
+        </Box>
+      )}
+      {availableActions.has("invite") && (
+        <Box sx={{ ml: 2 }}>
+          <ActionButton
+            actionLabel="Invite"
+            actionIcon={<IconMailForward />}
+            color="info"
+            onClick={handleActionClick("invite")}
             isLoading={actionsLoading}
           />
         </Box>

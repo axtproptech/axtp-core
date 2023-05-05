@@ -41,6 +41,19 @@ export const SingleCustomer = () => {
     return customerService.with(cuid).fetchCustomer();
   });
 
+  const inviteCustomerExclusiveArea = async () => {
+    try {
+      await auth0Service.createUser(cuid);
+      // set also users invitation flag
+      await Promise.all([
+        mutate(`getCustomer/${cuid}`),
+        mutate("getPendingTokenHolders"),
+      ]);
+    } catch (e) {
+      console.error("Some error", e);
+    }
+  };
+
   const verifyCustomer = async () => {
     try {
       await customerService.with(cuid).verifyCustomer("Level1");
@@ -77,6 +90,8 @@ export const SingleCustomer = () => {
     switch (action) {
       case "verify":
         return verifyCustomer();
+      case "invite":
+        return inviteCustomerExclusiveArea();
       case "activate":
         return activateCustomer(true);
       case "deactivate":
@@ -101,8 +116,11 @@ export const SingleCustomer = () => {
     ) {
       actions.add("verify");
     }
+    // FIXME: invite for non invited people
+    actions.add("invite");
     actions.add(customer.isActive ? "deactivate" : "activate");
     actions.add(customer.isBlocked ? "unblock" : "block");
+
     return actions;
   }, [customer]);
 
