@@ -95,6 +95,7 @@ export const MenuArea = styled.div`
 
   .menu {
     display: flex;
+    flex-direction: row;
     align-items: center;
     margin-right: 11px;
     opacity: 1;
@@ -108,7 +109,7 @@ export const MenuArea = styled.div`
     }
 
     li {
-      margin: 0 19px;
+      margin: 0;
       @media only screen and (max-width: 1366px) {
         margin: 0 17px;
       }
