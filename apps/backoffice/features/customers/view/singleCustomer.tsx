@@ -66,6 +66,7 @@ export const SingleCustomer = () => {
   const blockCustomer = async (isBlocked: boolean) => {
     try {
       await customerService.with(cuid).setCustomerBlockingState(isBlocked);
+      await auth0Service.setUserBlocked(cuid, isBlocked);
       await mutate(`getCustomer/${cuid}`);
     } catch (e) {
       console.error("Some error", e);

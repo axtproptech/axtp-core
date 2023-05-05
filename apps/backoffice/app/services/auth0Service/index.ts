@@ -11,8 +11,10 @@ export class Auth0Service {
     return this.http.post(`/user/${cuid}`, {});
   }
 
-  async blockUser(cuid: string) {
-    return this.http.put(`/user/${cuid}?action=block-user`, {});
+  async setUserBlocked(cuid: string, isBlocked: boolean) {
+    return this.http.put(`/user/${cuid}?action=block-user`, {
+      isBlocked,
+    });
   }
 }
 

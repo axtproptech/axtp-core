@@ -3,47 +3,26 @@ import { prisma } from "@axtp/db";
 import { notFound, badRequest, notAcceptable } from "@hapi/boom";
 import { object, string, ValidationError } from "yup";
 import { mailService } from "@/bff/mailService";
-import { Auth0Service } from "./auth0Service";
+import { Auth0Service } from "./internal/auth0Service";
+import { findCustomerById } from "./internal/findCustomerById";
 import * as process from "process";
-
-const loadCustomer = async (cuid: string) => {
-  const customer = await prisma.customer.findUnique({
-    where: { cuid },
-    select: {
-      email1: true,
-      firstName: true,
-      lastName: true,
-      isActive: true,
-      isBlocked: true,
-      verificationLevel: true,
-    },
-  });
-
-  if (!customer) {
-    throw notFound();
-  }
-
-  return customer;
-};
-
 export const createAuth0User: ApiHandler = async ({ req, res }) => {
   try {
     console.time("createAuth0User");
-    const querySchema = object({ cuid: string() });
+    const querySchema = object({ cuid: string().required() });
     const query = req.query;
     const { cuid } = querySchema.validateSync(query);
 
-    if (!cuid) {
-      throw badRequest("cuid not provided");
-    }
-
-    const customer = await loadCustomer(cuid);
+    const customer = await findCustomerById(cuid);
     if (customer.isBlocked || !customer.isActive) {
       throw notAcceptable(`User ${cuid} is blocked or not active`);
     }
 
     console.log("creating user...");
     const token = await Auth0Service.getAccessToken();
+
+    console.log("token", token);
+
     const auth0Service = new Auth0Service(token);
     const { firstName, lastName, email1 } = customer;
     const accessLink = await auth0Service.createUser({

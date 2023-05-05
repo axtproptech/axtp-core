@@ -1,6 +1,7 @@
 import { HttpClientFactory, Http } from "@signumjs/http";
 import { GetAccessTokenResponse } from "@/bff/types/getAccessTokenResponse";
 import { randomUUID } from "crypto";
+import axios from "axios";
 
 interface CreateUserArgs {
   email: string;
@@ -9,10 +10,16 @@ interface CreateUserArgs {
   cuid: string;
 }
 
+interface SetUserBlockedArgs {
+  isBlocked: boolean;
+  cuid: string;
+}
+
 export class Auth0Service {
   private auth0Client: Http;
 
-  constructor({ token_type, access_token }: GetAccessTokenResponse) {
+  constructor(private accessToken: GetAccessTokenResponse) {
+    const { token_type, access_token } = accessToken;
     this.auth0Client = HttpClientFactory.createHttpClient(
       `${process.env.NEXT_SERVER_AUTH0_ISSUER}/api/v2`,
       {
@@ -69,5 +76,26 @@ export class Auth0Service {
       }
     );
     return invitationLink.ticket + "type=invite";
+  }
+
+  async getUserIdByCuid(cuid: string): Promise<string> {
+    const { response: foundUsers } = await this.auth0Client.get(
+      `/users?q=user_metadata.cuid=${cuid}`
+    );
+    return foundUsers.length === 1 ? foundUsers[0].user_id : "";
+  }
+
+  async setUserBlocked({ isBlocked, cuid }: SetUserBlockedArgs): Promise<void> {
+    const userId = await this.getUserIdByCuid(cuid);
+
+    // httpclient does not support patch method.... dirty workaround
+    const { token_type, access_token } = this.accessToken;
+    const client = axios.create({
+      baseURL: `${process.env.NEXT_SERVER_AUTH0_ISSUER}/api/v2`,
+      headers: {
+        Authorization: `${token_type} ${access_token}`,
+      },
+    });
+    await client.patch(`/users/${userId}`, { blocked: isBlocked });
   }
 }
