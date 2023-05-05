@@ -43,7 +43,7 @@ export const SingleCustomer = () => {
 
   const verifyCustomer = async () => {
     try {
-      // await customerService.with(cuid).verifyCustomer("Level1");
+      await customerService.with(cuid).verifyCustomer("Level1");
       await auth0Service.createUser(cuid);
       await Promise.all([
         mutate(`getCustomer/${cuid}`),
