@@ -19,7 +19,5 @@ export const resetPassword: ApiHandler = async ({ req, res }) => {
     connection: process.env.NEXT_SERVER_AUTH0_CONNECTION,
   });
 
-  console.log("Password reset", response);
-
   res.status(200).end();
 };
