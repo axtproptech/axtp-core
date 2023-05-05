@@ -1,11 +1,11 @@
-import { unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../pages/api/auth/[...nextauth]";
 import { ApiHandler } from "@/bff/types/apiHandler";
 import { unauthorized } from "@hapi/boom";
 import { HttpClientFactory } from "@signumjs/http";
 
 export const resetPassword: ApiHandler = async ({ req, res }) => {
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await getServerSession(req, res, authOptions);
   if (!session) {
     throw unauthorized();
   }
@@ -19,5 +19,5 @@ export const resetPassword: ApiHandler = async ({ req, res }) => {
     connection: process.env.NEXT_SERVER_AUTH0_CONNECTION,
   });
 
-  console.log("response", response);
+  res.status(200).end();
 };
