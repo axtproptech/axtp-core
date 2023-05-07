@@ -63,6 +63,7 @@ ErrorSec.defaultProps = {
     mb: ["30px", "40px", "50px", "60px"],
     textAlign: "center",
     fontFamily: "lato",
+    fontWeight: "bold",
   },
   reloadButton: {
     type: "button",

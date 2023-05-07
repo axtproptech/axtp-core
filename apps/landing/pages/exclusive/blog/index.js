@@ -7,11 +7,15 @@ import {
   ContentWrapper,
 } from "containers/CryptoModern/cryptoModern.style";
 
-const ExclusiveLandingPage = () => {
+const ExclusiveCmsPage = () => {
   return (
     <>
       <Head>
-        <title>AXT PropTech Company S/A - Exlusive Area</title>
+        <title>Blog - AXT PropTech Company S/A</title>
+        <meta
+          name="Description"
+          content="Blog posts from the AXTP PropTech Company and community. Discover the latest in our investment platform."
+        />
       </Head>
 
       <Navbar />
@@ -27,4 +31,4 @@ const ExclusiveLandingPage = () => {
   );
 };
 
-export default ExclusiveLandingPage;
+export default ExclusiveCmsPage;
