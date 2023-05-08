@@ -56,22 +56,16 @@ const Navbar = () => {
               </a>
             </Link>
 
-            <div className="xs:hidden md:flex items-center justify-center gap-4">
-              <Link href="/exclusive" passHref>
-                <a className="text-white opacity-80 hover:opacity-100 hover:text-white">
-                  Home
-                </a>
-              </Link>
-
+            <div className="xs:hidden md:flex items-center justify-center gap-8">
               <Link href="/exclusive/blog">
                 <a className="text-white opacity-80 hover:opacity-100 hover:text-white">
                   Blog
                 </a>
               </Link>
 
-              <Link href="/exclusive/contact">
+              <Link href="/exclusive">
                 <a className="text-white opacity-80 hover:opacity-100 hover:text-white">
-                  Contact
+                  Wallet
                 </a>
               </Link>
 
