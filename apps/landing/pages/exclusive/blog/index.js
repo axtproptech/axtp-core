@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Navbar from "containers/Exclusive/components/Navbar";
 import Footer from "containers/CryptoModern/Footer";
-import ExclusiveAreaPage from "containers/Exclusive/LandingPage/index";
+import CmsPage from "containers/Exclusive/Cms";
 import {
   CryptoWrapper,
   ContentWrapper,
@@ -22,7 +22,7 @@ const ExclusiveCmsPage = () => {
 
       <CryptoWrapper>
         <ContentWrapper>
-          <ExclusiveAreaPage />
+          <CmsPage />
         </ContentWrapper>
 
         <Footer />
