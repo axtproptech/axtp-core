@@ -4,6 +4,7 @@ const AnswerIndex = {
   Name: 1,
   Phone: 5,
   Email: 14,
+  BrazilResident: 16,
 };
 
 export class JotFormSubmissionParser {
@@ -26,6 +27,12 @@ export class JotFormSubmissionParser {
 
   get email() {
     return this.answer(AnswerIndex.Email) || "";
+  }
+
+  get isBrazilian() {
+    return (
+      (this.answer(AnswerIndex.BrazilResident) || "").toUpperCase() === "SIM"
+    );
   }
 
   get fullName() {

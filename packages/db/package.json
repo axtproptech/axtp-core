@@ -1,6 +1,6 @@
 {
   "name": "@axtp/db",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "The database client package",
   "author": "ohager",
   "license": "MIT",

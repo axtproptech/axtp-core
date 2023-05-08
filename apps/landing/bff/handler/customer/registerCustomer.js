@@ -19,7 +19,6 @@ const fetchSubmissionData = async (submissionId) => {
   }
   return answers;
 };
-
 export const registerCustomer = async (req, res) => {
   try {
     const { submission_id } = req.body;
@@ -45,6 +44,7 @@ export const registerCustomer = async (req, res) => {
         email1: answers.email,
         phone1: answers.phone,
         verificationLevel: "NotVerified",
+        isInBrazil: answers.isBrazilian,
       },
     });
     res.redirect(302, `/?status=success`);

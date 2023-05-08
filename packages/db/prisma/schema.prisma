@@ -49,6 +49,7 @@ model Customer {
   termsOfUse         TermsOfUseOnCustomer[]
   payments           Payment[]
   isInvited          Boolean                @default(false)
+  isInBrazil         Boolean                @default(true)
 
   @@index([cuid, lastName, email1, cpfCnpj])
 }
