@@ -42,4 +42,5 @@ export interface CustomerFullResponse {
   blockchainAccounts: BlockchainAccountResponse[];
   addresses: Address[];
   documents: Document[];
+  isInvited: boolean;
 }

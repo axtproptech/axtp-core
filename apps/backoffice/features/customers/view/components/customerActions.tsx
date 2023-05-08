@@ -107,7 +107,7 @@ export const CustomerActions: FC<Props> = ({
             actionLabel="Activate"
             actionIcon={<IconUser />}
             color="warning"
-            onClick={handleActionClick("deactivate")}
+            onClick={handleActionClick("activate")}
             isLoading={actionsLoading}
           />
         </Box>
