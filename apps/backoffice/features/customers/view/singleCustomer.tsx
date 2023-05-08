@@ -45,7 +45,6 @@ export const SingleCustomer = () => {
     try {
       await auth0Service.createUser(cuid);
       await customerService.with(cuid).setCustomerInvitationState(true);
-      // set also users invitation flag
       await Promise.all([
         mutate(`getCustomer/${cuid}`),
         mutate("getPendingTokenHolders"),
