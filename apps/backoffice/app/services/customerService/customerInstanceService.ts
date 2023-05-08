@@ -39,4 +39,11 @@ export class CustomerInstanceService {
     });
     return response as CustomerFullResponse;
   }
+
+  async setCustomerInvitationState(isInvited: boolean) {
+    const { response } = await this.http.put("", {
+      isInvited,
+    });
+    return response as CustomerFullResponse;
+  }
 }

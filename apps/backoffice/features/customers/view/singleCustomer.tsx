@@ -41,6 +41,19 @@ export const SingleCustomer = () => {
     return customerService.with(cuid).fetchCustomer();
   });
 
+  const inviteCustomerExclusiveArea = async () => {
+    try {
+      await auth0Service.createUser(cuid);
+      await customerService.with(cuid).setCustomerInvitationState(true);
+      await Promise.all([
+        mutate(`getCustomer/${cuid}`),
+        mutate("getPendingTokenHolders"),
+      ]);
+    } catch (e) {
+      console.error("Some error", e);
+    }
+  };
+
   const verifyCustomer = async () => {
     try {
       await customerService.with(cuid).verifyCustomer("Level1");
@@ -66,8 +79,10 @@ export const SingleCustomer = () => {
   const blockCustomer = async (isBlocked: boolean) => {
     try {
       await customerService.with(cuid).setCustomerBlockingState(isBlocked);
-      await auth0Service.setUserBlocked(cuid, isBlocked);
       await mutate(`getCustomer/${cuid}`);
+      if (customer?.isInvited) {
+        await auth0Service.setUserBlocked(cuid, isBlocked);
+      }
     } catch (e) {
       console.error("Some error", e);
     }
@@ -77,6 +92,8 @@ export const SingleCustomer = () => {
     switch (action) {
       case "verify":
         return verifyCustomer();
+      case "invite":
+        return inviteCustomerExclusiveArea();
       case "activate":
         return activateCustomer(true);
       case "deactivate":
@@ -101,8 +118,12 @@ export const SingleCustomer = () => {
     ) {
       actions.add("verify");
     }
+    if (!customer.isInvited) {
+      actions.add("invite");
+    }
     actions.add(customer.isActive ? "deactivate" : "activate");
     actions.add(customer.isBlocked ? "unblock" : "block");
+
     return actions;
   }, [customer]);
 

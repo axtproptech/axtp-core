@@ -10,6 +10,7 @@ export const findCustomerById = async (cuid: string) => {
       lastName: true,
       isActive: true,
       isBlocked: true,
+      isInvited: true,
       verificationLevel: true,
     },
   });

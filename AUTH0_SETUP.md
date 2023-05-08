@@ -120,6 +120,7 @@ The application needs to be connected to the Landing Page Connection (`Authentic
 Set APIs to `Auth0 Management API` and activate the following permissions (scopes):
 
 - `update:users`
+- `read:users`
 - `create:users`
 - `create:user_tickets`
 

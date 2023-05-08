@@ -48,6 +48,7 @@ model Customer {
   verificationResult VerificationResult?
   termsOfUse         TermsOfUseOnCustomer[]
   payments           Payment[]
+  isInvited          Boolean                @default(false)
 
   @@index([cuid, lastName, email1, cpfCnpj])
 }

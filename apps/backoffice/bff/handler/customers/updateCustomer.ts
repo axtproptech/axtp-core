@@ -3,7 +3,6 @@ import { ApiHandler } from "@/bff/types/apiHandler";
 import { notFound, badRequest } from "@hapi/boom";
 
 import { boolean, mixed, object, string, ValidationError } from "yup";
-import { sanitizeUrl } from "@braintree/sanitize-url";
 import { asFullCustomerResponse } from "./asFullCustomerResponse";
 
 let customerRequestSchema = object({ cuid: string() });
@@ -11,14 +10,15 @@ let customerRequestSchema = object({ cuid: string() });
 // TODO: extend as needed
 let customerUpdateBodySchema = object({
   verificationLevel: mixed().oneOf(["Level1", "Level2"]),
-  isBlocked: boolean().default(false),
-  isActive: boolean().default(true),
+  isBlocked: boolean(),
+  isActive: boolean(),
+  isInvited: boolean(),
 });
 
 export const updateCustomer: ApiHandler = async ({ req, res }) => {
   try {
     const { cuid } = customerRequestSchema.validateSync(req.query);
-    const { verificationLevel, isBlocked, isActive } =
+    const { verificationLevel, isBlocked, isActive, isInvited } =
       customerUpdateBodySchema.validateSync(req.body);
 
     const customer = await prisma.customer.update({
@@ -27,6 +27,7 @@ export const updateCustomer: ApiHandler = async ({ req, res }) => {
         verificationLevel,
         isBlocked,
         isActive,
+        isInvited,
       },
       include: {
         termsOfUse: true,
