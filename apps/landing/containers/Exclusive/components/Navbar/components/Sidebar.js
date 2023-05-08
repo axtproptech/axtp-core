@@ -15,21 +15,15 @@ const Sidebar = ({ userName, handleLogout }) => {
           <label className="drawer-overlay"></label>
           <ul className="flex flex-col gap-8 p-4 mt-4 rounded-2xl w-full h-screen text-black bg-white">
             <li>
-              <Link href="/exclusive" passHref>
-                <a className="block text-black text-center font-medium">Home</a>
-              </Link>
-            </li>
-
-            <li>
               <Link href="/exclusive/blog">
                 <a className="block text-black text-center font-medium">Blog</a>
               </Link>
             </li>
 
             <li>
-              <Link href="/exclusive/contact">
+              <Link href="/exclusive">
                 <a className="block text-black text-center font-medium">
-                  Contact
+                  Wallet
                 </a>
               </Link>
             </li>
