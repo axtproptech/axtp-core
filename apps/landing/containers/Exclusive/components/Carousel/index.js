@@ -3,7 +3,7 @@ import { PrevButton, NextButton } from "./components/ArrowButtons";
 
 import useEmblaCarousel from "embla-carousel-react";
 
-const Carousel = () => {
+const Carousel = ({ articles }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({});
   const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
   const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
@@ -42,6 +42,8 @@ const Carousel = () => {
   const slides = Array.from(Array(SLIDE_COUNT).keys());
 
   const imageByIndex = (index) => images[index % images.length];
+
+  console.log("articles", articles);
 
   return (
     <div
