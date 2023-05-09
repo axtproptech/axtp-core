@@ -74,6 +74,12 @@ const Navbar = () => {
                   Whitepaper
                 </a>
               </Link>
+
+              <Link href="mailto:info@axtp.com.br" passHref>
+                <a className="text-white opacity-80 hover:opacity-100 hover:text-white">
+                  Contact
+                </a>
+              </Link>
             </div>
 
             {session && (

@@ -36,6 +36,13 @@ const Sidebar = ({ userName, handleLogout }) => {
               </Link>
             </li>
 
+            <li>
+              <Link href="mailto:info@axtp.com.br" passHref>
+                <a className="block text-black text-center font-medium">
+                  Contact
+                </a>
+              </Link>
+            </li>
             <hr class="w-full p-0.5"></hr>
 
             <li>

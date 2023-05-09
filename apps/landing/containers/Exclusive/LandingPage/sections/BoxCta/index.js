@@ -2,6 +2,7 @@ import { Icon } from "react-icons-kit";
 import { ic_account_balance_wallet } from "react-icons-kit/md/ic_account_balance_wallet";
 import { ic_contact_support_outline } from "react-icons-kit/md/ic_contact_support_outline";
 
+import Link from "next/link";
 import Button from "common/components/Button";
 
 const BoxCta = () => {
@@ -32,15 +33,17 @@ const BoxCta = () => {
           onClick={() => alert("Click now")}
         />
 
-        <Button
-          icon={<Icon icon={ic_contact_support_outline} />}
-          iconPosition="left"
-          disabled={false}
-          variant="outlined"
-          colors="warning"
-          title="Contact us"
-          onClick={() => alert("Click now")}
-        />
+        <Link href="mailto:info@axtp.com.br" passHref>
+          <Button
+            icon={<Icon icon={ic_contact_support_outline} />}
+            iconPosition="left"
+            disabled={false}
+            variant="outlined"
+            colors="warning"
+            title="Contact us"
+            onClick={null}
+          />
+        </Link>
       </div>
     </div>
   );
