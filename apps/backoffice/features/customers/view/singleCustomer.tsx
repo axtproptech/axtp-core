@@ -140,7 +140,9 @@ export const SingleCustomer = () => {
       <Grid container spacing={gridSpacing} direction="row" alignItems="center">
         <Grid item>
           <Typography variant="h4">
-            {`${customer?.firstName} ${customer?.lastName}`}
+            {`${customer?.firstName} ${customer?.lastName} ${
+              customer.isInBrazil ? "🇧🇷" : "🌐"
+            }`}
           </Typography>
         </Grid>
         <Grid item>
@@ -246,6 +248,10 @@ const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
             <LabeledTextField
               label="Nationality"
               text={`${customer.nationality}`}
+            />
+            <LabeledTextField
+              label="Brazilian Resident"
+              text={customer.isInBrazil ? "YES" : "NO"}
             />
             <LabeledTextField
               label="Mother's Name"

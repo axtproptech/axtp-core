@@ -4,6 +4,7 @@ import { customerService } from "@/app/services/customerService/customerService"
 import { useMemo } from "react";
 import {
   DataGrid,
+  GridAlignment,
   GridColDef,
   GridRenderCellParams,
   GridRowParams,
@@ -29,6 +30,14 @@ const renderCreatedAt = (params: GridRenderCellParams<string>) => {
 
   return <div style={style}>{applied}</div>;
 };
+
+const FlagCellProps = {
+  flex: 0,
+  resizable: false,
+  width: 80,
+  align: "center" as GridAlignment,
+};
+
 const columns: GridColDef[] = [
   { field: "createdAt", headerName: "Applied On", renderCell: renderCreatedAt },
   { field: "firstName", headerName: "First Name", flex: 1 },
@@ -36,7 +45,11 @@ const columns: GridColDef[] = [
   { field: "cpfCnpj", headerName: "CPF", flex: 1 },
   { field: "email1", headerName: "E-Mail", flex: 1 },
   { field: "phone1", headerName: "Phone", flex: 1 },
+  { field: "isInvited", headerName: "Invited", ...FlagCellProps },
+  { field: "isInBrazil", headerName: "Brazilian", ...FlagCellProps },
 ];
+
+const asFlag = (b: Boolean) => (b ? "✅" : "❌");
 
 export const PendingCustomerTable = () => {
   const router = useRouter();
@@ -50,7 +63,17 @@ export const PendingCustomerTable = () => {
       return [];
     }
     return data.map(
-      ({ cuid, firstName, lastName, cpfCnpj, email1, phone1, createdAt }) => {
+      ({
+        cuid,
+        firstName,
+        lastName,
+        cpfCnpj,
+        email1,
+        phone1,
+        createdAt,
+        isInBrazil,
+        isInvited,
+      }) => {
         return {
           id: cuid,
           firstName,
@@ -58,6 +81,8 @@ export const PendingCustomerTable = () => {
           cpfCnpj: cpf.format(cpfCnpj),
           email1,
           phone1,
+          isInBrazil: asFlag(isInBrazil),
+          isInvited: asFlag(isInvited),
           createdAt,
         };
       }

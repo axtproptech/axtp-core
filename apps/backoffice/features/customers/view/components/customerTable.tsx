@@ -4,6 +4,7 @@ import { customerService } from "@/app/services/customerService/customerService"
 import { ChangeEvent, useMemo, useState } from "react";
 import {
   DataGrid,
+  GridAlignment,
   GridColDef,
   GridRenderCellParams,
   GridRowParams,
@@ -33,14 +34,6 @@ const renderVerificationLevel = (params: GridRenderCellParams<string>) => {
   const verification = params.value;
   if (!verification) return null;
   return <VerificationChip level={verification} />;
-};
-
-const renderActive = (params: GridRenderCellParams<boolean>) => {
-  return <ActivationChip isActive={Boolean(params.value)} />;
-};
-
-const renderBlocked = (params: GridRenderCellParams<boolean>) => {
-  return <BlockingChip isBlocked={Boolean(params.value)} alwaysShow />;
 };
 
 const AccountAction = ({ publicKey }: { publicKey: string }) => {
@@ -99,6 +92,13 @@ const renderAccount = (params: GridRenderCellParams<string>) => (
   <AccountAction publicKey={params.value || ""} />
 );
 
+const FlagCellProps = {
+  flex: 0,
+  resizable: false,
+  width: 80,
+  align: "center" as GridAlignment,
+};
+
 const columns: GridColDef[] = [
   { field: "createdAt", headerName: "Applied On", renderCell: renderCreatedAt },
   { field: "firstName", headerName: "First Name", flex: 1 },
@@ -113,25 +113,35 @@ const columns: GridColDef[] = [
     renderCell: renderVerificationLevel,
   },
   {
-    field: "isActive",
-    headerName: "Active",
-    flex: 1,
-    renderCell: renderActive,
-  },
-  {
-    field: "isBlocked",
-    headerName: "Blocked",
-    flex: 1,
-    renderCell: renderBlocked,
-  },
-  {
     field: "blockchainAccount",
     headerName: "Public Key",
     flex: 1,
     sortable: false,
     renderCell: renderAccount,
   },
+  {
+    field: "isActive",
+    headerName: "Active",
+    ...FlagCellProps,
+  },
+  {
+    field: "isBlocked",
+    headerName: "Blocked",
+    ...FlagCellProps,
+  },
+  {
+    field: "isInvited",
+    headerName: "Invited",
+    ...FlagCellProps,
+  },
+  {
+    field: "isInBrazil",
+    headerName: "Brazilian",
+    ...FlagCellProps,
+  },
 ];
+
+const asFlag = (b: Boolean) => (b ? "✅" : "❌");
 
 export const CustomerTable = () => {
   const router = useRouter();
@@ -158,6 +168,8 @@ export const CustomerTable = () => {
         verificationLevel,
         isBlocked,
         isActive,
+        isInvited,
+        isInBrazil,
         blockchainAccounts,
       }) => {
         return {
@@ -169,8 +181,10 @@ export const CustomerTable = () => {
           phone1,
           createdAt,
           verificationLevel,
-          isBlocked,
-          isActive,
+          isBlocked: isBlocked ? "⛔" : "✅",
+          isActive: asFlag(isActive),
+          isInvited: asFlag(isInvited),
+          isInBrazil: asFlag(isInBrazil),
           blockchainAccount: blockchainAccounts.length
             ? blockchainAccounts[0].publicKey
             : null,

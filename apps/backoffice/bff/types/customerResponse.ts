@@ -11,6 +11,8 @@ export interface CustomerResponse {
   id: number;
   isActive: boolean;
   isBlocked: boolean;
+  isInvited: boolean;
+  isInBrazil: boolean;
   lastName: string;
   nationality: string;
   phone1: string;

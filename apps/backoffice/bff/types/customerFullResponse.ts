@@ -43,4 +43,5 @@ export interface CustomerFullResponse {
   addresses: Address[];
   documents: Document[];
   isInvited: boolean;
+  isInBrazil: boolean;
 }
