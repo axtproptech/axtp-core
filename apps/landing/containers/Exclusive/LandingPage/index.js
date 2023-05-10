@@ -1,12 +1,12 @@
 import Fade from "react-reveal/Fade";
 
-import Welcome from "./sections/Welcome";
+import { Welcome } from "./sections/Welcome";
 import InvestmentPlan from "./sections/InvestmentPlan";
 import Kpis from "./sections/Kpis";
 import BoxCta from "./sections/BoxCta";
 import Faq from "./sections/Faq";
 
-const LandingPage = () => {
+export const ExclusiveAreaPage = ({ articles }) => {
   return (
     <div className="relative flex flex-col mb-32">
       <div className="absolute h-full inset-0 top-0 left-0 flex items-center justify-center overflow-hidden -z-10">
@@ -18,7 +18,7 @@ const LandingPage = () => {
       </div>
 
       <Fade up>
-        <Welcome />
+        <Welcome articles={articles} />
       </Fade>
 
       <Fade up delay={100}>
@@ -39,5 +39,3 @@ const LandingPage = () => {
     </div>
   );
 };
-
-export default LandingPage;

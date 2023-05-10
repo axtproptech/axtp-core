@@ -24,7 +24,6 @@ const ExclusiveCmsPage = () => {
         <ContentWrapper>
           <CmsPage />
         </ContentWrapper>
-
         <Footer />
       </CryptoWrapper>
     </>

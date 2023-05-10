@@ -3,7 +3,7 @@ import { SpanWrapper } from "../../styles/landingPage.style";
 import Carousel from "containers/Exclusive/components/Carousel";
 import GradientBackground from "../../components/GradientBackground";
 
-const Welcome = () => {
+export const Welcome = ({ articles }) => {
   return (
     <div className="relative mx-auto pt-32 mb-24">
       <GradientBackground />
@@ -33,9 +33,7 @@ const Welcome = () => {
         efficient and accessible market.
       </p>
 
-      <Carousel />
+      <Carousel articles={articles} />
     </div>
   );
 };
-
-export default Welcome;
