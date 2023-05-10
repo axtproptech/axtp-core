@@ -1,13 +1,27 @@
 import Head from "next/head";
 import Navbar from "containers/Exclusive/components/Navbar";
 import Footer from "containers/CryptoModern/Footer";
-import CmsPage from "containers/Exclusive/Cms";
+import { BlogPage } from "containers/Exclusive/Blog";
 import {
   CryptoWrapper,
   ContentWrapper,
 } from "containers/CryptoModern/cryptoModern.style";
+import { contentService } from "../../../bff/services/contentfulService";
 
-const ExclusiveCmsPage = () => {
+const Hour = 60 * 60;
+const Day = 24 * Hour;
+export async function getStaticProps() {
+  const articles = await contentService.fetchRecentArticles();
+
+  return {
+    props: {
+      articles,
+    },
+    revalidate: Day, // In seconds
+  };
+}
+
+const ExclusiveBlogPage = ({ articles }) => {
   return (
     <>
       <Head>
@@ -22,7 +36,7 @@ const ExclusiveCmsPage = () => {
 
       <CryptoWrapper>
         <ContentWrapper>
-          <CmsPage />
+          <BlogPage articles={articles} />
         </ContentWrapper>
         <Footer />
       </CryptoWrapper>
@@ -30,4 +44,4 @@ const ExclusiveCmsPage = () => {
   );
 };
 
-export default ExclusiveCmsPage;
+export default ExclusiveBlogPage;

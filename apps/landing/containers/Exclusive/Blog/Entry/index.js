@@ -1,8 +1,13 @@
-const CMSHostUrl = process.env.NEXT_SERVER_CMS_DELIVERY_HOST;
-const AccessToken = process.env.NEXT_SERVER_CMS_ACCESS_TOKEN;
+import { useEffect, useState } from "react";
+import { Icon } from "react-icons-kit";
+import { ic_keyboard_arrow_left_twotone } from "react-icons-kit/md/ic_keyboard_arrow_left_twotone";
 
-// Mapped Article Data
-//
+import Link from "next/link";
+import format from "date-fns/format";
+import ReactMarkdown from "react-markdown";
+import Button from "common/components/Button";
+import { parseISO } from "date-fns";
+
 // const article = {
 //   id: "",
 //   createdAt: "",
@@ -26,69 +31,58 @@ const AccessToken = process.env.NEXT_SERVER_CMS_ACCESS_TOKEN;
 // };
 //
 
-function resolveContentfulReference(includes, ref) {
-  const linkTypes = includes[ref.linkType];
-  const found = linkTypes.find((l) => l.sys.id === ref.id);
-  return found ? found.fields : null;
-}
+// TODO: Add a banner image
+export const BlogEntryPage = ({ entry }) => {
+  const { createdAt, tags, content } = entry;
 
-function mapContentfulArticles(rawArticles) {
-  const articles = [];
-  for (let r of rawArticles.items) {
-    let a = {
-      id: r.sys.id,
-      createdAt: r.sys.createdAt,
-      tags: r.metadata.tags.map((t) => t.sys.id),
-      content: { ...r.fields },
-    };
+  return (
+    <div className="flex flex-col pt-32 mb-24 max-w-4xl px-4 mx-auto gap-4">
+      <div>
+        <Link href="/exclusive/blog" passHref>
+          <Button
+            icon={<Icon icon={ic_keyboard_arrow_left_twotone} />}
+            iconPosition="left"
+            disabled={false}
+            variant="extenfabvdedFab"
+            colors="secondaryWithBg"
+            title="Back To Blog"
+            onClick={null}
+          />
+        </Link>
+      </div>
 
-    // resolve references and overwrite data
-    const imageData = resolveContentfulReference(
-      rawArticles.includes,
-      a.content.image.sys
-    );
+      <div className="w-full flex xs:flex-col md:flex-row items-center justify-between px-4 gap-4">
+        <div className="badge badge-warning badge-lg gap-2 font-bold">
+          Company News
+        </div>
 
-    a.content.image = {
-      title: imageData ? imageData.title : "",
-      description: imageData ? imageData.description : "",
-      url: imageData ? `https:${imageData.file.url}` : "",
-    };
+        <div className="flex items-center justify-start gap-2">
+          <div className="avatar">
+            <div className="w-8 rounded-full">
+              <img src={content.author.avatar} alt="Avatar Image" />
+            </div>
+          </div>
 
-    const authorEntryData = resolveContentfulReference(
-      rawArticles.includes,
-      a.content.author.sys
-    );
+          <p className="font-medium text-sm text-white opacity-80">
+            {content.author.name} /{" "}
+            {format(parseISO(createdAt), "MMMM do',' yyyy")}
+          </p>
+        </div>
+      </div>
 
-    const authorImageData = resolveContentfulReference(
-      rawArticles.includes,
-      authorEntryData.avatar.sys
-    );
+      <div className="divider m-0"></div>
 
-    a.content.author = {
-      name: authorEntryData.name,
-      avatar: authorImageData ? `https:${authorImageData.file.url}` : "",
-    };
+      <h1 className="text-white font-bold text-4xl tracking-tight">
+        {entry.content.title}
+      </h1>
 
-    articles.push(a);
-  }
-  return articles;
-}
+      <h2 className="text-sm text-white opacity-80 line-clamp-6 mb-4">
+        {entry.content.abstract}
+      </h2>
 
-export class ContentService {
-  constructor() {}
-
-  async fetchRecentArticles() {
-    const response = await fetch(
-      `${CMSHostUrl}/entries?content_type=posts&order=sys.createdAt&limit=10`,
-      {
-        headers: {
-          Authorization: `Bearer ${AccessToken}`,
-        },
-      }
-    );
-    const json = await response.json();
-    return mapContentfulArticles(json);
-  }
-}
-
-export const contentService = new ContentService();
+      <article className="text-justify mx-auto w-full text-white">
+        <ReactMarkdown>{entry.content.body}</ReactMarkdown>
+      </article>
+    </div>
+  );
+};

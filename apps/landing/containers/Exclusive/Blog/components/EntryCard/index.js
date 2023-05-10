@@ -1,8 +1,7 @@
-const CMSHostUrl = process.env.NEXT_SERVER_CMS_DELIVERY_HOST;
-const AccessToken = process.env.NEXT_SERVER_CMS_ACCESS_TOKEN;
+import Link from "next/link";
+import format from "date-fns/format";
+import { parseISO } from "date-fns";
 
-// Mapped Article Data
-//
 // const article = {
 //   id: "",
 //   createdAt: "",
@@ -26,69 +25,43 @@ const AccessToken = process.env.NEXT_SERVER_CMS_ACCESS_TOKEN;
 // };
 //
 
-function resolveContentfulReference(includes, ref) {
-  const linkTypes = includes[ref.linkType];
-  const found = linkTypes.find((l) => l.sys.id === ref.id);
-  return found ? found.fields : null;
-}
+export const EntryCard = ({ entry }) => {
+  const { id, createdAt, tags, content } = entry;
 
-function mapContentfulArticles(rawArticles) {
-  const articles = [];
-  for (let r of rawArticles.items) {
-    let a = {
-      id: r.sys.id,
-      createdAt: r.sys.createdAt,
-      tags: r.metadata.tags.map((t) => t.sys.id),
-      content: { ...r.fields },
-    };
+  return (
+    <Link href={"/exclusive/blog/" + id} passHref>
+      <a className="group flex flex-col items-start justify-start xs:w-full md:w-1/2 px-4 mb-12 gap-1">
+        <div className="relative w-full mb-2 aspect-[2.25/1] border-opacity-10 rounded-xl overflow-hidden group-hover:shadow-md group-hover:shadow-yellow-100 transition-all">
+          <img
+            src={content.image.url}
+            alt={content.image.title}
+            className="object-cover transition-transform group-hover:scale-[1.05] absolute h-full w-full inset-0"
+          />
+        </div>
 
-    // resolve references and overwrite data
-    const imageData = resolveContentfulReference(
-      rawArticles.includes,
-      a.content.image.sys
-    );
+        <span className="text-slate-300 text-sm"> {tags.join(" ")} </span>
 
-    a.content.image = {
-      title: imageData ? imageData.title : "",
-      description: imageData ? imageData.description : "",
-      url: imageData ? `https:${imageData.file.url}` : "",
-    };
+        <h4 className="text-white font-bold xs:text-xl md:text-2xl group-hover:opacity-80 tracking-tight">
+          {content.title}
+        </h4>
 
-    const authorEntryData = resolveContentfulReference(
-      rawArticles.includes,
-      a.content.author.sys
-    );
+        <p className="text-base text-white opacity-80 line-clamp-2 mb-2">
+          {content.abstract}
+        </p>
 
-    const authorImageData = resolveContentfulReference(
-      rawArticles.includes,
-      authorEntryData.avatar.sys
-    );
+        <div className="w-full flex items-center justify-start gap-2">
+          <div className="avatar">
+            <div className="w-8 rounded-full">
+              <img src={content.author.avatar} alt="Author Avatar" />
+            </div>
+          </div>
 
-    a.content.author = {
-      name: authorEntryData.name,
-      avatar: authorImageData ? `https:${authorImageData.file.url}` : "",
-    };
-
-    articles.push(a);
-  }
-  return articles;
-}
-
-export class ContentService {
-  constructor() {}
-
-  async fetchRecentArticles() {
-    const response = await fetch(
-      `${CMSHostUrl}/entries?content_type=posts&order=sys.createdAt&limit=10`,
-      {
-        headers: {
-          Authorization: `Bearer ${AccessToken}`,
-        },
-      }
-    );
-    const json = await response.json();
-    return mapContentfulArticles(json);
-  }
-}
-
-export const contentService = new ContentService();
+          <p className="font-medium text-sm text-white opacity-80">
+            {content.author.name} /{" "}
+            {format(parseISO(createdAt), "MMMM do',' yyyy")}
+          </p>
+        </div>
+      </a>
+    </Link>
+  );
+};

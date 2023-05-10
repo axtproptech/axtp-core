@@ -1,13 +1,39 @@
 import Head from "next/head";
 import Navbar from "containers/Exclusive/components/Navbar";
 import Footer from "containers/CryptoModern/Footer";
-import CmsEntryPage from "containers/Exclusive/Cms/entry";
+import { BlogEntryPage } from "containers/Exclusive/Blog/Entry";
 import {
   CryptoWrapper,
   ContentWrapper,
 } from "containers/CryptoModern/cryptoModern.style";
+import { contentService } from "../../../../bff/services/contentfulService";
 
-const ExclusiveCmsEntryPage = () => {
+const Hour = 60 * 60;
+const Day = 24 * Hour;
+
+export async function getStaticProps({ params }) {
+  // TODO: a signle article
+  const articles = await contentService.fetchRecentArticles();
+
+  const article = articles.find(({ id }) => id === params.entryId);
+
+  return {
+    props: {
+      article,
+    },
+    revalidate: Day, // In seconds
+  };
+}
+
+export async function getStaticPaths() {
+  const articles = await contentService.fetchRecentArticles();
+  return {
+    paths: articles.map((a) => ({ params: { entryId: a.id } })),
+    fallback: "blocking",
+  };
+}
+
+const ExclusiveBlogEntryPage = ({ article }) => {
   return (
     <>
       <Head>
@@ -22,7 +48,7 @@ const ExclusiveCmsEntryPage = () => {
 
       <CryptoWrapper>
         <ContentWrapper>
-          <CmsEntryPage />
+          <BlogEntryPage entry={article} />
         </ContentWrapper>
 
         <Footer />
@@ -31,4 +57,4 @@ const ExclusiveCmsEntryPage = () => {
   );
 };
 
-export default ExclusiveCmsEntryPage;
+export default ExclusiveBlogEntryPage;
