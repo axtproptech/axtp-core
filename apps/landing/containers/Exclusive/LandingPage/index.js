@@ -2,7 +2,7 @@ import Fade from "react-reveal/Fade";
 
 import { Welcome } from "./sections/Welcome";
 import InvestmentPlan from "./sections/InvestmentPlan";
-import Kpis from "./sections/Kpis";
+import { Kpis } from "./sections/Kpis";
 import BoxCta from "./sections/BoxCta";
 import Faq from "./sections/Faq";
 import useSWR from "swr";
@@ -15,11 +15,7 @@ const PoolContractIds = (process.env.NEXT_PUBLIC_AXTP_CONTRACT_IDS || "").split(
 );
 
 export const ExclusiveAreaPage = ({ articles }) => {
-  const {
-    data: poolData,
-    error,
-    isLoading,
-  } = useSWR("fetchPoolContracts", async () => {
+  const { data, error, isLoading } = useSWR("fetchPoolContracts", async () => {
     const service = new SmartContractViewerService(
       SignumNodeHost,
       AxtcContractId
@@ -29,7 +25,7 @@ export const ExclusiveAreaPage = ({ articles }) => {
     });
   });
 
-  console.log("data", poolData);
+  const poolData = data || [];
 
   return (
     <div className="relative flex flex-col mb-32">
@@ -50,7 +46,7 @@ export const ExclusiveAreaPage = ({ articles }) => {
       </Fade>
 
       <Fade up delay={100}>
-        <Kpis />
+        <Kpis pools={poolData} />
       </Fade>
 
       <Fade up delay={100}>

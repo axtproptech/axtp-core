@@ -33,6 +33,7 @@ export abstract class GenericContractViewerService {
         id: "0",
         balance: "0",
         supply: "0",
+        numHolders: 0,
         decimals: 0,
       });
     }
@@ -50,7 +51,12 @@ export abstract class GenericContractViewerService {
         .getCompound();
     }
 
-    const { name, asset: id, quantityCirculatingQNT } = assetInfo;
+    const {
+      name,
+      asset: id,
+      quantityCirculatingQNT,
+      numberOfAccounts,
+    } = assetInfo;
     return {
       name,
       id,
@@ -59,6 +65,7 @@ export abstract class GenericContractViewerService {
         .setAtomic(quantityCirculatingQNT)
         .getCompound(),
       decimals: assetInfo.decimals,
+      numHolders: numberOfAccounts,
     };
   }
 }
