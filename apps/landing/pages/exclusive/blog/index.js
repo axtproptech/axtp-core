@@ -8,7 +8,8 @@ import {
 } from "containers/CryptoModern/cryptoModern.style";
 import { contentService } from "../../../bff/services/contentfulService";
 
-const Hour = 60 * 60;
+const Minute = 60;
+const Hour = 60 * Minute;
 const Day = 24 * Hour;
 export async function getStaticProps() {
   const articles = await contentService.fetchRecentArticles();
@@ -17,7 +18,7 @@ export async function getStaticProps() {
     props: {
       articles,
     },
-    revalidate: Day, // In seconds
+    revalidate: 15 * Minute,
   };
 }
 

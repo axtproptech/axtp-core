@@ -40,7 +40,8 @@
     "recharts": "^2.1.16",
     "styled-components": "^5.2.1",
     "styled-system": "5.1.5",
-    "swiper": "^7.0.6"
+    "swiper": "^7.0.6",
+    "swr": "^2.1.5"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
