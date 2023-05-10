@@ -12,10 +12,13 @@ const Hour = 60 * 60;
 const Day = 24 * Hour;
 
 export async function getStaticProps({ params }) {
-  // TODO: a signle article
-  const articles = await contentService.fetchRecentArticles();
+  const article = await contentService.fetchSingleArticle(params.entryId);
 
-  const article = articles.find(({ id }) => id === params.entryId);
+  if (!article) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {

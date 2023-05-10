@@ -89,6 +89,20 @@ export class ContentService {
     const json = await response.json();
     return mapContentfulArticles(json);
   }
+
+  async fetchSingleArticle(id) {
+    const response = await fetch(`${CMSHostUrl}/entries?sys.id=${id}`, {
+      headers: {
+        Authorization: `Bearer ${AccessToken}`,
+      },
+    });
+    const json = await response.json();
+    const mapped = mapContentfulArticles(json);
+    if (mapped.length) {
+      return mapped[0];
+    }
+    return null;
+  }
 }
 
 export const contentService = new ContentService();
