@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@axtp/db": "*",
+    "@axtp/core": "*",
     "@glidejs/glide": "^3.4.1",
     "@hapi/boom": "^10.0.0",
     "@styled-system/theme-get": "^5.1.2",
