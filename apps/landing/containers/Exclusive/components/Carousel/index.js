@@ -43,8 +43,6 @@ const Carousel = ({ articles }) => {
 
   const imageByIndex = (index) => images[index % images.length];
 
-  console.log("articles", articles);
-
   return (
     <div
       className="embla max-w-6xl h-96 xs:rounded-none md:rounded-3xl bg-yellow-900 mx-auto shadow-lg bg-clip-padding backdrop-filter backdrop-blur-2xl bg-opacity-10 overflow-hidden"
