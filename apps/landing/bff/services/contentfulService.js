@@ -49,8 +49,8 @@ function mapContentfulArticles(rawArticles) {
     );
 
     a.content.image = {
-      title: imageData ? imageData.title : "",
-      description: imageData ? imageData.description : "",
+      title: imageData ? imageData.title || "" : "",
+      description: imageData ? imageData.description || "" : "",
       url: imageData ? `https:${imageData.file.url}` : "",
     };
 
