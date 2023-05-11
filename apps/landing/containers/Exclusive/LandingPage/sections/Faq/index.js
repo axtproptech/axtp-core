@@ -29,35 +29,39 @@ const Faq = ({ faqs }) => {
           <>
             {faqs.map((f) => (
               <AccordionItem key={f.id} className="py-4">
-                <AccordionTitle>
-                  <p className="text-lg text-white opacity-80">
-                    {f.content.question}
-                  </p>
+                <>
+                  <AccordionTitle>
+                    <>
+                      <p className="text-lg text-white opacity-80">
+                        {f.content.question}
+                      </p>
 
-                  <IconWrapper>
-                    <OpenIcon>
-                      <Icon
-                        icon={thinRight}
-                        size={18}
-                        className="text-yellow-500"
-                      />
-                    </OpenIcon>
+                      <IconWrapper>
+                        <OpenIcon>
+                          <Icon
+                            icon={thinRight}
+                            size={18}
+                            className="text-yellow-500"
+                          />
+                        </OpenIcon>
 
-                    <CloseIcon>
-                      <Icon
-                        icon={thinDown}
-                        size={18}
-                        className="text-yellow-500"
-                      />
-                    </CloseIcon>
-                  </IconWrapper>
-                </AccordionTitle>
+                        <CloseIcon>
+                          <Icon
+                            icon={thinDown}
+                            size={18}
+                            className="text-yellow-500"
+                          />
+                        </CloseIcon>
+                      </IconWrapper>
+                    </>
+                  </AccordionTitle>
 
-                <AccordionBody>
-                  <p className=" text-yellow-500 opacity-80 mt-2 font-medium">
-                    {f.content.answer}
-                  </p>
-                </AccordionBody>
+                  <AccordionBody>
+                    <p className=" text-yellow-500 opacity-80 mt-2 font-medium">
+                      {f.content.answer}
+                    </p>
+                  </AccordionBody>
+                </>
               </AccordionItem>
             ))}
           </>
