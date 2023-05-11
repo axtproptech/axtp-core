@@ -26,10 +26,10 @@ const Faq = ({ faqs }) => {
         }}
       >
         <Accordion>
-          {faqs.map((f) => (
-            <AccordionItem key={f.id} className="py-4">
-              <AccordionTitle>
-                <>
+          <>
+            {faqs.map((f) => (
+              <AccordionItem key={f.id} className="py-4">
+                <AccordionTitle>
                   <p className="text-lg text-white opacity-80">
                     {f.content.question}
                   </p>
@@ -51,16 +51,16 @@ const Faq = ({ faqs }) => {
                       />
                     </CloseIcon>
                   </IconWrapper>
-                </>
-              </AccordionTitle>
+                </AccordionTitle>
 
-              <AccordionBody>
-                <p className=" text-yellow-500 opacity-80 mt-2 font-medium">
-                  {f.content.answer}
-                </p>
-              </AccordionBody>
-            </AccordionItem>
-          ))}
+                <AccordionBody>
+                  <p className=" text-yellow-500 opacity-80 mt-2 font-medium">
+                    {f.content.answer}
+                  </p>
+                </AccordionBody>
+              </AccordionItem>
+            ))}
+          </>
         </Accordion>
       </div>
     </>

@@ -1,5 +1,6 @@
 import { BasicTokenInfo } from "./basicTokenInfo";
 import { ApprovalStatus } from "./approvalStatus";
+import { Alias } from "@signumjs/core";
 
 export interface PoolContractData {
   isDeactivated: boolean;
@@ -16,4 +17,5 @@ export interface PoolContractData {
   tokenRate: number;
   grossMarketValue: number;
   poolId: string;
+  aliasName: string;
 }

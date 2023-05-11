@@ -5,6 +5,7 @@ import { PoolContractDataView } from "./poolContractDataView";
 import { GenericContractViewerService } from "./genericContractViewerService";
 import { AxtcContractService } from "./axtcContractService";
 import { PoolContractData } from "./poolContractData";
+import { DescriptorData } from "@signumjs/standards";
 
 export class PoolInstanceService extends GenericContractViewerService {
   constructor(
@@ -32,6 +33,13 @@ export class PoolInstanceService extends GenericContractViewerService {
         this.getTokenBalances(),
       ]);
 
+      let aliasName = "";
+      try {
+        const descriptor = DescriptorData.parse(contract.description, false);
+        aliasName = descriptor.alias;
+      } catch (e) {
+        // ignore
+      }
       const pendingDistribution = ChainValue.create(2)
         .setAtomic(
           tokenBalances.find((a) => a.asset === masterContractData.token.id)
@@ -62,6 +70,7 @@ export class PoolInstanceService extends GenericContractViewerService {
         grossMarketValue: contractDataView.getGrossMarketValue(),
         approvalStatusRefund,
         pendingRefund: Number(pendingRefund),
+        aliasName,
       };
     });
   }

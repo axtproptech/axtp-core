@@ -1,5 +1,6 @@
 import { ServiceContext } from "./serviceContext";
 import { ChainValue } from "@signumjs/util";
+import { DescriptorDataClient } from "@signumjs/standards";
 import { BasicTokenInfo } from "./basicTokenInfo";
 import { UnconfirmedAssetBalance } from "@signumjs/core/out/typings/unconfirmedAssetBalance";
 
@@ -67,5 +68,16 @@ export abstract class GenericContractViewerService {
       decimals: assetInfo.decimals,
       numHolders: numberOfAccounts,
     };
+  }
+
+  protected async getAliasName() {
+    const { ledger } = this.context;
+    const client = new DescriptorDataClient(ledger);
+    try {
+      const descriptor = await client.getFromContract(this.contractId());
+      return descriptor.alias;
+    } catch {
+      return "";
+    }
   }
 }

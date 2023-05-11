@@ -47,7 +47,7 @@ const AccordionItem = ({ className, children, uuid }) => {
 
   return (
     <AccordionItemWrapper className={addAllClasses.join(" ")} uuid={uuid}>
-      {children}
+      <>{children}</>
     </AccordionItemWrapper>
   );
 };
@@ -63,7 +63,9 @@ const AccordionTitle = ({ className, children }) => {
 
   return (
     <AccordionTitleWrapper className={addAllClasses.join(" ")}>
-      <AccordionItemButtonWrapper>{children}</AccordionItemButtonWrapper>
+      <AccordionItemButtonWrapper>
+        <>{children}</>
+      </AccordionItemButtonWrapper>
     </AccordionTitleWrapper>
   );
 };
@@ -79,7 +81,7 @@ const AccordionBody = ({ className, children }) => {
 
   return (
     <AccordionBodyWrapper className={addAllClasses.join(" ")}>
-      {children}
+      <>{children}</>
     </AccordionBodyWrapper>
   );
 };
