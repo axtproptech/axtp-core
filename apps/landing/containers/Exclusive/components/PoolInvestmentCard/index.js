@@ -112,7 +112,7 @@ export const PoolInvestmentCard = ({ pool }) => {
           />
         </a>
         <a
-          className="text-sm text-yellow-100 gap-4 mb-2 text-center"
+          className="text-sm text-yellow-100 gap-4 mb-2 text-center bg-gray-800 rounded-md px-2 py-1 hover:brightness-110"
           href={`${WalletUrl}/kyc/registry`}
           rel="noopener noreferrer"
           target="_blank"
