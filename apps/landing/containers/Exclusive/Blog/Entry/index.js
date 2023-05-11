@@ -37,6 +37,7 @@ export const BlogEntryPage = ({ entry }) => {
           <img
             src={content.image.url}
             className="w-full h-full object-cover blur-2xl opacity-25 -z-0"
+            alt="Article Banner"
           />
         </motion.div>
       </div>
@@ -58,7 +59,7 @@ export const BlogEntryPage = ({ entry }) => {
 
         <div className="w-full flex xs:flex-col md:flex-row items-center justify-between px-4 gap-4">
           <div className="badge badge-warning badge-lg gap-2 font-bold">
-            Article
+            Artigo
           </div>
 
           <div className="flex items-center justify-start gap-2">
@@ -67,8 +68,7 @@ export const BlogEntryPage = ({ entry }) => {
                 <img src={content.author.avatar} alt="Avatar Image" />
               </div>
             </div>
-
-            <p className="font-medium text-white">By {content.author.name}</p>
+            <p className="font-medium text-white">{content.author.name}</p>
           </div>
 
           <p className=" text-white opacity-80">
@@ -79,7 +79,11 @@ export const BlogEntryPage = ({ entry }) => {
         <div className="divider m-0"></div>
 
         <div className="relative xs:h-52 md:h-96 w-full max-w-screen-lg m-auto rounded-2xl overflow-hidden">
-          <img src={content.image.url} className="w-full h-full object-cover" />
+          <img
+            src={content.image.url}
+            className="w-full h-full object-cover"
+            alt="Article Banner"
+          />
         </div>
 
         <h1 className="text-white font-bold text-4xl tracking-tight">

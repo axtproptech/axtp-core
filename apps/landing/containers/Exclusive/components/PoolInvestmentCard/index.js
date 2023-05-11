@@ -50,7 +50,7 @@ export const PoolInvestmentCard = ({ pool }) => {
           src={icon}
           width={90}
           height={90}
-          alt="Pool Hash Icon"
+          alt="Pool Category Icon"
         />
         <div>
           <div className="flex w-full flex-row items-center gap-4 mb-2">

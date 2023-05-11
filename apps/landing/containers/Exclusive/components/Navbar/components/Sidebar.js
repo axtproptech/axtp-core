@@ -21,7 +21,11 @@ const Sidebar = ({ userName, handleLogout }) => {
             </li>
 
             <li>
-              <Link href="/exclusive">
+              <Link
+                href={process.env.NEXT_PUBLIC_WALLET_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <a className="block text-black text-center font-medium">
                   Wallet
                 </a>

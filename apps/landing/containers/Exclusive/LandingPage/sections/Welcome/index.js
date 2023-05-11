@@ -15,22 +15,22 @@ export const Welcome = ({ articles }) => {
       </motion.div>
 
       <h1 className="xs:hidden md:block text-6xl text-white text-center mb-4 font-black select-none">
-        Reimagine
+        Reimagine o
         <SpanWrapper className="xs:text-4xl md:text-6xl p-4 font-black inline-block">
-          Real Estate
+          Mercado Imobiliário
         </SpanWrapper>
-        Market
+        Mundial
         <br />
-        with digital assets
+        com Ativos Digitais
       </h1>
 
       <SpanWrapper className="xs:block md:hidden text-6xl text-white text-center mb-4 font-black select-none">
-        Reimagine Real Estate Market
+        Reimagine o Mercado Imobiliário
       </SpanWrapper>
 
-      <p className="xs:text-xl md:text-2xl  xs:mb-8 md:mb-20 text-white text-center opacity-80 max-w-2xl mx-auto">
-        Revamp real estate through digital assets and blockchain, for a more
-        efficient and accessible market.
+      <p className="xs:text-xl xs:px-2 md:text-2xl  xs:mb-8 md:mb-20 text-white text-center opacity-80 max-w-2xl mx-auto">
+        Renovar o setor imobiliário por meio de ativos digitais na blockchain,
+        para maior transparência, segurança e acesso mais fácil.
       </p>
 
       <Carousel articles={articles} />

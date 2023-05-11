@@ -63,7 +63,11 @@ const Navbar = () => {
                 </a>
               </Link>
 
-              <Link href="/exclusive">
+              <Link
+                href={process.env.NEXT_PUBLIC_WALLET_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <a className="text-white opacity-80 hover:opacity-100 hover:text-white">
                   Wallet
                 </a>

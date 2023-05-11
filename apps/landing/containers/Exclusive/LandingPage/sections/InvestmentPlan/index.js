@@ -12,7 +12,7 @@ export const InvestmentPlan = ({ pools }) => {
         Escolha seu plano de investimento!
       </SpanWrapper>
 
-      <p className="xs:text-2xl md:text-xl text-white text-center opacity-80 mb-8">
+      <p className="xs:text-xl md:text-xl text-white text-center opacity-80 mb-8">
         Não há opção para você? Estamos sempre em busca de novas oportunidades
         inovadoras de investimento. Em breve, poderemos oferecer mais opções.
       </p>

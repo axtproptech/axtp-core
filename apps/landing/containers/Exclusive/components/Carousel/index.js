@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { PrevButton, NextButton } from "./components/ArrowButtons";
 import { Icon } from "react-icons-kit";
 import { arrowUpRight } from "react-icons-kit/feather/arrowUpRight";
@@ -34,18 +34,6 @@ const Carousel = ({ articles }) => {
     emblaApi.on("reInit", onSelect);
   }, [emblaApi, onSelect]);
 
-  const images = [
-    "https://images.pexels.com/photos/1546168/pexels-photo-1546168.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    "https://images.pexels.com/photos/1642125/pexels-photo-1642125.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    "https://images.pexels.com/photos/681368/pexels-photo-681368.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    "https://images.pexels.com/photos/681333/pexels-photo-681333.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  ];
-
-  const SLIDE_COUNT = images.length;
-  const slides = Array.from(Array(SLIDE_COUNT).keys());
-
-  const imageByIndex = (index) => images[index % images.length];
-
   return (
     <div
       className="embla max-w-6xl h-96 xs:rounded-none md:rounded-3xl bg-yellow-900 mx-auto shadow-lg bg-clip-padding backdrop-filter backdrop-blur-2xl bg-opacity-10 overflow-hidden"
@@ -55,13 +43,13 @@ const Carousel = ({ articles }) => {
     >
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
-          {slides.map((index) => (
-            <Link href="/exclusive/blog" passHref key={index}>
+          {articles.map((article, index) => (
+            <Link href={`/exclusive/blog/${article.id}`} passHref key={index}>
               <a className="relative embla__slide">
                 <div className="w-full h-full absolute top-0 right-0 bg-gradient-to-t from-stone-950 from-5% to-transparent px-8 py-4 flex items-end ">
                   <div className="flex w-full justify-center items-center gap-2">
                     <h3 className="z-1 font-medium !leading-tight xs:text-lg md:text-2xl  text-white">
-                      New investment opportunity
+                      {article.content.title}
                     </h3>
 
                     <button className="btn btn-circle xs:btn-xs md:btn-sm">
@@ -76,8 +64,8 @@ const Carousel = ({ articles }) => {
 
                 <img
                   className="embla__slide__img"
-                  src={imageByIndex(index)}
-                  alt="Your alt text"
+                  src={article.content.image.url}
+                  alt={article.content.image.title}
                 />
               </a>
             </Link>
