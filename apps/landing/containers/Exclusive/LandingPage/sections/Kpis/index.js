@@ -5,7 +5,7 @@ import { getCompactNumberFormatter } from "common/numbers";
 export const Kpis = ({ pools }) => {
   const { locale } = useRouter();
   const compactFormatter = useMemo(
-    () => getCompactNumberFormatter(locale || "en"),
+    () => getCompactNumberFormatter(locale),
     [locale]
   );
 

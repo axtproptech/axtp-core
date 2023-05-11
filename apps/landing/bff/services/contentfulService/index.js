@@ -1,5 +1,6 @@
 import { mapContentfulArticles } from "./mapContentfulArticles";
 import { mapContentfulFAQs } from "./mapContentfulFAQs";
+import { mapContentfulPoolDescriptions } from "bff/services/contentfulService/mapContentfulPoolDescriptions";
 
 const CMSHostUrl = process.env.NEXT_SERVER_CMS_DELIVERY_HOST;
 const AccessToken = process.env.NEXT_SERVER_CMS_ACCESS_TOKEN;
@@ -44,6 +45,18 @@ export class ContentService {
       return mapped[0];
     }
     return null;
+  }
+  async fetchPoolDescriptions() {
+    const response = await fetch(
+      this.#l(`${CMSHostUrl}/entries?content_type=poolDescription`),
+      {
+        headers: {
+          Authorization: `Bearer ${AccessToken}`,
+        },
+      }
+    );
+    const json = await response.json();
+    return mapContentfulPoolDescriptions(json);
   }
 
   async fetchExclusiveFAQs() {

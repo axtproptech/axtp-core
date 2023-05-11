@@ -41,6 +41,10 @@ const ButtonStyle = styled.button`
     outline: none;
   }
 
+  &:hover {
+    filter: brightness(1.2);
+  }
+
   /* Material style goes here */
   &.is-material {
     box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2),

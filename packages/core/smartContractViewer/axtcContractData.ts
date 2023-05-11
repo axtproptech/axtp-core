@@ -1,6 +1,6 @@
-import { Transaction } from "@signumjs/core";
 import { BasicTokenInfo } from "./basicTokenInfo";
 import { ApprovalStatus } from "./approvalStatus";
+import { Alias } from "@signumjs/core";
 
 export interface AxtcContractData {
   id: string;
@@ -10,4 +10,5 @@ export interface AxtcContractData {
   approvalStatusMinting: ApprovalStatus;
   approvalStatusBurning: ApprovalStatus;
   approvalStatusSendToPool: ApprovalStatus;
+  alias?: Alias;
 }

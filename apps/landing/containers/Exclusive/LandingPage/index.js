@@ -1,7 +1,7 @@
 import Fade from "react-reveal/Fade";
 
 import { Welcome } from "./sections/Welcome";
-import InvestmentPlan from "./sections/InvestmentPlan";
+import { InvestmentPlan } from "./sections/InvestmentPlan";
 import { Kpis } from "./sections/Kpis";
 import BoxCta from "./sections/BoxCta";
 import Faq from "./sections/Faq";

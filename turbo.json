@@ -7,6 +7,9 @@
     "push-db": {
       "cache": false
     },
+    "generate-core": {
+      "cache": false
+    },
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**"]
