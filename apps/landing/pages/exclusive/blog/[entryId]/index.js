@@ -11,6 +11,30 @@ import { contentService } from "bff/services/contentfulService";
 const Hour = 60 * 60;
 const Day = 24 * Hour;
 
+const ExclusiveBlogEntryPage = ({ article }) => {
+  return (
+    <>
+      <Head>
+        <title>Blog - AXT PropTech Company S/A</title>
+        <meta
+          name="Description"
+          content="Blog posts from the AXTP PropTech Company and community. Discover the latest in our investment platform."
+        />
+      </Head>
+
+      <Navbar />
+
+      <CryptoWrapper>
+        <ContentWrapper>
+          <BlogEntryPage entry={article} />
+        </ContentWrapper>
+
+        <Footer />
+      </CryptoWrapper>
+    </>
+  );
+};
+
 export async function getStaticProps({ params }) {
   const article = await contentService.fetchSingleArticle(params.entryId);
 
@@ -35,29 +59,5 @@ export async function getStaticPaths() {
     fallback: "blocking",
   };
 }
-
-const ExclusiveBlogEntryPage = ({ article }) => {
-  return (
-    <>
-      <Head>
-        <title>Blog - AXT PropTech Company S/A</title>
-        <meta
-          name="Description"
-          content="Blog posts from the AXTP PropTech Company and community. Discover the latest in our investment platform."
-        />
-      </Head>
-
-      <Navbar />
-
-      <CryptoWrapper>
-        <ContentWrapper>
-          <BlogEntryPage entry={article} />
-        </ContentWrapper>
-
-        <Footer />
-      </CryptoWrapper>
-    </>
-  );
-};
 
 export default ExclusiveBlogEntryPage;

@@ -7,6 +7,7 @@ const nextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, "styles/scss")],
   },
+  staticPageGenerationTimeout: 1000,
 };
 
 module.exports = nextConfig;

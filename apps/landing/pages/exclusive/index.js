@@ -14,6 +14,7 @@ const SignumNodeHost = process.env.NEXT_PUBLIC_SIGNUM_NODE_HOST || "";
 const PoolContractIds = (process.env.NEXT_PUBLIC_AXTP_CONTRACT_IDS || "").split(
   ","
 );
+
 const contractViewerService = new SmartContractViewerService(
   SignumNodeHost,
   AxtcContractId
@@ -22,24 +23,7 @@ const contractViewerService = new SmartContractViewerService(
 const Minute = 60;
 const Hour = 60 * Minute;
 const Day = 24 * Hour;
-export async function getStaticProps() {
-  const [articles, faqs, pools] = await Promise.all([
-    contentService.fetchRecentArticles(),
-    contentService.fetchExclusiveFAQs(),
-    contractViewerService.poolContract.fetchContracts({
-      contractIds: PoolContractIds,
-    }),
-  ]);
 
-  return {
-    props: {
-      articles,
-      pools,
-      faqs,
-    },
-    revalidate: 15 * Minute,
-  };
-}
 const ExclusiveLandingPage = ({ articles, pools, faqs }) => {
   return (
     <>
@@ -58,5 +42,24 @@ const ExclusiveLandingPage = ({ articles, pools, faqs }) => {
     </>
   );
 };
+
+export async function getStaticProps() {
+  const [articles, faqs, pools] = await Promise.all([
+    contentService.fetchRecentArticles(),
+    contentService.fetchExclusiveFAQs(),
+    contractViewerService.poolContract.fetchContracts({
+      contractIds: PoolContractIds,
+    }),
+  ]);
+
+  return {
+    props: {
+      articles,
+      pools,
+      faqs,
+    },
+    revalidate: 15 * Minute,
+  };
+}
 
 export default ExclusiveLandingPage;
