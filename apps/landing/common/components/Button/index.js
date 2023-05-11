@@ -36,29 +36,26 @@ const Button = ({
   }
 
   // Checking button loading state
-  const buttonIcon =
-    isLoading !== false ? (
-      <Fragment>
-        {loader || <Loader loaderColor={loaderColor || "#30C56D"} />}
-      </Fragment>
-    ) : (
-      icon && <span className="btn-icon">{icon}</span>
-    );
-
+  const buttonIcon = icon && <span className="btn-icon">{icon}</span>;
   // set icon position
-  const position = iconPosition || "right";
+  const position = iconPosition || "left";
+
+  const loadingIcon = loader || (
+    <Loader loaderColor={loaderColor || "#A0A0A0"} />
+  );
 
   return (
     <ButtonStyle
       type={type}
       className={addAllClasses.join(" ")}
       icon={icon}
-      disabled={disabled}
+      disabled={disabled || isLoading}
       icon-position={position}
       onClick={onClick}
       {...props}
     >
       {position === "left" && buttonIcon}
+      {isLoading && loadingIcon}
       {title && <span className="btn-text">{title}</span>}
       {position === "right" && buttonIcon}
     </ButtonStyle>

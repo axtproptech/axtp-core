@@ -22,8 +22,8 @@ const ButtonStyle = styled.button`
   text-transform: capitalize;
   padding-top: ${themeGet("space.2", "8")}px;
   padding-bottom: ${themeGet("space.2", "8")}px;
-  padding-left: ${themeGet("space.4", "15")}px;
-  padding-right: ${themeGet("space.4", "15")}px;
+  padding-left: ${themeGet("space.2", "15")}px;
+  padding-right: ${themeGet("space.2", "15")}px;
   border: 0;
   transition: all 0.3s ease;
   span.btn-text {
@@ -50,8 +50,8 @@ const ButtonStyle = styled.button`
   /* When button on loading stage */
   &.is-loading {
     .btn-text {
-      padding-left: ${themeGet("space.2", "8")}px;
-      padding-right: ${themeGet("space.2", "8")}px;
+      padding-left: ${themeGet("space.1", "4")}px;
+      padding-right: ${themeGet("space.1", "4")}px;
     }
   }
 

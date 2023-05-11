@@ -22,6 +22,7 @@ const Navbar = ({ noMenu }) => {
   const { status } = useSession();
   const router = useRouter();
 
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [state, setState] = useState({
     search: "",
     searchToggle: false,
@@ -65,6 +66,7 @@ const Navbar = ({ noMenu }) => {
   };
 
   const handleLogin = async () => {
+    setIsAuthenticating(true);
     if (status === "unauthenticated") {
       await signIn("auth0", {
         callbackUrl: `${window.location.origin}/exclusive`,
@@ -74,6 +76,7 @@ const Navbar = ({ noMenu }) => {
     if (status === "authenticated") {
       await router.push("/exclusive");
     }
+    setIsAuthenticating(false);
   };
 
   return (
@@ -122,6 +125,7 @@ const Navbar = ({ noMenu }) => {
               title="Área Exclusiva"
               style={{ marginLeft: "2rem" }}
               onClick={handleLogin}
+              isLoading={isAuthenticating}
             />
 
             <Button
@@ -154,6 +158,7 @@ const Navbar = ({ noMenu }) => {
               variant="textButton"
               title="Área Exclusiva"
               onClick={handleLogin}
+              isLoading={isAuthenticating}
             />
             <Scrollspy
               className="menu"
