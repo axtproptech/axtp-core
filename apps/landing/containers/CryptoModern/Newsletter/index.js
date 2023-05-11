@@ -18,7 +18,10 @@ const Register = ({
   title,
   description,
 }) => {
-  const [formOpen, setFormOpen] = useState(false);
+  const openModal = () => {
+    window.dispatchEvent(new CustomEvent("open-register-modal"));
+  };
+
   return (
     <Box id="access" {...sectionWrapper} as="section">
       <Container>
@@ -38,12 +41,9 @@ const Register = ({
               <Button
                 {...buttonStyle}
                 title="Quero saber mais!"
-                onClick={() => setFormOpen(true)}
+                onClick={openModal}
               />
             </StyledButton>
-            <Modal open={formOpen}>
-              <RegisterForm />
-            </Modal>
           </Box>
         </NewsletterWrapper>
       </Container>

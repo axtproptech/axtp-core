@@ -23,8 +23,9 @@ const Minute = 60;
 const Hour = 60 * Minute;
 const Day = 24 * Hour;
 export async function getStaticProps() {
-  const [articles, pools] = await Promise.all([
+  const [articles, faqs, pools] = await Promise.all([
     contentService.fetchRecentArticles(),
+    contentService.fetchExclusiveFAQs(),
     contractViewerService.poolContract.fetchContracts({
       contractIds: PoolContractIds,
     }),
@@ -34,11 +35,12 @@ export async function getStaticProps() {
     props: {
       articles,
       pools,
+      faqs,
     },
     revalidate: 15 * Minute,
   };
 }
-const ExclusiveLandingPage = ({ articles, pools }) => {
+const ExclusiveLandingPage = ({ articles, pools, faqs }) => {
   return (
     <>
       <Head>
@@ -49,7 +51,7 @@ const ExclusiveLandingPage = ({ articles, pools }) => {
 
       <CryptoWrapper>
         <ContentWrapper>
-          <ExclusiveAreaPage articles={articles} pools={pools} />
+          <ExclusiveAreaPage articles={articles} pools={pools} faqs={faqs} />
         </ContentWrapper>
         <Footer />
       </CryptoWrapper>

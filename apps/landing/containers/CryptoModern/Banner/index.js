@@ -16,6 +16,10 @@ import bannerImg from "common/assets/image/cryptoModern/home-banner-2.webp";
 import colors from "../../../common/theme/cryptoModern/colors";
 
 const Banner = () => {
+  const openModal = () => {
+    window.dispatchEvent(new CustomEvent("open-register-modal"));
+  };
+
   return (
     <BannerWrapper id="home">
       <Container>
@@ -29,16 +33,15 @@ const Banner = () => {
               style={{ color: colors.textColor }}
             />
           </Fade>
-          {/*<Fade up delay={300}>*/}
-          {/*  <ButtonGroup>*/}
-          {/*    <Button className="primary" title="SAIBA MAIS" />*/}
-          {/*    <Button*/}
-          {/*      className="text"*/}
-          {/*      variant="textButton"*/}
-          {/*      title="WHITE PAPER"*/}
-          {/*    />*/}
-          {/*  </ButtonGroup>*/}
-          {/*</Fade>*/}
+          <Fade up delay={300}>
+            <ButtonGroup>
+              <Button
+                className="primary"
+                title="Quero Saber Mais"
+                onClick={openModal}
+              />
+            </ButtonGroup>
+          </Fade>
         </BannerContent>
         <BannerImage>
           <Fade in delay={100}>

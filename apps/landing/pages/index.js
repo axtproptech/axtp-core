@@ -14,28 +14,50 @@ import {
 } from "containers/CryptoModern/cryptoModern.style";
 import { MessageBox } from "containers/CryptoModern/MessageBox";
 import Compliance from "containers/CryptoModern/Compliance";
+import { Modal } from "common/components/Modal";
+import { RegisterForm } from "common/components/RegisterForm";
+import React, { useEffect, useState } from "react";
 
-const HomePage = () => (
-  <CryptoWrapper>
-    <MessageBox />
-    <Sticky top={0} innerZ={9999} activeClass="sticky-active">
-      <Navbar />
-    </Sticky>
-    <ContentWrapper>
-      <Banner />
-      {/*<CountDown />*/}
-      <Features />
-      <ExpertsTeam />
-      <MarketsPortal />
-      <BlockchainProjects />
-      <Compliance />
-      {/*<WalletSection />*/}
-      {/*<MapSection />*/}
-      <FaqSection />
-      <Register />
-    </ContentWrapper>
-    <Footer />
-  </CryptoWrapper>
-);
+const HomePage = () => {
+  const [formOpen, setFormOpen] = useState(false);
+
+  useEffect(() => {
+    function openModal() {
+      setFormOpen(true);
+    }
+
+    window.addEventListener("open-register-modal", openModal);
+
+    return () => {
+      window.removeEventListener("open-register-modal", openModal);
+    };
+  }, []);
+
+  return (
+    <CryptoWrapper>
+      <MessageBox />
+      <Sticky top={0} innerZ={9999} activeClass="sticky-active">
+        <Navbar />
+      </Sticky>
+      <Modal open={formOpen} onClose={() => setFormOpen(false)}>
+        <RegisterForm />
+      </Modal>
+      <ContentWrapper>
+        <Banner />
+        {/*<CountDown />*/}
+        <Features />
+        <ExpertsTeam />
+        <MarketsPortal />
+        <BlockchainProjects />
+        <Compliance />
+        {/*<WalletSection />*/}
+        {/*<MapSection />*/}
+        <FaqSection />
+        <Register />
+      </ContentWrapper>
+      <Footer />
+    </CryptoWrapper>
+  );
+};
 
 export default HomePage;

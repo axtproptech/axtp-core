@@ -16,7 +16,7 @@ const InvestmentPlan = ({ pools }) => {
         Pick the pool of your preference and start investing
       </p>
 
-      <div class="w-full max-w-4xl flex flex-row gap-8 justify-center mx-auto xs:flex-wrap md:flex-nowrap">
+      <div className="w-full max-w-4xl flex flex-row gap-8 justify-center mx-auto xs:flex-wrap md:flex-nowrap">
         <PoolInvestmentCard />
         <PoolInvestmentCard />
       </div>

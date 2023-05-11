@@ -1,6 +1,3 @@
-const CMSHostUrl = process.env.NEXT_SERVER_CMS_DELIVERY_HOST;
-const AccessToken = process.env.NEXT_SERVER_CMS_ACCESS_TOKEN;
-
 // Mapped Article Data
 //
 // const article = {
@@ -31,8 +28,7 @@ function resolveContentfulReference(includes, ref) {
   const found = linkTypes.find((l) => l.sys.id === ref.id);
   return found ? found.fields : null;
 }
-
-function mapContentfulArticles(rawArticles) {
+export function mapContentfulArticles(rawArticles) {
   const articles = [];
   for (let r of rawArticles.items) {
     let a = {
@@ -73,36 +69,3 @@ function mapContentfulArticles(rawArticles) {
   }
   return articles;
 }
-
-export class ContentService {
-  constructor() {}
-
-  async fetchRecentArticles() {
-    const response = await fetch(
-      `${CMSHostUrl}/entries?content_type=posts&order=sys.createdAt&limit=10`,
-      {
-        headers: {
-          Authorization: `Bearer ${AccessToken}`,
-        },
-      }
-    );
-    const json = await response.json();
-    return mapContentfulArticles(json);
-  }
-
-  async fetchSingleArticle(id) {
-    const response = await fetch(`${CMSHostUrl}/entries?sys.id=${id}`, {
-      headers: {
-        Authorization: `Bearer ${AccessToken}`,
-      },
-    });
-    const json = await response.json();
-    const mapped = mapContentfulArticles(json);
-    if (mapped.length) {
-      return mapped[0];
-    }
-    return null;
-  }
-}
-
-export const contentService = new ContentService();

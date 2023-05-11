@@ -10,9 +10,8 @@ import {
   OpenIcon,
   CloseIcon,
 } from "common/components/Accordion";
-import { data } from "./data";
 
-const Faq = () => {
+const Faq = ({ faqs }) => {
   return (
     <>
       <p className="text-white text-center text-3xl font-bold mb-4">
@@ -27,33 +26,37 @@ const Faq = () => {
         }}
       >
         <Accordion>
-          {data.map((faqItem, index) => (
-            <AccordionItem key={index} className="py-4">
+          {faqs.map((f) => (
+            <AccordionItem key={f.id} className="py-4">
               <AccordionTitle>
-                <p className="text-lg text-white opacity-80">{faqItem.title}</p>
+                <>
+                  <p className="text-lg text-white opacity-80">
+                    {f.content.question}
+                  </p>
 
-                <IconWrapper>
-                  <OpenIcon>
-                    <Icon
-                      icon={thinRight}
-                      size={18}
-                      className="text-yellow-500"
-                    />
-                  </OpenIcon>
+                  <IconWrapper>
+                    <OpenIcon>
+                      <Icon
+                        icon={thinRight}
+                        size={18}
+                        className="text-yellow-500"
+                      />
+                    </OpenIcon>
 
-                  <CloseIcon>
-                    <Icon
-                      icon={thinDown}
-                      size={18}
-                      className="text-yellow-500"
-                    />
-                  </CloseIcon>
-                </IconWrapper>
+                    <CloseIcon>
+                      <Icon
+                        icon={thinDown}
+                        size={18}
+                        className="text-yellow-500"
+                      />
+                    </CloseIcon>
+                  </IconWrapper>
+                </>
               </AccordionTitle>
 
               <AccordionBody>
                 <p className=" text-yellow-500 opacity-80 mt-2 font-medium">
-                  {faqItem.description}
+                  {f.content.answer}
                 </p>
               </AccordionBody>
             </AccordionItem>
