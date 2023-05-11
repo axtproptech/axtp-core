@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TagChip from "./components/TagChip";
 import { EntryCard } from "./components/EntryCard";
 
@@ -11,20 +11,10 @@ const categories = [
 ];
 
 export const BlogPage = ({ articles }) => {
-  const [isLoadingContent, setIsLoadingContent] = useState(true);
-  const [canLoadMorePosts, setCanLoadMorePosts] = useState(false);
-
   const [tag, setTag] = useState("everything");
   const updateTag = (value) => {
     setTag(value);
   };
-
-  const loadMoreEntries = () => alert("load more entries");
-
-  // TODO: Delete this dummy use effect
-  useEffect(() => {
-    setCanLoadMorePosts(true);
-  }, []);
 
   return (
     <div className="flex flex-col pt-32 mb-24 max-w-6xl px-4 mx-auto gap-4">
@@ -44,18 +34,6 @@ export const BlogPage = ({ articles }) => {
           <EntryCard key={entry.id} entry={entry} />
         ))}
       </div>
-
-      {canLoadMorePosts && (
-        <button
-          onClick={loadMoreEntries}
-          disabled={isLoadingContent}
-          className={`
-          btn btn-outline capitalize ${isLoadingContent ? "loading" : ""}
-          `}
-        >
-          Load More Posts
-        </button>
-      )}
     </div>
   );
 };

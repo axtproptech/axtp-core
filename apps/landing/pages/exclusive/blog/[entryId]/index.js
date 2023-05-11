@@ -6,7 +6,7 @@ import {
   CryptoWrapper,
   ContentWrapper,
 } from "containers/CryptoModern/cryptoModern.style";
-import { contentService } from "../../../../bff/services/contentfulService/contentfulService";
+import { contentService } from "bff/services/contentfulService";
 
 const Hour = 60 * 60;
 const Day = 24 * Hour;

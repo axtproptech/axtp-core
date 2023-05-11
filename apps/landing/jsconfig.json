@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "common/*": ["common/*"],
-      "containers/*": ["containers/*"]
+      "containers/*": ["containers/*"],
+      "bff/*": ["bff/*"]
     }
   }
 }
