@@ -9,13 +9,15 @@ import hashicon from "hashicon";
 
 const WalletUrl = process.env.NEXT_PUBLIC_WALLET_URL || "";
 
-const PoolInvestmentCard = ({ pool }) => {
+export const PoolInvestmentCard = ({ pool }) => {
   const {
     nominalLiquidity,
     grossMarketValue,
     token,
     maxShareQuantity,
     poolId,
+    description,
+    icon,
   } = pool;
 
   const [hashIconUrl, setHashIconUrl] = useState("");
@@ -27,7 +29,7 @@ const PoolInvestmentCard = ({ pool }) => {
     }
   }, [poolId]);
 
-  const compactNumber = getCompactNumberFormatter("pt-BR");
+  const compactNumber = getCompactNumberFormatter();
 
   const performance =
     nominalLiquidity > 0
@@ -42,18 +44,31 @@ const PoolInvestmentCard = ({ pool }) => {
         boxShadow: "rgba(255, 200, 29, 0.15) 0px 4px 24px",
       }}
     >
-      <div className="flex w-full flex-row items-center justify-center gap-4 mb-2">
-        <img src={hashIconUrl} width={32} height={32} alt="Pool Hash Icon" />
-        <p className="text-2xl text-white font-bold">
-          {token.name.toUpperCase()}
-        </p>
+      <div className="flex w-full flex-row items-start gap-4 mb-2">
+        <img
+          className="rounded-full"
+          src={icon}
+          width={90}
+          height={90}
+          alt="Pool Hash Icon"
+        />
+        <div>
+          <div className="flex w-full flex-row items-center gap-4 mb-2">
+            <img
+              src={hashIconUrl}
+              width={32}
+              height={32}
+              alt="Pool Hash Icon"
+            />
+            <p className="text-2xl text-white font-bold">
+              {token.name.toUpperCase()}
+            </p>
+          </div>
+          <p className="text-sm text-justify text-white opacity-80 mb-2">
+            {description}
+          </p>
+        </div>
       </div>
-
-      <p className="text-center text-white opacity-80 mb-2">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since 2005
-      </p>
 
       <div
         className="flex w-full flex-row items-center justify-center px-2 border-y-2 mb-2"
@@ -108,5 +123,3 @@ const PoolInvestmentCard = ({ pool }) => {
     </div>
   );
 };
-
-export default PoolInvestmentCard;

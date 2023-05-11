@@ -1,7 +1,7 @@
 import { SpanWrapper } from "../../styles/landingPage.style";
-import PoolInvestmentCard from "containers/Exclusive/components/PoolInvestmentCard";
+import { PoolInvestmentCard } from "containers/Exclusive/components/PoolInvestmentCard";
 
-const InvestmentPlan = ({ pools }) => {
+export const InvestmentPlan = ({ pools }) => {
   return (
     <div className="mb-20 px-4">
       <p className="xs:hidden md:block text-6xl text-white text-center font-black mb-2">
@@ -25,5 +25,3 @@ const InvestmentPlan = ({ pools }) => {
     </div>
   );
 };
-
-export default InvestmentPlan;

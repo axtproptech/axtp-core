@@ -23,13 +23,23 @@ const Minute = 60;
 const Hour = 60 * Minute;
 const Day = 24 * Hour;
 export async function getStaticProps() {
-  const [articles, faqs, pools] = await Promise.all([
+  const [articles, faqs, poolDescriptions, pools] = await Promise.all([
     contentService.fetchRecentArticles(),
     contentService.fetchExclusiveFAQs(),
+    contentService.fetchPoolDescriptions(),
     contractViewerService.poolContract.fetchContracts({
       contractIds: PoolContractIds,
     }),
   ]);
+
+  // merge offchain descriptions with onchain pool data
+  for (let p of pools) {
+    const pd = poolDescriptions.find((d) => d.content.poolId === p.poolId);
+    if (pd) {
+      p.description = pd.content.description;
+      p.icon = pd.content.icon;
+    }
+  }
 
   return {
     props: {
