@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { SpanWrapper } from "../../styles/landingPage.style";
 
 import Carousel from "containers/Exclusive/components/Carousel";
@@ -5,8 +6,13 @@ import GradientBackground from "../../components/GradientBackground";
 
 export const Welcome = ({ articles }) => {
   return (
-    <div className="relative mx-auto pt-32 mb-24">
-      <GradientBackground />
+    <div className="relative mx-auto pt-32 pb-24">
+      <motion.div
+        animate={{ opacity: [0, 1, 0] }}
+        transition={{ ease: "easeIn", duration: 3, repeat: Infinity }}
+      >
+        <GradientBackground opacity={0.3} />
+      </motion.div>
 
       <h1 className="xs:hidden md:block text-6xl text-white text-center mb-4 font-black select-none">
         Reimagine

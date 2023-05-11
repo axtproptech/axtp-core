@@ -9,10 +9,10 @@ import Faq from "./sections/Faq";
 export const ExclusiveAreaPage = ({ articles, pools, faqs }) => {
   return (
     <div className="relative flex flex-col mb-32">
-      <div className="absolute h-full inset-0 top-0 left-0 flex items-center justify-center overflow-hidden -z-10">
+      <div className="absolute h-full inset-0 top-0 left-0 flex items-center justify-center overflow-hidden">
         <img
           className="w-full"
-          style={{ opacity: 0.2 }}
+          style={{ opacity: 0.1 }}
           src="assets/exclusive/landingPageBackground.svg"
         />
       </div>

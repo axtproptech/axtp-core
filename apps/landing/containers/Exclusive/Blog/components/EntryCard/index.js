@@ -51,7 +51,7 @@ export const EntryCard = ({ entry }) => {
 
         <div className="w-full flex items-center justify-start gap-2">
           <div className="avatar">
-            <div className="w-8 rounded-full">
+            <div className="w-8 rounded-full bg-white">
               <img src={content.author.avatar} alt="Author Avatar" />
             </div>
           </div>
