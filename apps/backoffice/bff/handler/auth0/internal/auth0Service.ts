@@ -70,7 +70,7 @@ export class Auth0Service {
       {
         user_id: createdUser.user_id,
         client_id: process.env.NEXT_SERVER_AUTH0_LANDING_CLIENT_ID,
-        ttl_sec: 7 * Days,
+        ttl_sec: 30 * Days,
         mark_email_as_verified: true,
         includeEmailInRedirect: false,
       }

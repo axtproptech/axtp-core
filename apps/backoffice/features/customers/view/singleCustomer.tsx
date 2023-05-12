@@ -118,7 +118,9 @@ export const SingleCustomer = () => {
     ) {
       actions.add("verify");
     }
-    actions.add("invite");
+    if (!customer.isInvited) {
+      actions.add("invite");
+    }
     actions.add(customer.isActive ? "deactivate" : "activate");
     actions.add(customer.isBlocked ? "unblock" : "block");
 
