@@ -47,7 +47,7 @@ export async function getStaticProps() {
       pools,
       faqs,
     },
-    revalidate: 15 * Minute,
+    revalidate: Minute,
   };
 }
 const ExclusiveLandingPage = ({ articles, pools, faqs }) => {

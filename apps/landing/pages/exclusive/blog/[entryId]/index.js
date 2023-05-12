@@ -8,7 +8,8 @@ import {
 } from "containers/CryptoModern/cryptoModern.style";
 import { contentService } from "bff/services/contentfulService";
 
-const Hour = 60 * 60;
+const Minute = 60;
+const Hour = 60 * Minute;
 const Day = 24 * Hour;
 
 const ExclusiveBlogEntryPage = ({ article }) => {
@@ -48,7 +49,7 @@ export async function getStaticProps({ params }) {
     props: {
       article,
     },
-    revalidate: Day, // In seconds
+    revalidate: Minute, // In seconds
   };
 }
 
