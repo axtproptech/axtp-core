@@ -118,9 +118,7 @@ export const SingleCustomer = () => {
     ) {
       actions.add("verify");
     }
-    if (!customer.isInvited) {
-      actions.add("invite");
-    }
+    actions.add("invite");
     actions.add(customer.isActive ? "deactivate" : "activate");
     actions.add(customer.isBlocked ? "unblock" : "block");
 
@@ -147,6 +145,9 @@ export const SingleCustomer = () => {
         </Grid>
         <Grid item>
           <VerificationChip level={verificationLevel} />
+          {customer.isInvited && (
+            <Chip sx={{ ml: 1 }} label="Invited" color="info" />
+          )}
           {isActive ? (
             <Chip sx={{ ml: 1 }} label="Active" color="success" />
           ) : (
