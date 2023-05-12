@@ -43,17 +43,21 @@ const Carousel = ({ articles }) => {
     >
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
-          {articles.map((article, index) => (
-            <Link href={`/exclusive/blog/${article.id}`} passHref key={index}>
+          {articles.map(({ content, id }, index) => (
+            <Link href={`/exclusive/blog/${id}`} passHref key={index}>
               <a className="relative embla__slide">
                 <div className="w-full h-full absolute top-0 right-0 bg-gradient-to-t from-stone-950 from-5% to-transparent px-8 py-4 flex items-end ">
                   <div className="flex w-full justify-center items-center gap-2">
                     <h3 className="z-1 font-medium !leading-tight xs:text-lg md:text-2xl  text-white">
-                      {article.content.title}
+                      {content.title}
                     </h3>
 
                     <button className="btn btn-circle xs:btn-xs md:btn-sm">
-                      {<Icon icon={arrowUpRight} />}
+                      <div className="avatar">
+                        <div className="w-8 rounded-full bg-white">
+                          <img src={content.author.avatar} alt="Avatar Image" />
+                        </div>
+                      </div>
                     </button>
                   </div>
                 </div>
@@ -64,8 +68,8 @@ const Carousel = ({ articles }) => {
 
                 <img
                   className="embla__slide__img"
-                  src={article.content.image.url}
-                  alt={article.content.image.title}
+                  src={content.image.url}
+                  alt={content.image.title}
                 />
               </a>
             </Link>

@@ -5,7 +5,7 @@ import { ic_contact_support_outline } from "react-icons-kit/md/ic_contact_suppor
 import Link from "next/link";
 import Button from "common/components/Button";
 
-const BoxCta = () => {
+export const BoxCta = () => {
   return (
     <div
       className="relative flex flex-col justify-center items-center w-full max-w-2xl rounded-2xl px-4 py-20 mx-auto shadow-lg mb-8 "
@@ -16,22 +16,27 @@ const BoxCta = () => {
       }}
     >
       <p className="text-white text-xl opacity-80 mb-2 text-center">
-        Ready to unite and Achieve your Goals?
+        Você quer perder a oportunidade de fazer seu patrimônio crescer?
       </p>
 
       <p className="text-white text-3xl font-bold mb-4 text-center">
-        Begin your investment portfolio today!
+        Entre no mundo dos Ativos Digitais agora mesmo!
       </p>
 
       <div className="flex w-full flex-row items-center justify-center gap-4 mb-2">
-        <Button
-          icon={<Icon icon={ic_account_balance_wallet} />}
-          iconPosition="left"
-          disabled={false}
-          variant="extenfabvdedFab"
-          title="Get Started"
-          onClick={() => alert("Click now")}
-        />
+        <a
+          href={process.env.NEXT_PUBLIC_WALLET_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button
+            icon={<Icon icon={ic_account_balance_wallet} />}
+            iconPosition="left"
+            disabled={false}
+            variant="extenfabvdedFab"
+            title="Crie sua carteira!"
+          />
+        </a>
 
         <Link href="mailto:info@axtp.com.br" passHref>
           <Button
@@ -40,7 +45,7 @@ const BoxCta = () => {
             disabled={false}
             variant="outlined"
             colors="warning"
-            title="Contact us"
+            title="Contato"
             onClick={null}
           />
         </Link>
@@ -48,5 +53,3 @@ const BoxCta = () => {
     </div>
   );
 };
-
-export default BoxCta;

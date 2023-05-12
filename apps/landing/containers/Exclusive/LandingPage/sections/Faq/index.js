@@ -11,11 +11,11 @@ import {
   CloseIcon,
 } from "common/components/Accordion";
 
-const Faq = ({ faqs }) => {
+export const Faq = ({ faqs }) => {
   return (
     <>
       <p className="text-white text-center text-3xl font-bold mb-4">
-        Frequently asked questions
+        Perguntas Frequentes
       </p>
 
       <div
@@ -70,5 +70,3 @@ const Faq = ({ faqs }) => {
     </>
   );
 };
-
-export default Faq;
