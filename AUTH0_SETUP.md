@@ -109,6 +109,7 @@ So, set the basic information in Auth0 according your needs, i.e. name, logo, et
 The following settings are required
 
 - Application Login URI: _can be empty_
+- Allowed Callback URLs: https://staging.axtp.com.br/exclusive, https://staging.axtp.com.br, http://localhost:3000
 
 ##### Application Machine-2-Machine
 
@@ -228,6 +229,7 @@ exports.onExecutePostLogin = async (event, api) => {
   if (event.authorization && cuid) {
     // Set claims
     api.idToken.setCustomClaim(`${namespace}/cuid`, cuid);
+    api.idToken.setCustomClaim(`${namespace}/firstName`, event.user.given_name);
   }
 };
 ```

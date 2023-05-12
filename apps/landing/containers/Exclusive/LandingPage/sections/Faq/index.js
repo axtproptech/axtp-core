@@ -10,6 +10,7 @@ import {
   OpenIcon,
   CloseIcon,
 } from "common/components/Accordion";
+import ReactMarkdown from "react-markdown";
 
 export const Faq = ({ faqs }) => {
   return (
@@ -58,7 +59,7 @@ export const Faq = ({ faqs }) => {
 
                   <AccordionBody>
                     <p className=" text-yellow-500 opacity-80 mt-2 font-medium">
-                      {f.content.answer}
+                      <ReactMarkdown>{f.content.answer}</ReactMarkdown>
                     </p>
                   </AccordionBody>
                 </>
