@@ -11,6 +11,9 @@ import { contentService } from "bff/services/contentfulService";
 const Minute = 60;
 const Hour = 60 * Minute;
 const Day = 24 * Hour;
+const ConfigRevalidate = parseInt(
+  process.env.NEXT_SERVER_CMS_ISR_REVALIDATE_MINUTES || "0"
+);
 export async function getStaticProps() {
   const articles = await contentService.fetchRecentArticles();
 
@@ -18,7 +21,7 @@ export async function getStaticProps() {
     props: {
       articles,
     },
-    revalidate: Minute,
+    revalidate: ConfigRevalidate ? ConfigRevalidate * Minute : false,
   };
 }
 

@@ -11,7 +11,9 @@ import { contentService } from "bff/services/contentfulService";
 const Minute = 60;
 const Hour = 60 * Minute;
 const Day = 24 * Hour;
-
+const ConfigRevalidate = parseInt(
+  process.env.NEXT_SERVER_CMS_ISR_REVALIDATE_MINUTES || "0"
+);
 const ExclusiveBlogEntryPage = ({ article }) => {
   return (
     <>
@@ -49,7 +51,7 @@ export async function getStaticProps({ params }) {
     props: {
       article,
     },
-    revalidate: Minute, // In seconds
+    revalidate: ConfigRevalidate ? ConfigRevalidate * Minute : false,
   };
 }
 

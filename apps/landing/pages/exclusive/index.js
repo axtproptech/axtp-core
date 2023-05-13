@@ -6,7 +6,7 @@ import {
   CryptoWrapper,
   ContentWrapper,
 } from "containers/CryptoModern/cryptoModern.style";
-import { contentService } from "../../bff/services/contentfulService";
+import { contentService } from "bff/services/contentfulService";
 import { SmartContractViewerService } from "@axtp/core";
 
 const AxtcContractId = process.env.NEXT_PUBLIC_MASTER_CONTRACT_ID || "";
@@ -22,6 +22,9 @@ const contractViewerService = new SmartContractViewerService(
 const Minute = 60;
 const Hour = 60 * Minute;
 const Day = 24 * Hour;
+const ConfigRevalidate = parseInt(
+  process.env.NEXT_SERVER_CMS_ISR_REVALIDATE_MINUTES || "0"
+);
 export async function getStaticProps() {
   const [articles, faqs, poolDescriptions, pools] = await Promise.all([
     contentService.fetchRecentArticles(),
@@ -47,7 +50,7 @@ export async function getStaticProps() {
       pools,
       faqs,
     },
-    revalidate: Minute,
+    revalidate: ConfigRevalidate ? ConfigRevalidate * Minute : false,
   };
 }
 const ExclusiveLandingPage = ({ articles, pools, faqs }) => {
