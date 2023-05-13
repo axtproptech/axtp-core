@@ -3,7 +3,9 @@ import { mapContentfulFAQs } from "./mapContentfulFAQs";
 import { mapContentfulPoolDescriptions } from "bff/services/contentfulService/mapContentfulPoolDescriptions";
 
 const CMSHostUrl = process.env.NEXT_SERVER_CMS_DELIVERY_HOST;
+const CMSPreviewHostUrl = process.env.NEXT_SERVER_CMS_PREVIEW_HOST;
 const AccessToken = process.env.NEXT_SERVER_CMS_ACCESS_TOKEN;
+const PreviewToken = process.env.NEXT_SERVER_CMS_PREVIEW_TOKEN;
 
 export class ContentService {
   #locale;
@@ -30,12 +32,14 @@ export class ContentService {
     return mapContentfulArticles(json);
   }
 
-  async fetchSingleArticle(id) {
+  async fetchSingleArticle(id, preview = false) {
     const response = await fetch(
-      this.#l(`${CMSHostUrl}/entries?sys.id=${id}`),
+      this.#l(
+        `${preview ? CMSPreviewHostUrl : CMSHostUrl}/entries?sys.id=${id}`
+      ),
       {
         headers: {
-          Authorization: `Bearer ${AccessToken}`,
+          Authorization: `Bearer ${preview ? PreviewToken : AccessToken}`,
         },
       }
     );
