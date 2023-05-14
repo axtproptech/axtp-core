@@ -34,7 +34,7 @@ const Footer = ({
               title="AXT Proptech Company S/A"
               logoStyle={logoStyle}
             />
-            <Text content="contact@axtp.com.br" {...textStyle} />
+            <Text content="info@axtp.com.br" {...textStyle} />
           </Box>
           {/* End of footer logo column */}
           <Box {...colTwo}>
