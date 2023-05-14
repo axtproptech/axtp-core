@@ -1,11 +1,10 @@
+import { useEffect, useState } from "react";
 import { Icon } from "react-icons-kit";
 import { ic_account_balance_wallet } from "react-icons-kit/md/ic_account_balance_wallet";
-import { ic_insert_link } from "react-icons-kit/md/ic_insert_link";
-
-import Button from "common/components/Button";
-import { useEffect, useMemo, useState } from "react";
 import { getCompactNumberFormatter } from "common/numbers";
+
 import hashicon from "hashicon";
+import Button from "common/components/Button";
 
 const WalletUrl = process.env.NEXT_PUBLIC_WALLET_URL || "";
 
@@ -17,7 +16,6 @@ export const PoolInvestmentCard = ({ pool }) => {
     maxShareQuantity,
     poolId,
     description,
-    icon,
   } = pool;
 
   const [hashIconUrl, setHashIconUrl] = useState("");
@@ -44,30 +42,21 @@ export const PoolInvestmentCard = ({ pool }) => {
         boxShadow: "rgba(255, 200, 29, 0.15) 0px 4px 24px",
       }}
     >
+      <div
+        className="w-full h-40 bg-center bg-no-repeat bg-cover rounded-2xl mb-4"
+        style={{
+          backgroundImage: "url(/assets/exclusive/card-icon-TAXTP001.webp)",
+        }}
+      ></div>
+
       <div className="flex w-full flex-row items-start gap-4 mb-2">
-        <img
-          className="rounded-full"
-          src={icon}
-          width={90}
-          height={90}
-          alt="Pool Category Icon"
-        />
-        <div>
-          <div className="flex w-full flex-row items-center gap-4 mb-2">
-            <img
-              src={hashIconUrl}
-              width={32}
-              height={32}
-              alt="Pool Hash Icon"
-            />
-            <p className="text-2xl text-white font-bold">
-              {token.name.toUpperCase()}
-            </p>
-          </div>
-          <p className="text-sm text-justify text-white opacity-80 mb-2">
-            {description}
-          </p>
-        </div>
+        <p className="text-sm text-justify text-white mb-2">
+          <span className="opacity-100 font-black">
+            {token.name.toUpperCase()}
+          </span>
+          {" - "}
+          <span className="opacity-80"> {description}</span>
+        </p>
       </div>
 
       <div
