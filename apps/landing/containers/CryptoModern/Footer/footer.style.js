@@ -5,8 +5,7 @@ const FooterWrapper = styled.footer`
   position: relative;
   overflow: hidden;
   @media (min-width: 576px) {
-    padding-top: 170px;
-    margin-top: -150px;
+    padding-top: 20px;
     background-color: transparent;
     &:before {
       content: "";

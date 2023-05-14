@@ -51,7 +51,7 @@ export async function getStaticProps({ params }) {
     props: {
       article,
     },
-    revalidate: ConfigRevalidate ? ConfigRevalidate * Minute : false,
+    revalidate: ConfigRevalidate ? ConfigRevalidate * Minute : 1,
   };
 }
 

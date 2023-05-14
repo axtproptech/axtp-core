@@ -50,7 +50,7 @@ export async function getStaticProps() {
       pools,
       faqs,
     },
-    revalidate: ConfigRevalidate ? ConfigRevalidate * Minute : false,
+    revalidate: ConfigRevalidate ? ConfigRevalidate * Minute : 1,
   };
 }
 const ExclusiveLandingPage = ({ articles, pools, faqs }) => {
