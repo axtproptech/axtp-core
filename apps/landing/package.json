@@ -13,7 +13,6 @@
     "@axtp/db": "*",
     "@glidejs/glide": "^3.4.1",
     "@hapi/boom": "^10.0.0",
-    "hashicon": "0.3.0",
     "@styled-system/theme-get": "^5.1.2",
     "cuid": "^2.1.8",
     "daisyui": "^2.51.6",
@@ -21,6 +20,7 @@
     "embla-carousel-react": "^8.0.0-rc02",
     "firebase-functions": "^3.13.2",
     "framer-motion": "^10.12.10",
+    "hashicon": "0.3.0",
     "jwt-decode": "^3.1.2",
     "next": "12.2.6",
     "next-auth": "^4.15.1",
@@ -47,6 +47,7 @@
     "swr": "^2.1.5"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.9",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.23",
     "sharp": "^0.31.3",

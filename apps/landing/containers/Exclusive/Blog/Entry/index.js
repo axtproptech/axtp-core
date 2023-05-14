@@ -94,7 +94,7 @@ export const BlogEntryPage = ({ entry }) => {
           {entry.content.abstract}
         </h2>
 
-        <article className="text-justify mx-auto w-full text-white">
+        <article className="text-justify mx-auto w-full text-white prose max-w-none prose-a:text-yellow-100">
           <ReactMarkdown>{entry.content.body}</ReactMarkdown>
         </article>
       </div>
