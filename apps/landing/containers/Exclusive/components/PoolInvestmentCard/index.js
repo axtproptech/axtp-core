@@ -16,6 +16,7 @@ export const PoolInvestmentCard = ({ pool }) => {
     maxShareQuantity,
     poolId,
     description,
+    icon,
   } = pool;
 
   const [hashIconUrl, setHashIconUrl] = useState("");
@@ -23,7 +24,7 @@ export const PoolInvestmentCard = ({ pool }) => {
   useEffect(() => {
     if (document !== undefined) {
       // hashicon does not work nicely on server side
-      setHashIconUrl(hashicon(poolId, { size: 64 }).toDataURL());
+      setHashIconUrl(hashicon(poolId, { size: 90 }).toDataURL());
     }
   }, [poolId]);
 
@@ -43,11 +44,37 @@ export const PoolInvestmentCard = ({ pool }) => {
       }}
     >
       <div
-        className="w-full h-40 bg-center bg-no-repeat bg-cover rounded-2xl mb-4"
+        className="relative w-full flex justify-center items-center gap-4 h-40 bg-center bg-no-repeat bg-cover rounded-2xl mb-4 overflow-hidden"
         style={{
-          backgroundImage: "url(/assets/exclusive/card-icon-TAXTP001.webp)",
+          backgroundImage: "url(/assets/exclusive/card-icon-pool.webp)",
         }}
-      ></div>
+      >
+        <img
+          className="rounded-full"
+          src={icon}
+          width={90}
+          height={90}
+          alt="Pool Category Icon"
+        />
+
+        <div className="bg-white rounded-full p-2">
+          <img src={hashIconUrl} width={70} height={70} alt="Pool Hash Icon" />
+        </div>
+
+        <img
+          src={icon}
+          width={70}
+          height={70}
+          className="absolute top-0 left-0 blur-3xl"
+        />
+
+        <img
+          src={hashIconUrl}
+          width={70}
+          height={70}
+          className="absolute bottom-0 right-0 blur-3xl"
+        />
+      </div>
 
       <div className="flex w-full flex-row items-start gap-4 mb-2">
         <p className="text-sm text-justify text-white mb-2">
