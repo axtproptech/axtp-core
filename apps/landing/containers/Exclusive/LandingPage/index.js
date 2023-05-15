@@ -12,7 +12,7 @@ export const ExclusiveAreaPage = ({ articles, pools, faqs }) => {
       <div className="absolute h-full inset-0 top-0 left-0 flex items-center justify-center overflow-hidden">
         <img
           className="w-full"
-          style={{ opacity: 0.1 }}
+          style={{ opacity: 0.15 }}
           src="assets/exclusive/landingPageBackground.svg"
         />
       </div>

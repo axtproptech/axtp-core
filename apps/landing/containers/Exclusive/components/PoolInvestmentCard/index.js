@@ -1,11 +1,10 @@
+import { useEffect, useState } from "react";
 import { Icon } from "react-icons-kit";
 import { ic_account_balance_wallet } from "react-icons-kit/md/ic_account_balance_wallet";
-import { ic_insert_link } from "react-icons-kit/md/ic_insert_link";
-
-import Button from "common/components/Button";
-import { useEffect, useMemo, useState } from "react";
 import { getCompactNumberFormatter } from "common/numbers";
+
 import hashicon from "hashicon";
+import Button from "common/components/Button";
 
 const WalletUrl = process.env.NEXT_PUBLIC_WALLET_URL || "";
 
@@ -25,7 +24,7 @@ export const PoolInvestmentCard = ({ pool }) => {
   useEffect(() => {
     if (document !== undefined) {
       // hashicon does not work nicely on server side
-      setHashIconUrl(hashicon(poolId, { size: 64 }).toDataURL());
+      setHashIconUrl(hashicon(poolId, { size: 90 }).toDataURL());
     }
   }, [poolId]);
 
@@ -44,7 +43,12 @@ export const PoolInvestmentCard = ({ pool }) => {
         boxShadow: "rgba(255, 200, 29, 0.15) 0px 4px 24px",
       }}
     >
-      <div className="flex w-full flex-row items-start gap-4 mb-2">
+      <div
+        className="relative w-full flex justify-center items-center gap-4 h-40 bg-center bg-no-repeat bg-cover rounded-2xl mb-4 overflow-hidden"
+        style={{
+          backgroundImage: "url(/assets/exclusive/card-icon-pool.webp)",
+        }}
+      >
         <img
           className="rounded-full"
           src={icon}
@@ -52,22 +56,34 @@ export const PoolInvestmentCard = ({ pool }) => {
           height={90}
           alt="Pool Category Icon"
         />
-        <div>
-          <div className="flex w-full flex-row items-center gap-4 mb-2">
-            <img
-              src={hashIconUrl}
-              width={32}
-              height={32}
-              alt="Pool Hash Icon"
-            />
-            <p className="text-2xl text-white font-bold">
-              {token.name.toUpperCase()}
-            </p>
-          </div>
-          <p className="text-sm text-justify text-white opacity-80 mb-2">
-            {description}
-          </p>
+
+        <div className="bg-white rounded-full p-2">
+          <img src={hashIconUrl} width={70} height={70} alt="Pool Hash Icon" />
         </div>
+
+        <img
+          src={icon}
+          width={70}
+          height={70}
+          className="absolute top-0 left-0 blur-3xl"
+        />
+
+        <img
+          src={hashIconUrl}
+          width={70}
+          height={70}
+          className="absolute bottom-0 right-0 blur-3xl"
+        />
+      </div>
+
+      <div className="flex w-full flex-row items-start gap-4 mb-2">
+        <p className="text-sm text-justify text-white mb-2">
+          <span className="opacity-100 font-black">
+            {token.name.toUpperCase()}
+          </span>
+          {" - "}
+          <span className="opacity-80"> {description}</span>
+        </p>
       </div>
 
       <div
