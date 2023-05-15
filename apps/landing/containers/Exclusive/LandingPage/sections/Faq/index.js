@@ -67,6 +67,21 @@ export const Faq = ({ faqs }) => {
             ))}
           </>
         </Accordion>
+
+        <p className="my-8 text-yellow-100 text-justify opacity-50 text-sm w-full max-w-2xl mx-auto">
+          Se você tiver alguma pergunta que não tenha sido respondida ou que não
+          tenha sido suficientemente respondida abaixo,{" "}
+          <a
+            className="underline text-yellow-200 opacity-100"
+            href="mailto:support@axtp.com.br"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {" "}
+            envie-nos um e-mail
+          </a>{" "}
+          ou pergunte-nos no grupo do Whatsapp.
+        </p>
       </div>
     </>
   );
