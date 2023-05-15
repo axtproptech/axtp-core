@@ -57,25 +57,34 @@ export const PoolInvestmentCard = ({ pool }) => {
           alt="Pool Category Icon"
         />
 
-        <div className="bg-white rounded-full p-2">
-          <img src={hashIconUrl} width={70} height={70} alt="Pool Hash Icon" />
-        </div>
-
         <img
           src={icon}
           width={70}
           height={70}
           className="absolute top-0 left-0 blur-3xl"
+          alt="Pool Category Icon BG"
         />
 
-        <img
-          src={hashIconUrl}
-          width={70}
-          height={70}
-          className="absolute bottom-0 right-0 blur-3xl"
-        />
+        {hashIconUrl && (
+          <>
+            <div className="bg-white rounded-full p-2">
+              <img
+                src={hashIconUrl}
+                width={70}
+                height={70}
+                alt="Pool Hash Icon"
+              />
+            </div>
+            <img
+              src={hashIconUrl}
+              width={70}
+              height={70}
+              className="absolute bottom-0 right-0 blur-3xl"
+              alt="Pool Hash Icon BG"
+            />
+          </>
+        )}
       </div>
-
       <div className="flex w-full flex-row items-start gap-4 mb-2">
         <p className="text-sm text-justify text-white mb-2">
           <span className="opacity-100 font-black">
@@ -85,7 +94,7 @@ export const PoolInvestmentCard = ({ pool }) => {
           <span className="opacity-80"> {description}</span>
         </p>
       </div>
-
+      ;
       <div
         className="flex w-full flex-row items-center justify-center px-2 border-y-2 mb-2"
         style={{
@@ -112,11 +121,11 @@ export const PoolInvestmentCard = ({ pool }) => {
           <p className="text-white text-xl opacity-80">Performance</p>
         </div>
       </div>
-
+      ;
       <p className="text-red-500 text-center mb-2 font-bold">
         {`${remainingTokens} tokens restantes`}
       </p>
-
+      ;
       <div className="flex w-full flex-col items-center justify-center gap-4 mb-2">
         <a href={WalletUrl} rel="noopener noreferrer" target="_blank">
           <Button
@@ -136,6 +145,7 @@ export const PoolInvestmentCard = ({ pool }) => {
           Clique aqui se você ainda não abriu sua carteira
         </a>
       </div>
+      ;
     </div>
   );
 };
