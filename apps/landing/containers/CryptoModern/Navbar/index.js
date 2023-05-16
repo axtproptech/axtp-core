@@ -11,8 +11,7 @@ import Button from "common/components/Button";
 import Container from "common/components/UI/Container";
 import useOnClickOutside from "common/hooks/useOnClickOutside";
 import NavbarWrapper, { MenuArea, MobileMenu } from "./navbar.style";
-import LogoImage from "common/assets/image/cryptoModern/logo-light.svg";
-import LogoImageAlt from "common/assets/image/cryptoModern/logo.svg";
+import LogoImage from "common/assets/image/cryptoModern/logo.svg";
 import { signIn, useSession } from "next-auth/react";
 import { navbar } from "common/data/CryptoModern";
 import { useRouter } from "next/router";
@@ -90,7 +89,7 @@ const Navbar = ({ noMenu }) => {
         />
         <Logo
           href="/"
-          logoSrc={LogoImageAlt}
+          logoSrc={LogoImage}
           title="AXT PropTech Company S/A"
           className="logo-alt"
         />
