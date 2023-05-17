@@ -94,7 +94,6 @@ export const PoolInvestmentCard = ({ pool }) => {
           <span className="opacity-80"> {description}</span>
         </p>
       </div>
-      ;
       <div
         className="flex w-full flex-row items-center justify-center px-2 border-y-2 mb-2"
         style={{
@@ -121,11 +120,9 @@ export const PoolInvestmentCard = ({ pool }) => {
           <p className="text-white text-xl opacity-80">Performance</p>
         </div>
       </div>
-      ;
       <p className="text-red-500 text-center mb-2 font-bold">
         {`${remainingTokens} tokens restantes`}
       </p>
-      ;
       <div className="flex w-full flex-col items-center justify-center gap-4 mb-2">
         <a href={WalletUrl} rel="noopener noreferrer" target="_blank">
           <Button
@@ -145,7 +142,6 @@ export const PoolInvestmentCard = ({ pool }) => {
           Clique aqui se você ainda não abriu sua carteira
         </a>
       </div>
-      ;
     </div>
   );
 };
