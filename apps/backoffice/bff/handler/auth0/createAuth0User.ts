@@ -55,7 +55,7 @@ export const createAuth0User: ApiHandler = async ({ req, res }) => {
         params: {
           firstName: customer.firstName,
           accessLink: accessLink,
-          exclusiveAreaUrl: process.env.NEXTAUTH_URL + "/exclusive",
+          exclusiveAreaUrl: "https://axtp.com.br/exclusive",
         },
       });
       console.log("mail sent");
