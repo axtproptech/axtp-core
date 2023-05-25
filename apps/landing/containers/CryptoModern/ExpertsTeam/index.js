@@ -40,7 +40,8 @@ const Items = {
   },
   danniel: {
     title: "Danniel Covo, CMO",
-    description: "Danniel Covo  é ...",
+    description:
+      "Danniel Covo é profissional de TI com experiência em relacionamento comercial, técnico e liderança de equipes. Também é mentor de investimentos, com grande alcance no marketing digital. Pronto para assumir o papel estratégico de CMO, trazendo expertise em TI, relacionamento comercial e marketing para impulsionar o sucesso da empresa.",
     link: "https://www.linkedin.com/in/danniel-covo",
   },
 };
