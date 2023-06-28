@@ -48,7 +48,11 @@ export const EntryCard = ({ entry, onTagClick }) => {
 
         <span className="flex flex-row gap-x-1">
           {tags.map((t) => (
-            <button className="btn btn-xs" onClick={handleOnTagClick(t)}>
+            <button
+              key={t}
+              className="btn btn-xs"
+              onClick={handleOnTagClick(t)}
+            >
               {t}
             </button>
           ))}
