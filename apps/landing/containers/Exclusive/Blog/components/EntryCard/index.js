@@ -1,6 +1,8 @@
 import Link from "next/link";
 import format from "date-fns/format";
 import { parseISO } from "date-fns";
+import TagChip from "containers/Exclusive/Blog/components/TagChip";
+import { calculateReadingTime } from "containers/Exclusive/Blog/calculateReadingTime";
 
 // const article = {
 //   id: "",
@@ -25,8 +27,13 @@ import { parseISO } from "date-fns";
 // };
 //
 
-export const EntryCard = ({ entry }) => {
+export const EntryCard = ({ entry, onTagClick }) => {
   const { id, createdAt, tags, content } = entry;
+
+  const handleOnTagClick = (tagName) => (e) => {
+    e.preventDefault();
+    onTagClick(tagName);
+  };
 
   return (
     <Link href={"/exclusive/blog/" + id} passHref>
@@ -39,7 +46,13 @@ export const EntryCard = ({ entry }) => {
           />
         </div>
 
-        <span className="text-slate-300 text-sm"> {tags.join(" ")} </span>
+        <span className="flex flex-row gap-x-1">
+          {tags.map((t) => (
+            <button className="btn btn-xs" onClick={handleOnTagClick(t)}>
+              {t}
+            </button>
+          ))}
+        </span>
 
         <h4 className="text-white font-bold xs:text-xl md:text-2xl group-hover:opacity-80 tracking-tight">
           {content.title}
@@ -56,9 +69,13 @@ export const EntryCard = ({ entry }) => {
             </div>
           </div>
 
-          <p className="font-medium text-sm text-white opacity-80">
+          <p className="font-medium text-sm text-white opacity-80 flex-grow">
             {content.author.name} /{" "}
             {format(parseISO(createdAt), "MMMM do',' yyyy")}
+          </p>
+
+          <p className="font-medium text-sm text-white opacity-80">
+            {calculateReadingTime(content.body)} min
           </p>
         </div>
       </a>

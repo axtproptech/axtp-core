@@ -7,9 +7,10 @@ import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import ReactMarkdown from "react-markdown";
 import Button from "common/components/Button";
+import { calculateReadingTime } from "containers/Exclusive/Blog/calculateReadingTime";
 
 export const BlogEntryPage = ({ entry }) => {
-  const { createdAt, content } = entry;
+  const { createdAt, content, tags } = entry;
   const { scrollYProgress, scrollY } = useScroll();
 
   const dynamicOpacity = useTransform(scrollY, [0, 1000], [1, 0]);
@@ -57,9 +58,13 @@ export const BlogEntryPage = ({ entry }) => {
           </Link>
         </div>
 
-        <div className="w-full flex xs:flex-col md:flex-row items-center justify-between px-4 gap-4">
-          <div className="badge badge-warning badge-lg gap-2 font-bold">
-            Artigo
+        <div className="w-full flex xs:flex-col md:flex-row items-center justify-between gap-y-2">
+          <div>
+            {tags.map((tag) => (
+              <button key={tag} className="btn btn-xs mr-2">
+                {tag}
+              </button>
+            ))}
           </div>
 
           <div className="flex items-center justify-start gap-2">
@@ -74,9 +79,10 @@ export const BlogEntryPage = ({ entry }) => {
           <p className=" text-white opacity-80">
             {format(parseISO(createdAt), "MMMM do',' yyyy")}
           </p>
+          <p className="font-medium text-sm text-white opacity-80">
+            {calculateReadingTime(content.body)} min
+          </p>
         </div>
-
-        <div className="divider m-0"></div>
 
         <div className="relative xs:h-52 md:h-96 w-full max-w-screen-lg m-auto rounded-2xl overflow-hidden">
           <img

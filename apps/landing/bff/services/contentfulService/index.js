@@ -20,7 +20,7 @@ export class ContentService {
   async fetchRecentArticles() {
     const response = await fetch(
       this.#l(
-        `${CMSHostUrl}/entries?content_type=posts&order=sys.createdAt&limit=10`
+        `${CMSHostUrl}/entries?content_type=posts&order=-sys.createdAt&limit=10`
       ),
       {
         headers: {
