@@ -1,6 +1,6 @@
 import Button from "common/components/Button";
 
-const TagChip = ({ isActive, title, onClick }) => (
+const TagChip = ({ isActive, title, onClick = () => {} }) => (
   <Button
     variant="textButton"
     className="border-solid border-2 border-white"
