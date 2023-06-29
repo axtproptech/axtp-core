@@ -44,7 +44,7 @@ export const ManagePool = () => {
   const { ledgerService } = useLedgerService();
   const poolId = singleQueryArg(query.poolId);
   const action = singleQueryArg(query.action);
-  const [currentTab, setCurrentTab] = useState(action || PoolTabs.SendToken);
+  const [currentTab, setCurrentTab] = useState(action || PoolTabs.Assets);
   const poolData = useAppSelector(selectPoolContractState(poolId));
 
   const balanceAmount = useMemo(() => {
