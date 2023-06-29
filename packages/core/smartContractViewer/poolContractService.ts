@@ -1,6 +1,6 @@
 import { ServiceContext } from "./serviceContext";
 import { PoolInstanceService } from "./poolInstanceService";
-import { withError } from "./withError";
+import { withError } from "../common/withError";
 import { AxtcContractService } from "./axtcContractService";
 
 interface FetchAllContractsArgs {

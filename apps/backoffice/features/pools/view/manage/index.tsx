@@ -14,7 +14,7 @@ import {
   IconDiscount2,
   IconRecharging,
   IconRocket,
-  IconUserPlus,
+  IconHomeDollar,
   IconUsers,
 } from "@tabler/icons";
 import { WithBadge } from "@/app/components/withBadge";
@@ -25,6 +25,7 @@ import { SendShareToHolderCard } from "@/features/pools/view/manage/sendShareToH
 import { ShowTokenHolders } from "@/features/pools/view/manage/showTokenHolders";
 import { RefundApprovalCard } from "@/features/pools/view/manage/refundApprovalCard";
 import { RefundActionCard } from "./refundActionCard";
+import { ShowAssets } from "@/features/pools/view/manage/showAssets";
 
 enum PoolTabs {
   Payout = "payout",
@@ -33,6 +34,7 @@ enum PoolTabs {
   SendToken = "send-token",
   Charge = "charge",
   Holders = "holders",
+  Assets = "assets",
 }
 
 const gridSpacing = Config.Layout.GridSpacing;
@@ -113,6 +115,16 @@ export const ManagePool = () => {
       <Grid item xs={12}>
         <TabContext value={currentTab}>
           <TabList onChange={handleTabChange}>
+            <Tab
+              icon={<IconHomeDollar />}
+              label={
+                <WithBadge color="error" value={needCharge ? " " : ""}>
+                  Assets
+                </WithBadge>
+              }
+              iconPosition="start"
+              value={PoolTabs.Assets}
+            />
             <Tab
               icon={<IconDiscount2 />}
               label="Send Token"
@@ -207,6 +219,14 @@ export const ManagePool = () => {
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12}>
                 <ShowTokenHolders poolId={poolId} />
+              </Grid>
+            </Grid>
+          </TabPanel>
+          {/*FIXME: we need to separate, as this does not apply for all pools... */}
+          <TabPanel value={PoolTabs.Assets} sx={{ p: 0, pt: 1 }}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item xs={12}>
+                <ShowAssets poolId={poolId} />
               </Grid>
             </Grid>
           </TabPanel>

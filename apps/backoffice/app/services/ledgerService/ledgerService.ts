@@ -5,6 +5,7 @@ import { ServiceContext } from "./serviceContext";
 import { WalletDecorator } from "./walletDecorator";
 import { PoolContractService } from "./poolContractService";
 import { AccountService } from "./accountService";
+import { AssetAliasService } from "@axtp/core";
 
 export class LedgerService {
   private readonly ledger: Ledger;

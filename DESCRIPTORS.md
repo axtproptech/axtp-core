@@ -46,6 +46,7 @@ The most important part is the `al` field, which points to the alias. The alias'
     }
   ],
   "x-wp": "https://axtp.com.br/whitepaper.pdf",
+  "x-at": 1,
   "al": "axtp0001_o3ia222sinuj"
 }
 ```
@@ -53,7 +54,13 @@ The most important part is the `al` field, which points to the alias. The alias'
 - `x-ps`: The pricing structure for the token sale. In this example it reads like this: the tokens from 1 to 50 (including) cost 3000, the tokens from 51 to 160 cost 4000 and so on and so forth
 - `x-mxt`: Maximum allowed tokens per account, customer
 - `x-wp`: The URL to the whitepaper for this pool
+- `x-at`: The [Asset Types](#asset-type-map), used to determine what kind of asset type this pool is - relates also to asset alias types
 - `al`: If given, then it points to the first [Asset Alias](#pool-asset-alias-descriptor)
+
+### Asset Type Map
+
+- 1: Real Estate Deeds
+- 2: Commodities
 
 ## Pool Asset Alias Descriptor
 
@@ -71,6 +78,7 @@ The last asset alias does not have an `al` field yet. Using this gives us contro
   "vs": 1,
   "nm": "001",
   "id": "title-deed-id",
+  "x-pid": "10177744785315162361",
   "x-as": 0,
   "x-ad": 1687970811678,
   "x-ac": 140595.23,
@@ -82,6 +90,7 @@ The last asset alias does not have an `al` field yet. Using this gives us contro
 
 - `nm`: some name
 - `id`: The unique Id of the Deed/Title
+- `x-pid`: The pool Id this asset belongs to
 - `x-st`: The [current Status](#current-status-map)
 - `x-ad`: Acquisition Date as Timestamp (JS Date.now())
 - `x-ac`: Accumulated Costs, i.e. all costs put into the asset (in USD)
