@@ -1261,6 +1261,13 @@
   dependencies:
     "@hapi/hoek" "^11.0.2"
 
+"@hapi/boom@^10.0.1":
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/@hapi/boom/-/boom-10.0.1.tgz#ebb14688275ae150aa6af788dbe482e6a6062685"
+  integrity sha512-ERcCZaEjdH3OgSJlyjVk8pHIFeus91CjKP3v+MpgBNp5IvGzP2l/bRiD78nqYcKPaZdbKkK5vDBVPd2ohHBlsA==
+  dependencies:
+    "@hapi/hoek" "^11.0.2"
+
 "@hapi/formula@^2.0.0":
   version "2.0.0"
   resolved "https://registry.npmjs.org/@hapi/formula/-/formula-2.0.0.tgz"
