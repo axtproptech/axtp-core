@@ -26,6 +26,9 @@ import { ShowTokenHolders } from "@/features/pools/view/manage/showTokenHolders"
 import { RefundApprovalCard } from "@/features/pools/view/manage/refundApprovalCard";
 import { RefundActionCard } from "./refundActionCard";
 import { ShowAssets } from "@/features/pools/view/manage/showAssets";
+import useSWR from "swr";
+import { mockedAssetAlias } from "@/features/pools/view/components/mockedAssetAlias";
+import { PoolAssetsCard } from "@/app/components/cards/poolAssetsCard";
 
 enum PoolTabs {
   Payout = "payout",
@@ -104,11 +107,8 @@ export const ManagePool = () => {
           <Grid item lg={6} md={6} sm={12}>
             <PoolCard data={poolData} showContractBalance />
           </Grid>
-          <Grid item lg={3} md={6} sm={6} xs={12}>
-            {/*<PieChart />*/}
-          </Grid>
-          <Grid item lg={5} md={6} sm={6} xs={12}>
-            {/*<HistoryChart />*/}
+          <Grid item lg={6} md={6} sm={12}>
+            <PoolAssetsCard poolId={poolId} />
           </Grid>
         </Grid>
       </Grid>
