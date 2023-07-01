@@ -8,6 +8,7 @@ import { GenericContractService } from "./genericContractService";
 import { PoolContractData } from "@/types/poolContractData";
 import { MasterContractService } from "@/app/services/ledgerService/masterContractService";
 import { toStableCoinAmount } from "@/app/tokenQuantity";
+import { DescriptorData } from "@signumjs/standards";
 
 export class PoolInstanceService extends GenericContractService {
   constructor(
@@ -28,6 +29,14 @@ export class PoolInstanceService extends GenericContractService {
 
   contractId(): string {
     return this.poolId;
+  }
+
+  public fetchDescriptor() {
+    return withError<DescriptorData>(async () => {
+      const { ledger } = this.context;
+      const contract = await ledger.contract.getContract(this.poolId);
+      return DescriptorData.parse(contract.description);
+    });
   }
 
   public readContractData() {

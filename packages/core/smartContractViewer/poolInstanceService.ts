@@ -1,5 +1,5 @@
 import { ServiceContext } from "./serviceContext";
-import { withError } from "./withError";
+import { withError } from "../common/withError";
 import { Amount, ChainValue } from "@signumjs/util";
 import { PoolContractDataView } from "./poolContractDataView";
 import { GenericContractViewerService } from "./genericContractViewerService";

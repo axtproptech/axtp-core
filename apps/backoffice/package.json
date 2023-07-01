@@ -16,6 +16,7 @@
     "@braintree/sanitize-url": "^6.0.0",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@hapi/boom": "^10.0.1",
     "@mui/icons-material": "^5.8.4",
     "@mui/lab": "^5.0.0-alpha.89",
     "@mui/material": "^5.8.7",
@@ -49,7 +50,6 @@
     "react-perfect-scrollbar": "^1.5.8",
     "react-redux": "^8.0.2",
     "redux-persist": "^6.0.0",
-    "sass": "^1.53.0",
     "swr": "^1.3.0",
     "yup": "^0.32.11"
   },
@@ -66,6 +66,7 @@
     "jest": "^28.1.2",
     "lint-staged": "^13.0.3",
     "prettier": "2.7.1",
+    "sass": "^1.53.0",
     "ts-jest": "^28.0.5",
     "typescript": "4.7.4"
   },

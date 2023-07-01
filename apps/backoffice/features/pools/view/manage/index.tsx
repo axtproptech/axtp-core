@@ -14,7 +14,7 @@ import {
   IconDiscount2,
   IconRecharging,
   IconRocket,
-  IconUserPlus,
+  IconHomeDollar,
   IconUsers,
 } from "@tabler/icons";
 import { WithBadge } from "@/app/components/withBadge";
@@ -25,6 +25,8 @@ import { SendShareToHolderCard } from "@/features/pools/view/manage/sendShareToH
 import { ShowTokenHolders } from "@/features/pools/view/manage/showTokenHolders";
 import { RefundApprovalCard } from "@/features/pools/view/manage/refundApprovalCard";
 import { RefundActionCard } from "./refundActionCard";
+import { ShowAssets } from "@/features/pools/view/manage/showAssets";
+import { PoolAssetsCard } from "@/app/components/cards/poolAssetsCard";
 
 enum PoolTabs {
   Payout = "payout",
@@ -33,6 +35,7 @@ enum PoolTabs {
   SendToken = "send-token",
   Charge = "charge",
   Holders = "holders",
+  Assets = "assets",
 }
 
 const gridSpacing = Config.Layout.GridSpacing;
@@ -42,7 +45,7 @@ export const ManagePool = () => {
   const { ledgerService } = useLedgerService();
   const poolId = singleQueryArg(query.poolId);
   const action = singleQueryArg(query.action);
-  const [currentTab, setCurrentTab] = useState(action || PoolTabs.SendToken);
+  const [currentTab, setCurrentTab] = useState(action || PoolTabs.Assets);
   const poolData = useAppSelector(selectPoolContractState(poolId));
 
   const balanceAmount = useMemo(() => {
@@ -102,17 +105,24 @@ export const ManagePool = () => {
           <Grid item lg={6} md={6} sm={12}>
             <PoolCard data={poolData} showContractBalance />
           </Grid>
-          <Grid item lg={3} md={6} sm={6} xs={12}>
-            {/*<PieChart />*/}
-          </Grid>
-          <Grid item lg={5} md={6} sm={6} xs={12}>
-            {/*<HistoryChart />*/}
+          <Grid item lg={6} md={6} sm={12}>
+            <PoolAssetsCard poolId={poolId} />
           </Grid>
         </Grid>
       </Grid>
       <Grid item xs={12}>
         <TabContext value={currentTab}>
           <TabList onChange={handleTabChange}>
+            <Tab
+              icon={<IconHomeDollar />}
+              label={
+                <WithBadge color="error" value={needCharge ? " " : ""}>
+                  Assets
+                </WithBadge>
+              }
+              iconPosition="start"
+              value={PoolTabs.Assets}
+            />
             <Tab
               icon={<IconDiscount2 />}
               label="Send Token"
@@ -207,6 +217,14 @@ export const ManagePool = () => {
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12}>
                 <ShowTokenHolders poolId={poolId} />
+              </Grid>
+            </Grid>
+          </TabPanel>
+          {/*FIXME: we need to separate, as this does not apply for all pools... */}
+          <TabPanel value={PoolTabs.Assets} sx={{ p: 0, pt: 1 }}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item xs={12}>
+                <ShowAssets poolId={poolId} />
               </Grid>
             </Grid>
           </TabPanel>

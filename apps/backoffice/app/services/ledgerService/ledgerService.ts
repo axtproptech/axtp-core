@@ -5,12 +5,17 @@ import { ServiceContext } from "./serviceContext";
 import { WalletDecorator } from "./walletDecorator";
 import { PoolContractService } from "./poolContractService";
 import { AccountService } from "./accountService";
+import { AssetService } from "./assetService";
 
+/**
+ * This is an aggregate service that bundles all ledger/blockchain based operations
+ */
 export class LedgerService {
   private readonly ledger: Ledger;
   private readonly masterContractService: MasterContractService;
   private readonly poolContractService: PoolContractService;
   private readonly accountService: AccountService;
+  private readonly assetService: AssetService;
 
   constructor(
     private nodeHost: string,
@@ -33,6 +38,7 @@ export class LedgerService {
       context,
       this.masterContractService
     );
+    this.assetService = new AssetService(context, this.poolContractService);
   }
 
   get masterContract(): MasterContractService {
@@ -45,5 +51,8 @@ export class LedgerService {
 
   get account() {
     return this.accountService;
+  }
+  get asset() {
+    return this.assetService;
   }
 }

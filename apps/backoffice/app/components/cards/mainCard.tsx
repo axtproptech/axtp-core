@@ -30,6 +30,7 @@ interface Props {
   elevation?: number;
 }
 
+// eslint-disable-next-line react/display-name
 export const MainCard = forwardRef<any, Props>(
   (
     {

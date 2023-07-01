@@ -28,6 +28,11 @@ export default function themePalette(theme: any) {
       main: theme.colors?.orangeMain,
       dark: theme.colors?.orangeDark,
     },
+    gold: {
+      light: theme.colors?.goldLight,
+      main: theme.colors?.goldMain,
+      dark: theme.colors?.goldDark,
+    },
     warning: {
       light: theme.colors?.warningLight,
       main: theme.colors?.warningMain,
