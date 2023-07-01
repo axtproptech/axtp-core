@@ -24,12 +24,10 @@ import {
 } from "@tabler/icons";
 import { useAppSelector } from "@/states/hooks";
 import { selectPoolContractState } from "@/app/states/poolsState";
-import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { Number } from "@/app/components/number";
 import { Config } from "@/app/config";
-import { AssetAliasData, AssetAliasMap } from "@axtp/core";
+import { AssetAliasData } from "@axtp/core";
 import { toDateStr } from "@/app/toDateStr";
-import { mockedAssetAlias } from "@/features/pools/view/components/mockedAssetAlias";
 import { AssetTableTitle } from "@/features/pools/view/components/assetTable/assetTableTitle";
 import { Controller, useForm } from "react-hook-form";
 import { usePoolAssets } from "@/app/hooks/usePoolAssets";

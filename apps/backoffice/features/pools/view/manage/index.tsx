@@ -26,8 +26,6 @@ import { ShowTokenHolders } from "@/features/pools/view/manage/showTokenHolders"
 import { RefundApprovalCard } from "@/features/pools/view/manage/refundApprovalCard";
 import { RefundActionCard } from "./refundActionCard";
 import { ShowAssets } from "@/features/pools/view/manage/showAssets";
-import useSWR from "swr";
-import { mockedAssetAlias } from "@/features/pools/view/components/mockedAssetAlias";
 import { PoolAssetsCard } from "@/app/components/cards/poolAssetsCard";
 
 enum PoolTabs {

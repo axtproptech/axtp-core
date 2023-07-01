@@ -1,7 +1,6 @@
 import { FC, useMemo } from "react";
 
 import {
-  Box,
   Chip,
   Grid,
   Skeleton,
@@ -11,12 +10,6 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import {
-  Speed as IconSpeed,
-  Payments as IconPayments,
-  People as IconPeople,
-  Undo,
-} from "@mui/icons-material";
 // @ts-ignore
 import hashicon from "hashicon";
 import { Config } from "@/app/config";
@@ -85,9 +78,6 @@ export const PoolAssetsCard: FC<Props> = ({ poolId }) => {
     };
   }, [assets]);
 
-  // const isLoading = true;
-
-  // @ts-ignore
   return (
     <CardWrapperGold border={false} content={false}>
       <Stack sx={{ p: 2.25 }}>
