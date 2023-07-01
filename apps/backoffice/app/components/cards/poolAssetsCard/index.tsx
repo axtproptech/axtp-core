@@ -1,6 +1,16 @@
 import { FC, useMemo } from "react";
 
-import { Box, Chip, Grid, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Chip,
+  Grid,
+  Skeleton,
+  Stack,
+  SxProps,
+  Theme,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import {
   Speed as IconSpeed,
   Payments as IconPayments,
@@ -27,6 +37,7 @@ import {
 import { usePoolAssets } from "@/app/hooks/usePoolAssets";
 import { usePoolContract } from "@/app/hooks/usePoolContract";
 import { CardWrapperGold } from "@/app/components/cards/cardWrapperGold";
+import { ChildrenProps } from "@/types/childrenProps";
 
 interface Props {
   poolId: string;
@@ -74,6 +85,8 @@ export const PoolAssetsCard: FC<Props> = ({ poolId }) => {
     };
   }, [assets]);
 
+  // const isLoading = true;
+
   // @ts-ignore
   return (
     <CardWrapperGold border={false} content={false}>
@@ -105,6 +118,18 @@ export const PoolAssetsCard: FC<Props> = ({ poolId }) => {
                   />
                 </Tooltip>
               </Grid>
+              <Grid item>
+                <Tooltip title="Number of Assets">
+                  <Stack direction="row" alignItems="center">
+                    <IconBuildingCommunity />
+                    <Loadable loading={isLoading} width={24}>
+                      <Typography variant="h3" sx={{ ml: 0.5, color: "white" }}>
+                        {data.count}
+                      </Typography>
+                    </Loadable>
+                  </Stack>
+                </Tooltip>
+              </Grid>
             </Grid>
           </Grid>
           <Grid item style={{ width: "100%" }}>
@@ -118,25 +143,34 @@ export const PoolAssetsCard: FC<Props> = ({ poolId }) => {
                 >
                   <Tooltip arrow title="Total Potential Gain">
                     <Stack direction="row" spacing={1} alignItems="baseline">
-                      <Typography
-                        sx={{
-                          fontSize: "2.125rem",
-                          fontWeight: 500,
-                          mt: 1.75,
-                          mb: 0.75,
-                        }}
+                      <Loadable
+                        loading={isLoading}
+                        width={120}
+                        height={32}
+                        sx={{ mt: 1, mb: 0.5 }}
                       >
-                        <Number value={data.gain} />
-                      </Typography>
+                        <Typography
+                          sx={{
+                            fontSize: "2.125rem",
+                            fontWeight: 500,
+                            mt: 1.75,
+                            mb: 0.75,
+                          }}
+                        >
+                          <Number value={data.gain} />
+                        </Typography>
+                      </Loadable>
                       <Typography>USD</Typography>
                     </Stack>
                   </Tooltip>
                   <Tooltip arrow title="Total Performance">
                     <Stack direction="row" spacing={1} alignItems="center">
                       <IconTrendingUp />
-                      <Typography variant="h2" color="white">
-                        <Number value={data.performance} suffix="%" />
-                      </Typography>
+                      <Loadable loading={isLoading} width={120} height={24}>
+                        <Typography variant="h2" color="white">
+                          <Number value={data.performance} suffix="%" />
+                        </Typography>
+                      </Loadable>
                     </Stack>
                   </Tooltip>
                 </Stack>
@@ -155,10 +189,11 @@ export const PoolAssetsCard: FC<Props> = ({ poolId }) => {
                     >
                       <IconBusinessplan />
                       &nbsp;
-                      <Typography fontWeight="bold">
-                        <Number value={data.totalMarketValue} suffix="USD" />
-                      </Typography>
-                      &nbsp;
+                      <Loadable loading={isLoading}>
+                        <Typography fontWeight="bold">
+                          <Number value={data.totalMarketValue} suffix="USD" />
+                        </Typography>
+                      </Loadable>
                     </Stack>
                   </Tooltip>
                 </Stack>
@@ -177,11 +212,13 @@ export const PoolAssetsCard: FC<Props> = ({ poolId }) => {
                   >
                     <IconCashOff />
                     &nbsp;
-                    <Tooltip arrow title="Total Accumulated Costs">
-                      <Typography>
-                        <Number value={data.totalCosts} suffix="USD" />
-                      </Typography>
-                    </Tooltip>
+                    <Loadable loading={isLoading}>
+                      <Tooltip arrow title="Total Accumulated Costs">
+                        <Typography>
+                          <Number value={data.totalCosts} suffix="USD" />
+                        </Typography>
+                      </Tooltip>
+                    </Loadable>
                   </Stack>
                 </Stack>
                 <Stack
@@ -196,6 +233,7 @@ export const PoolAssetsCard: FC<Props> = ({ poolId }) => {
                       key={progress}
                       progress={progress}
                       count={count}
+                      loading={isLoading}
                     />
                   ))}
                 </Stack>
@@ -211,6 +249,7 @@ export const PoolAssetsCard: FC<Props> = ({ poolId }) => {
 interface ItemProps {
   progress: number | string;
   count: number;
+  loading: boolean;
 }
 
 interface StatusObject {
@@ -225,7 +264,7 @@ const AcquisitionProgress: Record<number, StatusObject> = {
   3: { text: "Acquired", icon: IconHomePlus },
   4: { text: "Recovered", icon: IconCertificateOff },
 };
-const ProgressCountItem = ({ progress, count }: ItemProps) => {
+const ProgressCountItem = ({ progress, count, loading }: ItemProps) => {
   // @ts-ignore
   const status = AcquisitionProgress[progress] ?? {
     text: "Unknown",
@@ -241,10 +280,43 @@ const ProgressCountItem = ({ progress, count }: ItemProps) => {
         spacing={1}
       >
         <status.icon />
-        <Typography>
-          <Number value={count} decimals={0} />
-        </Typography>
+        <Loadable loading={loading} variant="circular" width={20} height={20}>
+          <Typography>
+            <Number value={count} decimals={0} />
+          </Typography>
+        </Loadable>
       </Stack>
     </Tooltip>
+  );
+};
+
+interface LoadableProps extends ChildrenProps {
+  loading: boolean;
+  width?: number;
+  height?: number;
+  sx?: SxProps<Theme>;
+  variant?: "rounded" | "circular";
+}
+
+const Loadable: FC<LoadableProps> = ({
+  loading,
+  children,
+  height = 24,
+  width = 100,
+  sx = {},
+  variant = "rounded",
+}) => {
+  return loading ? (
+    <Skeleton
+      variant={variant}
+      width={width}
+      height={height}
+      sx={{
+        backgroundColor: "rgba(255,255,255, 0.5)",
+        ...sx,
+      }}
+    />
+  ) : (
+    <>{children}</>
   );
 };
