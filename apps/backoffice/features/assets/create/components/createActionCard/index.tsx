@@ -103,6 +103,7 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
 
   // @ts-ignore
   // @ts-ignore
+  // @ts-ignore
   return (
     <ActionCard
       title={`Add Asset to Pool ${token.name.toUpperCase()}`}
@@ -213,10 +214,13 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="Acquisition Date"
+                  // @ts-ignore
                   control={control}
                   inputFormat="dd-MM-yyyy"
                   value={value}
-                  // onChange={(event) => { onChange(event); }}
+                  onChange={(event) => {
+                    /* TODO: */
+                  }}
                   renderInput={(params: any) => (
                     <TextField
                       {...params}
