@@ -72,7 +72,7 @@ export const PoolAssetsCard: FC<Props> = ({ poolId }) => {
       count: assetAliasData.length,
       totalCosts,
       totalMarketValue,
-      performance: (totalMarketValue / totalCosts) * 100,
+      performance: totalCosts ? (totalMarketValue / totalCosts) * 100 : 0,
       gain: totalMarketValue - totalCosts,
       progressMap,
     };
