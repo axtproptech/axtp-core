@@ -71,13 +71,14 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
 
   const resetForm = () => {
     reset();
-    setNumberValues({ rate: 0, tokenCount: 0 });
+    setNumberValues({ estimatedMarketValue: 0.0, accumulatedCosts: 0.0 });
   };
 
   const handleOnCreate = async () => {
     const formValues = getValues();
     await execute(async (service) => {
       const { transaction: transactionId, fullHash } =
+        // @ts-ignore
         await service.asset.createAssetOnPool(poolId, {
           ...formValues,
         });
