@@ -214,8 +214,9 @@ export const AssetTable: FC<Props> = ({ poolId }) => {
     })[] = [];
     for (let [aliasId, assetAlias] of assets.entries()) {
       const assetData = assetAlias.getData();
-      const performance =
-        (assetData.estimatedMarketValue / assetData.accumulatedCosts) * 100;
+      const performance = assetData.accumulatedCosts
+        ? (assetData.estimatedMarketValue / assetData.accumulatedCosts) * 100
+        : 0;
       const gain = assetData.estimatedMarketValue - assetData.accumulatedCosts;
       data.push({
         id: aliasId,
@@ -281,7 +282,7 @@ export const AssetTable: FC<Props> = ({ poolId }) => {
   }, [tableRows]);
 
   return (
-    <MainCard title={<AssetTableTitle assets={filteredRows} />}>
+    <MainCard title={<AssetTableTitle assets={filteredRows} poolId={poolId} />}>
       <Grid
         container
         direction="row"

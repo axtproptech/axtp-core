@@ -36,6 +36,10 @@ export class AssetAliasService {
   with(aliasId: string): AssetAliasInstanceService {
     return new AssetAliasInstanceService(this.context, aliasId);
   }
+
+  // FIXME: change the concept.... do not use "next Alias" pattern, but return the aliases by owner.
+  // consider potentially more than 500 aliases!
+  // filter out all aliases which are not of the asset format
   async fetchAllAssetAliases(baseAlias: Alias) {
     return withError(async () => {
       const { ledger } = this.context;

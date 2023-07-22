@@ -3,12 +3,14 @@ import { Button, Stack, Typography } from "@mui/material";
 import { Number } from "@/app/components/number";
 import { useMemo } from "react";
 import { IconDownload, IconShoppingCartPlus } from "@tabler/icons";
+import Link from "next/link";
 
 interface Props {
   assets: AssetAliasData[];
+  poolId: string;
 }
 
-export const AssetTableTitle = ({ assets }: Props) => {
+export const AssetTableTitle = ({ assets, poolId }: Props) => {
   const performance = useMemo(() => {
     const { totalCosts, totalMarketValue } = assets.reduce(
       (acc, c) => {
@@ -55,11 +57,12 @@ export const AssetTableTitle = ({ assets }: Props) => {
         </Stack>
       </Stack>
 
-      {/*TODO: add link to "add asset page" */}
-      <Button variant="contained" color="info">
-        <IconShoppingCartPlus />
-        Add New Asset
-      </Button>
+      <Link href={`/admin/pools/${poolId}/assets/new`}>
+        <Button variant="contained" color="info">
+          <IconShoppingCartPlus />
+          Add New Asset
+        </Button>
+      </Link>
     </Stack>
   );
 };
