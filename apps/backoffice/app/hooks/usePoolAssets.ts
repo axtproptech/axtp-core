@@ -8,12 +8,12 @@ export const usePoolAssets = (poolId: string) => {
   const { data: assets, error } = useSWR(
     `pool/${poolId}/assets`,
     async () => {
-      // return ledgerService
-      //   ? ledgerService.asset.fetchAllPoolAssetsData(poolId)
-      //   : null;
+      return ledgerService
+        ? ledgerService.asset.fetchAllPoolAssetsData(poolId)
+        : null;
 
       // FIXME: remove mocked data
-      return Promise.resolve(mockedAssetAlias);
+      // return Promise.resolve(mockedAssetAlias);
     },
     {
       dedupingInterval: 60_000,

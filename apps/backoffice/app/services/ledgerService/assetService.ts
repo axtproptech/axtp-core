@@ -42,18 +42,17 @@ export class AssetService {
 
   async fetchAllPoolAssetsData(poolId: string) {
     return withError<AssetAliasMap>(async () => {
-      const { ledger } = this.context;
-      const baseAlias = await this.fetchPoolBaseAlias(poolId);
-      return this.assetAliasService.fetchAllAssetAliases(baseAlias);
+      const { ledger, principalAccountId } = this.context;
+      return this.assetAliasService.fetchAllAssetAliases(
+        principalAccountId,
+        poolId
+      );
     });
   }
 
-  async createAssetOnPool(
-    poolId: string,
-    data: Omit<AssetAliasData, "poolId">
-  ) {
+  async createAssetOnPool(data: AssetAliasData) {
     return withError<TransactionId>(async () => {
-      const baseAlias = await this.fetchPoolBaseAlias(poolId);
+      const baseAlias = await this.fetchPoolBaseAlias(data.poolId);
       // We create the alias in the name of axtp principal account... secret is kept server side.
       const http = HttpClientFactory.createHttpClient("/api/admin");
       const { response } = await http.post("/assets", {

@@ -23,6 +23,10 @@ export const Config = {
     AddressPrefix: process.env.NEXT_PUBLIC_SIGNUM_ADDRESS_PREFIX || "TS",
     TickerSymbol: process.env.NEXT_PUBLIC_SIGNUM_TICKER_SYMBOL || "TSIGNA",
   },
+  Accounts: {
+    Principal:
+      process.env.NEXT_PUBLIC_ACCOUNT_PRINCIPAL || "13819828207269214005",
+  },
   Platform: {
     Name: process.env.NEXT_PUBLIC_PLATFORM_NAME || "AXT PropTech Backoffice",
   },

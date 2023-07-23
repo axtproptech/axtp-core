@@ -21,12 +21,16 @@ export interface AppContextType {
     Ticker: string;
   };
   Platform: typeof Config.Platform;
+  Accounts: typeof Config.Accounts;
 }
 
 const config: AppContextType = {
   IsMobile: isMobile,
   IsClientSide: isClientSide(),
   Platform: { ...Config.Platform },
+  Accounts: {
+    ...Config.Accounts,
+  },
   Wallet: {
     Extension: new GenericExtensionWallet(),
     Deeplink: new DeeplinkableWallet({ openInBrowser: true }),

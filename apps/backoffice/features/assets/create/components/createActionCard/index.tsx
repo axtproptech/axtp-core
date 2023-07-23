@@ -28,7 +28,7 @@ type FormValues = {
   acquisitionStatus: number;
   estimatedMarketValue: number;
   accumulatedCosts: number;
-  acquisitionDate: number; // millies
+  acquisitionDate: Date;
 };
 
 const required = {
@@ -64,7 +64,7 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
       acquisitionStatus: 0,
       estimatedMarketValue: 0.0,
       accumulatedCosts: 0.0,
-      acquisitionDate: Date.now(),
+      acquisitionDate: new Date(),
     },
   });
 
@@ -75,12 +75,17 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
 
   const handleOnCreate = async () => {
     const formValues = getValues();
-    console.log("values", formValues);
     await execute(async (service) => {
       const { transaction: transactionId, fullHash } =
-        // @ts-ignore
-        await service.asset.createAssetOnPool(poolId, {
-          ...formValues,
+        await service.asset.createAssetOnPool({
+          poolId,
+          acquisitionDate: formValues.acquisitionDate,
+          accumulatedCosts: numberValues.accumulatedCosts,
+          estimatedMarketValue: numberValues.estimatedMarketValue,
+          acquisitionStatus: formValues.acquisitionStatus,
+          acquisitionProgress: formValues.acquisitionProgress,
+          titleId: formValues.titleId,
+          name: formValues.name,
         });
       return {
         transactionId,
@@ -217,7 +222,7 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
                   inputFormat="dd.MM.yyyy"
                   value={value}
                   // @ts-ignore
-                  onChange={(d) => setValue("acquisitionDate", d.getTime())}
+                  onChange={(d) => setValue("acquisitionDate", d)}
                   renderInput={(params: any) => (
                     <TextField
                       {...params}

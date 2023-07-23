@@ -19,6 +19,20 @@ export class AssetAlias {
     return new AssetAlias(DescriptorData.parse(aliasURI));
   }
 
+  isValid() {
+    const has = (v: any) => v !== undefined;
+
+    return (
+      has(this.d.name) &&
+      has(this.d.id) &&
+      has(this.d.getCustomField("x-pid")) &&
+      has(this.d.getCustomField("x-st")) &&
+      has(this.d.getCustomField("x-ad")) &&
+      has(this.d.getCustomField("x-ac")) &&
+      has(this.d.getCustomField("x-mv")) &&
+      has(this.d.getCustomField("x-pr"))
+    );
+  }
   getData(): AssetAliasData {
     const cx = (k: string) => this.d.getCustomField(k) as string;
 
