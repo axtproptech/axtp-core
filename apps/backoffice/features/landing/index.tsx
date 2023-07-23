@@ -1,9 +1,19 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, styled, Typography } from "@mui/material";
 import { CardWrapperDark, MainCard } from "@/app/components/cards";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import { Animate } from "@/app/components/animation";
 import { useState } from "react";
+
+const Background = styled("div")({
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  // backgroundImage: `url(${})`,
+  backgroundPosition: "center",
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
+});
 
 export const Landing = () => {
   const router = useRouter();
@@ -15,6 +25,7 @@ export const Landing = () => {
   };
   return (
     <Grid container spacing={2}>
+      <Background />
       <Grid item xs={3} />
       <Grid item xs={6}>
         <MainCard title="AXT Landing Page" darkTitle>

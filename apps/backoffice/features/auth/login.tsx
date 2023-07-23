@@ -24,9 +24,11 @@ export const Login: FC<Props> = () => {
 
   return (
     <MainCard
-      title="Restricted Area"
+      title="AXT PropTech Backoffice"
       darkTitle
       sx={{
+        opacity: 0.9,
+        textAlign: "center",
         maxWidth: { xs: 400, lg: 475 },
         margin: "auto",
         mt: "15%",
