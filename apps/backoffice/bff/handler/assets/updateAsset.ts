@@ -48,7 +48,7 @@ export const updateAsset: ApiHandler = async ({ req, res }) => {
       senderPrivateKey: signPrivateKey,
     })) as TransactionId;
 
-    res.status(201).json(transaction);
+    res.status(200).json(transaction);
   } catch (e: any) {
     if (e instanceof ValidationError) {
       throw badRequest(e.errors.join(","));
