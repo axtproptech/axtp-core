@@ -44,8 +44,6 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
   const { Ledger } = useAppContext();
   const theme = useTheme();
 
-  console.log("pool", poolId);
-
   const { token } = usePoolContract(poolId);
   const [numberValues, setNumberValues] = useState({
     estimatedMarketValue: 0.0,
@@ -55,6 +53,7 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
     control,
     reset,
     getValues,
+    setValue,
     formState: { isValid },
   } = useForm<FormValues>({
     mode: "onChange",
@@ -76,6 +75,7 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
 
   const handleOnCreate = async () => {
     const formValues = getValues();
+    console.log("values", formValues);
     await execute(async (service) => {
       const { transaction: transactionId, fullHash } =
         // @ts-ignore
@@ -101,9 +101,6 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
       setNumberValues({ ...numberValues, [field]: values.floatValue });
     };
 
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
   return (
     <ActionCard
       title={`Add Asset to Pool ${token.name.toUpperCase()}`}
@@ -174,7 +171,7 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
             // @ts-ignore
             variant="outlined"
             rules={{
-              required,
+              required: true,
             }}
           />
         </FullBox>
@@ -200,7 +197,7 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
             // @ts-ignore
             variant="outlined"
             rules={{
-              required,
+              required: true,
             }}
           />
         </FullBox>
@@ -210,17 +207,17 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
           <Controller
             name="acquisitionDate"
             control={control}
+            rules={{ required: true }}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="Acquisition Date"
                   // @ts-ignore
                   control={control}
-                  inputFormat="dd-MM-yyyy"
+                  inputFormat="dd.MM.yyyy"
                   value={value}
-                  onChange={(event) => {
-                    /* TODO: */
-                  }}
+                  // @ts-ignore
+                  onChange={(d) => setValue("acquisitionDate", d.getTime())}
                   renderInput={(params: any) => (
                     <TextField
                       {...params}
@@ -247,6 +244,7 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
             )}
             name="acquisitionProgress"
             control={control}
+            rules={{ required: true }}
             // @ts-ignore
             variant="outlined"
           />
@@ -265,6 +263,7 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
             )}
             name="acquisitionStatus"
             control={control}
+            rules={{ required: true }}
             // @ts-ignore
             variant="outlined"
           />
