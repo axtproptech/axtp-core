@@ -1,6 +1,11 @@
 import { MainCard } from "@/app/components/cards";
 import React, { FC, useMemo } from "react";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+  GridRowParams,
+} from "@mui/x-data-grid";
 import { Grid, Stack, Tooltip, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { SelectInput, TextInput } from "@/app/components/inputs";
@@ -19,6 +24,7 @@ import {
   IconReceipt2,
   IconShoppingCartPlus,
   IconUserSearch,
+  IconEdit,
   TablerIcon,
 } from "@tabler/icons";
 import { useAppSelector } from "@/states/hooks";
@@ -34,42 +40,6 @@ import { usePoolAssets } from "@/app/hooks/usePoolAssets";
 const renderAsNumber = (params: GridRenderCellParams<string>) => (
   <Number value={parseFloat(params.value || "0")} />
 );
-
-const Action = ({ cuid }: { cuid: string }) => {
-  const router = useRouter();
-  if (!cuid) {
-    return (
-      <Tooltip title={"This holder is not registered"}>
-        <Typography>No Customer</Typography>
-      </Tooltip>
-    );
-  }
-
-  const handleOnCLick = async (e: React.SyntheticEvent) => {
-    try {
-      e.stopPropagation();
-      await router.push(`/admin/customers/${cuid}`);
-    } catch (err: any) {}
-  };
-
-  return (
-    <Stack direction="row" alignItems="center">
-      <Tooltip title="Click to view customer details">
-        <div>
-          <ActionButton
-            actionLabel={"View"}
-            actionIcon={<IconUserSearch />}
-            onClick={handleOnCLick}
-          />
-        </div>
-      </Tooltip>
-    </Stack>
-  );
-};
-
-// const renderCustomer = (params: GridRenderCellParams<string>) => (
-//   <CustomerAction cuid={params.value || ""} />
-// );
 
 const renderAsDate = (params: GridRenderCellParams<Date>) => {
   const date = params.value;
@@ -187,6 +157,7 @@ interface FormValues {
 }
 
 export const AssetTable: FC<Props> = ({ poolId }) => {
+  const router = useRouter();
   const poolContractState = useAppSelector(selectPoolContractState(poolId));
   const { assets, isLoading } = usePoolAssets(poolId);
 
@@ -281,6 +252,10 @@ export const AssetTable: FC<Props> = ({ poolId }) => {
     return Array.from(options.values());
   }, [tableRows]);
 
+  const handleRowClick = async (e: GridRowParams) => {
+    await router.push(`/admin/assets/${e.id}`);
+  };
+
   return (
     <MainCard title={<AssetTableTitle assets={filteredRows} poolId={poolId} />}>
       <Grid
@@ -289,7 +264,7 @@ export const AssetTable: FC<Props> = ({ poolId }) => {
         alignItems="center"
         spacing={Config.Layout.GridSpacing}
       >
-        <Grid item md={4}>
+        <Grid item xs={4}>
           <Controller
             render={({ field }) => (
               <TextInput
@@ -304,7 +279,7 @@ export const AssetTable: FC<Props> = ({ poolId }) => {
             variant="outlined"
           />
         </Grid>
-        <Grid item md={2}>
+        <Grid item lg={2} xs={4}>
           <Controller
             render={({ field }) => (
               <SelectInput
@@ -320,7 +295,7 @@ export const AssetTable: FC<Props> = ({ poolId }) => {
           />
         </Grid>
 
-        <Grid item md={2}>
+        <Grid item lg={2} xs={4}>
           <Controller
             render={({ field }) => (
               <SelectInput label="Status" options={statusOptions} {...field} />
@@ -334,7 +309,12 @@ export const AssetTable: FC<Props> = ({ poolId }) => {
       </Grid>
       <div style={{ height: "70vh" }}>
         <div style={{ display: "flex", height: "100%" }}>
-          <DataGrid rows={filteredRows} columns={columns} loading={isLoading} />
+          <DataGrid
+            rows={filteredRows}
+            columns={columns}
+            loading={isLoading}
+            onRowClick={handleRowClick}
+          />
         </div>
       </div>
     </MainCard>

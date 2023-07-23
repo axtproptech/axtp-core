@@ -54,7 +54,7 @@ export class AssetAliasService {
               ? assetAlias.isValid() && poolId === assetAlias.getData().poolId
               : assetAlias.isValid();
             if (!isValid) continue;
-            assetAliases.set(alias.aliasName, assetAlias);
+            assetAliases.set(alias.alias, assetAlias);
           } catch (e: any) {
             // ignore as not compatible alias
           }

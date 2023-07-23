@@ -5,7 +5,6 @@ import { useTheme } from "@mui/material/styles";
 import { PoolCard } from "@/features/pools/view/components/poolCard";
 import { Animate } from "@/app/components/animation";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 import { selectAllPools } from "@/app/states/poolsState";
 import { useAppSelector } from "@/states/hooks";
 

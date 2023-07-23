@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { Config } from "@/app/config";
-import { CreateAssetActionCard } from "@/features/assets/create/components/createActionCard";
+import { CreateAssetActionCard } from "./components/createAssetActionCard";
 import { useRouter } from "next/router";
 import { singleQueryArg } from "@/app/singleQueryArg";
 

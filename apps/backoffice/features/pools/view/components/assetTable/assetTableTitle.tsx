@@ -2,7 +2,7 @@ import { AssetAliasData } from "@axtp/core";
 import { Button, Stack, Typography } from "@mui/material";
 import { Number } from "@/app/components/number";
 import { useMemo } from "react";
-import { IconDownload, IconShoppingCartPlus } from "@tabler/icons";
+import { IconShoppingCartPlus } from "@tabler/icons";
 import Link from "next/link";
 
 interface Props {
