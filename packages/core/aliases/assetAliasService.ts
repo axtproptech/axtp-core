@@ -4,8 +4,6 @@ import { AssetAlias, AssetAliasData } from "./assetAlias";
 import { withError } from "../common/withError";
 import { customAlphabet } from "nanoid";
 import { Amount } from "@signumjs/util";
-import { DescriptorData } from "@signumjs/standards";
-import { Alias } from "@signumjs/core";
 
 const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", 12);
 
@@ -36,25 +34,31 @@ export class AssetAliasService {
   with(aliasId: string): AssetAliasInstanceService {
     return new AssetAliasInstanceService(this.context, aliasId);
   }
-  async fetchAllAssetAliases(baseAlias: Alias) {
+
+  async fetchAllAssetAliases(accountId: string, poolId?: string) {
     return withError(async () => {
       const { ledger } = this.context;
-      let nextAliasName = DescriptorData.parse(baseAlias.aliasURI).alias;
       const assetAliases = new Map<string, AssetAlias>();
-      while (nextAliasName) {
-        const nextAlias = await ledger.alias.getAliasByName(
-          nextAliasName,
-          baseAlias.tld
-        );
-
-        if (nextAlias.account !== baseAlias.account) {
-          throw new Error(
-            `Adjacent Aliases have different owners: ${nextAliasName} (${nextAlias.account}) x ${baseAlias.aliasName} (${baseAlias.account})`
-          );
+      let firstIndex: number | undefined = 0;
+      while (firstIndex !== undefined) {
+        // @ts-ignore
+        const { aliases, nextIndex } = await ledger.alias.getAliases({
+          firstIndex,
+          accountId,
+        });
+        firstIndex = nextIndex;
+        for (let alias of aliases) {
+          try {
+            const assetAlias = AssetAlias.parse(alias.aliasURI);
+            const isValid = poolId
+              ? assetAlias.isValid() && poolId === assetAlias.getData().poolId
+              : assetAlias.isValid();
+            if (!isValid) continue;
+            assetAliases.set(alias.alias, assetAlias);
+          } catch (e: any) {
+            // ignore as not compatible alias
+          }
         }
-        const assetAlias = AssetAlias.parse(nextAlias.aliasURI);
-        assetAliases.set(nextAlias.alias, assetAlias);
-        nextAliasName = assetAlias.getData().nextAlias ?? "";
       }
       return assetAliases as AssetAliasMap;
     });
@@ -72,7 +76,7 @@ export class AssetAliasService {
       const descriptor = AssetAlias.create(data).getDescriptorData();
       return ledger.alias.setAlias({
         aliasName: `${aliasBaseName}_${nanoid()}`,
-        tld: aliasTld,
+        tld: aliasTld && aliasTld !== "0" ? aliasTld : undefined,
         feePlanck: Amount.fromSigna(0.2).getPlanck(),
         aliasURI: descriptor.stringify(),
         senderPublicKey,
@@ -81,6 +85,7 @@ export class AssetAliasService {
       });
     });
   }
+
   async updateAssetAlias({
     aliasId,
     data,

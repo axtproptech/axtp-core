@@ -6,12 +6,13 @@ import {
   AssetAliasService,
   type AssetAliasMap,
 } from "@axtp/core";
-import { Alias, UnsignedTransaction } from "@signumjs/core";
+import { Alias, TransactionId } from "@signumjs/core";
 import { PoolContractService } from "@/app/services/ledgerService/poolContractService";
-import { ConfirmedTransaction } from "@signumjs/wallets";
+import { HttpClientFactory } from "@signumjs/http";
 
 export class AssetService {
   private assetAliasService: AssetAliasService;
+
   constructor(
     private context: ServiceContext,
     private poolService: PoolContractService
@@ -41,43 +42,38 @@ export class AssetService {
 
   async fetchAllPoolAssetsData(poolId: string) {
     return withError<AssetAliasMap>(async () => {
-      const { ledger } = this.context;
-      const baseAlias = await this.fetchPoolBaseAlias(poolId);
-      return this.assetAliasService.fetchAllAssetAliases(baseAlias);
+      const { ledger, principalAccountId } = this.context;
+      return this.assetAliasService.fetchAllAssetAliases(
+        principalAccountId,
+        poolId
+      );
     });
   }
 
-  async createAssetOnPool(poolId: string, data: AssetAliasData) {
-    return withError<ConfirmedTransaction>(async () => {
-      const { ledger, accountPublicKey, wallet } = this.context;
-      const baseAlias = await this.fetchPoolBaseAlias(poolId);
-      const { unsignedTransactionBytes } =
-        (await this.assetAliasService.createAssetAlias({
-          aliasBaseName: baseAlias.aliasName,
-          aliasTld: baseAlias.tldName,
-          data,
-          senderPublicKey: accountPublicKey,
-        })) as UnsignedTransaction;
-      return this.signWithWallet(unsignedTransactionBytes);
+  async createAssetOnPool(data: AssetAliasData) {
+    return withError<TransactionId>(async () => {
+      const baseAlias = await this.fetchPoolBaseAlias(data.poolId);
+      // We create the alias in the name of axtp principal account... secret is kept server side.
+      const http = HttpClientFactory.createHttpClient("/api/admin");
+      const { response } = await http.post("/assets", {
+        aliasBaseName: baseAlias.aliasName,
+        aliasTld: baseAlias.tld,
+        ...data,
+      });
+
+      return response as TransactionId;
     });
   }
 
   async updateAsset(aliasId: string, data: AssetAliasData) {
-    return withError<ConfirmedTransaction>(async () => {
-      const { ledger, accountPublicKey, wallet } = this.context;
-      const { unsignedTransactionBytes } =
-        (await this.assetAliasService.updateAssetAlias({
-          aliasId,
-          data,
-          senderPublicKey: accountPublicKey,
-        })) as UnsignedTransaction;
-      return this.signWithWallet(unsignedTransactionBytes);
+    return withError<TransactionId>(async () => {
+      // We update the alias in the name of axtp principal account... secret is kept server side.
+      const http = HttpClientFactory.createHttpClient("/api/admin");
+      const { response } = await http.put("/assets", {
+        aliasId,
+        ...data,
+      });
+      return response as TransactionId;
     });
-  }
-
-  private async signWithWallet(unsignedTransactionBytes: string) {
-    return (await this.context.wallet.confirm(
-      unsignedTransactionBytes
-    )) as ConfirmedTransaction;
   }
 }

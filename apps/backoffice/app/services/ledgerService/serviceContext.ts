@@ -5,4 +5,5 @@ export interface ServiceContext {
   ledger: Ledger;
   wallet: WalletDecorator;
   accountPublicKey: string;
+  principalAccountId: string;
 }

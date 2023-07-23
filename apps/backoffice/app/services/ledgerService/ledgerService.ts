@@ -20,6 +20,7 @@ export class LedgerService {
   constructor(
     private nodeHost: string,
     private accountPublicKey: string,
+    private principalAccountId: string,
     private wallet: Wallet
   ) {
     this.ledger = LedgerClientFactory.createClient({
@@ -29,6 +30,7 @@ export class LedgerService {
     const context: ServiceContext = {
       ledger: this.ledger,
       accountPublicKey,
+      principalAccountId,
       wallet: new WalletDecorator(wallet),
     };
 
