@@ -174,5 +174,8 @@
   "effective_rate": "Taxa Efetiva",
   "transactions": "Transações",
   "see_assets": "Olhar Assets",
-  "assets": "Assets"
+  "asset_one": "Asset",
+  "asset_other": "Asset",
+  "total_estimated_value": "Valor Total Estimado",
+  "total_accumulated_costs": "Custo Total Accumulados"
 }

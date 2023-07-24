@@ -17,9 +17,13 @@ const Stat = Stats.Stat;
 
 interface Props {
   poolData: PoolContractData;
+  showStats?: boolean;
 }
 
-export const PoolAssetsHeader: FC<Props> = ({ poolData }) => {
+export const PoolAssetsHeader: FC<Props> = ({
+  poolData,
+  showStats = false,
+}) => {
   const account = useAccount();
   const { t } = useTranslation();
 
@@ -64,50 +68,52 @@ export const PoolAssetsHeader: FC<Props> = ({ poolData }) => {
           </small>
         </div>
       </section>
-      <section className="flex flex-row justify-center items-center">
-        <div>
-          <Stats className="stats-vertical lg:stats-horizontal shadow w-full">
-            <Stat className="place-items-center">
-              <Stat.Item variant="title">{t("gmv")}</Stat.Item>
-              <Stat.Item variant="value">
-                <span>
-                  <Number value={stats.gmv} />
-                  <small className="ml-1 text-xs">{axtcToken.name}</small>
-                </span>
-              </Stat.Item>
-              <Stat.Item variant="desc">
-                <Number value={stats.initial} suffix={axtcToken.name} />{" "}
-              </Stat.Item>
-            </Stat>
-            <Stat className="place-items-center">
-              <Stat.Item variant="title">{t("performance")}</Stat.Item>
-              <Stat.Item variant="value">
-                <span
+      {showStats && (
+        <section className="flex flex-row justify-center items-center">
+          <div>
+            <Stats className="stats-vertical lg:stats-horizontal shadow w-full">
+              <Stat className="place-items-center">
+                <Stat.Item variant="title">{t("gmv")}</Stat.Item>
+                <Stat.Item variant="value">
+                  <span>
+                    <Number value={stats.gmv} />
+                    <small className="ml-1 text-xs">{axtcToken.name}</small>
+                  </span>
+                </Stat.Item>
+                <Stat.Item variant="desc">
+                  <Number value={stats.initial} suffix={axtcToken.name} />{" "}
+                </Stat.Item>
+              </Stat>
+              <Stat className="place-items-center">
+                <Stat.Item variant="title">{t("performance")}</Stat.Item>
+                <Stat.Item variant="value">
+                  <span
+                    className={
+                      stats.relGmv >= 0 ? "text-green-400" : "text-red-500"
+                    }
+                  >
+                    {stats.relGmv >= 0 ? "↗" : "↘"}&nbsp;
+                    {stats.relGmv.toFixed(2)}
+                    <small className="ml-1 text-xs">%</small>
+                  </span>
+                </Stat.Item>
+                <Stat.Item
+                  variant="desc"
                   className={
                     stats.relGmv >= 0 ? "text-green-400" : "text-red-500"
                   }
                 >
-                  {stats.relGmv >= 0 ? "↗" : "↘"}&nbsp;
-                  {stats.relGmv.toFixed(2)}
-                  <small className="ml-1 text-xs">%</small>
-                </span>
-              </Stat.Item>
-              <Stat.Item
-                variant="desc"
-                className={
-                  stats.relGmv >= 0 ? "text-green-400" : "text-red-500"
-                }
-              >
-                <Number
-                  prefix={stats.relGmv >= 0 ? "+" : "-"}
-                  value={stats.gmv - stats.initial}
-                  suffix={axtcToken.name}
-                />
-              </Stat.Item>
-            </Stat>
-          </Stats>
-        </div>
-      </section>
+                  <Number
+                    prefix={stats.relGmv >= 0 ? "+" : "-"}
+                    value={stats.gmv - stats.initial}
+                    suffix={axtcToken.name}
+                  />
+                </Stat.Item>
+              </Stat>
+            </Stats>
+          </div>
+        </section>
+      )}
     </div>
   );
 };

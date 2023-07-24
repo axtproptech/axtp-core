@@ -174,5 +174,8 @@
   "effective_rate": "Effective Rate",
   "transactions": "Transactions",
   "see_assets": "See Assets",
-  "assets": "Assets"
+  "asset_one": "Asset",
+  "asset_other": "Assets",
+  "total_estimated_value": "Total Estimated Value",
+  "total_accumulated_costs": "Total Accumulated Costs"
 }
