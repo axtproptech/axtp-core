@@ -16,6 +16,8 @@ export const PoolAssetsList: FC<Props> = ({ assetMap }) => {
       });
     }
 
+    itemList.sort((a1, a2) => a1.acquisitionProgress - a2.acquisitionProgress);
+
     return itemList;
   }, [assetMap]);
 
