@@ -8,6 +8,7 @@ import hashicon from "hashicon";
 import { Stats } from "react-daisyui";
 import { useTranslation } from "next-i18next";
 import { AssetAliasMap } from "@axtp/core";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 const Stat = Stats.Stat;
 
@@ -22,10 +23,11 @@ interface Props {
 
 export const PoolAssetsStats: FC<Props> = ({ assetMap, collapsed = false }) => {
   const { t } = useTranslation();
+  const { IsMobile } = useAppContext();
 
   const stats = useMemo(() => {
-    let totalMarketValue = 220_000;
-    let totalCosts = 16_570.34;
+    let totalMarketValue = 0;
+    let totalCosts = 0;
     for (let [_, alias] of assetMap.entries()) {
       const { estimatedMarketValue, accumulatedCosts } = alias.getData();
       totalCosts += accumulatedCosts;
@@ -39,15 +41,16 @@ export const PoolAssetsStats: FC<Props> = ({ assetMap, collapsed = false }) => {
     };
   }, [assetMap]);
 
+  const height = IsMobile ? "h-[300px]" : "h-[96px]";
   return (
     <div className="relative w-full">
       <section className="flex flex-row justify-center items-center">
-        <div>
-          <Stats
-            className={`stats-vertical lg:stats-horizontal shadow w-full transition-[height] overflow-hidden  duration-300 ${
-              collapsed ? "h-0" : "h-[300px]"
-            }`}
-          >
+        <div
+          className={`transition-[height] overflow-hidden  duration-300 ${
+            collapsed ? "h-0" : height
+          }`}
+        >
+          <Stats className={`stats-vertical lg:stats-horizontal shadow w-full`}>
             <Stat className="place-items-center" style={NoBorderStyle}>
               <Stat.Item variant="title">
                 {t("total_estimated_value")}

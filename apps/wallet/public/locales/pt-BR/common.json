@@ -177,5 +177,16 @@
   "asset_one": "Asset",
   "asset_other": "Asset",
   "total_estimated_value": "Valor Total Estimado",
-  "total_accumulated_costs": "Custo Total Accumulados"
+  "total_accumulated_costs": "Custo Total Accumulados",
+  "asset_p_paid": "Pâgo",
+  "asset_p_cert": "Cert. Recebido",
+  "asset_p_notified": "Notificado",
+  "asset_p_acquired": "Comprado",
+  "asset_p_recovered": "Resgatado",
+  "asset_s_in_acquisition": "Em Acquisição",
+  "asset_s_renting": "Alugando",
+  "asset_s_rehab": "Rehab (Section 8)",
+  "asset_s_maintenance": "Reforma",
+  "asset_s_sold": "Vendido",
+  "asset_s_lost": "Perdido"
 }
