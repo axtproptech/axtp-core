@@ -5,11 +5,10 @@ import {
   RiWallet3Line,
   RiArrowLeftCircleLine,
   RiHome6Line,
-  RiFileSettingsLine,
 } from "react-icons/ri";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { Config } from "@/app/config";
-import { PoolContractDetails } from "@/features/pool";
+import { PoolAssets } from "@/features/pool";
 import { useMemo } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
 
@@ -39,9 +38,8 @@ export async function getStaticProps({ locale, params }: any) {
 }
 
 export default function Page({ poolId }: any) {
-  const account = useAccount();
   const { t } = useTranslation();
-
+  const account = useAccount();
   const bottomNav: BottomNavigationItem[] = useMemo(() => {
     const nav = [
       {
@@ -58,7 +56,7 @@ export default function Page({ poolId }: any) {
 
     if (account) {
       nav.push({
-        route: `/account`,
+        route: "/account",
         label: t("account"),
         icon: <RiWallet3Line />,
       });
@@ -69,7 +67,7 @@ export default function Page({ poolId }: any) {
 
   return (
     <Layout noBody bottomNav={bottomNav}>
-      <PoolContractDetails poolId={poolId} />
+      <PoolAssets poolId={poolId} />
     </Layout>
   );
 }

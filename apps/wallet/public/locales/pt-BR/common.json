@@ -172,5 +172,7 @@
   "close": "Fechar",
   "manual": "Manual",
   "effective_rate": "Taxa Efetiva",
-  "transactions": "Transações"
+  "transactions": "Transações",
+  "see_assets": "Olhar Assets",
+  "assets": "Assets"
 }

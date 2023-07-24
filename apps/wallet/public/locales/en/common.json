@@ -172,5 +172,7 @@
   "close": "Close",
   "manual": "Manual",
   "effective_rate": "Effective Rate",
-  "transactions": "Transactions"
+  "transactions": "Transactions",
+  "see_assets": "See Assets",
+  "assets": "Assets"
 }

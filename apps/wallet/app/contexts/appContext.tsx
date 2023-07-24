@@ -31,6 +31,9 @@ export interface AppContextType {
     Privacy: string;
     Manual: string;
   };
+  Accounts: {
+    Principal: string;
+  };
   Ledger: {
     IsTestNet: boolean;
     Client: Ledger;
@@ -90,6 +93,9 @@ const config: AppContextType = {
     PixKey: Config.Payment.PixKey,
     BankAccountInfo: Config.Payment.BankAccountInfo,
     Usdc: Config.Payment.Usdc,
+  },
+  Accounts: {
+    Principal: Config.Accounts.Principal,
   },
   Ledger: {
     IsTestNet: Config.Ledger.IsTestNet,
