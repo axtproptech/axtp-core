@@ -1,6 +1,5 @@
 import { AssetAliasData } from "@axtp/core";
 import React, { useMemo } from "react";
-import { Steps } from "react-daisyui";
 import { useTranslation } from "next-i18next";
 
 type StatusVariants = "done" | "next" | "open" | "lost";
@@ -48,7 +47,7 @@ export const PoolAssetStatus = ({ asset }: Props) => {
   }, [acquisitionProgress]);
 
   return (
-    <div className="py-1 w-3/4 md:w-1/2 lg:w-1/4">
+    <div className="py-1 w-3/4 sm:w-1/2 lg:w-1/4">
       <div className={"grid grid-rows-1 grid-cols-4 place-items-start gap-x-4"}>
         <Step variant={stepVariants[0]} />
         <Step variant={stepVariants[1]} />

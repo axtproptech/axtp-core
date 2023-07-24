@@ -1,17 +1,14 @@
 import { FC, useMemo } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
 import { Number } from "@/app/components/number";
-import { useRouter } from "next/router";
 import { PoolContractData } from "@/types/poolContractData";
 // @ts-ignore
 import hashicon from "hashicon";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { Stats } from "react-daisyui";
-import { getCompactFormatter } from "@/app/getCompactFormatter";
 import { useTranslation } from "next-i18next";
 import { useAppSelector } from "@/states/hooks";
 import { selectAXTToken } from "@/app/states/tokenState";
-import { useAppContext } from "@/app/hooks/useAppContext";
 
 const Stat = Stats.Stat;
 

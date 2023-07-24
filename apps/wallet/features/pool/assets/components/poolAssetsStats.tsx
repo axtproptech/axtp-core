@@ -1,8 +1,5 @@
 import { FC, useMemo } from "react";
-import { useAccount } from "@/app/hooks/useAccount";
 import { Number } from "@/app/components/number";
-import { useRouter } from "next/router";
-import { PoolContractData } from "@/types/poolContractData";
 // @ts-ignore
 import hashicon from "hashicon";
 import { Stats } from "react-daisyui";

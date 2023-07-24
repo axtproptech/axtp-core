@@ -11,6 +11,9 @@ import useSWR from "swr";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { RiArrowUpSLine } from "react-icons/ri";
 import { mockedAssetAlias } from "./components/mockedAssetAlias";
+import { HintBox } from "@/app/components/hintBox";
+import { AnimatedIconWarn } from "@/app/components/animatedIcons/animatedIconWarn";
+import { AnimatedIconGlobe } from "@/app/components/animatedIcons/animatedIconGlobe";
 
 interface Props {
   poolId: string;
@@ -69,7 +72,18 @@ export const PoolAssets: FC<Props> = ({ poolId }) => {
               isStatsCollapsed ? "h-full" : "h-[calc(100vh_-_520px)]"
             }`}
           >
-            <PoolAssetsList assetMap={assetMap} />
+            {assetMap.size ? (
+              <PoolAssetsList assetMap={assetMap} />
+            ) : (
+              <div className="mt-8">
+                <HintBox text={""}>
+                  <div className="w-20 m-auto absolute bg-base-100 top-[-48px]">
+                    <AnimatedIconGlobe touchable loopDelay={3000} />
+                  </div>
+                  <p className="mt-4">{t("no_assets_yet_hint")}</p>
+                </HintBox>
+              </div>
+            )}
           </Body>
           <div className="absolute  top-[-1px] bg-gradient-to-b from-black h-4 w-full" />
         </div>

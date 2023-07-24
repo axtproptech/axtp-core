@@ -1,6 +1,4 @@
 import { FC, useMemo } from "react";
-import { useTranslation } from "next-i18next";
-import { useAppContext } from "@/app/hooks/useAppContext";
 import { AssetAliasData, AssetAliasMap } from "@axtp/core";
 import { PoolAssetsListItem } from "@/features/pool/assets/components/poolAssetListItem";
 
@@ -9,8 +7,6 @@ interface Props {
 }
 
 export const PoolAssetsList: FC<Props> = ({ assetMap }) => {
-  const { t } = useTranslation();
-
   const items = useMemo(() => {
     const itemList: (AssetAliasData & { aliasId: string })[] = [];
     for (let [aliasId, alias] of assetMap.entries()) {

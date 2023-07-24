@@ -174,8 +174,9 @@
   "effective_rate": "Taxa Efetiva",
   "transactions": "Transações",
   "see_assets": "Olhar Assets",
+  "asset_zero": "Nenhum Asset",
   "asset_one": "Asset",
-  "asset_other": "Asset",
+  "asset_other": "Assets",
   "total_estimated_value": "Valor Total Estimado",
   "total_accumulated_costs": "Custo Total Accumulados",
   "asset_p_paid": "Pâgo",
@@ -188,5 +189,6 @@
   "asset_s_rehab": "Rehab (Section 8)",
   "asset_s_maintenance": "Reforma",
   "asset_s_sold": "Vendido",
-  "asset_s_lost": "Perdido"
+  "asset_s_lost": "Perdido",
+  "no_assets_yet_hint": "Este pool ainda não tem ativos registrados. Estamos trabalhando arduamente na aquisição de ativos para esse pool. Volte mais tarde."
 }
