@@ -8,40 +8,44 @@ import {
 } from "react-icons/ri";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { Config } from "@/app/config";
-import { PoolAssets } from "@/features/pool";
 import { useMemo } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
+import { PoolAssetDetails } from "@/features/pool";
 import { useRouter } from "next/router";
+import { GetServerSidePropsContext } from "next";
 
-export async function getStaticPaths({ locales }: any) {
-  const paths = Config.Contracts.PoolContractIds.flatMap((poolId) =>
-    locales.map((locale: string) => ({
-      params: { poolId },
-      locale,
-    }))
-  );
-  return {
-    paths,
-    fallback: "blocking",
-  };
-}
+// export async function getStaticPaths({ locales, ...rest }: any) {
+//   return {
+//     paths: [],
+//     fallback: false,
+//   };
+// }
+//
+// export async function getStaticProps({ locale, params }: any) {
+//   return {
+//     props: {
+//       ...(await serverSideTranslations(locale)),
+//       // Will be passed to the page component as props
+//     },
+//   };
+// }
 
-export async function getStaticProps({ locale, params }: any) {
-  const poolId = params?.poolId as string;
-
+export async function getServerSideProps({
+  locale,
+}: GetServerSidePropsContext) {
   return {
     props: {
-      ...(await serverSideTranslations(locale)),
-      poolId,
-      // Will be passed to the page component as props
+      ...(await serverSideTranslations(locale || "pt-BR")),
     },
   };
 }
 
-export default function Page({ poolId }: any) {
+export default function Page() {
   const { t } = useTranslation();
-  const account = useAccount();
   const { query } = useRouter();
+  const poolId = query?.poolId as string;
+  const aliasId = query?.aliasId as string;
+  const account = useAccount();
   const bottomNav: BottomNavigationItem[] = useMemo(() => {
     const nav = [
       {
@@ -69,7 +73,7 @@ export default function Page({ poolId }: any) {
 
   return (
     <Layout noBody bottomNav={bottomNav}>
-      <PoolAssets poolId={poolId} />
+      <PoolAssetDetails poolId={poolId} aliasId={query.aliasId as string} />
     </Layout>
   );
 }

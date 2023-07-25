@@ -1,7 +1,5 @@
 import { FC, useMemo } from "react";
 import { Number } from "@/app/components/number";
-// @ts-ignore
-import hashicon from "hashicon";
 import { Stats } from "react-daisyui";
 import { useTranslation } from "next-i18next";
 import { AssetAliasMap } from "@axtp/core";

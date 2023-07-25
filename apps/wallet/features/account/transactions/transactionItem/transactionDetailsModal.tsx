@@ -47,6 +47,7 @@ export const TransactionDetailsModal = ({ txData, open, onClose }: Props) => {
   if (!txData) return null;
 
   const tx = getTransactionUiElements(txData);
+
   const openInExplorer = () => {
     if (!txData) return;
     openExternalUrl(txData.explorerUrl);

@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import { AssetAliasData, AssetAliasMap } from "@axtp/core";
-import { PoolAssetsListItem } from "@/features/pool/assets/components/poolAssetListItem";
+import { PoolAssetsListItem } from "./poolAssetListItem";
 
 interface Props {
   assetMap: AssetAliasMap;

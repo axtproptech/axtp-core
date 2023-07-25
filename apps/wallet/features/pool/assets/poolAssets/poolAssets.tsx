@@ -4,16 +4,16 @@ import { FC, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { Body } from "@/app/components/layout/body";
 import { Fade, Slide, Zoom } from "react-awesome-reveal";
-import { PoolAssetsHeader } from "./components/poolAssetsHeader";
-import { PoolAssetsStats } from "./components/poolAssetsStats";
-import { PoolAssetsList } from "./components/poolAssetList";
+import { PoolAssetsHeader } from "./poolAssetsHeader";
+import { PoolAssetsStats } from "./poolAssetsStats";
+import { PoolAssetsList } from "./poolAssetList";
 import useSWR from "swr";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { RiArrowUpSLine } from "react-icons/ri";
-import { mockedAssetAlias } from "./components/mockedAssetAlias";
+import { mockedAssetAlias } from "../mockedAssetAlias";
 import { HintBox } from "@/app/components/hintBox";
-import { AnimatedIconWarn } from "@/app/components/animatedIcons/animatedIconWarn";
 import { AnimatedIconGlobe } from "@/app/components/animatedIcons/animatedIconGlobe";
+import { PoolHeader } from "@/features/pool/components/poolHeader";
 
 interface Props {
   poolId: string;
@@ -47,7 +47,7 @@ export const PoolAssets: FC<Props> = ({ poolId }) => {
 
   return (
     <div className="overflow-hidden h-[100vh]">
-      <PoolAssetsHeader poolData={pool} />
+      <PoolHeader poolData={pool} showStats={false} />
       <PoolAssetsStats assetMap={assetMap} collapsed={isStatsCollapsed} />
       <div className="relative">
         <div className="divider">
