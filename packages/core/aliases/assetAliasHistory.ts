@@ -5,3 +5,5 @@ export interface AssetAliasHistoryItem {
   transactionId: string;
   assetData: AssetAliasData;
 }
+
+export type AssetAliasHistory = AssetAliasHistoryItem[];

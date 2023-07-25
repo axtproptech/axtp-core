@@ -1,6 +1,6 @@
-import { AssetAlias, AssetAliasHistoryItem } from "@axtp/core";
+import { AssetAlias, type AssetAliasHistory } from "@axtp/core";
 
-export const mockedAssetAliasHistory: AssetAliasHistoryItem[] = [
+export const mockedAssetAliasHistory: AssetAliasHistory = [
   {
     transactionId: "13442847954798353477",
     timestamp: 282416784,

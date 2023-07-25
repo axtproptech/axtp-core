@@ -2,19 +2,19 @@ import { useAppSelector } from "@/states/hooks";
 import { selectPoolContractState } from "@/app/states/poolsState";
 import { FC, useState } from "react";
 import { useTranslation } from "next-i18next";
-import { Body } from "@/app/components/layout/body";
-import { Fade, Slide, Zoom } from "react-awesome-reveal";
-import { PoolAssetsStats } from "../poolAssets/poolAssetsStats";
-import { PoolAssetsList } from "../poolAssets/poolAssetList";
 import useSWR from "swr";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
-import { RiArrowUpSLine } from "react-icons/ri";
 import { mockedAssetAlias } from "../mockedAssetAlias";
-import { HintBox } from "@/app/components/hintBox";
-import { AnimatedIconGlobe } from "@/app/components/animatedIcons/animatedIconGlobe";
-import { PoolHeader } from "@/features/pool/components/poolHeader";
 import { PoolAssetDetailsStats } from "@/features/pool/assets/poolAssetDetails/poolAssetDetailsStats";
 import { mockedAssetAliasHistory } from "@/features/pool/assets/mockedAssetAliasHistory";
+import { PoolAssetHeader } from "@/features/pool/assets/poolAssetDetails/poolAssetHeader/poolAssetHeader";
+import { Body } from "@/app/components/layout/body";
+import { LoadingBox } from "@/app/components/loadingBox";
+import {
+  PaddingSize,
+  TransactionItemCard,
+} from "@/features/account/transactions/transactionItem/transactionItemCard";
+import * as React from "react";
 
 interface Props {
   poolId: string;
@@ -41,23 +41,60 @@ export const PoolAssetDetails: FC<Props> = ({ poolId, aliasId }) => {
   //   }
   // );
 
-  const { data: assetHistory } = useSWR(
+  const { data: assetHistory, error: assetHistoryError } = useSWR(
     ledgerService ? `pool/${poolId}/assets/${aliasId}/history` : null,
     async () => Promise.resolve(mockedAssetAliasHistory)
   );
 
-  const { data: asset } = useSWR(
+  const { data: asset, error: assetError } = useSWR(
     ledgerService ? `pool/${poolId}/assets/${aliasId}` : null,
-    async () => Promise.resolve(mockedAssetAlias.get("1"))
+    async () => Promise.resolve(mockedAssetAlias.get(aliasId))
   );
 
   if (!pool) return null;
   if (!asset) return null;
 
+  const isLoadingHistory = !assetHistory && !assetHistoryError;
+
   return (
     <div className="overflow-hidden h-[100vh]">
-      <PoolHeader poolData={pool} showStats={false} />
+      <PoolAssetHeader
+        poolData={pool}
+        assetAlias={asset}
+        assetHistory={assetHistory}
+      />
       <PoolAssetDetailsStats assetAlias={asset} collapsed={isStatsCollapsed} />
+
+      <Body className="relative">
+        {isLoadingHistory && (
+          <section className="mt-[30%]">
+            <LoadingBox
+              title={t("loadingHistory")}
+              text={t("loadingTransactionsHint")}
+            />
+          </section>
+        )}
+
+        {/*{!isLoadingHistory && (*/}
+        {/*  <>*/}
+        {/*    <div className="absolute z-10 top-4 bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />*/}
+        {/*    <FixedSizeList*/}
+        {/*      className={*/}
+        {/*        "overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh_-_440px)]"*/}
+        {/*      }*/}
+        {/*      height={height}*/}
+        {/*      width="100%"*/}
+        {/*      itemCount={allTransactions.length}*/}
+        {/*      itemSize={80 + PaddingSize * 2}*/}
+        {/*      itemData={allTransactions}*/}
+        {/*    >*/}
+        {/*      {TransactionItemCard}*/}
+        {/*    </FixedSizeList>*/}
+        {/*    <div className="absolute z-10 bottom-4 bg-gradient-to-t from-base-100 h-4 w-full opacity-80" />*/}
+        {/*  </>*/}
+        {/*)}*/}
+      </Body>
+
       {/*<div className="relative">*/}
       {/*  <div className="divider">*/}
       {/*    {assetMap.size}&nbsp;{t("asset", { count: assetMap.size })}*/}

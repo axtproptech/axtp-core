@@ -2,7 +2,7 @@ import { AssetAliasServiceContext } from "./assetAliasServiceContext";
 import { withError } from "../common/withError";
 import { AssetAlias } from "./assetAlias";
 import { TransactionArbitrarySubtype, TransactionType } from "@signumjs/core";
-import { AssetAliasHistoryItem } from "./assetAliasHistoryItem";
+import { AssetAliasHistory } from "./assetAliasHistory";
 
 interface FetchAliasHistoryArgs {
   timestamp?: number;
@@ -32,7 +32,7 @@ export class AssetAliasInstanceService {
       const { ledger } = this.context;
       const { timestamp = 0 } = args;
       const thisAlias = await this.fetchAlias();
-      let history: AssetAliasHistoryItem[] = [];
+      let history: AssetAliasHistory = [];
       let firstIndex: number | undefined = 0;
       while (firstIndex !== undefined) {
         // @ts-ignore

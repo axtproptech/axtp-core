@@ -16,6 +16,7 @@ import { AnimatedIconGlobe } from "@/app/components/animatedIcons/animatedIconGl
 import * as React from "react";
 import { useTranslation } from "next-i18next";
 import { TransactionDetailsModal } from "./transactionItem/transactionDetailsModal";
+import { LoadingBox } from "@/app/components/loadingBox";
 
 const FixedSizeList = _FixedSizeList as ComponentType<FixedSizeListProps>;
 
@@ -59,15 +60,10 @@ export const AccountTransactions = () => {
       <Body className="relative">
         {isLoading && (
           <section className="mt-[30%]">
-            <HintBox>
-              <div className="absolute w-[64px] bottom-[-40px] right-[12px] bg-base-100">
-                <AnimatedIconGlobe loopDelay={1000} />
-              </div>
-              <div className="text-center">
-                <h3 className="my-1">{t("loadingTransactions")}</h3>
-                <small>{t("loadingTransactionsHint")}</small>
-              </div>
-            </HintBox>
+            <LoadingBox
+              title={t("loadingTransactions")}
+              text={t("loadingTransactionsHint")}
+            />
           </section>
         )}
 

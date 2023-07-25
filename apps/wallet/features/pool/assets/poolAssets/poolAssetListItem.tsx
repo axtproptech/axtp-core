@@ -1,7 +1,6 @@
 import { FC } from "react";
-import { useTranslation } from "next-i18next";
 import { AssetAliasData } from "@axtp/core";
-import { PoolAssetStatus } from "./poolAssetStatus";
+import { PoolAssetStatus } from "../components/poolAssetStatus";
 import { Number } from "@/app/components/number";
 import Link from "next/link";
 import { useRouter } from "next/router";

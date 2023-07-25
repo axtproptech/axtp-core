@@ -40,7 +40,7 @@ export const PoolAssetDetailsStats: FC<Props> = ({
           <Stats className={`stats-vertical lg:stats-horizontal shadow w-full`}>
             <Stat className="place-items-center" style={NoBorderStyle}>
               <Stat.Item variant="title">
-                {t("total_estimated_value")}
+                {t("asset_estimated_value")}
               </Stat.Item>
               <Stat.Item variant="value">
                 <span>
@@ -51,7 +51,7 @@ export const PoolAssetDetailsStats: FC<Props> = ({
             </Stat>
             <Stat className="place-items-center" style={NoBorderStyle}>
               <Stat.Item variant="title">
-                {t("total_accumulated_costs")}
+                {t("asset_accumulated_costs")}
               </Stat.Item>
               <Stat.Item variant="value">
                 <span>
