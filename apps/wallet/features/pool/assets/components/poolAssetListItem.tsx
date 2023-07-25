@@ -17,7 +17,7 @@ export const PoolAssetsListItem: FC<Props> = ({ id, asset }) => {
     : 0;
 
   return (
-    <div className="border border-primary-content border-solid p-2 px-4 rounded-lg mb-2 glass">
+    <div className="border border-primary-content border-solid p-2 px-4 rounded-lg mb-2 glass cursor-pointer">
       <div className="flex flex-row justify-between items-center gap-x-2">
         <div className="grow">
           <div className="text-[10px] xs:w-[96px] md:w-[180px] text-primary opacity-60 text-ellipsis whitespace-nowrap overflow-hidden">

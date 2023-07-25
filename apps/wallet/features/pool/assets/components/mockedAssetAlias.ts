@@ -61,7 +61,7 @@ export const mockedAssetAlias: AssetAliasMap = new Map<string, AssetAlias>([
         "x-ad": 1687970811678,
         "x-ac": 4125,
         "x-mv": 25750,
-        "x-pr": 2,
+        "x-pr": 3,
       })
     ),
   ],
