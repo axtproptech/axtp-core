@@ -38,13 +38,13 @@ function getClass(variant: StatusVariants) {
 }
 
 export const PoolAssetStatusFull = ({ asset }: Props) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("assets");
   const { acquisitionStatus, acquisitionProgress, acquisitionDate } = asset;
   const statusLabel = AcquisitionStatus[acquisitionStatus] ?? "unknown";
   const progressState = getProgressState(acquisitionProgress);
 
   return (
-    <div className="py-1 w-full">
+    <div className="py-1 w-full text-center">
       <ul className="steps">
         {progressState.map(({ l, v }) => {
           const { cx, char } = getClass(v);

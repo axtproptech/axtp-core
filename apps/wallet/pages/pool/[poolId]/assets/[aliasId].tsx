@@ -35,7 +35,10 @@ export async function getServerSideProps({
 }: GetServerSidePropsContext) {
   return {
     props: {
-      ...(await serverSideTranslations(locale || "pt-BR")),
+      ...(await serverSideTranslations(locale || "pt-BR", [
+        "common",
+        "assets",
+      ])),
     },
   };
 }
@@ -73,7 +76,7 @@ export default function Page() {
 
   return (
     <Layout noBody bottomNav={bottomNav}>
-      <PoolAssetDetails poolId={poolId} aliasId={query.aliasId as string} />
+      <PoolAssetDetails poolId={poolId} aliasId={aliasId} />
     </Layout>
   );
 }

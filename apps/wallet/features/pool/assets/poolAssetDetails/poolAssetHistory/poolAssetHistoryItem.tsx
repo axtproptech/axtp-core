@@ -1,29 +1,42 @@
-import { FC } from "react";
-import { AssetAliasData } from "@axtp/core";
-import { PoolAssetStatus } from "../components/poolAssetStatus";
+import { AssetAliasHistoryItem } from "@axtp/core";
+import { PoolAssetStatus } from "../../components/poolAssetStatus";
 import { Number } from "@/app/components/number";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import { ChainTime } from "@signumjs/util";
+import { formatDate } from "@/app/formatDate";
+import { useAppContext } from "@/app/hooks/useAppContext";
+import Link from "next/link";
 
 interface Props {
-  id: string;
-  asset: AssetAliasData;
+  txId: string;
+  data: AssetAliasHistoryItem;
 }
 
-export const PoolAssetsListItem: FC<Props> = ({ id, asset }) => {
-  const router = useRouter();
+export const PoolAssetHistoryItem = ({ data, txId }: Props) => {
+  const { locale } = useRouter();
+  const {
+    Ledger: { ExplorerUrl },
+  } = useAppContext();
+
+  const { assetData: asset, transactionId, timestamp } = data;
 
   const performance = asset.accumulatedCosts
     ? (asset.estimatedMarketValue / asset.accumulatedCosts) * 100
     : 0;
 
+  const date = ChainTime.fromChainTimestamp(timestamp).getDate();
+
   return (
-    <Link href={`${router.asPath}/${id}`}>
-      <div className="border border-primary-content border-solid p-2 px-4 rounded-lg mb-2 glass cursor-pointer">
+    <a
+      href={`${ExplorerUrl}/tx/${txId}`}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <div className="relative bg-base-200 p-2 px-4 rounded-lg mb-2 cursor-pointer">
         <div className="flex flex-row justify-between items-center gap-x-2">
           <div className="grow">
             <div className="text-[10px] xs:w-[96px] md:w-[180px] text-primary opacity-60 text-ellipsis whitespace-nowrap overflow-hidden">
-              {asset.name}
+              <div>{formatDate({ date: date, locale })}</div>
             </div>
             <PoolAssetStatus asset={asset} />
           </div>
@@ -44,6 +57,6 @@ export const PoolAssetsListItem: FC<Props> = ({ id, asset }) => {
           </div>
         </div>
       </div>
-    </Link>
+    </a>
   );
 };

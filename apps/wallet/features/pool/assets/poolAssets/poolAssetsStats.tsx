@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const PoolAssetsStats: FC<Props> = ({ assetMap, collapsed = false }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("assets");
   const { IsMobile } = useAppContext();
 
   const stats = useMemo(() => {

@@ -9,7 +9,7 @@ interface Props {
 
 export const LoadingBox = ({ title, text }: Props) => (
   <HintBox>
-    <div className="absolute w-[64px] bottom-[-40px] right-[12px] bg-base-100">
+    <div className="absolute w-[64px] bottom-[-48px] right-[12px] bg-base-100">
       <AnimatedIconGlobe loopDelay={1000} />
     </div>
     <div className="text-center">

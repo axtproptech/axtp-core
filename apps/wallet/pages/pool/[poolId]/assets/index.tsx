@@ -31,7 +31,7 @@ export async function getStaticProps({ locale, params }: any) {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale)),
+      ...(await serverSideTranslations(locale, ["common", "assets"])),
       poolId,
       // Will be passed to the page component as props
     },

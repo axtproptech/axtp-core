@@ -20,7 +20,7 @@ export const PoolAssetDetailsStats: FC<Props> = ({
   assetAlias,
   collapsed = false,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("assets");
   const { IsMobile } = useAppContext();
 
   const { estimatedMarketValue, accumulatedCosts } = assetAlias.getData();

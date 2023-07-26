@@ -11,8 +11,6 @@ import {
 import { AccountHeader } from "@/features/account/components/accountHeader";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useAccountTransactions } from "@/app/hooks/useAccountTransactions";
-import { HintBox } from "@/app/components/hintBox";
-import { AnimatedIconGlobe } from "@/app/components/animatedIcons/animatedIconGlobe";
 import * as React from "react";
 import { useTranslation } from "next-i18next";
 import { TransactionDetailsModal } from "./transactionItem/transactionDetailsModal";
@@ -38,7 +36,6 @@ export const AccountTransactions = () => {
       //@ts-ignore
       const { index } = e.detail;
       setDetailIndex(index);
-      // console.log("clicked", index, allTransactions[index]);
     }
 
     document.addEventListener("tx-item-clicked", handleItemClick);

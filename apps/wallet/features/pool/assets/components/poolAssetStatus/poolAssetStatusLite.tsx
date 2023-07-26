@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const PoolAssetStatusLite = ({ asset }: Props) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("assets");
   const { acquisitionStatus, acquisitionProgress, acquisitionDate } = asset;
   const statusLabel = AcquisitionStatus[acquisitionStatus] ?? "unknown";
   const progressState = getProgressState(acquisitionProgress);

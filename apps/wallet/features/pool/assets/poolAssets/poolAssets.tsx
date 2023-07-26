@@ -13,13 +13,14 @@ import { mockedAssetAlias } from "../mockedAssetAlias";
 import { HintBox } from "@/app/components/hintBox";
 import { AnimatedIconGlobe } from "@/app/components/animatedIcons/animatedIconGlobe";
 import { PoolHeader } from "@/features/pool/components/poolHeader";
+import { CollapsableDivider } from "@/app/components/collapsableDivider";
 
 interface Props {
   poolId: string;
 }
 
 export const PoolAssets: FC<Props> = ({ poolId }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("assets");
   const pool = useAppSelector(selectPoolContractState(poolId));
   const ledgerService = useLedgerService();
   const [isStatsCollapsed, setStatsCollapsed] = useState(false);
@@ -48,22 +49,11 @@ export const PoolAssets: FC<Props> = ({ poolId }) => {
     <div className="overflow-hidden h-[100vh]">
       <PoolHeader poolData={pool} showStats={false} />
       <PoolAssetsStats assetMap={assetMap} collapsed={isStatsCollapsed} />
-      <div className="relative">
-        <div className="divider">
-          {assetMap.size}&nbsp;{t("asset", { count: assetMap.size })}
-        </div>
-        <div
-          className="absolute right-4 top-[-8px]"
-          onClick={() => setStatsCollapsed(!isStatsCollapsed)}
-        >
-          <RiArrowUpSLine
-            className={`bg-black rounded-full border border-primary-content border-solid p-1 ${
-              isStatsCollapsed ? "rotate-180" : "rotate-0"
-            } transition-transform duration-300`}
-            size={32}
-          />
-        </div>
-      </div>
+      <CollapsableDivider
+        isCollapsed={isStatsCollapsed}
+        onCollapse={setStatsCollapsed}
+        text={`${assetMap.size} ${t("asset", { count: assetMap.size })}`}
+      />
       <Fade>
         <div className="relative z-10">
           <Body
@@ -84,7 +74,7 @@ export const PoolAssets: FC<Props> = ({ poolId }) => {
               </div>
             )}
           </Body>
-          <div className="absolute  top-[-1px] bg-gradient-to-b from-black h-4 w-full" />
+          <div className="absolute top-[-1px] bg-gradient-to-b from-base-100 h-4 w-full" />
         </div>
       </Fade>
     </div>

@@ -12,7 +12,7 @@ import { Number } from "@/app/components/number";
 import { ChildrenProps } from "@/types/childrenProps";
 import { InOutAmount } from "@/features/account/transactions/transactionItem/InOutAmount";
 import { HintBoxEncryptedMessage } from "@/features/account/transactions/transactionItem/hintBoxEncryptedMessage";
-import { Zoom } from "react-awesome-reveal";
+import { Fade, Zoom } from "react-awesome-reveal";
 
 const RowItem: FC<ChildrenProps & { className?: string }> = ({
   children,

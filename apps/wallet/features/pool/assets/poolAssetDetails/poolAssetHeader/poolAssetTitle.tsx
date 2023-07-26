@@ -2,7 +2,6 @@ import { FC, useMemo } from "react";
 import { PoolContractData } from "@/types/poolContractData";
 // @ts-ignore
 import hashicon from "hashicon";
-import { Stats } from "react-daisyui";
 import { AssetAliasData, type AssetAliasHistory } from "@axtp/core";
 
 interface Props {
@@ -27,8 +26,8 @@ export const PoolAssetTitle: FC<Props> = ({ poolData, asset }) => {
           <h2 className="text-lg">{poolData.token.name}</h2>
         </div>
       </div>
-      <div className="text-center text-gray-200 w-1/2 lg:w-full">
-        <h2 className="text-lg text-ellipsis whitespace-nowrap overflow-hidden">
+      <div className="text-gray-200">
+        <h2 className="text-lg text-right text-ellipsis whitespace-nowrap overflow-hidden w-3/4 md:w-full">
           {asset.name}
         </h2>
       </div>

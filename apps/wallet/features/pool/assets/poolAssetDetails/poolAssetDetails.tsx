@@ -15,6 +15,10 @@ import {
   TransactionItemCard,
 } from "@/features/account/transactions/transactionItem/transactionItemCard";
 import * as React from "react";
+import { CollapsableDivider } from "@/app/components/collapsableDivider";
+import { Fade } from "react-awesome-reveal";
+import { PoolAssetHistory } from "@/features/pool/assets/poolAssetDetails/poolAssetHistory/poolAssetHistory";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 interface Props {
   poolId: string;
@@ -22,12 +26,12 @@ interface Props {
 }
 
 export const PoolAssetDetails: FC<Props> = ({ poolId, aliasId }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("assets");
+  const { t: tc } = useTranslation();
+  const { IsMobile } = useAppContext();
   const pool = useAppSelector(selectPoolContractState(poolId));
   const ledgerService = useLedgerService();
   const [isStatsCollapsed, setStatsCollapsed] = useState(false);
-
-  console.log("details", poolId, aliasId);
 
   // const { data: assetMap, error } = useSWR(
   //   ledgerService ? `pool/${poolId}/assets` : null,
@@ -64,76 +68,36 @@ export const PoolAssetDetails: FC<Props> = ({ poolId, aliasId }) => {
         assetHistory={assetHistory}
       />
       <PoolAssetDetailsStats assetAlias={asset} collapsed={isStatsCollapsed} />
-
+      <div className="relative">
+        <CollapsableDivider
+          isCollapsed={isStatsCollapsed}
+          onCollapse={setStatsCollapsed}
+          text={t("asset_history")}
+        />
+        <div className="absolute top-2 left-2 text-[10px] text-gray-500 ">
+          {IsMobile ? tc("tap_to_see_tx") : tc("click_to_see_tx")}
+        </div>
+      </div>
       <Body className="relative">
         {isLoadingHistory && (
           <section className="mt-[30%]">
-            <LoadingBox
-              title={t("loadingHistory")}
-              text={t("loadingTransactionsHint")}
-            />
+            <Fade triggerOnce>
+              <LoadingBox
+                title={t("asset_history_loading_title")}
+                text={t("asset_history_loading_text")}
+              />
+            </Fade>
           </section>
         )}
 
-        {/*{!isLoadingHistory && (*/}
-        {/*  <>*/}
-        {/*    <div className="absolute z-10 top-4 bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />*/}
-        {/*    <FixedSizeList*/}
-        {/*      className={*/}
-        {/*        "overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh_-_440px)]"*/}
-        {/*      }*/}
-        {/*      height={height}*/}
-        {/*      width="100%"*/}
-        {/*      itemCount={allTransactions.length}*/}
-        {/*      itemSize={80 + PaddingSize * 2}*/}
-        {/*      itemData={allTransactions}*/}
-        {/*    >*/}
-        {/*      {TransactionItemCard}*/}
-        {/*    </FixedSizeList>*/}
-        {/*    <div className="absolute z-10 bottom-4 bg-gradient-to-t from-base-100 h-4 w-full opacity-80" />*/}
-        {/*  </>*/}
-        {/*)}*/}
+        {!isLoadingHistory && (
+          <section>
+            <Fade triggerOnce>
+              <PoolAssetHistory assetHistory={assetHistory!} />
+            </Fade>
+          </section>
+        )}
       </Body>
-
-      {/*<div className="relative">*/}
-      {/*  <div className="divider">*/}
-      {/*    {assetMap.size}&nbsp;{t("asset", { count: assetMap.size })}*/}
-      {/*  </div>*/}
-      {/*  <div*/}
-      {/*    className="absolute right-4 top-[-8px]"*/}
-      {/*    onClick={() => setStatsCollapsed(!isStatsCollapsed)}*/}
-      {/*  >*/}
-      {/*    <RiArrowUpSLine*/}
-      {/*      className={`bg-black rounded-full border border-primary-content border-solid p-1 ${*/}
-      {/*        isStatsCollapsed ? "rotate-180" : "rotate-0"*/}
-      {/*      } transition-transform duration-300`}*/}
-      {/*      size={32}*/}
-      {/*    />*/}
-      {/*  </div>*/}
-      {/*</div>*/}
-      {/*<Fade>*/}
-      {/*  <div className="relative z-10">*/}
-      {/*    <Body*/}
-      {/*      className={`overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent ${*/}
-      {/*        isStatsCollapsed ? "h-full" : "h-[calc(100vh_-_520px)]"*/}
-      {/*      }`}*/}
-      {/*    >*/}
-      {/*      {assetMap.size ? (*/}
-      {/*        <PoolAssetsList assetMap={assetMap} />*/}
-      {/*      ) : (*/}
-      {/*        <div className="mt-8">*/}
-      {/*          <HintBox text={""}>*/}
-      {/*            <div className="w-20 m-auto absolute bg-base-100 top-[-48px]">*/}
-      {/*              <AnimatedIconGlobe touchable loopDelay={3000} />*/}
-      {/*            </div>*/}
-      {/*            <p className="mt-4">{t("no_assets_yet_hint")}</p>*/}
-      {/*          </HintBox>*/}
-      {/*        </div>*/}
-      {/*      )}*/}
-      {/*    </Body>*/}
-      {/*    <div className="absolute  top-[-1px] bg-gradient-to-b from-black h-4 w-full" />*/}
-      {/*  </div>*/}
-      {/*</Fade>*/}
     </div>
   );
 };
