@@ -4,7 +4,7 @@ import { useAppSelector } from "@/states/hooks";
 import { selectAllPools } from "@/app/states/poolsState";
 import { PoolCard } from "@/app/components/cards/poolCard";
 import { Zoom } from "react-awesome-reveal";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { useTranslation } from "next-i18next";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 import { PoolListAquisitionCTA } from "@/app/components/poolList/poolListAquisitionCTA";

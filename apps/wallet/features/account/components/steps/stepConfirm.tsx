@@ -3,7 +3,7 @@ import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Checkbox, Input } from "react-daisyui";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { RiCheckboxCircleLine } from "react-icons/ri";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { PinInput } from "@/app/components/pinInput";
 
 interface Props {

@@ -1,7 +1,7 @@
 import { useTranslation } from "next-i18next";
 import { FC } from "react";
 import { AnimatedIconWarn } from "@/app/components/animatedIcons/animatedIconWarn";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { CopyButton } from "@/app/components/buttons/copyButton";
 import { Button } from "react-daisyui";
 import { RiFileDownloadLine } from "react-icons/ri";

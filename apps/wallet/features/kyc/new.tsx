@@ -4,7 +4,7 @@ import { useAppContext } from "@/app/hooks/useAppContext";
 import { isIOS } from "mobile-device-detect";
 import { AttentionSeeker, Fade, Slide } from "react-awesome-reveal";
 import { PoolHeader } from "@/features/pool/components/poolHeader";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import * as React from "react";
 import { useTranslation } from "next-i18next";
 import { Button } from "react-daisyui";

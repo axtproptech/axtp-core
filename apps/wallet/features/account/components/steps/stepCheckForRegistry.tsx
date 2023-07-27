@@ -1,6 +1,6 @@
 import { useTranslation } from "next-i18next";
 import { FC } from "react";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { CustomerSafeData } from "@/types/customerSafeData";
 import * as React from "react";
 import { AnimatedIconConfetti } from "@/app/components/animatedIcons/animatedIconConfetti";

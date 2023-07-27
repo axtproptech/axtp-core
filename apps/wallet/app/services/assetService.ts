@@ -5,6 +5,7 @@ import {
   AssetAliasData,
   AssetAliasService,
   type AssetAliasMap,
+  AssetAliasHistory,
 } from "@axtp/core";
 import { Alias, TransactionId } from "@signumjs/core";
 import { PoolContractService } from "./poolContractService";
@@ -40,6 +41,11 @@ export class AssetService {
     });
   }
 
-  // TODO: fetch AssetHistory
-  // use timestamp and make it incremental
+  async fetchAllPoolAssetHistory(aliasId: string, timestamp?: number) {
+    return withError<AssetAliasHistory>(async () => {
+      return this.assetAliasService
+        .with(aliasId)
+        .fetchAliasHistory({ timestamp });
+    });
+  }
 }

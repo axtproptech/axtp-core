@@ -5,13 +5,14 @@ import { useRouter } from "next/router";
 import { ChainTime } from "@signumjs/util";
 import { formatDate } from "@/app/formatDate";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import Link from "next/link";
+import { RiFundsBoxLine, RiRefund2Line, RiStockLine } from "react-icons/ri";
 
 interface Props {
   txId: string;
   data: AssetAliasHistoryItem;
 }
 
+const IconSize = 12;
 export const PoolAssetHistoryItem = ({ data, txId }: Props) => {
   const { locale } = useRouter();
   const {
@@ -40,18 +41,21 @@ export const PoolAssetHistoryItem = ({ data, txId }: Props) => {
             </div>
             <PoolAssetStatus asset={asset} />
           </div>
-          <div className="text-lg mr-4">
+          <div className="text-lg mr-4 flex flex-row items-baseline gap-x-1">
+            <RiFundsBoxLine size={IconSize} />
             <Number value={performance} suffix="%" decimals={2} />
           </div>
           <div className="flex flex-col justify-end">
-            <div className="text-md text-success">
+            <div className="text-md text-success flex flex-row items-baseline gap-x-1">
+              <RiStockLine size={IconSize} />
               <Number
                 value={asset.estimatedMarketValue}
                 prefix="$"
                 decimals={2}
               />
             </div>
-            <div className="text-xs text-error">
+            <div className="text-xs text-error flex flex-row items-baseline gap-x-1">
+              <RiRefund2Line size={IconSize} />
               <Number value={asset.accumulatedCosts} prefix="$" decimals={2} />
             </div>
           </div>

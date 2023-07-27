@@ -1,7 +1,7 @@
 import { useTranslation } from "next-i18next";
 import { FC, useState } from "react";
 import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePaymentCalculator";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { CopyButton } from "@/app/components/buttons/copyButton";
 import { AnimatedIconQrCode } from "@/app/components/animatedIcons/animatedIconQrCode";
 import { useAppContext } from "@/app/hooks/useAppContext";

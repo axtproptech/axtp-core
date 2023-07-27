@@ -21,5 +21,6 @@
   "asset_history_loading_title": "Loading Asset History",
   "asset_history_loading_text": "The history is being loaded from the Signum Blockchain...",
   "asset_history": "History",
+  "asset_history_error": "An error occurred while loading the history. Maybe an connection issue with the network. If you are sure that this is not because of connection issues, report this to our support team.",
   "performance": "Performance"
 }

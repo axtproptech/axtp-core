@@ -14,7 +14,7 @@ import { useAccountTransactions } from "@/app/hooks/useAccountTransactions";
 import * as React from "react";
 import { useTranslation } from "next-i18next";
 import { TransactionDetailsModal } from "./transactionItem/transactionDetailsModal";
-import { LoadingBox } from "@/app/components/loadingBox";
+import { LoadingBox } from "@/app/components/hintBoxes/loadingBox";
 
 const FixedSizeList = _FixedSizeList as ComponentType<FixedSizeListProps>;
 

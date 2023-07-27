@@ -1,6 +1,6 @@
 import { useTranslation } from "next-i18next";
 import { ChangeEvent, FC, useState } from "react";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import * as React from "react";
 import { Checkbox } from "react-daisyui";
 import useSWR from "swr";

@@ -8,12 +8,12 @@ import { PoolAssetsStats } from "./poolAssetsStats";
 import { PoolAssetsList } from "./poolAssetList";
 import useSWR from "swr";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
-import { RiArrowUpSLine } from "react-icons/ri";
-import { mockedAssetAlias } from "../mockedAssetAlias";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { AnimatedIconGlobe } from "@/app/components/animatedIcons/animatedIconGlobe";
 import { PoolHeader } from "@/features/pool/components/poolHeader";
 import { CollapsableDivider } from "@/app/components/collapsableDivider";
+import * as React from "react";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 interface Props {
   poolId: string;
@@ -21,25 +21,22 @@ interface Props {
 
 export const PoolAssets: FC<Props> = ({ poolId }) => {
   const { t } = useTranslation("assets");
+  const { t: tc } = useTranslation();
   const pool = useAppSelector(selectPoolContractState(poolId));
   const ledgerService = useLedgerService();
+  const { IsMobile } = useAppContext();
   const [isStatsCollapsed, setStatsCollapsed] = useState(false);
-
-  // const { data: assetMap, error } = useSWR(
-  //   ledgerService ? `pool/${poolId}/assets` : null,
-  //   async () =>
-  //     !ledgerService
-  //       ? null
-  //       : ledgerService.asset.fetchAllPoolAssetsData(poolId),
-  //   {
-  //     dedupingInterval: 100_000,
-  //     refreshInterval: 120_000,
-  //   }
-  // );
 
   const { data: assetMap, error } = useSWR(
     ledgerService ? `pool/${poolId}/assets` : null,
-    async () => Promise.resolve(mockedAssetAlias)
+    async () =>
+      !ledgerService
+        ? null
+        : ledgerService.asset.fetchAllPoolAssetsData(poolId),
+    {
+      dedupingInterval: 100_000,
+      refreshInterval: 120_000,
+    }
   );
 
   if (!pool) return null;
@@ -49,11 +46,16 @@ export const PoolAssets: FC<Props> = ({ poolId }) => {
     <div className="overflow-hidden h-[100vh]">
       <PoolHeader poolData={pool} showStats={false} />
       <PoolAssetsStats assetMap={assetMap} collapsed={isStatsCollapsed} />
-      <CollapsableDivider
-        isCollapsed={isStatsCollapsed}
-        onCollapse={setStatsCollapsed}
-        text={`${assetMap.size} ${t("asset", { count: assetMap.size })}`}
-      />
+      <div className="relative">
+        <CollapsableDivider
+          isCollapsed={isStatsCollapsed}
+          onCollapse={setStatsCollapsed}
+          text={`${assetMap.size} ${t("asset", { count: assetMap.size })}`}
+        />
+        <div className="absolute top-2 left-2 text-[10px] text-gray-500 ">
+          {IsMobile ? tc("tap_to_see_more") : tc("click_to_see_more")}
+        </div>
+      </div>
       <Fade>
         <div className="relative z-10">
           <Body

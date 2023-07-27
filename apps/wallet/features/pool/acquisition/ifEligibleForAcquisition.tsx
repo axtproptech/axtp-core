@@ -3,7 +3,7 @@ import { ChildrenProps } from "@/types/childrenProps";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useRouter } from "next/router";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { AnimatedIconError } from "@/app/components/animatedIcons/animatedIconError";
 import { Button } from "react-daisyui";
 import { RegisterCustomerButton } from "@/app/components/buttons/registerCustomerButton";

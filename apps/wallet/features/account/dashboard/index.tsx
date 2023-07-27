@@ -5,7 +5,7 @@ import { DashboardHeader } from "@/features/account/dashboard/sections/dashboard
 import { PaymentStatus } from "@/features/account/components/paymentStatus";
 import { Body } from "@/app/components/layout/body";
 import { PoolList } from "@/app/components/poolList";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { VerificationStatus } from "@/app/components/verificationStatus";
 import { useTranslation } from "next-i18next";
 import { Button } from "react-daisyui";

@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/states/hooks";
 import { actions, selectAgreementKey } from "@/app/states/appState";
 import { useEffect, useState } from "react";
 import { decryptMessage } from "@signumjs/crypto";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { PinInput } from "@/app/components/pinInput";
 import { Button } from "react-daisyui";
 import { RiMailOpenLine } from "react-icons/ri";

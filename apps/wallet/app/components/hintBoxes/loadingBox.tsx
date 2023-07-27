@@ -1,5 +1,5 @@
 import { HintBox } from "./hintBox";
-import { AnimatedIconGlobe } from "./animatedIcons/animatedIconGlobe";
+import { AnimatedIconGlobe } from "../animatedIcons/animatedIconGlobe";
 import * as React from "react";
 
 interface Props {

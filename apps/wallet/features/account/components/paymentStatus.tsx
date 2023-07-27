@@ -3,7 +3,7 @@ import { FC, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { selectAllPools } from "@/app/states/poolsState";
 import { formatNumber } from "@/app/formatNumber";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { useTranslation } from "next-i18next";
 import { AnimatedIconClock } from "@/app/components/animatedIcons/animatedIconClock";
 

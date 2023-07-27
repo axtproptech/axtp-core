@@ -14,22 +14,6 @@ import { PoolAssetDetails } from "@/features/pool";
 import { useRouter } from "next/router";
 import { GetServerSidePropsContext } from "next";
 
-// export async function getStaticPaths({ locales, ...rest }: any) {
-//   return {
-//     paths: [],
-//     fallback: false,
-//   };
-// }
-//
-// export async function getStaticProps({ locale, params }: any) {
-//   return {
-//     props: {
-//       ...(await serverSideTranslations(locale)),
-//       // Will be passed to the page component as props
-//     },
-//   };
-// }
-
 export async function getServerSideProps({
   locale,
 }: GetServerSidePropsContext) {

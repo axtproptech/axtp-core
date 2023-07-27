@@ -1,5 +1,5 @@
 import { TextLogo } from "@/app/components/logo/textLogo";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import QRCode from "react-qr-code";
 import { useTranslation } from "next-i18next";
 

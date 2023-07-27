@@ -4,11 +4,14 @@ import { PoolAssetStatus } from "../components/poolAssetStatus";
 import { Number } from "@/app/components/number";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { RiFundsBoxLine, RiRefund2Line, RiStockLine } from "react-icons/ri";
 
 interface Props {
   id: string;
   asset: AssetAliasData;
 }
+
+const IconSize = 12;
 
 export const PoolAssetsListItem: FC<Props> = ({ id, asset }) => {
   const router = useRouter();
@@ -27,20 +30,23 @@ export const PoolAssetsListItem: FC<Props> = ({ id, asset }) => {
             </div>
             <PoolAssetStatus asset={asset} />
           </div>
-          <div className="text-lg mr-4">
+          <div className="text-lg mr-4 flex flex-row items-baseline gap-x-1">
+            <RiFundsBoxLine size={IconSize} />
             <Number value={performance} suffix="%" decimals={2} />
           </div>
           <div className="flex flex-col justify-end">
-            <div className="text-md text-success">
+            <span className="text-md text-success flex flex-row items-baseline gap-x-1 ">
+              <RiStockLine size={IconSize} />
               <Number
                 value={asset.estimatedMarketValue}
                 prefix="$"
                 decimals={2}
               />
-            </div>
-            <div className="text-xs text-error">
+            </span>
+            <span className="text-xs text-error flex flex-row items-baseline gap-x-1 ">
+              <RiRefund2Line size={IconSize} />
               <Number value={asset.accumulatedCosts} prefix="$" decimals={2} />
-            </div>
+            </span>
           </div>
         </div>
       </div>

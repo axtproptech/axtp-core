@@ -4,21 +4,17 @@ import { FC, useState } from "react";
 import { useTranslation } from "next-i18next";
 import useSWR from "swr";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
-import { mockedAssetAlias } from "../mockedAssetAlias";
 import { PoolAssetDetailsStats } from "@/features/pool/assets/poolAssetDetails/poolAssetDetailsStats";
-import { mockedAssetAliasHistory } from "@/features/pool/assets/mockedAssetAliasHistory";
 import { PoolAssetHeader } from "@/features/pool/assets/poolAssetDetails/poolAssetHeader/poolAssetHeader";
 import { Body } from "@/app/components/layout/body";
-import { LoadingBox } from "@/app/components/loadingBox";
-import {
-  PaddingSize,
-  TransactionItemCard,
-} from "@/features/account/transactions/transactionItem/transactionItemCard";
+import { LoadingBox } from "@/app/components/hintBoxes/loadingBox";
 import * as React from "react";
 import { CollapsableDivider } from "@/app/components/collapsableDivider";
 import { Fade } from "react-awesome-reveal";
 import { PoolAssetHistory } from "@/features/pool/assets/poolAssetDetails/poolAssetHistory/poolAssetHistory";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { ErrorBox } from "@/app/components/hintBoxes/errorBox";
+import { RiFundsBoxLine, RiRefund2Line, RiStockLine } from "react-icons/ri";
 
 interface Props {
   poolId: string;
@@ -33,26 +29,22 @@ export const PoolAssetDetails: FC<Props> = ({ poolId, aliasId }) => {
   const ledgerService = useLedgerService();
   const [isStatsCollapsed, setStatsCollapsed] = useState(false);
 
-  // const { data: assetMap, error } = useSWR(
-  //   ledgerService ? `pool/${poolId}/assets` : null,
-  //   async () =>
-  //     !ledgerService
-  //       ? null
-  //       : ledgerService.asset.fetchAllPoolAssetsData(poolId),
-  //   {
-  //     dedupingInterval: 100_000,
-  //     refreshInterval: 120_000,
-  //   }
-  // );
-
   const { data: assetHistory, error: assetHistoryError } = useSWR(
     ledgerService ? `pool/${poolId}/assets/${aliasId}/history` : null,
-    async () => Promise.resolve(mockedAssetAliasHistory)
+    () => ledgerService?.asset.fetchAllPoolAssetHistory(aliasId),
+    {
+      dedupingInterval: 100_000,
+      refreshInterval: 120_000,
+    }
   );
 
   const { data: asset, error: assetError } = useSWR(
     ledgerService ? `pool/${poolId}/assets/${aliasId}` : null,
-    async () => Promise.resolve(mockedAssetAlias.get(aliasId))
+    async () => ledgerService?.asset.fetchAssetData(aliasId),
+    {
+      dedupingInterval: 100_000,
+      refreshInterval: 120_000,
+    }
   );
 
   if (!pool) return null;
@@ -80,7 +72,7 @@ export const PoolAssetDetails: FC<Props> = ({ poolId, aliasId }) => {
       </div>
       <Body className="relative">
         {isLoadingHistory && (
-          <section className="mt-[30%]">
+          <section className="mt-8">
             <Fade triggerOnce>
               <LoadingBox
                 title={t("asset_history_loading_title")}
@@ -95,6 +87,12 @@ export const PoolAssetDetails: FC<Props> = ({ poolId, aliasId }) => {
             <Fade triggerOnce>
               <PoolAssetHistory assetHistory={assetHistory!} />
             </Fade>
+          </section>
+        )}
+
+        {assetHistoryError && (
+          <section>
+            <ErrorBox text={t("asset_history_error")} />
           </section>
         )}
       </Body>

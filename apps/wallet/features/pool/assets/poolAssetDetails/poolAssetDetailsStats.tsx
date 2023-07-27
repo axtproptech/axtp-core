@@ -1,9 +1,10 @@
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { Number } from "@/app/components/number";
 import { Stats } from "react-daisyui";
 import { useTranslation } from "next-i18next";
-import { AssetAlias, AssetAliasMap } from "@axtp/core";
+import { AssetAlias } from "@axtp/core";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { RiFundsBoxLine, RiRefund2Line, RiStockLine } from "react-icons/ri";
 
 const Stat = Stats.Stat;
 
@@ -40,7 +41,10 @@ export const PoolAssetDetailsStats: FC<Props> = ({
           <Stats className={`stats-vertical lg:stats-horizontal shadow w-full`}>
             <Stat className="place-items-center" style={NoBorderStyle}>
               <Stat.Item variant="title">
-                {t("asset_estimated_value")}
+                <span className="flex flex-row items-center gap-x-1">
+                  <RiStockLine />
+                  <div>{t("asset_estimated_value")}</div>
+                </span>
               </Stat.Item>
               <Stat.Item variant="value">
                 <span>
@@ -51,7 +55,10 @@ export const PoolAssetDetailsStats: FC<Props> = ({
             </Stat>
             <Stat className="place-items-center" style={NoBorderStyle}>
               <Stat.Item variant="title">
-                {t("asset_accumulated_costs")}
+                <span className="flex flex-row items-center gap-x-1">
+                  <RiRefund2Line />
+                  <div>{t("asset_accumulated_costs")}</div>
+                </span>
               </Stat.Item>
               <Stat.Item variant="value">
                 <span>
@@ -61,7 +68,12 @@ export const PoolAssetDetailsStats: FC<Props> = ({
               </Stat.Item>
             </Stat>
             <Stat className="place-items-center" style={NoBorderStyle}>
-              <Stat.Item variant="title">{t("performance")}</Stat.Item>
+              <Stat.Item variant="title">
+                <span className="flex flex-row items-center gap-x-1">
+                  <RiFundsBoxLine />
+                  <div>{t("performance")}</div>
+                </span>
+              </Stat.Item>
               <Stat.Item variant="value">
                 <span
                   className={

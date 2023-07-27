@@ -6,7 +6,7 @@ import { useAppContext } from "@/app/hooks/useAppContext";
 import { formatDate } from "@/app/formatDate";
 import { useRouter } from "next/router";
 import { Button, Modal } from "react-daisyui";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { openExternalUrl } from "@/app/openExternalUrl";
 import { Number } from "@/app/components/number";
 import { ChildrenProps } from "@/types/childrenProps";

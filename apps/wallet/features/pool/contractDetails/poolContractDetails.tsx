@@ -8,6 +8,7 @@ import { useTranslation } from "next-i18next";
 import { Body } from "@/app/components/layout/body";
 import { Fade, Slide, Zoom } from "react-awesome-reveal";
 import { CollapsableDivider } from "@/app/components/collapsableDivider";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 interface Props {
   poolId: string;
@@ -15,17 +16,19 @@ interface Props {
 
 export const PoolContractDetails: FC<Props> = ({ poolId }) => {
   const { t } = useTranslation();
+  const { IsMobile } = useAppContext();
   const pool = useAppSelector(selectPoolContractState(poolId));
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   if (!pool) return null;
 
+  const height = IsMobile ? "420px" : "300px";
   return (
     <div className="overflow-hidden h-[100vh]">
       <section
         className="relative transition-[height] overflow-hidden duration-300"
         style={{
-          height: isCollapsed ? "128px" : "420px",
+          height: isCollapsed ? "128px" : height,
         }}
       >
         <Slide direction="down" triggerOnce>

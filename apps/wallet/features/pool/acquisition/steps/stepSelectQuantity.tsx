@@ -1,6 +1,6 @@
 import { useTranslation } from "next-i18next";
 import { FC, useMemo, useState } from "react";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { useAppSelector } from "@/states/hooks";
 import { selectAXTToken } from "@/app/states/tokenState";
 import { Number } from "@/app/components/number";

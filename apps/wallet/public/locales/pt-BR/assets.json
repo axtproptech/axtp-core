@@ -19,5 +19,6 @@
   "asset_s_lost": "Perdido",
   "no_assets_yet_hint": "Este pool ainda não tem ativos registrados. Estamos trabalhando arduamente na aquisição de ativos para esse pool. Volte mais tarde.",
   "asset_history": "Histórico",
+  "asset_history_error": "Ocorreu um erro ao carregar o histórico. Talvez um problema de conexão com a rede. Se tiver certeza de que isso não se deve a problemas de conexão, informe à nossa equipe de suporte.",
   "performance": "Performance"
 }
