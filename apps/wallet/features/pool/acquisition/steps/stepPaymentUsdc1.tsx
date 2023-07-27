@@ -2,7 +2,7 @@ import { useTranslation } from "next-i18next";
 import { FC, FormEvent, useEffect, useState } from "react";
 import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePaymentCalculator";
 import { Number } from "@/app/components/number";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import QRCode from "react-qr-code";
 import { CopyButton } from "@/app/components/buttons/copyButton";
 import { AnimatedIconQrCode } from "@/app/components/animatedIcons/animatedIconQrCode";

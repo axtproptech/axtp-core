@@ -2,7 +2,7 @@ import { Input } from "react-daisyui";
 import { useTranslation } from "next-i18next";
 import { FC } from "react";
 import { voidFn } from "@/app/voidFn";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 
 interface Props {
   account: string;

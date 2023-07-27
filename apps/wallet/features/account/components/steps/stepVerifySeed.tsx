@@ -4,7 +4,7 @@ import { Input } from "react-daisyui";
 import { RiCheckboxCircleLine } from "react-icons/ri";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { isAttachmentVersion } from "@signumjs/core";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 
 interface Props {
   seed: string;

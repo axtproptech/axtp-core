@@ -23,7 +23,7 @@ import {
 } from "react-icons/ri";
 import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
 import { BlockchainProtocolType } from "@/types/blockchainProtocolType";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { useAccount } from "@/app/hooks/useAccount";
 import { ChainValue } from "@signumjs/util";
 import { IfEligibleForAcquisition } from "./ifEligibleForAcquisition";

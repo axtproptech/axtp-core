@@ -6,7 +6,7 @@ import { CustomerSafeData } from "@/types/customerSafeData";
 import { useNotification } from "@/app/hooks/useNotification";
 import { useIMask } from "react-imask";
 import { RiRestartLine, RiSearchLine } from "react-icons/ri";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { Greeting } from "@/app/components/greeting";
 import { useAccount } from "@/app/hooks/useAccount";
 

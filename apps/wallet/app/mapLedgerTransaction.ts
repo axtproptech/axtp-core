@@ -71,7 +71,7 @@ function tryExtractAmount(
     tx.distribution
   ) {
     return d(
-      Number(Amount.fromPlanck(tx.distribution.amountNQT || "0")),
+      Number(Amount.fromPlanck(tx.distribution.amountNQT || "0").getSigna()),
       direction
     );
   }
@@ -137,6 +137,13 @@ function getDirectionType(
   tx: Transaction,
   accountId: string
 ): "out" | "in" | "burn" | "self" {
+  if (
+    tx.type === TransactionType.Asset &&
+    tx.subtype === TransactionAssetSubtype.AssetDistributeToHolders
+  ) {
+    return tx.sender !== accountId ? "in" : "out";
+  }
+
   if (tx.recipient === "0") {
     return "burn";
   }

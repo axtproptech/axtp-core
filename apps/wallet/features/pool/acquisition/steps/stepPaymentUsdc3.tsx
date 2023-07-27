@@ -1,6 +1,6 @@
 import { useTranslation } from "next-i18next";
 import { FC, FormEvent, useEffect, useMemo, useRef, useState } from "react";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { Button, Textarea } from "react-daisyui";
 import * as React from "react";

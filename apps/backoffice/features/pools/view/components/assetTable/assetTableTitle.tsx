@@ -26,7 +26,7 @@ export const AssetTableTitle = ({ assets, poolId }: Props) => {
     return {
       totalCosts,
       totalMarketValue,
-      performance: (totalMarketValue / totalCosts) * 100,
+      performance: totalCosts ? (totalMarketValue / totalCosts) * 100 : 0,
       gain: totalMarketValue - totalCosts,
     };
   }, [assets]);

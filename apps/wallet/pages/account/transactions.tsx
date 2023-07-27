@@ -1,8 +1,5 @@
 import { Layout } from "@/app/components/layout";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useAccount } from "@/app/hooks/useAccount";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { useTranslation } from "next-i18next";
 import {

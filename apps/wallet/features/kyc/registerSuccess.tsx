@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { useTranslation } from "next-i18next";
 import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
 import Link from "next/link";

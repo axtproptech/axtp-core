@@ -1,6 +1,5 @@
 import { Button } from "react-daisyui";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
 import { RiWallet3Line } from "react-icons/ri";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import Link from "next/link";

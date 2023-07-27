@@ -43,7 +43,7 @@ export const TransactionItemCard = ({ style, data, index }: Props) => {
       }}
       onClick={handleOnClick}
     >
-      <figure className="p-6">
+      <figure className="p-4 w-[64px] md:w-[80px]">
         {txData.isPending ? (
           <FcSynchronize className="animate-spin" />
         ) : (

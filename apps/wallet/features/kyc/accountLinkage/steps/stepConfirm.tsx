@@ -2,7 +2,7 @@ import { useTranslation } from "next-i18next";
 import { FC, useState } from "react";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { RiCheckboxCircleLine, RiFingerprintLine } from "react-icons/ri";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { PinInput } from "@/app/components/pinInput";
 import { useAccount } from "@/app/hooks/useAccount";
 import { Button } from "react-daisyui";

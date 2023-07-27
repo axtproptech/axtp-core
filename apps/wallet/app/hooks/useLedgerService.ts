@@ -3,12 +3,12 @@ import { LedgerService } from "@/app/services";
 import { useMemo } from "react";
 
 export const useLedgerService = () => {
-  const { Ledger } = useAppContext();
+  const { Ledger, Accounts } = useAppContext();
 
   return useMemo(() => {
-    if (Ledger.Client) {
-      return new LedgerService(Ledger.Client);
+    if (Ledger.Client && Accounts.Principal) {
+      return new LedgerService(Ledger.Client, Accounts.Principal);
     }
     return null;
-  }, [Ledger.Client]);
+  }, [Ledger.Client, Accounts.Principal]);
 };

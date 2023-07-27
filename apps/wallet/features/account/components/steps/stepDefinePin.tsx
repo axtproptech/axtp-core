@@ -1,6 +1,6 @@
 import { useTranslation } from "next-i18next";
 import { FC, useState } from "react";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { PinInput } from "@/app/components/pinInput";
 
 interface Props {

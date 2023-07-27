@@ -11,11 +11,10 @@ import {
 import { AccountHeader } from "@/features/account/components/accountHeader";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useAccountTransactions } from "@/app/hooks/useAccountTransactions";
-import { HintBox } from "@/app/components/hintBox";
-import { AnimatedIconGlobe } from "@/app/components/animatedIcons/animatedIconGlobe";
 import * as React from "react";
 import { useTranslation } from "next-i18next";
 import { TransactionDetailsModal } from "./transactionItem/transactionDetailsModal";
+import { LoadingBox } from "@/app/components/hintBoxes/loadingBox";
 
 const FixedSizeList = _FixedSizeList as ComponentType<FixedSizeListProps>;
 
@@ -37,7 +36,6 @@ export const AccountTransactions = () => {
       //@ts-ignore
       const { index } = e.detail;
       setDetailIndex(index);
-      // console.log("clicked", index, allTransactions[index]);
     }
 
     document.addEventListener("tx-item-clicked", handleItemClick);
@@ -59,15 +57,10 @@ export const AccountTransactions = () => {
       <Body className="relative">
         {isLoading && (
           <section className="mt-[30%]">
-            <HintBox>
-              <div className="absolute w-[64px] bottom-[-40px] right-[12px] bg-base-100">
-                <AnimatedIconGlobe loopDelay={1000} />
-              </div>
-              <div className="text-center">
-                <h3 className="my-1">{t("loadingTransactions")}</h3>
-                <small>{t("loadingTransactionsHint")}</small>
-              </div>
-            </HintBox>
+            <LoadingBox
+              title={t("loadingTransactions")}
+              text={t("loadingTransactionsHint")}
+            />
           </section>
         )}
 

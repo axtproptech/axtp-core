@@ -64,6 +64,10 @@ export const Config = {
       process.env.NEXT_PUBLIC_LEDGER_ACTIVATION_SERVICE_URL ||
       "https://signum-account-activator-ohager.vercel.app",
   },
+  Accounts: {
+    Principal:
+      process.env.NEXT_PUBLIC_ACCOUNT_PRINCIPAL || "13819828207269214005",
+  },
   Contracts: {
     PoolContractIds: fromArray(process.env.NEXT_PUBLIC_AXTP_CONTRACT_IDS || ""),
   },

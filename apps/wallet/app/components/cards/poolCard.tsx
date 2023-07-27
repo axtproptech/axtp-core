@@ -27,7 +27,7 @@ export const PoolCard: FC<Props> = ({
   accountData,
 }) => {
   const { t } = useTranslation();
-  const { TrackingEventService } = useAppContext();
+  const { TrackingEventService, IsMobile } = useAppContext();
   const router = useRouter();
   const { name } = useAppSelector(selectAXTToken);
 
@@ -35,7 +35,7 @@ export const PoolCard: FC<Props> = ({
     if (poolData.poolId) {
       router.prefetch(getPoolUrl(poolData.poolId));
     }
-  }, [poolData.poolId]);
+  }, [poolData.poolId, router]);
 
   const iconUrl = useMemo(() => {
     if (!poolData) return "";
@@ -89,6 +89,10 @@ export const PoolCard: FC<Props> = ({
             alt={`${poolData.token.name}-dropshadow`}
           />
         </figure>
+        <div className="absolute top-2 right-8 text-[10px] text-gray-400 text-right">
+          {IsMobile ? t("tap_to_see_more") : t("click_to_see_more")}
+        </div>
+
         <div className="card-body">
           <div className="flex flex-row justify-between items-start">
             <h2 className="card-title mr-2">{poolData.token.name}</h2>
@@ -132,7 +136,7 @@ export const PoolCard: FC<Props> = ({
                 : t("pool_full")}
             </small>
             {accountShares > 0 && (
-              <Badge color="secondary" className="absolute bottom-2 right-2">
+              <Badge color="secondary" className="absolute bottom-2 right-8">
                 {t("you_own_n_shares", { count: accountShares })}
               </Badge>
             )}

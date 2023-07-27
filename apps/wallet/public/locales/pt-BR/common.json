@@ -172,5 +172,11 @@
   "close": "Fechar",
   "manual": "Manual",
   "effective_rate": "Taxa Efetiva",
-  "transactions": "Transações"
+  "transactions": "Transações",
+  "tap_to_see_more": "Toque item para ver mais",
+  "click_to_see_more": "Clique item para ver mais",
+  "tap_to_see_tx": "Toque item para ver no explorador",
+  "click_to_see_tx": "Clique item para ver no explorador",
+  "see_assets": "Olhar Assets",
+  "error_box_title": "Oh, droga! Ocorreu um erro"
 }

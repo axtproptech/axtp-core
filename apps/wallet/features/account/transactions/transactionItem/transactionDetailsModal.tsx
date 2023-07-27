@@ -6,13 +6,13 @@ import { useAppContext } from "@/app/hooks/useAppContext";
 import { formatDate } from "@/app/formatDate";
 import { useRouter } from "next/router";
 import { Button, Modal } from "react-daisyui";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { openExternalUrl } from "@/app/openExternalUrl";
 import { Number } from "@/app/components/number";
 import { ChildrenProps } from "@/types/childrenProps";
 import { InOutAmount } from "@/features/account/transactions/transactionItem/InOutAmount";
 import { HintBoxEncryptedMessage } from "@/features/account/transactions/transactionItem/hintBoxEncryptedMessage";
-import { Zoom } from "react-awesome-reveal";
+import { Fade, Zoom } from "react-awesome-reveal";
 
 const RowItem: FC<ChildrenProps & { className?: string }> = ({
   children,
@@ -47,6 +47,7 @@ export const TransactionDetailsModal = ({ txData, open, onClose }: Props) => {
   if (!txData) return null;
 
   const tx = getTransactionUiElements(txData);
+
   const openInExplorer = () => {
     if (!txData) return;
     openExternalUrl(txData.explorerUrl);

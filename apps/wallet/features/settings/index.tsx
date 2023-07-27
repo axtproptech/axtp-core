@@ -3,7 +3,7 @@ import { accountActions } from "@/app/states/accountState";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useAppDispatch } from "@/states/hooks";
 import { useTranslation } from "next-i18next";
-import { HintBox } from "@/app/components/hintBox";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { SafeExternalLink } from "@/app/components/navigation/externalLink";
