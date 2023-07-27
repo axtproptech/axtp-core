@@ -14,7 +14,6 @@ import { Fade } from "react-awesome-reveal";
 import { PoolAssetHistory } from "@/features/pool/assets/poolAssetDetails/poolAssetHistory/poolAssetHistory";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { ErrorBox } from "@/app/components/hintBoxes/errorBox";
-import { RiFundsBoxLine, RiRefund2Line, RiStockLine } from "react-icons/ri";
 
 interface Props {
   poolId: string;

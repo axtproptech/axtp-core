@@ -4,7 +4,8 @@ import { Stats } from "react-daisyui";
 import { useTranslation } from "next-i18next";
 import { AssetAlias } from "@axtp/core";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import { RiFundsBoxLine, RiRefund2Line, RiStockLine } from "react-icons/ri";
+import { RiFundsLine, RiRefund2Line, RiStockLine } from "react-icons/ri";
+import { formatNumber } from "@/app/formatNumber";
 
 const Stat = Stats.Stat;
 
@@ -70,18 +71,19 @@ export const PoolAssetDetailsStats: FC<Props> = ({
             <Stat className="place-items-center" style={NoBorderStyle}>
               <Stat.Item variant="title">
                 <span className="flex flex-row items-center gap-x-1">
-                  <RiFundsBoxLine />
+                  <RiFundsLine />
                   <div>{t("performance")}</div>
                 </span>
               </Stat.Item>
               <Stat.Item variant="value">
                 <span
-                  className={
-                    performance >= 0 ? "text-green-400" : "text-red-500"
-                  }
+                  className={`
+                    flex flex-row items-baseline
+                    ${performance >= 0 ? "text-green-400" : "text-red-500"}
+                  `}
                 >
-                  {performance >= 0 ? "↗" : "↘"}&nbsp;
-                  {performance.toFixed(2)}
+                  <div>{performance >= 0 ? "↗" : "↘"}</div>
+                  <Number value={performance} decimals={2} />
                   <small className="ml-1 text-xs">%</small>
                 </span>
               </Stat.Item>
