@@ -25,6 +25,7 @@ export const registerCustomer = async (req, res) => {
     const answers = await pRetry(() => fetchSubmissionData(submission_id), {
       retries: 3,
     });
+
     const existingCustomer = await prisma.customer.findFirst({
       where: {
         email1: answers.email,
