@@ -1,17 +1,17 @@
 {
-  "asset_zero": "Nenhum Asset",
-  "asset_one": "Asset",
-  "asset_other": "Assets",
+  "asset_zero": "Nenhum Ativo",
+  "asset_one": "Ativo",
+  "asset_other": "Ativos",
   "asset_estimated_value": "Valor do Mercado Estimado",
-  "asset_accumulated_costs": "Custos Accumulados",
+  "asset_accumulated_costs": "Custos Acumulados",
   "total_estimated_value": "Valor Total Estimado",
-  "total_accumulated_costs": "Custos Totais Accumulados",
-  "asset_p_paid": "Pâgo",
+  "total_accumulated_costs": "Custos Totais Acumulados",
+  "asset_p_paid": "Pago",
   "asset_p_cert": "Cert. Recebido",
   "asset_p_notified": "Notificado",
   "asset_p_acquired": "Comprado",
   "asset_p_recovered": "Resgatado",
-  "asset_s_in_acquisition": "Em Acquisição",
+  "asset_s_in_acquisition": "Em Aquisição",
   "asset_s_renting": "Alugando",
   "asset_s_rehab": "Rehab (Section 8)",
   "asset_s_maintenance": "Reforma",
@@ -20,5 +20,5 @@
   "no_assets_yet_hint": "Este pool ainda não tem ativos registrados. Estamos trabalhando arduamente na aquisição de ativos para esse pool. Volte mais tarde.",
   "asset_history": "Histórico",
   "asset_history_error": "Ocorreu um erro ao carregar o histórico. Talvez um problema de conexão com a rede. Se tiver certeza de que isso não se deve a problemas de conexão, informe à nossa equipe de suporte.",
-  "performance": "Performance"
+  "performance": "ROI"
 }
