@@ -8,7 +8,7 @@ A presente Política de Privacidade e Proteção de Dados (“Política”) tem 
 
 A identidade e as informações do Encarregado pelo Tratamento de Dados Pessoais de **AXT PROPTECH COMPANY S/A** seguem abaixo discriminadas:
 
-_Responsável_: Sr. Oliver Hager, alemão, casado, Diretor de Tecnologia, casado, portadora da Cédula de Identidade RNE Nº V374354-3 CGPI/DIREX/DPF, inscrita no CPF Nº 233.449.738-00, residente e domiciliado na cidade de Valinhos, no estado do São Paulo.
+_Responsável_: Sr. Oliver Hager, alemão, casado, Diretor de Tecnologia, portador da Cédula de Identidade RNE Nº V374354-3 CGPI/DIREX/DPF, inscrito no CPF Nº 233.449.738-00, residente e domiciliado na cidade de Valinhos, no estado do São Paulo.
 
 Qualquer reclamação ou comunicação dos TITULARES deverá ser dirigida ao Encarregado acima identificado. O Encarregado se encontra devidamente autorizado por **AXT PROPTECH COMPANY S/A** para prestar esclarecimentos e/ou adotar providências referentes ao tratamento de dados pessoais pela empresa.
 
