@@ -8,7 +8,7 @@ A presente Política de Privacidade e Proteção de Dados (“Política”) tem 
 
 A identidade e as informações do Encarregado pelo Tratamento de Dados Pessoais de **AXT PROPTECH COMPANY S/A** seguem abaixo discriminadas:
 
-_Responsável_: **EXIN GLOBAL CONSULTORIA E INTERMEDIAÇÃO DE NEGÓCIOS EIRELI**, pessoa jurídica de direito privado, com sede em Curitiba, no estado do Paraná, à Rua Acyr Guimarães 222, sala 1201, Água Verde, CEP: 80240-230, inscrita no CNPJ sob Nº 33.728.143/0001-73, neste ato representada pela Sra. ADRIANA SILIPRANDI, brasileira, advogada, divorciada, portadora da Cédula de Identidade RG Nº 7.767.981-2 SSP/PR, inscrita no CPF Nº 006.978.389-60, residente e domiciliada na cidade de Curitiba, no estado do Paraná.
+_Responsável_: Sr. Oliver Hager, alemão, casado, Diretor de Tecnologia, casado, portadora da Cédula de Identidade RNE Nº V374354-3 CGPI/DIREX/DPF, inscrita no CPF Nº 233.449.738-00, residente e domiciliado na cidade de Valinhos, no estado do São Paulo.
 
 Qualquer reclamação ou comunicação dos TITULARES deverá ser dirigida ao Encarregado acima identificado. O Encarregado se encontra devidamente autorizado por **AXT PROPTECH COMPANY S/A** para prestar esclarecimentos e/ou adotar providências referentes ao tratamento de dados pessoais pela empresa.
 
@@ -60,7 +60,7 @@ Os TITULARES também podem fazer objeção ao tratamento dos dados por razões l
 
 Caso desejem, os TITULARES podem solicitar a sua exclusão do mailing list do site de **AXT PROPTECH COMPANY S/A**, deixando de receber qualquer e-mail informativo.
 
-Para exercer seus direitos, os TITULARES devem enviar e-mail com a sua solicitação para o DPO (Encarregado de proteção de dados pessoais): adriana@exinglobal.com.br
+Para exercer seus direitos, os TITULARES devem enviar e-mail com a sua solicitação para o DPO (Encarregado de proteção de dados pessoais): `dpo@axtp.com.br`
 
 ## 5. ARMAZENAMENTO
 
@@ -68,7 +68,7 @@ Para exercer seus direitos, os TITULARES devem enviar e-mail com a sua solicita�
 
 Dados relacionados a clientes são armazenados pelo período da duração previsto no contrato e/ou nas Condições Gerais de Contratação da empresa. O armazenamento dos dados respeitará esta Política e/ou eventuais instrumentos celebrados com os TITULARES. No entanto, os dados podem ser armazenados por período de tempo superior, por razões legais ou por ordem judicial.
 
-Nos termos da legislação de proteção de dados pessoais, caso os TITULARES desejem, poderão revogar o consentimento previamente concedido à **AXT PROPTECH COMPANY S/A** para o tratamento de seus dados pessoais. Esse direito deverá ser exercido através do e-mail adriana@exinglobal.com.br.
+Nos termos da legislação de proteção de dados pessoais, caso os TITULARES desejem, poderão revogar o consentimento previamente concedido à **AXT PROPTECH COMPANY S/A** para o tratamento de seus dados pessoais. Esse direito deverá ser exercido através do e-mail `dpo@axtp.com.br`.
 
 **AXT PROPTECH COMPANY S/A** armazena seus dados em servidores próprios e/ou de parceiros contratados, localizados no Brasil e/ou no exterior, e também em servidores na nuvem (cloud computing), de forma que pode ocorrer transferência e tratamento de dados pessoais dos TITULARES fora do território brasileiro.
 
@@ -84,4 +84,4 @@ Qualquer colaborador do **AXT PROPTECH COMPANY S/A** que tenha acesso às inform
 
 Esta Política poderá ser modificada a qualquer tempo, mediante publicação através do website de **AXT PROPTECH COMPANY S/A** (https://www.axtp.com.br).
 
-Esta Política de Privacidade e Proteção de Dados foi atualizada em 13 de fevereiro de 2023.
+Esta Política de Privacidade e Proteção de Dados foi atualizada em 28 de agosto de 2023.

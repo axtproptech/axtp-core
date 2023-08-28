@@ -9,7 +9,7 @@ export const PrivacyPolicy = () => {
     fetch(Documents.Privacy)
       .then((response) => response.text())
       .then(setPolicyText);
-  }, []);
+  }, [Documents.Privacy]);
   return (
     <>
       <article className="prose text-justify mx-auto">
