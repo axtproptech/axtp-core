@@ -53,7 +53,7 @@ export const Home = () => {
         <div className="absolute z-10 top-[-1px] bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
       </div>
       <div className="relative overflow-x-hidden h-[calc(100vh_-_100px_-_64px)] lg:h-[calc(100vh_-_120px_-_64px)]">
-        <FileUploader />
+        <FileUploader maxFiles={3} fileTypes={["image/*", "application/pdf"]} />
         <section className="w-full">
           <DashboardStats stats={stats} />
         </section>

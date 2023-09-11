@@ -48,7 +48,7 @@ export function FileUploader({ maxFiles = 1, fileTypes = [] }: Props) {
         FileService.uploadFile({
           file,
           onProgress: (progress) => {
-            setUploadProgress({ ...uploadProgress, [file.name]: progress });
+            setUploadProgress((prev) => ({ ...prev, [file.name]: progress }));
           },
         })
       );
