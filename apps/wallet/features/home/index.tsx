@@ -12,6 +12,7 @@ import { ShowAccountButton } from "@/app/components/buttons/showAccountButton";
 import { RegisterCustomerButton } from "@/app/components/buttons/registerCustomerButton";
 import { useTranslation } from "next-i18next";
 import { Greeting } from "@/app/components/greeting";
+import { FileUploader } from "@/app/components/fileUploader";
 
 export const Home = () => {
   const pools = useAppSelector(selectAllPools);
@@ -52,6 +53,7 @@ export const Home = () => {
         <div className="absolute z-10 top-[-1px] bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
       </div>
       <div className="relative overflow-x-hidden h-[calc(100vh_-_100px_-_64px)] lg:h-[calc(100vh_-_120px_-_64px)]">
+        <FileUploader />
         <section className="w-full">
           <DashboardStats stats={stats} />
         </section>

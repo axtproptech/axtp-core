@@ -2,14 +2,11 @@ import { ServiceContext } from "./serviceContext";
 import { withError } from "./withError";
 import {
   AssetAlias,
-  AssetAliasData,
   AssetAliasService,
   type AssetAliasMap,
   AssetAliasHistory,
 } from "@axtp/core";
-import { Alias, TransactionId } from "@signumjs/core";
 import { PoolContractService } from "./poolContractService";
-import { HttpClientFactory } from "@signumjs/http";
 
 export class AssetService {
   private assetAliasService: AssetAliasService;

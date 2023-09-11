@@ -28,56 +28,21 @@ export const createUploadURL: RouteHandlerFunction = async (req, res) => {
   const { contentType } = req.body as CreateUploadUrlRequest;
 
   try {
-    const signedUrl = await r2.getSignedUrlPromise("putObject", {
+    const params = {
       Bucket: TargetBucketName,
       Key: nanoid(),
       Expires: 5 * 60,
       ContentType: contentType,
-      ContentDisposition: "inline",
-    });
+    };
+
+    const signedUrl = await r2.getSignedUrlPromise("putObject", params);
+    const objectUrl = `https://${AccountId}.r2.cloudflarestorage.com/${params.Bucket}/${params.Key}`;
+
     res.status(201).json({
       signedUrl,
-    });
+      objectUrl,
+    } as CreateUploadUrlResponse);
   } catch (err) {
     return res.status(500).json(err);
   }
 };
-
-// const handleUpload = (ev) => {
-//     let file = uploadInput.current.files[0];
-//     // Split the filename to get the name and type
-//     let fileParts = uploadInput.current.files[0].name.split(".");
-//     let fileName = fileParts[0];
-//     let fileType = fileParts[1];
-//     axios
-//         .post("/api/awsimageupload", {
-//             fileName: fileName,
-//             fileType: fileType,
-//         })
-//         .then((res) => {
-//             const signedRequest = res.data.signedRequest;
-//             const url = res.data.url;
-//             setUploadState({
-//                 ...uploadState,
-//                 url,
-//             });
-//
-//             var options = {
-//                 headers: {
-//                     "Content-Type": fileType,
-//                 },
-//             };
-//             axios
-//                 .put(signedRequest, file, options)
-//                 .then((_) => {
-//                     setUploadState({ ...uploadState, success: true });
-//                     mutate();
-//                 })
-//                 .catch((_) => {
-//                     toast("error", "We could not upload your image");
-//                 });
-//         })
-//         .catch((error) => {
-//             toast("error", "We could not upload your image");
-//         });
-// };
