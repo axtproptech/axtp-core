@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { withMiddleware, Middleware } from "@/bff/withMiddleware";
 import { requireApiKey } from "@/bff/middlewares/requireApiKey";
 import { bffLoggingService } from "@/bff/bffLoggingService";
+import { isBoom } from "@hapi/boom";
 
 export type RouteHandlerFunction = (
   req: NextApiRequest,
@@ -34,21 +35,36 @@ export async function route(routeArgs: RouteArgs): Promise<void> {
       res.status(404).end();
     }
   } catch (err: any) {
-    bffLoggingService.error({
-      msg: "Unexpected Exception",
-      domain: "-",
-      detail: {
-        method: req.method,
-        function: handlerFunction.name,
-        ...err,
-      },
-    });
-    res.status(500).end();
+    if (isBoom(err)) {
+      bffLoggingService.error({
+        msg: err.output.payload.message,
+        domain: "-",
+        detail: {
+          method: req.method,
+          function: handlerFunction.name,
+          ...err,
+        },
+      });
+      res.status(err.output.statusCode).end();
+    } else {
+      bffLoggingService.error({
+        msg: "Unexpected Exception",
+        domain: "-",
+        detail: {
+          method: req.method,
+          function: handlerFunction.name,
+          ...err,
+        },
+      });
+      res.status(500).end();
+    }
   } finally {
     res.end();
   }
 }
 
+// FIXME: improve security here!
+// check for referrer, only wallet.axtp.com.br is allowed here!
 export async function protectedRoute(args: RouteArgs) {
   const newArgs = { ...args };
   newArgs.middlewares = args.middlewares || [];

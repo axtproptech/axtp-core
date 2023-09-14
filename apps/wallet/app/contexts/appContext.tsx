@@ -12,6 +12,7 @@ import {
   trackingEventService,
 } from "@/app/services";
 import { HttpClientFactory } from "@signumjs/http";
+import { FileService } from "@/app/services/fileService";
 
 type AddressPrefixType = "TS" | "S";
 type SignaPrefixType = "TSIGNA" | "SIGNA";
@@ -24,6 +25,7 @@ export interface AppContextType {
   JotFormId: string;
   KycService: KycService;
   PaymentService: PaymentService;
+  FileService: FileService;
   ActivationService: AccountActivationService;
   TrackingEventService: TrackingEventService;
   Documents: {
@@ -79,6 +81,7 @@ const config: AppContextType = {
   JotFormId: Config.JotForm.Id,
   KycService: new KycService(bffClient),
   PaymentService: new PaymentService(bffClient),
+  FileService: new FileService(bffClient),
   ActivationService: new AccountActivationService(),
   TrackingEventService: trackingEventService,
   Documents: {
