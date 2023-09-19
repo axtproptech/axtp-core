@@ -4,6 +4,8 @@
   "asset_other": "Ativos",
   "asset_estimated_value": "Valor do Mercado Estimado",
   "asset_accumulated_costs": "Custos Acumulados",
+  "asset_estimated_revenue_start": "Inicio de receita estimada em {{time}}",
+  "asset_has_revenue": "Já está gerando receita",
   "total_estimated_value": "Valor Total Estimado",
   "total_accumulated_costs": "Custos Totais Acumulados",
   "asset_p_paid": "Pago",

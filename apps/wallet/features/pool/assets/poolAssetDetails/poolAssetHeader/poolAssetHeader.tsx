@@ -1,10 +1,5 @@
-import { FC, useMemo } from "react";
-import { useAccount } from "@/app/hooks/useAccount";
-import { Number } from "@/app/components/number";
-import { useRouter } from "next/router";
+import { FC } from "react";
 import { PoolContractData } from "@/types/poolContractData";
-// @ts-ignore
-import { Stats } from "react-daisyui";
 import { AssetAlias, type AssetAliasHistory } from "@axtp/core";
 import { PoolAssetTitle } from "./poolAssetTitle";
 import { PoolAssetProgress } from "./poolAssetProgress";

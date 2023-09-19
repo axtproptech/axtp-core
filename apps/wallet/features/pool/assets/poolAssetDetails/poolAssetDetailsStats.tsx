@@ -5,7 +5,6 @@ import { useTranslation } from "next-i18next";
 import { AssetAlias } from "@axtp/core";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { RiFundsLine, RiRefund2Line, RiStockLine } from "react-icons/ri";
-import { formatNumber } from "@/app/formatNumber";
 
 const Stat = Stats.Stat;
 
