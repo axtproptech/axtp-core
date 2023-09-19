@@ -5,6 +5,8 @@
   "total_estimated_value": "Total Estimated Value",
   "total_accumulated_costs": "Total Accumulated Costs",
   "asset_estimated_value": "Estimated Market Value",
+  "asset_estimated_revenue_start": "Begin of revenue estimated in {{time}}",
+  "asset_has_revenue": "Is generating revenue already",
   "asset_accumulated_costs": "Accumulated Costs",
   "asset_p_paid": "Paid",
   "asset_p_cert": "Cert. Received",

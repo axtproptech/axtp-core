@@ -29,6 +29,7 @@ type FormValues = {
   estimatedMarketValue: number;
   accumulatedCosts: number;
   acquisitionDate: Date;
+  revenueStartDate: Date;
 };
 
 const required = {
@@ -65,6 +66,7 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
       estimatedMarketValue: 0.0,
       accumulatedCosts: 0.0,
       acquisitionDate: new Date(),
+      revenueStartDate: new Date(),
     },
   });
 
@@ -80,6 +82,7 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
         await service.asset.createAssetOnPool({
           poolId,
           acquisitionDate: formValues.acquisitionDate,
+          revenueStartDate: formValues.revenueStartDate,
           accumulatedCosts: numberValues.accumulatedCosts,
           estimatedMarketValue: numberValues.estimatedMarketValue,
           acquisitionStatus: formValues.acquisitionStatus,
@@ -239,6 +242,37 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
         </FullBox>
         <FullBox>
           <Controller
+            name="revenueStartDate"
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="Revenue Start Date"
+                  // @ts-ignore
+                  control={control}
+                  inputFormat="dd.MM.yyyy"
+                  value={value}
+                  // @ts-ignore
+                  onChange={(d) => setValue("revenueStartDate", d)}
+                  renderInput={(params: any) => (
+                    <TextField
+                      {...params}
+                      error={!!error}
+                      helperText={error?.message}
+                      // @ts-ignore
+                      sx={{ ...theme.typography.customInput, width: "100%" }}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+            )}
+          />
+        </FullBox>
+      </Stack>
+      <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 0, md: 2 }}>
+        <FullBox>
+          <Controller
             render={({ field }) => (
               // @ts-ignore
               <SelectInput
@@ -254,8 +288,6 @@ export const CreateAssetActionCard = ({ poolId }: Props) => {
             variant="outlined"
           />
         </FullBox>
-      </Stack>
-      <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 0, md: 2 }}>
         <FullBox>
           <Controller
             render={({ field }) => (

@@ -6,10 +6,9 @@ import {
   GridRenderCellParams,
   GridRowParams,
 } from "@mui/x-data-grid";
-import { Grid, Stack, Tooltip, Typography } from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { SelectInput, TextInput } from "@/app/components/inputs";
-import { ActionButton } from "@/app/components/buttons/actionButton";
 import {
   IconCertificate,
   IconCertificate2,
@@ -23,8 +22,6 @@ import {
   IconQuestionMark,
   IconReceipt2,
   IconShoppingCartPlus,
-  IconUserSearch,
-  IconEdit,
   TablerIcon,
 } from "@tabler/icons";
 import { useAppSelector } from "@/states/hooks";
@@ -105,6 +102,12 @@ const getColumns = (): GridColDef[] => [
   {
     field: "acquisitionDate",
     headerName: `Acquisition Start Date`,
+    flex: 1,
+    renderCell: renderAsDate,
+  },
+  {
+    field: "revenueStartDate",
+    headerName: `Revenue Start Date`,
     flex: 1,
     renderCell: renderAsDate,
   },

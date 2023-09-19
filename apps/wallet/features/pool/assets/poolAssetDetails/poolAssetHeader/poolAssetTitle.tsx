@@ -26,10 +26,13 @@ export const PoolAssetTitle: FC<Props> = ({ poolData, asset }) => {
           <h2 className="text-lg">{poolData.token.name}</h2>
         </div>
       </div>
-      <div className="text-gray-200">
-        <h2 className="text-lg text-right text-ellipsis whitespace-nowrap overflow-hidden w-3/4 md:w-full">
+      <div className="text-gray-200 relative leading-3">
+        <h2 className="text-lg text-right text-ellipsis whitespace-nowrap overflow-hidden">
           {asset.name}
         </h2>
+        <small className="text-xs p-0 m-0 text-right text-gray-500 text-ellipsis whitespace-nowrap overflow-hidden">
+          PN: {asset.titleId}
+        </small>
       </div>
     </section>
   );
