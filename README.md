@@ -25,9 +25,11 @@ Signum SmartC Contracts
 
 # Development
 
-## Initial setup
+## Initial Development Setup
 
-Just run `yarn` and you are up
+- On root directory, execute `yarn build`
+- On root directory, Install dependencies by executing `yarn`
+- On any `app` directory, execute `yarn dev` in order run development enviroment
 
 ## Running Locally
 
