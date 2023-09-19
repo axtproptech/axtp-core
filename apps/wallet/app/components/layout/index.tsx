@@ -14,6 +14,11 @@ import { useAppContext } from "@/app/hooks/useAppContext";
 import { openExternalUrl } from "@/app/openExternalUrl";
 import { useRouter } from "next/router";
 
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+
+NProgress.configure({ showSpinner: false, easing: "ease", speed: 400 });
+
 // @ts-ignore
 const PWAPrompt = dynamic(() => import("react-ios-pwa-prompt"), { ssr: false });
 
@@ -28,19 +33,21 @@ export const Layout: FC<Props> = ({ children, bottomNav, noBody = false }) => {
   const { Documents } = useAppContext();
 
   useEffect(() => {
-    // @ts-ignore
-    const handleRouteChange = (url, { shallow }) => {
-      // to do - loading indicator!
-
-      console.log(
-        `App is changing to ${url} ${
-          shallow ? "with" : "without"
-        } shallow routing`
-      );
+    const handleRouteChange = () => {
+      NProgress.start();
     };
+
+    const handleRouteChangeComplete = () => {
+      NProgress.done();
+    };
+
     router.events.on("routeChangeStart", handleRouteChange);
+    router.events.on("routeChangeComplete", handleRouteChangeComplete);
+    router.events.on("routeChangeError", handleRouteChangeComplete);
     return () => {
       router.events.off("routeChangeStart", handleRouteChange);
+      router.events.off("routeChangeComplete", handleRouteChangeComplete);
+      router.events.off("routeChangeError", handleRouteChangeComplete);
     };
   }, [router]);
 
