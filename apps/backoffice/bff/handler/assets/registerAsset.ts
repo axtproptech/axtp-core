@@ -15,6 +15,7 @@ const registerAssetBodySchema = object({
   poolId: string().required(),
   acquisitionStatus: number().required().min(0).max(4).integer(),
   acquisitionDate: date().required(),
+  revenueStartDate: date().required(),
   accumulatedCosts: number().required().moreThan(0),
   estimatedMarketValue: number().required().moreThan(0),
   acquisitionProgress: number().required().min(0).max(5).integer(),
@@ -39,6 +40,7 @@ export const registerAsset: ApiHandler = async ({ req, res }) => {
       data: {
         accumulatedCosts: d.accumulatedCosts,
         acquisitionDate: d.acquisitionDate,
+        revenueStartDate: d.revenueStartDate,
         acquisitionProgress: d.acquisitionProgress,
         acquisitionStatus: d.acquisitionStatus,
         estimatedMarketValue: d.estimatedMarketValue,

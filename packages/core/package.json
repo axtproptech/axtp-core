@@ -1,6 +1,6 @@
 {
   "name": "@axtp/core",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "The shared lib for AXTP system",
   "author": "ohager",
   "license": "MIT",
