@@ -22,9 +22,8 @@ export const verifyEmail: RouteHandlerFunction = async (req, res) => {
     const result = await prisma.emailVerificationTemp.findUnique({
       where: { email },
     });
-    console.log(result);
+
     //check if token is expired
-    console.log(new Date());
     if (result!.expiredAt < new Date()) {
       res.status(401).json({ token: "expired" });
       return;
