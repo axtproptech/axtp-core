@@ -1384,6 +1384,11 @@
   dependencies:
     client-only "^0.0.1"
 
+"@hookform/resolvers@^2.9.7":
+  version "2.9.11"
+  resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-2.9.11.tgz#9ce96e7746625a89239f68ca57c4f654264c17ef"
+  integrity sha512-bA3aZ79UgcHj7tFV7RlgThzwSSHZgvfbt2wprldRkYBcMopdMvHyO17Wwp/twcJasNFischFfS7oz8Katz8DdQ==
+
 "@humanwhocodes/config-array@^0.10.4":
   version "0.10.7"
   resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.10.7.tgz"
@@ -8111,7 +8116,7 @@ prop-types@^15.0.0, prop-types@^15.5.10, prop-types@^15.5.7, prop-types@^15.5.8,
     object-assign "^4.1.1"
     react-is "^16.13.1"
 
-property-expr@^2.0.4, property-expr@^2.0.5:
+property-expr@^2.0.4:
   version "2.0.5"
   resolved "https://registry.npmjs.org/property-expr/-/property-expr-2.0.5.tgz"
   integrity sha512-IJUkICM5dP5znhCckHSv30Q4b5/JA5enCtkRHYaOVOAocnH/1BQEYTC5NMfT3AVl/iXKdr3aqQbQn9DxyWknwA==
@@ -9755,11 +9760,6 @@ through@^2.3.8:
   resolved "https://registry.npmjs.org/through/-/through-2.3.8.tgz"
   integrity sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==
 
-tiny-case@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/tiny-case/-/tiny-case-1.0.3.tgz"
-  integrity sha512-Eet/eeMhkO6TX8mnUteS9zgPbUMQa4I6Kkp5ORiBD5476/m+PIRiumP5tmh5ioJpH7k51Kehawy2UDfsnxxY8Q==
-
 tmpl@1.0.5:
   version "1.0.5"
   resolved "https://registry.npmjs.org/tmpl/-/tmpl-1.0.5.tgz"
@@ -9989,11 +9989,6 @@ type-fest@^0.21.3:
   version "0.21.3"
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.21.3.tgz"
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
-
-type-fest@^2.19.0:
-  version "2.19.0"
-  resolved "https://registry.npmjs.org/type-fest/-/type-fest-2.19.0.tgz"
-  integrity sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==
 
 type-is@~1.6.18:
   version "1.6.18"
@@ -10739,13 +10734,3 @@ yup@^0.32.11:
     nanoclone "^0.2.1"
     property-expr "^2.0.4"
     toposort "^2.0.2"
-
-yup@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/yup/-/yup-1.0.0.tgz"
-  integrity sha512-bRZIyMkoe212ahGJTE32cr2dLkJw53Va+Uw5mzsBKpcef9zCGQ23k/xtpQUfGwdWPKvCIlR8CzFwchs2rm2XpQ==
-  dependencies:
-    property-expr "^2.0.5"
-    tiny-case "^1.0.3"
-    toposort "^2.0.2"
-    type-fest "^2.19.0"

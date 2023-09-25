@@ -9,7 +9,7 @@ export const WithAccountOnly: FC<ChildrenProps> = ({ children }) => {
 
   useEffect(() => {
     if (!accountId && router) {
-      router.replace("/account/setup");
+      router.replace("/kyc");
     }
   }, [accountId, router]);
 

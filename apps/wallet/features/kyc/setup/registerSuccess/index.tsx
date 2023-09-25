@@ -82,7 +82,7 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
               </Link>
             ) : (
               <div className="w-fit mx-auto">
-                <Link href="/account/setup">
+                <Link href="/kyc">
                   <Button
                     color="primary"
                     disabled={!accepted && !submitting}

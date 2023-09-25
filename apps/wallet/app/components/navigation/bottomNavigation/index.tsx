@@ -5,6 +5,7 @@ import React, { FC } from "react";
 export interface BottomNavigationItem {
   icon: any;
   label: string;
+  type?: "button" | "submit";
   color?:
     | "primary"
     | "secondary"
@@ -55,6 +56,7 @@ export const BottomNavigation: FC<Props> = ({ nav }) => {
             <>
               <button
                 key={"nav-" + n.label}
+                type={n.type || "submit"}
                 onClick={() => handleOnClick(n)}
                 className={`flex flex-col items-center flex-shrink btn h-full ${btnColor} ${active} ${loading}`}
                 disabled={n.disabled || n.loading || false}

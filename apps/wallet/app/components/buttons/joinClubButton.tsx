@@ -11,7 +11,7 @@ export const JoinClubButton = () => {
 
   const handleOnJoinClick = async () => {
     TrackingEventService.track({ msg: "Join Button Pushed" });
-    await router.push("/kyc/new");
+    await router.push("/kyc");
   };
 
   return (
