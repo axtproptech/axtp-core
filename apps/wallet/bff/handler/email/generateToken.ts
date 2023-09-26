@@ -1,13 +1,17 @@
 import * as crypto from "crypto";
 import { prisma } from "@axtp/db";
+import { getEnvVar } from "@/bff/getEnvVar";
 
-export const createTokenDatabase = async (email: string) => {
-  //generate a random token of 6 digits
+const EXPIRE_EMAIL_TOKEN_TIME_MINUTES = Number(
+  getEnvVar("NEXT_SERVER_EMAIL_EXPIRE_TOKEN_TIME_MINUTES")
+);
+
+export const generateAndStoreEmailVerificationToken = async (email: string) => {
   const token = generateSecureToken();
 
-  //that token should be saved on column token and the email on column email and expiredAt should be 1 hour from now
-  const expiredAt = new Date(Date.now() + 60 * 60 * 1000);
-  //save it in the database on table EmailVerificationTemp
+  const expiredAt = new Date(
+    Date.now() + EXPIRE_EMAIL_TOKEN_TIME_MINUTES * 60 * 1000
+  );
 
   await prisma.emailVerificationTemp.upsert({
     where: { email },

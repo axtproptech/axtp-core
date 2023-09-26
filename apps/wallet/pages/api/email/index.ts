@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { protectedRoute } from "@/bff/route";
-import { verifyEmail } from "@/bff/handler/mail";
+import { sendEmail } from "@/bff/handler/email/sendEmail";
 
 export default function handler(
   req: NextApiRequest,
@@ -9,6 +9,6 @@ export default function handler(
   return protectedRoute({
     req,
     res,
-    post: verifyEmail,
+    post: sendEmail,
   });
 }

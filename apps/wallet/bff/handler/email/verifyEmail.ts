@@ -1,7 +1,7 @@
 import { RouteHandlerFunction } from "@/bff/route";
 import { handleError } from "../handleError";
 import { getEnvVar } from "@/bff/getEnvVar";
-import { emails_templates } from "./emailTemplates";
+import { EmailTemplates } from "./emailTemplates";
 import { prisma } from "@axtp/db";
 
 const brevo = require("@getbrevo/brevo");
@@ -23,7 +23,6 @@ export const verifyEmail: RouteHandlerFunction = async (req, res) => {
       where: { email },
     });
 
-    //check if token is expired
     if (result!.expiredAt < new Date()) {
       res.status(401).json({ token: "expired" });
       return;
@@ -37,7 +36,6 @@ export const verifyEmail: RouteHandlerFunction = async (req, res) => {
       return;
     }
 
-    //update the user as verified
     await prisma.emailVerificationTemp.update({
       where: { email },
       data: { status: "Inactive" },
