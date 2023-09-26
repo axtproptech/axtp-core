@@ -9,7 +9,7 @@ interface SendTransactionMailArgs {
   replyTo?: Mailer;
   to: Mailer[];
   templateId: number;
-  subject: string;
+  subject?: string;
   params?: any;
   tags?: string[];
 }
@@ -27,7 +27,7 @@ export class MailClient {
     email.sender = args.sender;
     email.to = args.to;
     email.replyTo = args.replyTo ?? null;
-    email.subject = args.subject;
+    email.subject = args.subject ?? null;
     email.templateId = args.templateId;
     email.params = args.params ?? null;
     return this.transactionMailApi.sendTransacEmail(email);

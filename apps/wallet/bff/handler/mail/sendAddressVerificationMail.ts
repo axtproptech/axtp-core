@@ -1,13 +1,13 @@
 import { RouteHandlerFunction } from "@/bff/route";
 import { handleError } from "../handleError";
 import { getEnvVar } from "@/bff/getEnvVar";
-import { EmailTemplates } from "../../types/emailTemplates";
 import { prisma, SecurityToken } from "@axtp/db";
 import { object, string } from "yup";
-import { MailClient } from "./mailClient";
-import { generateRandomHexToken } from "../../generateRandomHexToken";
 import { tooManyRequests, unauthorized } from "@hapi/boom";
-import { bffLoggingService, BffLoggingService } from "@/bff/bffLoggingService";
+import { bffLoggingService } from "@/bff/bffLoggingService";
+import { MailClient } from "@/bff/mailClient";
+import { EmailTemplates } from "@/bff/types/emailTemplates";
+import { generateRandomHexToken } from "@/bff/generateRandomHexToken";
 
 const SendAddressVerificationMailBody = object({
   emailAddress: string().required(),
@@ -64,7 +64,6 @@ export const sendAddressVerificationMail: RouteHandlerFunction = async (
         },
       ],
       templateId: EmailTemplates.AddressVerification,
-      subject: "[AXT PropTech] - Verificação de endereço", // TODO: i18n
       tags: ["EmailVerification"],
       params: {
         token,
@@ -81,7 +80,7 @@ export const sendAddressVerificationMail: RouteHandlerFunction = async (
   }
 };
 
-export const upsertVerificationToken = async (
+const upsertVerificationToken = async (
   email: string,
   currentToken: SecurityToken | null
 ) => {
