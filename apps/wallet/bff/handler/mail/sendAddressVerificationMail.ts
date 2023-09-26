@@ -71,7 +71,7 @@ export const sendAddressVerificationMail: RouteHandlerFunction = async (
       },
     });
     bffLoggingService.info({
-      msg: `Verification Mail send to ${emailAddress}`,
+      msg: `Verification Mail sent to ${emailAddress}`,
       domain: "mail",
     });
     res.status(204).end();
