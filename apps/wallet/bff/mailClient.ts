@@ -30,6 +30,7 @@ export class MailClient {
     email.subject = args.subject ?? null;
     email.templateId = args.templateId;
     email.params = args.params ?? null;
+    email.tags = args.tags ?? [];
     return this.transactionMailApi.sendTransacEmail(email);
   }
 }

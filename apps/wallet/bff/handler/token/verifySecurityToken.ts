@@ -21,12 +21,13 @@ export const verifySecurityToken: RouteHandlerFunction = async (req, res) => {
       where: { subjectId_purpose: { subjectId, purpose } },
     });
 
-    if (
-      !result ||
-      result.expiredAt < new Date() ||
-      result.status !== "Active" ||
-      result.token !== token
-    ) {
+    const isValidAndNotExpired =
+      result &&
+      result.status === "Active" &&
+      result.expiredAt > new Date() &&
+      result.token === token;
+
+    if (!isValidAndNotExpired) {
       throw unauthorized();
     }
 
@@ -34,10 +35,12 @@ export const verifySecurityToken: RouteHandlerFunction = async (req, res) => {
       where: { subjectId_purpose: { subjectId, purpose } },
       data: { status: "Inactive" },
     });
+
     bffLoggingService.info({
       msg: `Security Token [${subjectId}] for [${purpose}] successfully verified`,
       domain: "token",
     });
+
     res.status(204);
   } catch (e: any) {
     handleError({ e, res });
