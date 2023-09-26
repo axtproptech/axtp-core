@@ -29,10 +29,20 @@ export const verifyEmail: RouteHandlerFunction = async (req, res) => {
       return;
     }
 
-    if (result?.token.toUpperCase() !== token.toUpperCase()) {
+    if (
+      result?.token.toUpperCase() !== token.toUpperCase() ||
+      result?.status === "Inactive"
+    ) {
       res.status(401).json({ token: "invalid" });
       return;
     }
+
+    //update the user as verified
+    await prisma.emailVerificationTemp.update({
+      where: { email },
+      data: { status: "Inactive" },
+    });
+
     res.status(200).json({ token: "valid" });
   } catch (e: any) {
     handleError({ e, res });
