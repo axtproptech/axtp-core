@@ -9,6 +9,6 @@ export default function handler(
   return protectedRoute({
     req,
     res,
-    put: verifySecurityToken,
+    patch: verifySecurityToken,
   });
 }
