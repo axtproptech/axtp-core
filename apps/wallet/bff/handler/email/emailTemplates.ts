@@ -1,0 +1,9 @@
+export enum EmailTemplates {
+  WELCOME = 1,
+  INVITATION = 2,
+  RESET_PASSWORD = 3,
+  CHANGE_PASSWORD = 4,
+  SIGN_UP = 5,
+  PASSWORD_CHANGED = 6,
+  ACCOUNT_DELETED = 7,
+}
