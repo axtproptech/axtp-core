@@ -6,13 +6,13 @@ import { CustomerPaymentData } from "@/types/customerPaymentData";
 export class KycService {
   constructor(private bffClient: Http) {}
 
-  private tryFetch<T>(fetchFn: Function) {
+  private tryCall<T>(fetchFn: Function) {
     return retry(async () => {
       try {
         return (await fetchFn()) as T;
       } catch (e: any) {
         if (e instanceof HttpError) {
-          if (e.status === 404 || e.status === 400) {
+          if (e.status === 404 || e.status === 400 || e.status === 401) {
             throw new AbortError(e.message);
           }
         }
@@ -34,7 +34,7 @@ export class KycService {
     publicKey: string,
     isTestnet: boolean
   ) {
-    return this.tryFetch<CustomerSafeData>(async () => {
+    return this.tryCall<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.post(
         `/customer/${customerId}/publicKey`,
         {
@@ -47,14 +47,14 @@ export class KycService {
   }
 
   async fetchCustomerData(customerId: string) {
-    return this.tryFetch<CustomerSafeData>(async () => {
+    return this.tryCall<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.get(`/customer/${customerId}`);
       return response as CustomerSafeData;
     });
   }
 
   async fetchCustomerDataByPublicKey(publicKey: string) {
-    return this.tryFetch<CustomerSafeData>(async () => {
+    return this.tryCall<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.get(
         `/customer?publicKey=${publicKey}`
       );
@@ -63,18 +63,37 @@ export class KycService {
   }
 
   async fetchCustomerDataByCpf(cpf: string) {
-    return this.tryFetch<CustomerSafeData>(async () => {
+    return this.tryCall<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.get(`/customer?cpf=${cpf}`);
       return response as CustomerSafeData;
     });
   }
 
   async fetchCustomerPayments(customerId: string) {
-    return this.tryFetch<CustomerPaymentData[]>(async () => {
+    return this.tryCall<CustomerPaymentData[]>(async () => {
       const { response } = await this.bffClient.get(
         `/customer/${customerId}/payments`
       );
       return response as CustomerPaymentData[];
+    });
+  }
+
+  async sendAddressVerificationMail(emailAddress: string, firstName: string) {
+    return this.tryCall<void>(async () => {
+      return this.bffClient.post(`/mail/addressVerification`, {
+        emailAddress,
+        name: firstName,
+      });
+    });
+  }
+
+  async verifyEmailVerificationToken(emailAddress: string, token: string) {
+    return this.tryCall<void>(async () => {
+      return this.bffClient.put(`/token`, {
+        subjectId: emailAddress,
+        purpose: "EmailVerification",
+        token,
+      });
     });
   }
 }
