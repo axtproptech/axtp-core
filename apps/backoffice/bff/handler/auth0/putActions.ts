@@ -1,5 +1,4 @@
 import { ApiHandler } from "@/bff/types/apiHandler";
-import { resetPassword } from "@/bff/handler/me/actions/resetPassword";
 import { badRequest } from "@hapi/boom";
 import { updateAuth0UserBlockStatus } from "@/bff/handler/auth0/updateAuth0UserBlockStatus";
 

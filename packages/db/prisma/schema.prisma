@@ -55,20 +55,21 @@ model Customer {
 }
 
 enum BankInformationType {
-    Pix
-    Iban
+  Pix
+  Iban
 }
 
 model BankInformation {
-    id           Int @id @default(autoincrement())
-    createdAt    DateTime               @default(now())
-    updatedAt    DateTime               @updatedAt
-    customer     Customer       @relation(fields: [customerId], references: [id])
-    customerId   Int
-    type         BankInformationType
-    identifier   String  @unique // can be pix or iban
-    isDefault    Boolean @default(true)
-    @@index([identifier])
+  id         Int                 @id @default(autoincrement())
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+  customer   Customer            @relation(fields: [customerId], references: [id])
+  customerId Int
+  type       BankInformationType
+  identifier String              @unique // can be pix or iban
+  isDefault  Boolean             @default(true)
+
+  @@index([identifier])
 }
 
 model TermsOfUseOnCustomer {
@@ -162,32 +163,57 @@ model VerificationResult {
 }
 
 enum PaymentStatus {
-    Pending
-    Received
-    Processed // entire process concluded, i.e. transferred token
-    Cancelled // reimbursement
+  Pending
+  Received
+  Processed // entire process concluded, i.e. transferred token
+  Cancelled // reimbursement
 }
 
 model Payment {
-  id                   Int      @id @default(autoincrement())
-  createdAt            DateTime @default(now())
-  customer             Customer @relation(fields: [customerId], references: [id])
-  customerId           Int
-  updatedAt            DateTime @updatedAt
-  accountId            String
-  type                 String
-  amount               Decimal
-  usd                  Decimal?
-  currency             String?
-  poolId               String
-  tokenId              String
-  tokenQuantity        Int
-  transactionId        String? // payment transaction, i.e. pix, or usdc, etc.
-  cancelTransactionId  String? // reimbursement transaction id
-  status               PaymentStatus
-  recordId             String? // transaction id on Signum
-  processedRecordId    String? // proof of processing
-  cancelRecordId       String? // proof of cancellation
-  observations         String? @db.Text
-  @@index([accountId, poolId,tokenId])
+  id                  Int           @id @default(autoincrement())
+  createdAt           DateTime      @default(now())
+  customer            Customer      @relation(fields: [customerId], references: [id])
+  customerId          Int
+  updatedAt           DateTime      @updatedAt
+  accountId           String
+  type                String
+  amount              Decimal
+  usd                 Decimal?
+  currency            String?
+  poolId              String
+  tokenId             String
+  tokenQuantity       Int
+  transactionId       String? // payment transaction, i.e. pix, or usdc, etc.
+  cancelTransactionId String? // reimbursement transaction id
+  status              PaymentStatus
+  recordId            String? // transaction id on Signum
+  processedRecordId   String? // proof of processing
+  cancelRecordId      String? // proof of cancellation
+  observations        String?       @db.Text
+
+  @@index([accountId, poolId, tokenId])
+}
+
+enum TokenStatus {
+  Active
+  Inactive
+  Blocked
+}
+
+enum TokenPurpose {
+  EmailVerification
+  // extend when needed
+}
+
+model SecurityToken {
+  id        Int              @id @default(autoincrement())
+  subjectId String
+  purpose   TokenPurpose
+  status    TokenStatus      @default(Active)
+  token     String
+  expiredAt DateTime
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  refreshCounter Int         @default(0)
+  @@unique([subjectId, purpose])
 }

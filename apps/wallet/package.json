@@ -19,6 +19,7 @@
     "@axtp/core": "*",
     "@axtp/db": "*",
     "@emotion/react": "^11.10.0",
+    "@getbrevo/brevo": "^1.0.1",
     "@hapi/boom": "^10.0.0",
     "@headlessui/react": "^1.6.6",
     "@hookform/resolvers": "^2.9.7",
