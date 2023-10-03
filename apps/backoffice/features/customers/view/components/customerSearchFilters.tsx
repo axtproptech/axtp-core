@@ -3,7 +3,7 @@ import { Button, Checkbox, FormControlLabel, Grid } from "@mui/material";
 import { TextInput } from "@/app/components/inputs";
 import { cpf } from "cpf-cnpj-validator";
 // @ts-ignore
-import InputMask from "react-input-mask";
+import InputMask, { Props as InputMaskProps } from "react-input-mask";
 
 type CustomerSearchFilterProps = {
   setName: (e: string) => void;
@@ -123,7 +123,7 @@ export const CustomerSearchFilters = ({
                   }
                   maskChar=" "
                 >
-                  {() => <TextInput label={input.label} />}
+                  {<TextInput label={input.label} />}
                 </InputMask>
               ) : (
                 <TextInput
