@@ -1,6 +1,9 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { jsonToQueryString } from "@/app/jsonToQueryString";
-import { CustomerResponse } from "@/bff/types/customerResponse";
+import {
+  CustomerResponse,
+  CustomerTableResponse,
+} from "@/bff/types/customerResponse";
 import { CustomerInstanceService } from "./customerInstanceService";
 
 type Troolean = "all" | "true" | "false" | boolean;
@@ -38,7 +41,7 @@ export class CustomerService {
     const { response } = await this.http.get(
       params ? `/customers?${params}` : "/customers"
     );
-    return response as CustomerResponse;
+    return response as CustomerTableResponse;
   }
 
   fetchPendingCustomers() {
