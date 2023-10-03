@@ -31,6 +31,8 @@ Signum SmartC Contracts
 - On root directory, Install dependencies by executing `yarn`
 - On any `app` directory, execute `yarn dev` in order run development enviroment
 
+> As we use ISR we need to set up the configurations (.env) correctly, for having a successful build
+
 ## Running Locally
 
 Each app comes with its own `.env.example` file.

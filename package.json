@@ -7,7 +7,8 @@
     "prepare": "husky install",
     "pretty": "prettier --write .",
     "build": "turbo run build",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "db": "turbo run generate-db"
   },
   "keywords": [
     "signum",

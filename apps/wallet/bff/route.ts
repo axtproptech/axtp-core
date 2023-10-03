@@ -14,7 +14,6 @@ interface RouteArgs {
   res: NextApiResponse;
   post?: RouteHandlerFunction;
   get?: RouteHandlerFunction;
-  patch?: RouteHandlerFunction;
   delete?: RouteHandlerFunction;
   put?: RouteHandlerFunction;
   head?: RouteHandlerFunction;

@@ -194,17 +194,26 @@ model Payment {
   @@index([accountId, poolId, tokenId])
 }
 
-enum EmailTokenStatus {
+enum TokenStatus {
   Active
   Inactive
+  Blocked
 }
 
-model EmailVerificationTemp {
+enum TokenPurpose {
+  EmailVerification
+  // extend when needed
+}
+
+model SecurityToken {
   id        Int              @id @default(autoincrement())
-  email     String           @unique
-  status    EmailTokenStatus @default(Active)
-  token     String           @db.Char(6)
+  subjectId String
+  purpose   TokenPurpose
+  status    TokenStatus      @default(Active)
+  token     String
   expiredAt DateTime
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
+  refreshCounter Int         @default(0)
+  @@unique([subjectId, purpose])
 }

@@ -14,8 +14,7 @@
     "generate-db": "prisma generate",
     "prebuild": "npm run generate-db",
     "build": "tsup",
-    "predev": "npm run generate-db",
-    "dev": "tsup --dev"
+    "predev": "npm run generate-db"
   },
   "prisma": {},
   "devDependencies": {
