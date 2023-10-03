@@ -25,7 +25,9 @@ export const NotificationsHandler = () => {
       dispatch(
         actions.setMenuBadge({
           itemId: "manage-pending-customers",
-          value: pending.length ? String(pending.length) : "",
+          value: pending.customers.length
+            ? String(pending.customers.length)
+            : "",
         })
       );
 
@@ -68,9 +70,9 @@ export const NotificationsHandler = () => {
       );
     }
 
-    if (pendingCustomers?.length) {
+    if (pendingCustomers?.customers.length) {
       notifications.push(
-        getPendingCustomerNotification(pendingCustomers.length)
+        getPendingCustomerNotification(pendingCustomers.customers.length)
       );
     }
 
