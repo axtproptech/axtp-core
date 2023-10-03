@@ -1,7 +1,7 @@
 import { MainCard } from "@/app/components/cards";
 import useSWR from "swr";
 import { customerService } from "@/app/services/customerService/customerService";
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import {
   DataGrid,
   GridAlignment,
@@ -9,25 +9,34 @@ import {
   GridRenderCellParams,
   GridRowParams,
 } from "@mui/x-data-grid";
-import { Grid, Stack, Tooltip, Typography } from "@mui/material";
+import { Stack, Tooltip, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { VerificationChip } from "@/app/components/chips/verificationChip";
-import { ActivationChip } from "@/app/components/chips/activationChip";
-import { BlockingChip } from "@/app/components/chips/blockingChip";
-import { TextInput } from "@/app/components/inputs";
-import { cpf } from "cpf-cnpj-validator";
 import { ActionButton } from "@/app/components/buttons/actionButton";
 import { IconClipboard } from "@tabler/icons";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
 import { Address } from "@signumjs/core";
 import { toDateStr } from "@/app/toDateStr";
+import { CustomerSearchFilters } from "./customerSearchFilters";
+import { Pagination, PaginationProps } from "./pagination";
+import { set } from "nprogress";
 
 const renderCreatedAt = (params: GridRenderCellParams<string>) => {
+  const Days = 1000 * 60 * 60 * 24;
   const createdAt = params.value;
   if (!createdAt) return null;
+
+  const createdAtDate = new Date(createdAt);
+  const overdue = Date.now() - createdAtDate.getTime() > 10 * Days;
   const applied = toDateStr(new Date(createdAt));
-  return <div>{applied}</div>;
+
+  let style = {};
+  if (overdue) {
+    style = { color: "red", fontWeight: 700 };
+  }
+
+  return <div style={style}>{applied}</div>;
 };
 
 const renderVerificationLevel = (params: GridRenderCellParams<string>) => {
@@ -145,18 +154,63 @@ const asFlag = (b: Boolean) => (b ? "✅" : "❌");
 
 export const CustomerTable = () => {
   const router = useRouter();
+  const query = router.query;
+  const pathname = router.pathname;
 
   const [searchValue, setSearchValue] = useState("");
-
-  const { data, error } = useSWR("getAllTokenHolders", () => {
-    return customerService.fetchCustomers({ verified: true });
+  const [name, setName] = useState((query!.name as string) || "");
+  const [email, setEmail] = useState((query!.email as string) || "");
+  const [cpf, setCPF] = useState((query!.cpf as string) || "");
+  const [isVerified, setIsVerified] = useState(query.verified === "true");
+  const [isBlocked, setIsBlocked] = useState(query.blocked === "true");
+  const [isActive, setIsActive] = useState(query.active === "true");
+  const [isInvited, setIsInvited] = useState(query.invited === "true");
+  const [isInBrazil, setIsInBrazil] = useState(query.brazilian === "true");
+  const [paginationModel, setPaginationModel] = useState({
+    page: 1,
+    pageSize: 5,
   });
+
+  const [showTable, setShowTable] = useState(false);
+
+  const { data, mutate, error } = useSWR("getAllTokenHolders", () => {
+    return customerService.fetchCustomers({
+      name,
+      page: paginationModel.page,
+      offset: paginationModel.pageSize,
+      email: email || undefined,
+      cpf: cpf || undefined,
+      active: isActive || undefined,
+      blocked: isBlocked || undefined,
+      brazilian: isInBrazil || undefined,
+      invited: isInvited || undefined,
+      verified: isVerified,
+    });
+  });
+
+  useEffect(() => {
+    mutate();
+  }, [paginationModel]);
+
+  useEffect(() => {
+    console.log({ teste: Object.keys(query).length > 0 });
+    if (Object.keys(query).length > 0) {
+      setName((query.name as string) || "");
+      setEmail((query.email as string) || "");
+      setCPF((query.cpf as string) || "");
+      setIsVerified(query.verified === "true");
+      setIsBlocked(query.blocked === "true");
+      setIsActive(query.active === "true");
+      setIsInvited(query.invited === "true");
+      setIsInBrazil(query.brazilian === "true");
+    }
+  }, []);
 
   const tableRows = useMemo(() => {
     if (!data) {
       return [];
     }
-    return data.map(
+    return data.customers.map(
       ({
         cuid,
         firstName,
@@ -176,7 +230,7 @@ export const CustomerTable = () => {
           id: cuid,
           firstName,
           lastName,
-          cpfCnpj: cpf.format(cpfCnpj),
+          cpfCnpj: cpfCnpj,
           email1,
           phone1,
           createdAt,
@@ -220,25 +274,57 @@ export const CustomerTable = () => {
 
   return (
     <MainCard title="Token Holders">
-      <Grid container>
-        <Grid item md={4}>
-          <TextInput
-            label="Search"
-            onChange={handleSearch}
-            value={searchValue}
-          />
-        </Grid>
-      </Grid>
-      <div style={{ height: "70vh" }}>
-        <div style={{ display: "flex", height: "100%" }}>
-          <DataGrid
-            rows={filteredRows}
-            columns={columns}
-            loading={loading}
-            onRowClick={handleRowClick}
-          />
+      <CustomerSearchFilters
+        name={name}
+        setName={setName}
+        isActive={isActive}
+        setIsActive={setIsActive}
+        email={email}
+        setEmail={setEmail}
+        isBlocked={isBlocked}
+        setIsBlocked={setIsBlocked}
+        isInBrazil={isInBrazil}
+        setIsInBrazil={setIsInBrazil}
+        isInvited={isInvited}
+        setIsInvited={setIsInvited}
+        isVerified={isVerified}
+        setIsVerified={setIsVerified}
+        setCPF={setCPF}
+        setShowTable={setShowTable}
+        cpf={cpf}
+        fetchCustomers={() => {
+          mutate();
+        }}
+      />
+
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <div style={{ height: "auto" }}>
+          {data!.customers.length > 0 && (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {showTable && (
+                <>
+                  <DataGrid
+                    rows={filteredRows}
+                    columns={columns}
+                    autoHeight
+                    loading={loading}
+                    onRowClick={handleRowClick}
+                    hideFooter={true}
+                    rowCount={data!.customers.length || undefined}
+                  />
+                  <Pagination
+                    paginationModel={paginationModel}
+                    setPaginationModel={setPaginationModel}
+                    data={data as PaginationProps["data"]}
+                  />
+                </>
+              )}
+            </div>
+          )}
         </div>
-      </div>
+      )}
     </MainCard>
   );
 };
