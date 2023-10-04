@@ -183,7 +183,7 @@ export const WizardLayout = ({ children }: Props) => {
       break;
   }
 
-  const onClickBackButton = useCallback(() => {
+  const handleBackButton = useCallback(() => {
     switch (currentStep) {
       case Steps.AgreeTerms:
         router.replace("/kyc");
@@ -222,7 +222,7 @@ export const WizardLayout = ({ children }: Props) => {
     }
   }, [currentStep, router, stepMovement]);
 
-  const onClickNextButton = useCallback(() => {
+  const handleNextButton = useCallback(() => {
     switch (currentStep) {
       case Steps.AgreeTerms:
         dispatch(setAgreeTerms(agreeTerms));
@@ -309,7 +309,7 @@ export const WizardLayout = ({ children }: Props) => {
     {
       label: t("back"),
       icon: <RiArrowLeftCircleLine />,
-      onClick: onClickBackButton,
+      onClick: handleBackButton,
       type: "button",
     },
     {
@@ -321,7 +321,7 @@ export const WizardLayout = ({ children }: Props) => {
     {
       label: t("next"),
       icon: <RiArrowRightCircleLine />,
-      onClick: onClickNextButton,
+      onClick: handleNextButton,
       type:
         currentStep === Steps.BlockchainAccountSeedVerification
           ? "submit"

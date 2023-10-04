@@ -1,10 +1,10 @@
 import { useTranslation } from "next-i18next";
 import { useMemo, useState, useRef } from "react";
-import { Button } from "react-daisyui";
-import { RiArrowUpCircleLine, RiDeleteBinLine } from "react-icons/ri";
+import { RiArrowUpCircleLine } from "react-icons/ri";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useNotification } from "@/app/hooks/useNotification";
 import { CreateUploadUrlResponse } from "@/types/createUploadUrlResponse";
+import { FileChip } from "./components/fileChip";
 
 type Progress = { loaded: number; total: number };
 
@@ -14,6 +14,8 @@ interface Props {
   fileTypes?: FileTypes[];
   onUploadSuccess: (value: string) => void;
 }
+
+const MAX_FILES = 1;
 
 export function FileUploader({ onUploadSuccess, fileTypes = [] }: Props) {
   const { t } = useTranslation();
@@ -28,8 +30,6 @@ export function FileUploader({ onUploadSuccess, fileTypes = [] }: Props) {
     Record<string, Progress>
   >({});
 
-  const maxFiles = 1;
-
   const dynamicFileInputArgs = useMemo(() => {
     let args: any = {};
 
@@ -41,8 +41,8 @@ export function FileUploader({ onUploadSuccess, fileTypes = [] }: Props) {
   }, [fileTypes]);
 
   const handleFileInputChange = (event: any) => {
-    if (event.target.files.length > maxFiles) {
-      return showError(t("too_many_files", { count: maxFiles }));
+    if (event.target.files.length > MAX_FILES) {
+      return showError(t("too_many_files", { count: MAX_FILES }));
     }
 
     setSelectedFiles(event.target.files);
@@ -115,9 +115,9 @@ export function FileUploader({ onUploadSuccess, fileTypes = [] }: Props) {
     return (
       !isUploading &&
       selectedFiles &&
-      Object.entries(uploadProgress).length < maxFiles
+      Object.entries(uploadProgress).length < MAX_FILES
     );
-  }, [isUploading, selectedFiles, uploadProgress, maxFiles]);
+  }, [isUploading, selectedFiles, uploadProgress]);
 
   return (
     <div className="flex flex-col w-full pb-0">
@@ -148,30 +148,13 @@ export function FileUploader({ onUploadSuccess, fileTypes = [] }: Props) {
 
           <div className="flex flex-col w-full">
             {progresses.map(({ file, loaded, total }) => (
-              <div key={file} className="flex flex-col gap-2 items-center">
-                <div
-                  className="flex justify-between text-center badge badge-lg w-full h-12"
-                  key={file}
-                >
-                  <span className="w-32 truncate text-xs">{file}</span>
-
-                  <Button
-                    type="button"
-                    className="text-xs font-bold capitalize"
-                    color="error"
-                    onClick={handleDelete}
-                    startIcon={<RiDeleteBinLine />}
-                  >
-                    {t("delete")}
-                  </Button>
-                </div>
-
-                <progress
-                  className="progress progress-success w-full"
-                  value={loaded}
-                  max={total}
-                />
-              </div>
+              <FileChip
+                key={file}
+                file={file}
+                loaded={loaded}
+                total={total}
+                handleDelete={handleDelete}
+              />
             ))}
           </div>
         </>

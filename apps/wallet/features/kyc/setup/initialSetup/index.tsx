@@ -49,7 +49,7 @@ export const InitialSetup = () => {
     await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
   };
 
-  const onClickBackButton = () => {
+  const handleBackButton = () => {
     switch (currentStep) {
       case Steps.Form:
         router.replace("/kyc");
@@ -118,7 +118,7 @@ export const InitialSetup = () => {
     {
       label: t("back"),
       icon: <RiArrowLeftCircleLine />,
-      onClick: onClickBackButton,
+      onClick: handleBackButton,
       type: "button",
     },
     {
