@@ -8,15 +8,11 @@ import { useNotification } from "@/app/hooks/useNotification";
 import { Layout } from "@/app/components/layout";
 import { voidFn } from "@/app/voidFn";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
-import { initialFormSchema } from "./validation/schemas";
 import { InitialStep } from "@/app/types/kycData";
-import { Form } from "./steps/Form";
+import { initialFormSchema } from "./validation/schemas";
 import { EmailValidation } from "./steps/EmailValidation";
-
-enum Steps {
-  Form,
-  VerifyCode,
-}
+import { Steps } from "./types/steps";
+import { Form } from "./steps/Form";
 
 export const InitialSetup = () => {
   const { t } = useTranslation();
@@ -83,7 +79,7 @@ export const InitialSetup = () => {
       // TODO: Persist Initial Data on Redux
       // Initial data is (First Name, Last Name and email)
       case Steps.VerifyCode:
-        console.log(data);
+        router.push("/kyc/setup/wizard");
         break;
 
       default:

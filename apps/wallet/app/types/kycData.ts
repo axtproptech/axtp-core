@@ -39,5 +39,6 @@ export type DocumentStep = {
 
 export type BlockchainAccountStep = {
   accountId: string;
-  agreeTerms: boolean;
+  accountSeedPhrase: string;
+  agreeSafetyTerms: boolean;
 };

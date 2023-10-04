@@ -1,4 +1,3 @@
-import { placeOrder } from "@signumjs/core/out/api/factories/asset/placeOrder";
 import * as process from "process";
 
 const toNumber = (v: any): number => {

@@ -2,7 +2,7 @@ import { Input } from "react-daisyui";
 
 interface Props {
   label?: string;
-  type?: "text" | "email";
+  type?: "text" | "email" | "date";
   placeholder?: string;
   helperText?: string;
   className?: string;

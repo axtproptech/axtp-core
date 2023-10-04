@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { protectedRoute } from "@/bff/route";
-import { createUploadURL } from "@/bff/handler/files";
+import { deleteFile } from "@/bff/handler/files";
 
 export default function handler(
   req: NextApiRequest,
@@ -9,6 +9,6 @@ export default function handler(
   return protectedRoute({
     req,
     res,
-    post: createUploadURL,
+    delete: deleteFile,
   });
 }

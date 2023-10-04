@@ -2,11 +2,12 @@ import { useTranslation } from "next-i18next";
 import { Button } from "react-daisyui";
 import { useFormContext, Controller } from "react-hook-form";
 import { AttentionSeeker } from "react-awesome-reveal";
-import { RiMailCheckFill, RiClipboardLine } from "react-icons/ri";
+import { RiClipboardLine } from "react-icons/ri";
 import { FieldBox } from "@/app/components/fieldBox";
 import { useNotification } from "@/app/hooks/useNotification";
 import { mapValidationError } from "@/app/mapValidationError";
 import { InitialStep } from "@/app/types/kycData";
+import { AnimatedIconMailSend } from "@/app/components/animatedIcons/animatedIconMailSend";
 
 export const EmailValidation = () => {
   const { t } = useTranslation();
@@ -46,9 +47,11 @@ export const EmailValidation = () => {
       </section>
 
       <section className="flex flex-col justify-center items-center gap-4">
-        <AttentionSeeker effect="heartBeat">
-          <RiMailCheckFill size={64} />
-        </AttentionSeeker>
+        <div className="w-40 h-32">
+          <AttentionSeeker effect="heartBeat">
+            <AnimatedIconMailSend loopDelay={500} />
+          </AttentionSeeker>
+        </div>
 
         <span className="text-white text-center text-base">
           {t("verify_your_email_hint", { email })}

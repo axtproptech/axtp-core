@@ -1,4 +1,3 @@
-import { Layout } from "@/app/components/layout";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Wizard } from "@/features/kyc/setup/wizard";
 
@@ -12,9 +11,5 @@ export async function getStaticProps({ locale }: { locale: string }) {
 }
 
 export default function WizardPage() {
-  return (
-    <Layout noBody>
-      <Wizard />
-    </Layout>
-  );
+  return <Wizard />;
 }

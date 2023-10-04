@@ -6,10 +6,11 @@ import {
   FourthStep,
   MotherDataStep,
   DocumentStep,
-  BlockchainAccountStep,
 } from "@/app/types/kycData";
+import { Steps } from "../types/steps";
 
 export interface KycState {
+  currentStep: Steps;
   agreeTerms: boolean;
   initialStep: InitialStep;
   secondStep: SecondStep;
@@ -17,10 +18,10 @@ export interface KycState {
   fourthStep: FourthStep;
   motherDataStep: MotherDataStep;
   documentStep: DocumentStep;
-  blockchainAccountStep: BlockchainAccountStep;
 }
 
 export const initialState: KycState = {
+  currentStep: Steps.AgreeTerms,
   agreeTerms: false,
   initialStep: { firstName: "", lastName: "", email: "", code: "" },
   secondStep: { cpf: "", birthDate: "", birthPlace: "" },
@@ -36,10 +37,6 @@ export const initialState: KycState = {
   },
   motherDataStep: { firstName: "", lastName: "" },
   documentStep: { documentType: "cnh", frontSide: "", backSide: "" },
-  blockchainAccountStep: {
-    accountId: "",
-    agreeTerms: false,
-  },
 };
 
 export const kycSlice = createSlice({
@@ -47,6 +44,9 @@ export const kycSlice = createSlice({
   initialState,
   reducers: {
     reset: () => initialState,
+    setCurrentStep: (state, action: PayloadAction<Steps>) => {
+      state.currentStep = action.payload;
+    },
     setAgreeTerms: (state, action: PayloadAction<boolean>) => {
       state.agreeTerms = action.payload;
     },
@@ -67,12 +67,6 @@ export const kycSlice = createSlice({
     },
     setDocumentStep: (state, action: PayloadAction<DocumentStep>) => {
       state.documentStep = action.payload;
-    },
-    setBlockchainAccountStep: (
-      state,
-      action: PayloadAction<BlockchainAccountStep>
-    ) => {
-      state.blockchainAccountStep = action.payload;
     },
   },
 });
