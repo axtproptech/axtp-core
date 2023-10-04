@@ -6,12 +6,10 @@ export interface PaginationProps {
     page: number;
     pageSize: number;
   };
-  setPaginationModel: React.Dispatch<
-    React.SetStateAction<{
-      page: number;
-      pageSize: number;
-    }>
-  >;
+  onPaginationChange: (paginationModel: {
+    page: number;
+    pageSize: number;
+  }) => void;
   data: {
     [key: string]: any;
     count: number;
@@ -20,7 +18,7 @@ export interface PaginationProps {
 
 export const Pagination = ({
   paginationModel,
-  setPaginationModel,
+  onPaginationChange,
   data,
 }: PaginationProps) => {
   return (
@@ -38,7 +36,7 @@ export const Pagination = ({
         <Select
           value={paginationModel.pageSize}
           onChange={(e) =>
-            setPaginationModel({
+            onPaginationChange({
               ...paginationModel,
               pageSize: e.target.value as number,
             })
@@ -56,7 +54,7 @@ export const Pagination = ({
           disabled={paginationModel.page === 1}
           variant="outlined"
           onClick={() =>
-            setPaginationModel({
+            onPaginationChange({
               ...paginationModel,
               page: paginationModel.page - 1,
             })
@@ -76,7 +74,7 @@ export const Pagination = ({
           }
           variant="outlined"
           onClick={() =>
-            setPaginationModel({
+            onPaginationChange({
               ...paginationModel,
               page: paginationModel.page + 1,
             })

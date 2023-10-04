@@ -1,7 +1,5 @@
 import { MainCard } from "@/app/components/cards";
-import useSWR from "swr";
-import { customerService } from "@/app/services/customerService/customerService";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   DataGrid,
   GridAlignment,
@@ -20,10 +18,15 @@ import { Address } from "@signumjs/core";
 import { toDateStr } from "@/app/toDateStr";
 import { CustomerSearchFilters } from "./customerSearchFilters";
 import { Pagination, PaginationProps } from "./pagination";
-import { set } from "nprogress";
+import { CustomerTableResponse } from "@/bff/types/customerResponse";
+import useSWRMutation from "swr/mutation";
 
+import { TablePagination } from "@mui/material";
+import { customerService } from "@/app/services/customerService/customerService";
+import { CustomerFilterType } from "./types";
+
+const Days = 1000 * 60 * 60 * 24;
 const renderCreatedAt = (params: GridRenderCellParams<string>) => {
-  const Days = 1000 * 60 * 60 * 24;
   const createdAt = params.value;
   if (!createdAt) return null;
 
@@ -154,18 +157,32 @@ const asFlag = (b: Boolean) => (b ? "✅" : "❌");
 
 export const CustomerTable = () => {
   const router = useRouter();
-  const query = router.query;
-  const pathname = router.pathname;
+  const [filters, setFilters] = useState<CustomerFilterType>({
+    name: "",
+    email: undefined,
+    cpf: undefined,
+    verified: true,
+    blocked: undefined,
+    active: undefined,
+    invited: undefined,
+    brazilian: undefined,
+  });
+  const [data, setData] = useState<CustomerTableResponse>();
 
-  const [searchValue, setSearchValue] = useState("");
-  const [name, setName] = useState((query!.name as string) || "");
-  const [email, setEmail] = useState((query!.email as string) || "");
-  const [cpf, setCPF] = useState((query!.cpf as string) || "");
-  const [isVerified, setIsVerified] = useState(query.verified === "true");
-  const [isBlocked, setIsBlocked] = useState(query.blocked === "true");
-  const [isActive, setIsActive] = useState(query.active === "true");
-  const [isInvited, setIsInvited] = useState(query.invited === "true");
-  const [isInBrazil, setIsInBrazil] = useState(query.brazilian === "true");
+  const { trigger } = useSWRMutation<
+    CustomerTableResponse,
+    any,
+    "getAllTokenHolders",
+    CustomerFilterType
+  >("getAllTokenHolders", (_, { arg }) => {
+    return customerService.fetchCustomers({
+      page: paginationModel.page,
+      offset: paginationModel.pageSize,
+      ...filters,
+      ...arg,
+    });
+  });
+
   const [paginationModel, setPaginationModel] = useState({
     page: 1,
     pageSize: 5,
@@ -173,43 +190,11 @@ export const CustomerTable = () => {
 
   const [showTable, setShowTable] = useState(false);
 
-  const { data, mutate, error } = useSWR("getAllTokenHolders", () => {
-    return customerService.fetchCustomers({
-      name,
-      page: paginationModel.page,
-      offset: paginationModel.pageSize,
-      email: email || undefined,
-      cpf: cpf || undefined,
-      active: isActive || undefined,
-      blocked: isBlocked || undefined,
-      brazilian: isInBrazil || undefined,
-      invited: isInvited || undefined,
-      verified: isVerified,
-    });
-  });
-
-  useEffect(() => {
-    mutate();
-  }, [paginationModel]);
-
-  useEffect(() => {
-    console.log({ teste: Object.keys(query).length > 0 });
-    if (Object.keys(query).length > 0) {
-      setName((query.name as string) || "");
-      setEmail((query.email as string) || "");
-      setCPF((query.cpf as string) || "");
-      setIsVerified(query.verified === "true");
-      setIsBlocked(query.blocked === "true");
-      setIsActive(query.active === "true");
-      setIsInvited(query.invited === "true");
-      setIsInBrazil(query.brazilian === "true");
-    }
-  }, []);
-
   const tableRows = useMemo(() => {
     if (!data) {
       return [];
     }
+
     return data.customers.map(
       ({
         cuid,
@@ -247,57 +232,24 @@ export const CustomerTable = () => {
     );
   }, [data]);
 
-  const filteredRows = useMemo(() => {
-    if (!searchValue) return tableRows;
-
-    const isLike = (a: string, b: string) => a.toLowerCase().indexOf(b) !== -1;
-
-    return tableRows.filter(({ email1, cpfCnpj, firstName, lastName }) => {
-      return (
-        isLike(email1, searchValue) ||
-        isLike(cpfCnpj, searchValue) ||
-        isLike(firstName, searchValue) ||
-        isLike(lastName, searchValue)
-      );
-    });
-  }, [tableRows, searchValue]);
-
-  const loading = !data && !error;
+  const loading = !data;
 
   const handleRowClick = async (e: GridRowParams) => {
     await router.push(`/admin/customers/${e.id}`);
   };
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-  };
-
   return (
     <MainCard title="Token Holders">
       <CustomerSearchFilters
-        name={name}
-        setName={setName}
-        isActive={isActive}
-        setIsActive={setIsActive}
-        email={email}
-        setEmail={setEmail}
-        isBlocked={isBlocked}
-        setIsBlocked={setIsBlocked}
-        isInBrazil={isInBrazil}
-        setIsInBrazil={setIsInBrazil}
-        isInvited={isInvited}
-        setIsInvited={setIsInvited}
-        isVerified={isVerified}
-        setIsVerified={setIsVerified}
-        setCPF={setCPF}
-        setShowTable={setShowTable}
-        cpf={cpf}
-        fetchCustomers={() => {
-          mutate();
+        onSearch={async (filters) => {
+          setPaginationModel({ ...paginationModel, page: 1 });
+          setFilters(filters);
+          const dataFetch = await trigger({ ...paginationModel, ...filters });
+          setData(dataFetch);
+          setShowTable(true);
         }}
       />
-
-      {loading ? (
+      {!data ? (
         <div>Loading...</div>
       ) : (
         <div style={{ height: "auto" }}>
@@ -306,7 +258,7 @@ export const CustomerTable = () => {
               {showTable && (
                 <>
                   <DataGrid
-                    rows={filteredRows}
+                    rows={tableRows}
                     columns={columns}
                     autoHeight
                     loading={loading}
@@ -314,9 +266,17 @@ export const CustomerTable = () => {
                     hideFooter={true}
                     rowCount={data!.customers.length || undefined}
                   />
+
                   <Pagination
                     paginationModel={paginationModel}
-                    setPaginationModel={setPaginationModel}
+                    onPaginationChange={async (paginationModel) => {
+                      setPaginationModel(paginationModel);
+                      const dataFetch = await trigger({
+                        ...paginationModel,
+                        ...filters,
+                      });
+                      setData(dataFetch);
+                    }}
                     data={data as PaginationProps["data"]}
                   />
                 </>

@@ -1,109 +1,129 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Checkbox, FormControlLabel, Grid } from "@mui/material";
 import { TextInput } from "@/app/components/inputs";
 import { cpf } from "cpf-cnpj-validator";
 // @ts-ignore
 import InputMask, { Props as InputMaskProps } from "react-input-mask";
+import { useRouter } from "next/router";
+import { CustomerFilterType } from "./types";
 
-type CustomerSearchFilterProps = {
-  setName: (e: string) => void;
-  setIsActive: (e: boolean) => void;
-  setIsBlocked: (e: boolean) => void;
-  setIsInBrazil: (e: boolean) => void;
-  setIsInvited: (e: boolean) => void;
-  setEmail: (e: string) => void;
-  setShowTable: (e: boolean) => void;
-  setIsVerified: (e: boolean) => void;
-  setCPF: (e: string) => void;
-  name: string;
-  email: string;
-  cpf: string;
-  isActive: boolean;
-  isBlocked: boolean;
-  isInBrazil: boolean;
-  isInvited: boolean;
-  isVerified: boolean;
-  fetchCustomers: () => void;
-};
+interface CustomerSearchFilterProps {
+  onSearch: (filters: CustomerFilterType) => void;
+}
 
 export const CustomerSearchFilters = ({
-  setName,
-  name,
-  setIsActive,
-  setIsBlocked,
-  setIsInBrazil,
-  setIsInvited,
-  setShowTable,
-  setIsVerified,
-  setEmail,
-  setCPF,
-  email,
-  isActive,
-  isBlocked,
-  isInBrazil,
-  isInvited,
-  isVerified,
-  cpf: cpfValue,
-  fetchCustomers,
+  onSearch,
 }: CustomerSearchFilterProps) => {
+  const router = useRouter();
+  const query = router.query;
+  const [filters, setFilters] = useState<CustomerFilterType>({
+    name: "",
+    email: undefined,
+    cpf: undefined,
+    verified: true,
+    blocked: undefined,
+    active: undefined,
+    invited: undefined,
+    brazilian: undefined,
+    allStatus: false,
+  });
+
   const inputForm = [
     {
       name: "name",
       label: "Name",
-      value: name,
-      onChange: setName,
+      value: filters.name,
     },
     {
       name: "cpf",
       label: "CPF",
-      value: cpfValue,
-      onChange: setCPF,
+      value: filters.cpf,
       mask: "999.999.999-99",
     },
     {
       name: "email",
       label: "Email",
-      value: email,
-      onChange: setEmail,
+      value: filters.email,
     },
   ];
 
   const checkboxForm = [
     {
-      name: "isActive",
+      name: "active",
       label: "Active",
-      value: isActive,
-      onChange: setIsActive,
+      value: filters.active,
     },
     {
-      name: "isBlocked",
+      name: "blocked",
       label: "Blocked",
-      value: isBlocked,
-      onChange: setIsBlocked,
+      value: filters.blocked,
     },
     {
-      name: "isInBrazil",
+      name: "brazilian",
       label: "Brazilian",
-      value: isInBrazil,
-      onChange: setIsInBrazil,
+      value: filters.brazilian,
     },
     {
-      name: "isInvited",
+      name: "invited",
       label: "Invited",
-      value: isInvited,
-      onChange: setIsInvited,
+      value: filters.invited,
     },
     {
-      name: "isVerified",
+      name: "verified",
       label: "Verified",
-      value: isVerified,
-      onChange: setIsVerified,
+      value: filters.verified,
+    },
+    {
+      name: "allStatus",
+      label: "All Status",
+      value: filters.allStatus,
     },
   ];
 
-  const handleOnCLick = async () => {
-    await fetchCustomers();
-    setShowTable(true);
+  const handleChangeFilter = (
+    e: string | boolean | undefined,
+    propName: string
+  ) => {
+    if (propName === "allStatus") {
+      setFilters({
+        ...filters,
+        verified: undefined,
+        blocked: undefined,
+        active: undefined,
+        invited: undefined,
+        brazilian: undefined,
+        allStatus: true,
+      });
+    } else if (
+      propName === "active" ||
+      propName === "blocked" ||
+      propName === "invited" ||
+      propName === "verified" ||
+      propName === "brazilian"
+    ) {
+      setFilters({ ...filters, [propName]: e, allStatus: false });
+    } else {
+      setFilters({ ...filters, [propName]: e });
+    }
+  };
+
+  useEffect(() => {
+    if (Object.keys(query).length > 0) {
+      setFilters({
+        name: (query.name as string) || "",
+        email: (query.email as string) || undefined,
+        cpf: (query.cpf as string) || undefined,
+        verified: query.verified == "true",
+        blocked: query.blocked == "true" || undefined,
+        active: query.active == "true" || undefined,
+        invited: query.invited == "true" || undefined,
+        brazilian: query.brazilian == "true" || undefined,
+      });
+    }
+  }, []);
+
+  const handleOnSearch = async () => {
+    onSearch(filters);
   };
 
   return (
@@ -119,7 +139,7 @@ export const CustomerSearchFilters = ({
                   value={input.value}
                   disabled={false}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    input.onChange(e.target.value)
+                    handleChangeFilter(e.target.value, input.name)
                   }
                   maskChar=" "
                 >
@@ -130,7 +150,7 @@ export const CustomerSearchFilters = ({
                   key={input.name}
                   label={input.label}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    input.onChange(e.target.value)
+                    handleChangeFilter(e.target.value, input.name)
                   }
                   value={input.value}
                 />
@@ -149,7 +169,12 @@ export const CustomerSearchFilters = ({
                       checked={checkbox.value}
                       value={checkbox.value}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        checkbox.onChange(e.target.checked)
+                        handleChangeFilter(
+                          e.target.checked || checkbox.name === "verified"
+                            ? e.target.checked
+                            : undefined,
+                          checkbox.name
+                        )
                       }
                       name={checkbox.name}
                     />
@@ -176,12 +201,12 @@ export const CustomerSearchFilters = ({
             width: "100%",
           }}
           variant="contained"
-          onClick={handleOnCLick}
-          disabled={!!cpfValue && !cpf.isValid(cpfValue)}
+          onClick={handleOnSearch}
+          disabled={!!filters.cpf && !cpf.isValid(filters.cpf)}
         >
           SEARCH
         </Button>
-        {!!cpfValue && !cpf.isValid(cpfValue) && (
+        {!!filters.cpf && !cpf.isValid(filters.cpf) && (
           <p style={{ color: "red", fontSize: 12, marginTop: 10 }}>
             Invalid CPF
           </p>

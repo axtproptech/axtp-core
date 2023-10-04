@@ -2907,7 +2907,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-input-mask@^3.0.3":
+"@types/react-input-mask@3.0.3":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/react-input-mask/-/react-input-mask-3.0.3.tgz#1b55538f59aa228436c1b3d94e58b1a1b0d7d9b6"
   integrity sha512-woaVZxXcze6i+I45mQfpImnG1n5S1ZFTMBx46BoP4xOyCuiF3DGy1a4lCKM4r7iQqdb34XN9f8IbrAOQGNsEkg==
@@ -8477,7 +8477,7 @@ react-imask@^6.4.3:
     imask "^6.4.3"
     prop-types "^15.7.2"
 
-react-input-mask@3.0.0-alpha.2, react-input-mask@^3.0.0-alpha.2:
+react-input-mask@3.0.0-alpha.2:
   version "3.0.0-alpha.2"
   resolved "https://registry.yarnpkg.com/react-input-mask/-/react-input-mask-3.0.0-alpha.2.tgz#113102942a557edc7a192e66020b8ce1ba699a5c"
   integrity sha512-9U7qL+mvDMOJcbOFPdt6Vj+zzmCMNnBjhhjGDrL8BGQmymgvMVKhu/oOVfAkl+5VWOsLr+G3EhZOmae5fBcAkA==
@@ -9719,6 +9719,14 @@ swr@^2.1.5:
   resolved "https://registry.npmjs.org/swr/-/swr-2.1.5.tgz"
   integrity sha512-/OhfZMcEpuz77KavXST5q6XE9nrOBOVcBLWjMT+oAE/kQHyE3PASrevXCtQDZ8aamntOfFkbVJp7Il9tNBQWrw==
   dependencies:
+    use-sync-external-store "^1.2.0"
+
+swr@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-2.2.4.tgz#03ec4c56019902fbdc904d78544bd7a9a6fa3f07"
+  integrity sha512-njiZ/4RiIhoOlAaLYDqwz5qH/KZXVilRLvomrx83HjzCWTfa+InyfAjv05PSFxnmLzZkNO9ZfvgoqzAaEI4sGQ==
+  dependencies:
+    client-only "^0.0.1"
     use-sync-external-store "^1.2.0"
 
 tailwind-scrollbar@^2.0.1:

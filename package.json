@@ -37,8 +37,5 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "dependencies": {
-    "react-input-mask": "^3.0.0-alpha.2"
-  }
+  ]
 }
