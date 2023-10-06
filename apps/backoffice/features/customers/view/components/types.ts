@@ -1,3 +1,5 @@
+import { off } from "process";
+
 export type CustomerFilterType = {
   name: string;
   email: string | undefined;
@@ -8,4 +10,10 @@ export type CustomerFilterType = {
   invited: boolean | undefined;
   brazilian: boolean | undefined;
   allStatus?: boolean;
+};
+
+export type PaginationModelType = {
+  page: number;
+  pageSize: number;
+  offset?: number;
 };

@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, Checkbox, FormControlLabel, Grid } from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { TextInput } from "@/app/components/inputs";
 import { cpf } from "cpf-cnpj-validator";
 // @ts-ignore
@@ -15,7 +21,7 @@ export const CustomerSearchFilters = ({
   onSearch,
 }: CustomerSearchFilterProps) => {
   const router = useRouter();
-  const query = router.query;
+
   const [filters, setFilters] = useState<CustomerFilterType>({
     name: "",
     email: undefined,
@@ -108,6 +114,9 @@ export const CustomerSearchFilters = ({
   };
 
   useEffect(() => {
+    if (!router.isReady) return;
+    const query = router.query;
+    console.log({ query });
     if (Object.keys(query).length > 0) {
       setFilters({
         name: (query.name as string) || "",
@@ -120,98 +129,109 @@ export const CustomerSearchFilters = ({
         brazilian: query.brazilian == "true" || undefined,
       });
     }
-  }, []);
+  }, [router.isReady]);
 
   const handleOnSearch = async () => {
     onSearch(filters);
   };
 
   return (
-    <Grid marginBottom={8}>
-      <Grid container>
-        <Grid item md={12}>
-          {inputForm &&
-            inputForm.map((input) => {
-              return input.mask ? (
-                <InputMask
-                  key={input.name}
-                  mask={input.mask}
-                  value={input.value}
-                  disabled={false}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleChangeFilter(e.target.value, input.name)
-                  }
-                  maskChar=" "
-                >
-                  {<TextInput label={input.label} />}
-                </InputMask>
-              ) : (
-                <TextInput
-                  key={input.name}
-                  label={input.label}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleChangeFilter(e.target.value, input.name)
-                  }
-                  value={input.value}
-                />
-              );
-            })}
-        </Grid>
-        <Grid container>
-          <h2>Status:</h2>
-          <Grid item ml={2} marginBottom={2} md={12}>
-            {checkboxForm &&
-              checkboxForm.map((checkbox) => (
-                <FormControlLabel
-                  key={checkbox.name}
-                  control={
-                    <Checkbox
-                      checked={checkbox.value}
-                      value={checkbox.value}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleChangeFilter(
-                          e.target.checked || checkbox.name === "verified"
-                            ? e.target.checked
-                            : undefined,
-                          checkbox.name
-                        )
-                      }
-                      name={checkbox.name}
-                    />
-                  }
-                  label={checkbox.label}
-                />
-              ))}
-          </Grid>
-        </Grid>
-      </Grid>
-      <div
+    <Grid container spacing={3} marginBottom={8}>
+      <Grid
+        item
+        xs={12}
+        md={6}
         style={{
           display: "flex",
-          justifyContent: "center",
           flexDirection: "column",
+          justifyContent: "space-between",
+          marginTop: "1.5rem",
         }}
       >
+        {inputForm.map((input) => (
+          <div key={input.name} style={{ marginBottom: "1.5rem" }}>
+            {input.mask ? (
+              <InputMask
+                mask={input.mask}
+                value={input.value}
+                disabled={false}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleChangeFilter(e.target.value, input.name)
+                }
+                maskChar=" "
+              >
+                {<TextInput label={input.label} />}
+              </InputMask>
+            ) : (
+              <TextInput
+                label={input.label}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleChangeFilter(e.target.value, input.name)
+                }
+                value={input.value}
+              />
+            )}
+          </div>
+        ))}
         <Button
-          style={{
-            fontSize: 28,
-            lineHeight: 2.4,
-            letterSpacing: 4,
-            borderRadius: 0,
-            width: "100%",
-          }}
+          size="medium"
           variant="contained"
+          color="primary"
           onClick={handleOnSearch}
           disabled={!!filters.cpf && !cpf.isValid(filters.cpf)}
+          style={{
+            padding: "8px 16px",
+            fontSize: "1rem",
+            letterSpacing: "2px",
+            marginTop: "1rem",
+          }}
         >
           SEARCH
         </Button>
         {!!filters.cpf && !cpf.isValid(filters.cpf) && (
-          <p style={{ color: "red", fontSize: 12, marginTop: 10 }}>
+          <Typography
+            color="error"
+            align="center"
+            style={{ marginTop: "0.5rem" }}
+          >
             Invalid CPF
-          </p>
+          </Typography>
         )}
-      </div>
+      </Grid>
+
+      <Grid item xs={12} md={6}>
+        <Typography
+          variant="h6"
+          gutterBottom
+          style={{
+            fontWeight: 600,
+            marginBottom: "1.5rem",
+            fontSize: "1.2rem",
+            color: "#333",
+            letterSpacing: "0.5px",
+          }}
+        >
+          Status
+        </Typography>
+        <Grid container spacing={2}>
+          {checkboxForm.map((checkbox, index) => (
+            <Grid item xs={6} key={index} style={{ marginBottom: "1rem" }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={checkbox.value}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleChangeFilter(e.target.checked, checkbox.name)
+                    }
+                    name={checkbox.name}
+                  />
+                }
+                label={checkbox.label}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Grid>
     </Grid>
   );
 };

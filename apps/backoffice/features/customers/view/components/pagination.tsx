@@ -1,4 +1,4 @@
-import { Button, MenuItem, Select } from "@mui/material";
+import { Box, Button, MenuItem, Select, Typography } from "@mui/material";
 import React from "react";
 
 export interface PaginationProps {
@@ -21,35 +21,38 @@ export const Pagination = ({
   onPaginationChange,
   data,
 }: PaginationProps) => {
+  const totalPages = Math.ceil(data!.count / paginationModel.pageSize);
+
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        marginTop: 20,
+        mt: 2,
       }}
-      className="pagination"
     >
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <h4 style={{ marginRight: 20 }}>Rows per Page: </h4>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Typography variant="h6" sx={{ mr: 2 }}>
+          Rows per Page:
+        </Typography>
         <Select
           value={paginationModel.pageSize}
           onChange={(e) =>
             onPaginationChange({
-              ...paginationModel,
+              page: 1,
               pageSize: e.target.value as number,
             })
           }
         >
-          <MenuItem value={5}>5</MenuItem>
-          <MenuItem value={10}>10</MenuItem>
-          <MenuItem value={20}>20</MenuItem>
-          <MenuItem value={25}>25</MenuItem>
-          <MenuItem value={50}>50</MenuItem>
+          {[5, 10, 20, 25, 50].map((size) => (
+            <MenuItem key={size} value={size}>
+              {size}
+            </MenuItem>
+          ))}
         </Select>
-      </div>
-      <div style={{ display: "flex", alignItems: "center" }}>
+      </Box>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
         <Button
           disabled={paginationModel.page === 1}
           variant="outlined"
@@ -62,15 +65,15 @@ export const Pagination = ({
         >
           Previous
         </Button>
-        <div
-          style={{ margin: "0 10px", display: "flex", alignItems: "center" }}
-        >
-          <h4 style={{ margin: "0 5px" }}>Page:</h4>
-          <h4>{paginationModel.page}</h4>
-        </div>
+        <Box sx={{ mx: 1, display: "flex", alignItems: "center" }}>
+          <Typography variant="h6" sx={{ mx: 1 }}>
+            Page: {paginationModel.page} / {totalPages}
+          </Typography>
+        </Box>
         <Button
           disabled={
-            paginationModel.page * paginationModel.pageSize >= data!.count
+            !data ||
+            paginationModel.page * paginationModel.pageSize >= data.count
           }
           variant="outlined"
           onClick={() =>
@@ -82,16 +85,17 @@ export const Pagination = ({
         >
           Next
         </Button>
-      </div>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <h4>Total: </h4>
-        <h4>
-          {paginationModel.page * paginationModel.pageSize > data!.count
-            ? data!.count
-            : paginationModel.page * paginationModel.pageSize}{" "}
-          of {data!.count}
-        </h4>
-      </div>
-    </div>
+      </Box>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Typography variant="h6">
+          Total:{" "}
+          {Math.min(
+            paginationModel.page * paginationModel.pageSize,
+            data?.count || 0
+          )}{" "}
+          of {data?.count || 0}
+        </Typography>
+      </Box>
+    </Box>
   );
 };

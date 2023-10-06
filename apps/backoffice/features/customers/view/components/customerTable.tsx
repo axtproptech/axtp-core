@@ -1,5 +1,5 @@
 import { MainCard } from "@/app/components/cards";
-import { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   DataGrid,
   GridAlignment,
@@ -17,13 +17,14 @@ import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton"
 import { Address } from "@signumjs/core";
 import { toDateStr } from "@/app/toDateStr";
 import { CustomerSearchFilters } from "./customerSearchFilters";
-import { Pagination, PaginationProps } from "./pagination";
+import { Pagination } from "./pagination";
 import { CustomerTableResponse } from "@/bff/types/customerResponse";
 import useSWRMutation from "swr/mutation";
+import CircularProgress from "@mui/material/CircularProgress";
 
-import { TablePagination } from "@mui/material";
 import { customerService } from "@/app/services/customerService/customerService";
-import { CustomerFilterType } from "./types";
+import { CustomerFilterType, PaginationModelType } from "./types";
+import { set } from "nprogress";
 
 const Days = 1000 * 60 * 60 * 24;
 const renderCreatedAt = (params: GridRenderCellParams<string>) => {
@@ -155,6 +156,21 @@ const columns: GridColDef[] = [
 
 const asFlag = (b: Boolean) => (b ? "✅" : "❌");
 
+const getQueryParam = (param: string | string[] | undefined): string => {
+  if (Array.isArray(param)) {
+    return param[0];
+  }
+  return param || "";
+};
+
+const getBooleanQueryParam = (
+  param: string | string[] | undefined
+): boolean | undefined => {
+  if (param === "true") return true;
+  if (param === "false") return false;
+  return undefined;
+};
+
 export const CustomerTable = () => {
   const router = useRouter();
   const [filters, setFilters] = useState<CustomerFilterType>({
@@ -167,9 +183,15 @@ export const CustomerTable = () => {
     invited: undefined,
     brazilian: undefined,
   });
+  const [paginationModel, setPaginationModel] = useState<PaginationModelType>({
+    page: 1,
+    pageSize: 5,
+  });
+  const [hasUpdatedFromQuery, setHasUpdatedFromQuery] = useState(false);
+
   const [data, setData] = useState<CustomerTableResponse>();
 
-  const { trigger } = useSWRMutation<
+  const { trigger, isMutating } = useSWRMutation<
     CustomerTableResponse,
     any,
     "getAllTokenHolders",
@@ -183,12 +205,33 @@ export const CustomerTable = () => {
     });
   });
 
-  const [paginationModel, setPaginationModel] = useState({
-    page: 1,
-    pageSize: 5,
-  });
+  useEffect(() => {
+    if (!router.isReady || hasUpdatedFromQuery) return;
 
-  const [showTable, setShowTable] = useState(false);
+    const updatedFilters: CustomerFilterType = {
+      name: getQueryParam(router.query.name) || "",
+      email: getQueryParam(router.query.email) || undefined,
+      cpf: getQueryParam(router.query.cpf) || undefined,
+      verified: getBooleanQueryParam(router.query.verified) || true,
+      blocked: getBooleanQueryParam(router.query.blocked) || undefined,
+      active: getBooleanQueryParam(router.query.active) || undefined,
+      invited: getBooleanQueryParam(router.query.invited) || undefined,
+      brazilian: getBooleanQueryParam(router.query.brazilian) || undefined,
+    };
+
+    const updatePaginationModel: PaginationModelType = {
+      page: Number(router.query.page) || 1,
+      pageSize: Number(router.query.pageSize) || 5,
+      offset: Number(router.query.pageSize) || 5,
+    };
+
+    setFilters({ ...updatedFilters });
+    setPaginationModel({ ...updatePaginationModel });
+    trigger({ ...updatedFilters, ...updatePaginationModel }).then((data) =>
+      setData(data)
+    );
+    setHasUpdatedFromQuery(true);
+  }, [router.query, router.isReady, hasUpdatedFromQuery]);
 
   const tableRows = useMemo(() => {
     if (!data) {
@@ -230,61 +273,124 @@ export const CustomerTable = () => {
         };
       }
     );
-  }, [data]);
+  }, [data, paginationModel]);
 
-  const loading = !data;
+  const setQueryParamsUrl = (filters: any) => {
+    const cleanedFilters = Object.fromEntries(
+      Object.entries(filters).filter(([key, value]) => value !== undefined)
+    ) as CustomerFilterType;
+
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: cleanedFilters,
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
 
   const handleRowClick = async (e: GridRowParams) => {
     await router.push(`/admin/customers/${e.id}`);
   };
 
+  const handlePaginationChange = async (
+    newPaginationModel: PaginationModelType
+  ) => {
+    const filterToFetch = {
+      ...newPaginationModel,
+      ...filters,
+      offset: newPaginationModel.pageSize,
+    };
+    const dataFetch = await trigger(filterToFetch);
+    setData(dataFetch);
+    setPaginationModel(newPaginationModel);
+    setQueryParamsUrl(filterToFetch);
+  };
+
+  const handleOnSearch = async (filters: CustomerFilterType) => {
+    const paginationModelReset = { ...paginationModel, page: 1 };
+    const filterToFetch = { ...filters, ...paginationModelReset };
+    setPaginationModel(paginationModelReset);
+    setFilters(filters);
+    const dataFetch = await trigger(filterToFetch);
+    setData(dataFetch);
+    setQueryParamsUrl(filterToFetch);
+  };
+
+  const loading = (!data && isMutating) || isMutating;
+
   return (
     <MainCard title="Token Holders">
-      <CustomerSearchFilters
-        onSearch={async (filters) => {
-          setPaginationModel({ ...paginationModel, page: 1 });
-          setFilters(filters);
-          const dataFetch = await trigger({ ...paginationModel, ...filters });
-          setData(dataFetch);
-          setShowTable(true);
-        }}
-      />
-      {!data ? (
-        <div>Loading...</div>
-      ) : (
-        <div style={{ height: "auto" }}>
-          {data!.customers.length > 0 && (
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              {showTable && (
-                <>
-                  <DataGrid
-                    rows={tableRows}
-                    columns={columns}
-                    autoHeight
-                    loading={loading}
-                    onRowClick={handleRowClick}
-                    hideFooter={true}
-                    rowCount={data!.customers.length || undefined}
-                  />
-
-                  <Pagination
-                    paginationModel={paginationModel}
-                    onPaginationChange={async (paginationModel) => {
-                      setPaginationModel(paginationModel);
-                      const dataFetch = await trigger({
-                        ...paginationModel,
-                        ...filters,
-                      });
-                      setData(dataFetch);
-                    }}
-                    data={data as PaginationProps["data"]}
-                  />
-                </>
-              )}
-            </div>
-          )}
+      <CustomerSearchFilters onSearch={handleOnSearch} />
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
         </div>
+      ) : (
+        <CustomerDataGrid
+          data={data}
+          loading={loading}
+          handleRowClick={handleRowClick}
+          tableRows={tableRows}
+          columns={columns}
+          paginationModel={paginationModel}
+          handlePaginationChange={handlePaginationChange}
+        />
       )}
     </MainCard>
+  );
+};
+
+interface CustomerDataGridProps {
+  data: CustomerTableResponse | undefined;
+  loading: boolean;
+  handleRowClick: (e: GridRowParams) => void;
+  tableRows: any[];
+  columns: GridColDef[];
+  paginationModel: {
+    page: number;
+    pageSize: number;
+  };
+  handlePaginationChange: (newPaginationModel: {
+    page: number;
+    pageSize: number;
+  }) => void;
+}
+
+const CustomerDataGrid: React.FC<CustomerDataGridProps> = ({
+  data,
+  loading,
+  handleRowClick,
+  tableRows,
+  columns,
+  paginationModel,
+  handlePaginationChange,
+}) => {
+  if (!data || data.customers.length === 0) return null;
+
+  return (
+    <>
+      <DataGrid
+        rows={tableRows}
+        columns={columns}
+        autoHeight
+        loading={loading}
+        onRowClick={handleRowClick}
+        hideFooter={true}
+        rowCount={data.customers.length}
+      />
+      <Pagination
+        paginationModel={paginationModel}
+        onPaginationChange={handlePaginationChange}
+        data={data}
+      />
+    </>
   );
 };
