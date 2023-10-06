@@ -116,7 +116,7 @@ export const CustomerSearchFilters = ({
   useEffect(() => {
     if (!router.isReady) return;
     const query = router.query;
-    console.log({ query });
+
     if (Object.keys(query).length > 0) {
       setFilters({
         name: (query.name as string) || "",
