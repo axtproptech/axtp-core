@@ -21,7 +21,7 @@ const CustomerSchema= object({
   profession: string(),
   documents: object({
 
-  })
+  }),
   address: object({
     state: string().required(),
     city: string().required(),

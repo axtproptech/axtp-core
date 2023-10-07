@@ -1,13 +1,7 @@
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
-import { useState } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
 import { useNotification } from "@/app/hooks/useNotification";
-import { voidFn } from "@/app/voidFn";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
-import { Steps } from "../../types/steps";
 import { KycWizard } from "./validation/types";
 import { KycWizardSchema } from "./validation/schemas";
 import { WizardLayout } from "./components/WizardLayout";

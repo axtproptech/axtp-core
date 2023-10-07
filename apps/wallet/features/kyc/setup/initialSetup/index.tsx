@@ -56,14 +56,14 @@ export const InitialSetup = () => {
     await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
   };
 
-  const handleBackButton = () => {
+  const handleBackButton = async () => {
     switch (currentStep) {
       case Steps.Form:
-        router.replace("/kyc");
+        await router.replace("/kyc");
         break;
 
       case Steps.VerifyCode:
-        moveToFormStep();
+        await moveToFormStep();
         break;
 
       default:
@@ -79,7 +79,7 @@ export const InitialSetup = () => {
         try {
           setIsSendingRequest(true);
           await KycService.sendAddressVerificationMail(email, firstName);
-          moveToCodeVerificationStep();
+          await moveToCodeVerificationStep();
         } catch (e: any) {
           console.error(e);
           showError(e);
