@@ -1,13 +1,8 @@
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
-import { useState } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
+import { useAppSelector } from "@/states/hooks";
 import { useNotification } from "@/app/hooks/useNotification";
-import { voidFn } from "@/app/voidFn";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
-import { Steps } from "../../types/steps";
 import { KycWizard } from "./validation/types";
 import { KycWizardSchema } from "./validation/schemas";
 import { WizardLayout } from "./components/WizardLayout";
@@ -20,10 +15,12 @@ import { DocumentFiles } from "./steps/DocumentFiles";
 import { BlockchainAccountSetup } from "./steps/BlockchainAccountSetup";
 import { BlockchainAccountSeed } from "./steps/BlockchainAccountSeed";
 import { BlockchainAccountSeedVerification } from "./steps/BlockchainAccountSeedVerification";
+import { selectInitialSetupStep } from "../../state";
 
 export const Wizard = () => {
   const { t } = useTranslation();
   const { showError } = useNotification();
+  const currentInitialSetupStep = useAppSelector(selectInitialSetupStep);
 
   const methods = useForm<KycWizard>({
     mode: "onChange",
@@ -71,6 +68,7 @@ export const Wizard = () => {
   const { handleSubmit } = methods;
 
   const onSubmit: SubmitHandler<KycWizard> = async (data) => {
+    const { firstName, email, lastName, code } = currentInitialSetupStep;
     console.log(data);
   };
 
