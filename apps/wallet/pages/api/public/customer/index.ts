@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { route } from "@/bff/route";
-import { registerCustomer } from "@/bff/handler/customer";
+import { registerCustomerFromJotform } from "@/bff/handler/customer";
 
 export default function handler(
   req: NextApiRequest,
@@ -9,6 +9,6 @@ export default function handler(
   return route({
     req,
     res,
-    post: registerCustomer,
+    post: registerCustomerFromJotform,
   });
 }

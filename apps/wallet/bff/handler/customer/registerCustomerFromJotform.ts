@@ -1,41 +1,17 @@
 import { RouteHandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 // @ts-ignore
+import jotform from "jotform";
+import { JotFormSubmissionContent } from "@/bff/handler/customer/jotFormSubmissionResponse";
+import { JotFormSubmissionParser } from "@/bff/handler/customer/jotFormSubmissionParser";
 import { bffLoggingService } from "@/bff/bffLoggingService";
-import {date, object, string} from 'yup';
 
-
-const CpfCnpjRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
-
-const CustomerSchema= object({
-  firstName: string().required(),
-  lastName: string().required(),
-  firstNameMother: string().required(),
-  lastNameMother: string().required(),
-  email1: string().required(),
-  cpfCnpj: string().matches(CpfCnpjRegex).required(),
-  dateOfBirth: date().required(),
-  placeOfBirth: string().required(),
-  nationality: string(),
-  phone1: string(),
-  profession: string(),
-  documents: object({
-
-  })
-  address: object({
-    state: string().required(),
-    city: string().required(),
-    line1: string(),
-    line2: string(),
-    line3: string(),
-    line4: string(),
-    postCodeZip: string().required(),
-    country: string().required(),
-  }).required()
+jotform.options({
+  debug: process.env.NODE_ENV !== "production",
+  apiKey: process.env.JOTFORM_API_KEY || "",
 });
 
-
-export const registerCustomer: RouteHandlerFunction = async (req, res) => {
+export const registerCustomerFromJotform: RouteHandlerFunction = async (req, res) => {
   try {
     const { submission_id } = req.body;
     const submission = (await jotform.getSubmission(
