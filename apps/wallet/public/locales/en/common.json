@@ -267,5 +267,6 @@
   "pick_where_you_left_off": "Pick up where you left off",
   "pick_where_you_left_off_paragraph": "Do you want to continue where you left off or do you want to create a new one?",
   "pick_where_you_left_off_accept_btn_label": "Yes, continue where i left off",
-  "pick_where_you_left_off_reject_btn_label": "Start from scratch (Create a new one)"
+  "pick_where_you_left_off_reject_btn_label": "Start from scratch (Create a new one)",
+  "loading": "Loading"
 }

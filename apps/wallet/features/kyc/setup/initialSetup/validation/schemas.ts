@@ -7,7 +7,7 @@ import {
 
 import "@/app/validation/defaultSchema";
 
-export const initialFormSchema = yup
+export const initialSetupFormSchema = yup
   .object({
     firstName: requiredStringField,
     lastName: requiredStringField,

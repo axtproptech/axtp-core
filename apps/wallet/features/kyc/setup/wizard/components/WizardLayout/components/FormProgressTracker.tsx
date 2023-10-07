@@ -3,11 +3,6 @@ import { isEqual } from "lodash";
 import { useTranslation } from "next-i18next";
 import { useState, useEffect } from "react";
 import { Button, Modal } from "react-daisyui";
-import {
-  RiArrowLeftCircleLine,
-  RiArrowRightCircleLine,
-  RiProfileFill,
-} from "react-icons/ri";
 import { useFormContext } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "@/states/hooks";
 import {
@@ -23,6 +18,7 @@ import {
   selectDocumentStep,
   KycState,
 } from "../../../../../state";
+import { AnimatedIconWarn } from "@/app/components/animatedIcons/animatedIconWarn";
 import { KycWizard } from "../../../validation/types";
 import { Steps } from "../../../../../types/steps";
 
@@ -135,6 +131,10 @@ export const FormProgressTracker = () => {
   return (
     <Modal open={isOpen} className="card glass">
       <Modal.Body>
+        <div className="h-20 w-20 mx-auto">
+          <AnimatedIconWarn loopDelay={2500} />
+        </div>
+
         <h2 className="text-center text-white text-xl font-bold">
           {t("pick_where_you_left_off")}
         </h2>

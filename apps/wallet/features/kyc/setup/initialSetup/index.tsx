@@ -4,25 +4,32 @@ import { useState } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
+import { useAppDispatch } from "@/states/hooks";
+import { useAppContext } from "@/app/hooks/useAppContext";
 import { useNotification } from "@/app/hooks/useNotification";
 import { Layout } from "@/app/components/layout";
 import { voidFn } from "@/app/voidFn";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { InitialSetupStep } from "@/app/types/kycData";
-import { initialFormSchema } from "./validation/schemas";
+import { initialSetupFormSchema } from "./validation/schemas";
 import { EmailValidation } from "./steps/EmailValidation";
 import { Steps } from "./types/steps";
 import { Form } from "./steps/Form";
+import { kycActions } from "../../state";
 
 export const InitialSetup = () => {
   const { t } = useTranslation();
+  const { KycService } = useAppContext();
   const { showError } = useNotification();
+  const { setInitialSetupStep } = kycActions;
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
+  const [isSendingRequest, setIsSendingRequest] = useState(false);
   const [currentStep, setCurrentStep] = useState(Steps.Form);
   const methods = useForm<InitialSetupStep>({
     mode: "onChange",
-    resolver: yupResolver(initialFormSchema),
+    resolver: yupResolver(initialSetupFormSchema),
     defaultValues: { firstName: "", lastName: "", email: "", code: "" },
   });
 
@@ -65,21 +72,37 @@ export const InitialSetup = () => {
   };
 
   const onSubmit: SubmitHandler<InitialSetupStep> = async (data) => {
+    const { firstName, lastName, email } = data;
+
     switch (currentStep) {
-      // TODO: Send request to API for getting email code
-      // As discussed, temportal DB table will be created for email validation
       case Steps.Form:
-        moveToCodeVerificaitonStep();
-        showError(
-          "Any Kind of notification (Rate-limiting, Already existing verified email)"
-        );
+        try {
+          setIsSendingRequest(true);
+          await KycService.sendAddressVerificationMail(email, firstName);
+          moveToCodeVerificaitonStep();
+        } catch (e: any) {
+          console.error(e);
+          showError(e);
+        } finally {
+          setIsSendingRequest(false);
+        }
         break;
 
-      // TODO: Send request to API for populating the initial user data
-      // TODO: Persist Initial Data on Redux
-      // Initial data is (First Name, Last Name and email)
       case Steps.VerifyCode:
-        router.push("/kyc/setup/wizard");
+        try {
+          setIsSendingRequest(true);
+          // TODO: Verify code
+          // TODO: Persist Initial Data on Redux
+          dispatch(
+            setInitialSetupStep({ firstName, email, lastName, code: "" })
+          );
+          router.push("/kyc/setup/wizard");
+        } catch (e: any) {
+          console.error(e);
+          showError(e);
+        } finally {
+          setIsSendingRequest(false);
+        }
         break;
 
       default:
@@ -128,9 +151,9 @@ export const InitialSetup = () => {
     },
     {
       onClick: () => handleSubmit(onSubmit),
-      label: t("next"),
+      label: isSendingRequest ? t("loading") + "..." : t("next"),
       icon: <RiArrowRightCircleLine />,
-      disabled: !canSubmit,
+      disabled: !canSubmit || isSendingRequest,
       color: "secondary",
     },
   ];
