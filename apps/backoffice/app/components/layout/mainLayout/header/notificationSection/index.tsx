@@ -66,6 +66,7 @@ export const NotificationSection = () => {
 
   if (!notifications.length) return null;
 
+  // @ts-ignore
   return (
     <>
       <Box
@@ -164,6 +165,7 @@ export const NotificationSection = () => {
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
+                      {/* @ts-ignore */}
                       <PerfectScrollbar
                         style={{
                           height: "100%",
