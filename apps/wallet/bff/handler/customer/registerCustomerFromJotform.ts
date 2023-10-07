@@ -11,7 +11,15 @@ jotform.options({
   apiKey: process.env.JOTFORM_API_KEY || "",
 });
 
-export const registerCustomerFromJotform: RouteHandlerFunction = async (req, res) => {
+/**
+ * @deprecated We won't use Jotform anymore for customer registration - Native implementation is used instead
+ * @param req
+ * @param res
+ */
+export const registerCustomerFromJotform: RouteHandlerFunction = async (
+  req,
+  res
+) => {
   try {
     const { submission_id } = req.body;
     const submission = (await jotform.getSubmission(

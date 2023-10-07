@@ -3,6 +3,9 @@ import { prisma } from "@axtp/db";
 import { handleError } from "@/bff/handler/handleError";
 import { notFound } from "@hapi/boom";
 
+/**
+ * @deprecated  Not used anymore
+ */
 export const acceptTermsOfUse: RouteHandlerFunction = async (req, res) => {
   try {
     const { customerId } = req.body;
