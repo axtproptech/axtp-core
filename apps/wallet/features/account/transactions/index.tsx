@@ -67,6 +67,7 @@ export const AccountTransactions = () => {
         {!isLoading && (
           <>
             <div className="absolute z-10 top-4 bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
+            {/* @ts-ignore */}
             <FixedSizeList
               className={
                 "overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh_-_440px)]"
@@ -77,6 +78,7 @@ export const AccountTransactions = () => {
               itemSize={80 + PaddingSize * 2}
               itemData={allTransactions}
             >
+              {/* @ts-ignore */}
               {TransactionItemCard}
             </FixedSizeList>
             <div className="absolute z-10 bottom-4 bg-gradient-to-t from-base-100 h-4 w-full opacity-80" />

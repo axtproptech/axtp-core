@@ -13,10 +13,10 @@
     "dev": "tsup --dev"
   },
   "dependencies": {
-    "@signumjs/core": "^1.0.0-rc.68",
-    "@signumjs/crypto": "^1.0.0-rc.68",
-    "@signumjs/standards": "^1.0.0-rc.68",
-    "@signumjs/util": "^1.0.0-rc.68",
+    "@signumjs/core": "^1.0.0-rc.75",
+    "@signumjs/crypto": "^1.0.0-rc.75",
+    "@signumjs/standards": "^1.0.0-rc.75",
+    "@signumjs/util": "^1.0.0-rc.75",
     "nanoid": "3"
   },
   "devDependencies": {

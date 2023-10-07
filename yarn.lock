@@ -2309,25 +2309,14 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.5.1.tgz#5f1b518ec5fa54437c0b7c4a821546c64fed6922"
   integrity sha512-6i/8UoL0P5y4leBIGzvkZdS85RDMG9y1ihZzmTZQ5LdHUYmZ7pKFoj8X0236s3lusPs1Fa5HTQUpwI+UfTcmeA==
 
-"@signumjs/contracts@^1.0.0-rc.68", "@signumjs/contracts@^1.0.0-rc.75":
+"@signumjs/contracts@^1.0.0-rc.75":
   version "1.0.0-rc.75"
   resolved "https://registry.yarnpkg.com/@signumjs/contracts/-/contracts-1.0.0-rc.75.tgz#13309c190d30a59cd51d47441c6bc92b7fe562e0"
   integrity sha512-VP9A/LTQcL6LingGS3QGz9FvjIsNMkZdOCfcly4VITu6EsWitwDOl6IyaAIbHzFq0iifjku91ZY4S79B/tFikA==
   dependencies:
     "@signumjs/util" "^1.0.0-rc.75"
 
-"@signumjs/core@1.0.0-rc.68":
-  version "1.0.0-rc.68"
-  resolved "https://registry.yarnpkg.com/@signumjs/core/-/core-1.0.0-rc.68.tgz#011d9139ac6cabc703b3baee20758709fd63d9ba"
-  integrity sha512-o2MkDqCVsqJI03vUfifNXiHK4r2ahIi8B14ACZNzZ7b+0BGgr1yim9mcxDdTSCZJrXYDtgwowtOV0Z7LlKdW0Q==
-  dependencies:
-    "@signumjs/contracts" "^1.0.0-rc.68"
-    "@signumjs/crypto" "^1.0.0-rc.68"
-    "@signumjs/http" "^1.0.0-rc.68"
-    "@signumjs/util" "^1.0.0-rc.68"
-    bignumber.js "^9.0.0"
-
-"@signumjs/core@^1.0.0-rc.68", "@signumjs/core@^1.0.0-rc.75":
+"@signumjs/core@1.0.0-rc.75", "@signumjs/core@^1.0.0-rc.75":
   version "1.0.0-rc.75"
   resolved "https://registry.yarnpkg.com/@signumjs/core/-/core-1.0.0-rc.75.tgz#b6642d77b08b773368cb7b7d30b166b606fb751d"
   integrity sha512-C8mKm6TvhGNRglVxtXFdSgpdIkG0YpQIj1pbNOpl0Q4fl6HP90ffBV3izLK5WLplDrUaXzSAvhlHaszIkJ4m4g==
@@ -2338,7 +2327,7 @@
     "@signumjs/util" "^1.0.0-rc.75"
     bignumber.js "^9.0.0"
 
-"@signumjs/crypto@^1.0.0-rc.68", "@signumjs/crypto@^1.0.0-rc.75":
+"@signumjs/crypto@^1.0.0-rc.75":
   version "1.0.0-rc.75"
   resolved "https://registry.yarnpkg.com/@signumjs/crypto/-/crypto-1.0.0-rc.75.tgz#eee54a36e13525473462ae0a70b34e5419dd6a98"
   integrity sha512-WN/PhdiJAMeSDGvHd3BrmidbRTfedD30bACaJSDhTpXTvPO5ls0tt23Dgn/1nwedNqBe+VRLWbpl8Hudt/IJlw==
@@ -2351,14 +2340,14 @@
     pako "^1.0.10"
     seedrandom "^3.0.5"
 
-"@signumjs/http@^1.0.0-rc.68", "@signumjs/http@^1.0.0-rc.75":
+"@signumjs/http@^1.0.0-rc.75":
   version "1.0.0-rc.75"
   resolved "https://registry.yarnpkg.com/@signumjs/http/-/http-1.0.0-rc.75.tgz#d8f5278089d6d798c7a696afaeeb64f6eb0eb86f"
   integrity sha512-UohhTQwIo3aYEn/3iab50jNK8RumrNcFeCH/eBGq3LhskI6DNIHlMD19nU/HfyllDUT1LNQq+IzxiWPUudL1JQ==
   dependencies:
     axios "^0.21.4"
 
-"@signumjs/standards@^1.0.0-rc.68":
+"@signumjs/standards@^1.0.0-rc.75":
   version "1.0.0-rc.75"
   resolved "https://registry.yarnpkg.com/@signumjs/standards/-/standards-1.0.0-rc.75.tgz#e39f72f6dc11eaa4936da121484747053a638382"
   integrity sha512-/KuKXUph1hCXjdQIvD/9Q3kxzUtYE4/ScWBcsJZmyBfvahM0n3nfX1bng8YdIm7X8OfaMHdZsXwzZG/ipgMMFQ==
@@ -2366,15 +2355,7 @@
     "@braintree/sanitize-url" "^6.0.1"
     "@signumjs/core" "^1.0.0-rc.75"
 
-"@signumjs/util@1.0.0-rc.68":
-  version "1.0.0-rc.68"
-  resolved "https://registry.yarnpkg.com/@signumjs/util/-/util-1.0.0-rc.68.tgz#960c0af82560ab3f60c444f1ad7835a125cdea6d"
-  integrity sha512-aaoYhA9ZlVpWuuNUvQMDy8b/yKayK0TQSdSLdEzvaYcVA/Z/7HQg78ZVR7MzXygPOMsr72UHrymgYDzvB0XkMA==
-  dependencies:
-    bignumber.js "^9.0.0"
-    js-base64 "^3.6.0"
-
-"@signumjs/util@^1.0.0-rc.68", "@signumjs/util@^1.0.0-rc.75":
+"@signumjs/util@1.0.0-rc.75", "@signumjs/util@^1.0.0-rc.75":
   version "1.0.0-rc.75"
   resolved "https://registry.yarnpkg.com/@signumjs/util/-/util-1.0.0-rc.75.tgz#6920f4f44f2d5d9afefbb002ece1d2943f95485e"
   integrity sha512-GbSMHFzv2k74JUPLC4junI+Q7DNfc3L7r91XKpeACnkzyaHhuMoZomLLJ8wxXNAYN4CbNUQRgUZqCL0yuU16NA==
@@ -2382,7 +2363,7 @@
     bignumber.js "^9.0.0"
     js-base64 "^3.6.0"
 
-"@signumjs/wallets@^1.0.0-rc.68":
+"@signumjs/wallets@^1.0.0-rc.75":
   version "1.0.0-rc.75"
   resolved "https://registry.yarnpkg.com/@signumjs/wallets/-/wallets-1.0.0-rc.75.tgz#adeede55afde0529075d1f6044cc710b239babb5"
   integrity sha512-K+Og4lTKwL7Ac3JpA1XfZbBnGHfA/TZHrjtCuMs2GY0WVdcM9uu7yoWiBby+lRLOGtIO4Pf6N5sfjIGBQe4VXA==
@@ -8484,7 +8465,7 @@ react-number-format@^5.0.1, react-number-format@^5.3.1:
   dependencies:
     prop-types "^15.7.2"
 
-react-perfect-scrollbar@^1.5.8:
+react-perfect-scrollbar@1.5.8:
   version "1.5.8"
   resolved "https://registry.yarnpkg.com/react-perfect-scrollbar/-/react-perfect-scrollbar-1.5.8.tgz#380959387a325c5c9d0268afc08b3f73ed5b3078"
   integrity sha512-bQ46m70gp/HJtiBOF3gRzBISSZn8FFGNxznTdmTG8AAwpxG1bJCyn7shrgjEvGSQ5FJEafVEiosY+ccER11OSA==

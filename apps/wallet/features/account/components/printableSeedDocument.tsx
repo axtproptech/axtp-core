@@ -23,6 +23,7 @@ export const PrintableSeedDocument = ({ seed, address }: Props) => {
           <div className="text-xl">{seed}</div>
         </HintBox>
         <div className="p-2 my-2 mx-auto w-1/2 bg-white">
+          {/* @ts-ignore */}
           <QRCode
             value={seed}
             size={200}

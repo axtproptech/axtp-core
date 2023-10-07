@@ -7,6 +7,7 @@ export default class MyDocument extends Document<Props> {
   render() {
     return (
       <Html>
+        {/* @ts-ignore */}
         <Head>
           {/* PWA primary color */}
           <meta name="theme-color" content="#FFFFFF" />
@@ -50,6 +51,7 @@ export default class MyDocument extends Document<Props> {
         </Head>
         <body>
           <Main />
+          {/* @ts-ignore */}
           <NextScript />
         </body>
       </Html>

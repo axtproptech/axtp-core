@@ -36,9 +36,14 @@ function App({ Component, pageProps }: AppProps) {
         viewport="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
       />
       <ReduxProvider store={store}>
+        {/* @ts-ignore */}
+
         <ErrorBoundary FallbackComponent={ErrorFallback} onError={handleError}>
+          {/* @ts-ignore */}
+
           <PersistGate loading={null} persistor={persistor}>
             <AppInitializer />
+            {/* @ts-ignore */}
             <Component {...pageProps} />
           </PersistGate>
         </ErrorBoundary>

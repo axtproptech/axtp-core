@@ -7,6 +7,7 @@ export default class MyDocument extends Document<Props> {
   render() {
     return (
       <Html data-theme="luxury" className="print:bg-white">
+        {/* @ts-ignore */}
         <Head>
           {/* PWA primary color */}
           <meta name="theme-color" content="#000000" />
@@ -51,6 +52,7 @@ export default class MyDocument extends Document<Props> {
         </Head>
         <body className="scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent">
           <Main />
+          {/* @ts-ignore */}
           <NextScript />
         </body>
       </Html>

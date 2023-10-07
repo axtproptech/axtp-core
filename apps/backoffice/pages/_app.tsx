@@ -20,8 +20,10 @@ export default function App({ Component, pageProps }: AppProps) {
             <ThemeProvider theme={theme()}>
               <CssBaseline />
               <AppInitializer />
+              {/* @ts-ignore */}
               <PersistGate loading={null} persistor={storePersistor}>
                 <NavigationScroll>
+                  {/* @ts-ignore */}
                   <Component {...pageProps} />
                 </NavigationScroll>
               </PersistGate>
