@@ -6,13 +6,13 @@ import {
   DocumentStep,
 } from "@/app/types/kycData";
 
-type BlockchainAccountStep = {
+interface BlockchainAccountStep {
   accountId: string;
   accountSeedPhrase: string;
   agreeSafetyTerms: boolean;
   seedPhraseVerification: string;
   seedPhraseVerificationIndex: number;
-};
+}
 
 export interface KycWizard
   extends SecondStep,
