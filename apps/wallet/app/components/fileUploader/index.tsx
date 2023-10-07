@@ -111,13 +111,11 @@ export function FileUploader({ onUploadSuccess, fileTypes = [] }: Props) {
     }));
   }, [uploadProgress]);
 
-  const canSubmitFile = useMemo(() => {
-    return (
-      !isUploading &&
-      selectedFiles &&
-      Object.entries(uploadProgress).length < MAX_FILES
-    );
-  }, [isUploading, selectedFiles, uploadProgress]);
+  const canSubmitFile = !!(
+    !isUploading &&
+    selectedFiles &&
+    Object.entries(uploadProgress).length < MAX_FILES
+  );
 
   return (
     <div className="flex flex-col w-full pb-0">

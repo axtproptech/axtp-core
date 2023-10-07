@@ -90,21 +90,21 @@ export const WizardLayout = ({ children }: Props) => {
       ).getReedSolomonAddress()
     : "";
 
-  let cpfFieldError = !!errors.cpf?.message;
-  let birthDateFieldError = !!errors.birthDate?.message;
-  let birthPlaceFieldError = !!errors.birthPlace?.message;
-  let phoneFieldError = !!errors.phone?.message;
-  let professionFieldError = !!errors.profession?.message;
-  let streetAddressFieldError = !!errors.streetAddress?.message;
-  let complementaryStreetAddressFieldError =
+  const cpfFieldError = !!errors.cpf?.message;
+  const birthDateFieldError = !!errors.birthDate?.message;
+  const birthPlaceFieldError = !!errors.birthPlace?.message;
+  const phoneFieldError = !!errors.phone?.message;
+  const professionFieldError = !!errors.profession?.message;
+  const streetAddressFieldError = !!errors.streetAddress?.message;
+  const complementaryStreetAddressFieldError =
     !!errors.complementaryStreetAddress?.message;
-  let zipCodeFieldError = !!errors.zipCode?.message;
-  let cityFieldError = !!errors.city?.message;
-  let stateFieldError = !!errors.state?.message;
-  let countryFieldError = !!errors.country?.message;
-  let proofOfAddressFieldError = !!errors.proofOfAddress?.message;
-  let firstNameFieldError = !!errors.firstName?.message;
-  let lastNameFieldError = !!errors.lastName?.message;
+  const zipCodeFieldError = !!errors.zipCode?.message;
+  const cityFieldError = !!errors.city?.message;
+  const stateFieldError = !!errors.state?.message;
+  const countryFieldError = !!errors.country?.message;
+  const proofOfAddressFieldError = !!errors.proofOfAddress?.message;
+  const firstNameFieldError = !!errors.firstName?.message;
+  const lastNameFieldError = !!errors.lastName?.message;
 
   let canMoveToNextStep = false;
 

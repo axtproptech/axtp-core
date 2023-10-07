@@ -1,22 +1,22 @@
-export type InitialSetupStep = {
+export interface InitialSetupStep {
   firstName: string;
   lastName: string;
   email: string;
   code: string;
-};
+}
 
-export type SecondStep = {
+export interface SecondStep {
   cpf: string;
   birthDate: string;
   birthPlace: string;
-};
+}
 
-export type ThirdStep = {
+export interface ThirdStep {
   phone: string;
   profession: string;
-};
+}
 
-export type FourthStep = {
+export interface FourthStep {
   streetAddress: string;
   complementaryStreetAddress: string;
   zipCode: string;
@@ -24,15 +24,15 @@ export type FourthStep = {
   state: string;
   country: string;
   proofOfAddress: string;
-};
+}
 
-export type MotherDataStep = {
+export interface MotherDataStep {
   firstName: string;
   lastName: string;
-};
+}
 
-export type DocumentStep = {
+export interface DocumentStep {
   documentType: "cnh" | "rne";
   frontSide: string;
   backSide: string;
-};
+}

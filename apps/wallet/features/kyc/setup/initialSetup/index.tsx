@@ -44,7 +44,7 @@ export const InitialSetup = () => {
   const email = watch("email");
   const code = watch("code");
 
-  const moveToCodeVerificaitonStep = async () => {
+  const moveToCodeVerificationStep = async () => {
     const newStep = Steps.VerifyCode;
     setCurrentStep(newStep);
     await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
@@ -79,7 +79,7 @@ export const InitialSetup = () => {
         try {
           setIsSendingRequest(true);
           await KycService.sendAddressVerificationMail(email, firstName);
-          moveToCodeVerificaitonStep();
+          moveToCodeVerificationStep();
         } catch (e: any) {
           console.error(e);
           showError(e);
@@ -110,10 +110,10 @@ export const InitialSetup = () => {
     }
   };
 
-  let firstNameFieldError = !!errors.firstName?.message;
-  let lastNameFieldError = !!errors.lastName?.message;
-  let emailFieldError = !!errors.email?.message;
-  let codeFieldError = !!errors.code?.message;
+  const firstNameFieldError = !!errors.firstName?.message;
+  const lastNameFieldError = !!errors.lastName?.message;
+  const emailFieldError = !!errors.email?.message;
+  const codeFieldError = !!errors.code?.message;
 
   let canSubmit = false;
 
