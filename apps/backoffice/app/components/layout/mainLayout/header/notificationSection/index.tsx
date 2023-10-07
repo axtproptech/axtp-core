@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useRef, useEffect } from "react";
 
 // material-ui
@@ -165,7 +166,6 @@ export const NotificationSection = () => {
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      {/* @ts-ignore */}
                       <PerfectScrollbar
                         style={{
                           height: "100%",
