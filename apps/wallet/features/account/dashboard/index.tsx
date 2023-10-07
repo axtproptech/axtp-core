@@ -51,7 +51,7 @@ export const AccountDashboard = () => {
 
   useEffect(() => {
     if (!accountId && router) {
-      router.replace("/account/setup");
+      router.replace("/kyc");
     }
   }, [accountId, router]);
 

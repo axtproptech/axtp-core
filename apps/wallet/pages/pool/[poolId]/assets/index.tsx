@@ -11,7 +11,6 @@ import { Config } from "@/app/config";
 import { PoolAssets } from "@/features/pool";
 import { useMemo } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
-import { useRouter } from "next/router";
 
 export async function getStaticPaths({ locales }: any) {
   const paths = Config.Contracts.PoolContractIds.flatMap((poolId) =>
@@ -41,7 +40,7 @@ export async function getStaticProps({ locale, params }: any) {
 export default function Page({ poolId }: any) {
   const { t } = useTranslation();
   const account = useAccount();
-  const { query } = useRouter();
+
   const bottomNav: BottomNavigationItem[] = useMemo(() => {
     const nav = [
       {

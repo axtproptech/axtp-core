@@ -1,6 +1,5 @@
-import { Layout } from "@/app/components/layout";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { JotformRegistry } from "@/features/kyc/jotformRegistry";
+import { InitialSetup } from "@/features/kyc/setup/initialSetup";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -11,10 +10,6 @@ export async function getStaticProps({ locale }: { locale: string }) {
   };
 }
 
-export default function NewKYCPage() {
-  return (
-    <Layout noBody>
-      <JotformRegistry />
-    </Layout>
-  );
+export default function SetupPage() {
+  return <InitialSetup />;
 }

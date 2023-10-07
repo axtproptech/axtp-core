@@ -1,10 +1,14 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
-import retry from "p-retry";
 import { CreateUploadUrlResponse } from "@/types/createUploadUrlResponse";
+import retry from "p-retry";
 
 interface UploadFileArgs {
   file: File;
   onProgress: (progress: { loaded: number; total: number }) => void;
+}
+
+interface DeleteFileArgs {
+  objectKey: string;
 }
 
 export class FileService {
@@ -17,23 +21,38 @@ export class FileService {
     });
   }
 
-  async uploadFile({ file, onProgress }: UploadFileArgs): Promise<string> {
-    const { signedUrl } = await this.getUploadUrl(file.type);
+  async uploadFile({
+    file,
+    onProgress,
+  }: UploadFileArgs): Promise<CreateUploadUrlResponse> {
+    const { signedUrl, objectUrl, objectName } = await this.getUploadUrl(
+      file.type
+    );
+
     return retry(async () => {
       const http = HttpClientFactory.createHttpClient(signedUrl);
 
-      const { response, status } = await http.put("", file, {
+      const { status } = await http.put("", file, {
         headers: {
           "Content-Type": file.type,
         },
         onUploadProgress: onProgress,
       });
 
-      console.log("uploadFile", response);
-
       if (status === 200) {
-        return response;
+        return { signedUrl, objectUrl, objectName };
       }
+
+      return { signedUrl: "", objectUrl: "", objectName: "" };
+    });
+  }
+
+  async deleteFile({
+    objectKey,
+  }: DeleteFileArgs): Promise<{ deleted: boolean }> {
+    return retry(async () => {
+      const { response } = await this.bffClient.delete(`/files/${objectKey}`);
+      return response as { deleted: boolean };
     });
   }
 }
