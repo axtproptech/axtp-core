@@ -25,10 +25,15 @@ Signum SmartC Contracts
 
 # Development
 
+## Before executing commands
+
+- Make sure to have all enviroments variables required `you can see the ones required in their respective .env.example` file
+
 ## Initial Development Setup
 
-- On root directory, execute `yarn build`
 - On root directory, Install dependencies by executing `yarn`
+- On root directory, Create prisma DB client by executing `yarn db`
+- On root directory, execute `yarn build`
 - On any `app` directory, execute `yarn dev` in order run development enviroment
 
 > As we use ISR we need to set up the configurations (.env) correctly, for having a successful build

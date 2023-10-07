@@ -1,6 +1,5 @@
-import { Layout } from "@/app/components/layout";
-import { AccountSetup } from "@/features/account/accountSetup";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { Wizard } from "@/features/kyc/setup/wizard";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -11,10 +10,6 @@ export async function getStaticProps({ locale }: { locale: string }) {
   };
 }
 
-export default function Page() {
-  return (
-    <Layout>
-      <AccountSetup />
-    </Layout>
-  );
+export default function WizardPage() {
+  return <Wizard />;
 }

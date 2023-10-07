@@ -14,8 +14,6 @@ const AccessKeySecret = getEnvVar(
   "NEXT_SERVER_CF_R2_AXTP_KYC_BUCKET_ACCESS_SECRET"
 );
 
-console.log(TargetBucketName, AccessKeyId, AccessKeySecret);
-
 // CF is AWS compatible
 const r2 = new aws.S3({
   endpoint: `https://${AccountId}.r2.cloudflarestorage.com`,
@@ -37,11 +35,35 @@ export const createUploadURL: RouteHandlerFunction = async (req, res) => {
 
     const signedUrl = await r2.getSignedUrlPromise("putObject", params);
     const objectUrl = `https://${AccountId}.r2.cloudflarestorage.com/${params.Bucket}/${params.Key}`;
+    const objectName = params.Key;
 
     res.status(201).json({
       signedUrl,
       objectUrl,
+      objectName,
     } as CreateUploadUrlResponse);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+// TODO: Discuss about security improvements for not allowing users delete someone'elses KYC files
+export const deleteFile: RouteHandlerFunction = async (req, res) => {
+  const { query } = req;
+
+  try {
+    const params = {
+      Bucket: TargetBucketName,
+      Key: `${query.objectKey}`,
+    };
+
+    await r2
+      .deleteObject(params, (err) => {
+        if (err) throw err;
+      })
+      .promise();
+
+    return res.status(200).json({ deleted: true });
   } catch (err) {
     return res.status(500).json(err);
   }

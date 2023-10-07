@@ -20,7 +20,7 @@ export const IfEligibleForAcquisition: FC<ChildrenProps> = ({ children }) => {
 
   const handleSetupAccount = async () => {
     TrackingEventService.track({ msg: "Click Setup Account" });
-    await router.push(`/account/setup`);
+    await router.push(`/kyc`);
   };
 
   const { canBuy, reasonKey } = useMemo(() => {

@@ -1,16 +1,16 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
-import { HintBox } from "@/app/components/hintBoxes/hintBox";
-import { useTranslation } from "next-i18next";
-import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
-import Link from "next/link";
 import { Button, Checkbox } from "react-daisyui";
+import { RiHome6Line, RiWallet3Line } from "react-icons/ri";
+import { useTranslation } from "next-i18next";
+import { HintBox } from "@/app/components/hintBoxes/hintBox";
+import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useAppDispatch } from "@/states/hooks";
 import { accountActions } from "@/app/states/accountState";
-import { useRouter } from "next/router";
 import { CustomerSafeData } from "@/types/customerSafeData";
-import { RiHome6Line, RiWallet3Line } from "react-icons/ri";
 import { useAccount } from "@/app/hooks/useAccount";
+
+import Link from "next/link";
 
 interface Props {
   customer: CustomerSafeData;
@@ -18,10 +18,11 @@ interface Props {
 
 export const RegisterSuccess: FC<Props> = ({ customer }) => {
   const { t } = useTranslation();
-  const router = useRouter();
   const { KycService } = useAppContext();
   const { accountId } = useAccount();
+
   const dispatch = useAppDispatch();
+
   const [submitting, setSubmitting] = useState(false);
   const [accepted, setAccepted] = useState(false);
 
@@ -82,7 +83,7 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
               </Link>
             ) : (
               <div className="w-fit mx-auto">
-                <Link href="/account/setup">
+                <Link href="/kyc">
                   <Button
                     color="primary"
                     disabled={!accepted && !submitting}

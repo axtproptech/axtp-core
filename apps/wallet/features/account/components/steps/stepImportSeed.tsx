@@ -2,7 +2,7 @@ import { useTranslation } from "next-i18next";
 import { ChangeEvent, FC, useMemo, useState } from "react";
 import { Button, Textarea } from "react-daisyui";
 import { HintBox } from "@/app/components/hintBoxes/hintBox";
-import { RiClipboardLine, RiDeleteBinLine, RiQrScanLine } from "react-icons/ri";
+import { RiDeleteBinLine, RiQrScanLine } from "react-icons/ri";
 import { QrReader, OnResultFunction } from "react-qr-reader";
 import { useNotification } from "@/app/hooks/useNotification";
 import { Address } from "@signumjs/core";

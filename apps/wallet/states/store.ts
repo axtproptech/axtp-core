@@ -20,6 +20,7 @@ import { accountSlice } from "@/app/states/accountState";
 import { tokenSlice } from "@/app/states/tokenState";
 import { marketSlice } from "@/app/states/marketState";
 import { poolsSlice } from "@/app/states/poolsState";
+import { kycSlice } from "@/features/kyc/state";
 
 function persist<T = any>(config: any, reducer: Reducer) {
   return isClientSide()
@@ -59,6 +60,12 @@ const marketPersistConfig = {
   storage,
 };
 
+const kycPersistConfig = {
+  key: "kyc",
+  version: 1,
+  storage,
+};
+
 const rootReducer = combineReducers({
   appState: persist<ReturnType<typeof appSlice.reducer>>(
     appPersistConfig,
@@ -79,6 +86,10 @@ const rootReducer = combineReducers({
   marketState: persist<ReturnType<typeof marketSlice.reducer>>(
     marketPersistConfig,
     marketSlice.reducer
+  ),
+  kycState: persist<ReturnType<typeof kycSlice.reducer>>(
+    kycPersistConfig,
+    kycSlice.reducer
   ),
   // add more states here
 });

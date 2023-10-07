@@ -1,5 +1,5 @@
 import { Stepper } from "@/app/components/stepper";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import {
   RiArrowLeftCircleLine,
@@ -11,7 +11,6 @@ import {
 import { voidFn } from "@/app/voidFn";
 import { useRouter } from "next/router";
 import { generateMasterKeys } from "@signumjs/crypto";
-import { Address } from "@signumjs/core";
 import { useTranslation } from "next-i18next";
 import { encrypt, stretchKey } from "@/app/sec";
 import { useDispatch } from "react-redux";
@@ -195,24 +194,19 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
   }, [Ledger.AddressPrefix, seed]);
 
   return (
-    <>
-      <div className="mt-4">
-        <Stepper currentStep={currentStep} steps={StepCount}></Stepper>
-        <div className="carousel w-full overflow-x-hidden">
-          <div id="step0" className="carousel-item relative w-full">
-            <StepDefinePin onPinChange={setPin} />
-          </div>
-          <div id="step1" className="carousel-item relative w-full">
-            <StepImportSeed
-              onSeedChange={setSeed}
-              publicKey={accountPublicKey}
-            />
-          </div>
-          <div id="step2" className="carousel-item relative w-full">
-            <StepCheckForRegistry customer={customerData} />
-          </div>
+    <div className="mt-4">
+      <Stepper currentStep={currentStep} steps={StepCount}></Stepper>
+      <div className="carousel w-full overflow-x-hidden">
+        <div id="step0" className="carousel-item relative w-full">
+          <StepDefinePin onPinChange={setPin} />
+        </div>
+        <div id="step1" className="carousel-item relative w-full">
+          <StepImportSeed onSeedChange={setSeed} publicKey={accountPublicKey} />
+        </div>
+        <div id="step2" className="carousel-item relative w-full">
+          <StepCheckForRegistry customer={customerData} />
         </div>
       </div>
-    </>
+    </div>
   );
 };

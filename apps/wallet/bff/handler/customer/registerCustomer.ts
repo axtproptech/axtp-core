@@ -40,7 +40,7 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
         domain: "customer",
         detail: { cpfCnpj: answers.cpf },
       });
-      res.redirect(302, `/kyc/new/success?cuid=${existingCustomer.cuid}`);
+      res.redirect(302, `/kyc/setup/success?cuid=${existingCustomer.cuid}`);
       return;
     }
 
@@ -145,7 +145,7 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
       detail: { cpfCnpj: answers.cpf, cuid: newCustomer.cuid },
     });
 
-    res.redirect(302, `/kyc/new/success?cuid=${newCustomer.cuid}`);
+    res.redirect(302, `/kyc/setup/success?cuid=${newCustomer.cuid}`);
   } catch (e: any) {
     // TODO: logging
     res.redirect(302, "/500");

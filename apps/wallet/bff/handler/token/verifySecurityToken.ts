@@ -18,6 +18,7 @@ export const verifySecurityToken: RouteHandlerFunction = async (req, res) => {
     );
 
     const result = await prisma.securityToken.findUnique({
+      // @ts-ignore
       where: { subjectId_purpose: { subjectId, purpose } },
     });
 
@@ -32,6 +33,7 @@ export const verifySecurityToken: RouteHandlerFunction = async (req, res) => {
     }
 
     await prisma.securityToken.update({
+      // @ts-ignore
       where: { subjectId_purpose: { subjectId, purpose } },
       data: { status: "Inactive" },
     });

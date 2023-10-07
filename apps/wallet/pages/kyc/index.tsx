@@ -1,6 +1,6 @@
 import { Layout } from "@/app/components/layout";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { NewKYC } from "@/features/kyc/new";
+import { HomeKYC } from "@/features/kyc/home";
 import { RiHome6Line } from "react-icons/ri";
 
 export async function getStaticProps({ locale }: { locale: string }) {
@@ -12,7 +12,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
   };
 }
 
-export default function NewKYCPage() {
+export default function HomeKYCPage() {
   return (
     <Layout
       bottomNav={[
@@ -23,7 +23,7 @@ export default function NewKYCPage() {
         },
       ]}
     >
-      <NewKYC />
+      <HomeKYC />
     </Layout>
   );
 }

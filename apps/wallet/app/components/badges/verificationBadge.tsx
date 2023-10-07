@@ -15,7 +15,7 @@ export const VerificationBadge = memo<Props>(function VerificationStatus({
   const router = useRouter();
 
   const handleRegister = () => {
-    router.push("/kyc/new");
+    router.push("/kyc/setup");
   };
 
   switch (verificationLevel) {
