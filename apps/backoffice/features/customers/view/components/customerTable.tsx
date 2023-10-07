@@ -1,7 +1,5 @@
 import { MainCard } from "@/app/components/cards";
-import useSWR from "swr";
-import { customerService } from "@/app/services/customerService/customerService";
-import { ChangeEvent, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   DataGrid,
   GridAlignment,
@@ -9,25 +7,40 @@ import {
   GridRenderCellParams,
   GridRowParams,
 } from "@mui/x-data-grid";
-import { Grid, Stack, Tooltip, Typography } from "@mui/material";
+import { Stack, Tooltip, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { VerificationChip } from "@/app/components/chips/verificationChip";
-import { ActivationChip } from "@/app/components/chips/activationChip";
-import { BlockingChip } from "@/app/components/chips/blockingChip";
-import { TextInput } from "@/app/components/inputs";
-import { cpf } from "cpf-cnpj-validator";
 import { ActionButton } from "@/app/components/buttons/actionButton";
 import { IconClipboard } from "@tabler/icons";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
 import { Address } from "@signumjs/core";
 import { toDateStr } from "@/app/toDateStr";
+import { CustomerSearchFilters } from "./customerSearchFilters";
+import { Pagination } from "./pagination";
+import { CustomerTableResponse } from "@/bff/types/customerResponse";
+import useSWRMutation from "swr/mutation";
+import CircularProgress from "@mui/material/CircularProgress";
 
+import { customerService } from "@/app/services/customerService/customerService";
+import { CustomerFilterType, PaginationModelType } from "./types";
+import { set } from "nprogress";
+
+const Days = 1000 * 60 * 60 * 24;
 const renderCreatedAt = (params: GridRenderCellParams<string>) => {
   const createdAt = params.value;
   if (!createdAt) return null;
+
+  const createdAtDate = new Date(createdAt);
+  const overdue = Date.now() - createdAtDate.getTime() > 10 * Days;
   const applied = toDateStr(new Date(createdAt));
-  return <div>{applied}</div>;
+
+  let style = {};
+  if (overdue) {
+    style = { color: "red", fontWeight: 700 };
+  }
+
+  return <div style={style}>{applied}</div>;
 };
 
 const renderVerificationLevel = (params: GridRenderCellParams<string>) => {
@@ -143,20 +156,89 @@ const columns: GridColDef[] = [
 
 const asFlag = (b: Boolean) => (b ? "✅" : "❌");
 
+const getQueryParam = (param: string | string[] | undefined): string => {
+  if (Array.isArray(param)) {
+    return param[0];
+  }
+  return param || "";
+};
+
+const getBooleanQueryParam = (
+  param: string | string[] | undefined
+): boolean | undefined => {
+  if (param === "true") return true;
+  if (param === "false") return false;
+  return undefined;
+};
+
 export const CustomerTable = () => {
   const router = useRouter();
-
-  const [searchValue, setSearchValue] = useState("");
-
-  const { data, error } = useSWR("getAllTokenHolders", () => {
-    return customerService.fetchCustomers({ verified: true });
+  const [filters, setFilters] = useState<CustomerFilterType>({
+    name: "",
+    email: undefined,
+    cpf: undefined,
+    verified: true,
+    blocked: undefined,
+    active: undefined,
+    invited: undefined,
+    brazilian: undefined,
   });
+  const [paginationModel, setPaginationModel] = useState<PaginationModelType>({
+    page: 1,
+    pageSize: 5,
+  });
+  const [hasUpdatedFromQuery, setHasUpdatedFromQuery] = useState(false);
+
+  const [data, setData] = useState<CustomerTableResponse>();
+
+  const { trigger, isMutating } = useSWRMutation<
+    CustomerTableResponse,
+    any,
+    "getAllTokenHolders",
+    CustomerFilterType
+  >("getAllTokenHolders", (_, { arg }) => {
+    return customerService.fetchCustomers({
+      page: paginationModel.page,
+      offset: paginationModel.pageSize,
+      ...filters,
+      ...arg,
+    });
+  });
+
+  useEffect(() => {
+    if (!router.isReady || hasUpdatedFromQuery) return;
+
+    const updatedFilters: CustomerFilterType = {
+      name: getQueryParam(router.query.name) || "",
+      email: getQueryParam(router.query.email) || undefined,
+      cpf: getQueryParam(router.query.cpf) || undefined,
+      verified: getBooleanQueryParam(router.query.verified) || true,
+      blocked: getBooleanQueryParam(router.query.blocked) || undefined,
+      active: getBooleanQueryParam(router.query.active) || undefined,
+      invited: getBooleanQueryParam(router.query.invited) || undefined,
+      brazilian: getBooleanQueryParam(router.query.brazilian) || undefined,
+    };
+
+    const updatePaginationModel: PaginationModelType = {
+      page: Number(router.query.page) || 1,
+      pageSize: Number(router.query.pageSize) || 5,
+      offset: Number(router.query.pageSize) || 5,
+    };
+
+    setFilters({ ...updatedFilters });
+    setPaginationModel({ ...updatePaginationModel });
+    trigger({ ...updatedFilters, ...updatePaginationModel }).then((data) =>
+      setData(data)
+    );
+    setHasUpdatedFromQuery(true);
+  }, [router.query, router.isReady, hasUpdatedFromQuery]);
 
   const tableRows = useMemo(() => {
     if (!data) {
       return [];
     }
-    return data.map(
+
+    return data.customers.map(
       ({
         cuid,
         firstName,
@@ -176,7 +258,7 @@ export const CustomerTable = () => {
           id: cuid,
           firstName,
           lastName,
-          cpfCnpj: cpf.format(cpfCnpj),
+          cpfCnpj: cpfCnpj,
           email1,
           phone1,
           createdAt,
@@ -191,54 +273,124 @@ export const CustomerTable = () => {
         };
       }
     );
-  }, [data]);
+  }, [data, paginationModel]);
 
-  const filteredRows = useMemo(() => {
-    if (!searchValue) return tableRows;
+  const setQueryParamsUrl = (filters: any) => {
+    const cleanedFilters = Object.fromEntries(
+      Object.entries(filters).filter(([key, value]) => value !== undefined)
+    ) as CustomerFilterType;
 
-    const isLike = (a: string, b: string) => a.toLowerCase().indexOf(b) !== -1;
-
-    return tableRows.filter(({ email1, cpfCnpj, firstName, lastName }) => {
-      return (
-        isLike(email1, searchValue) ||
-        isLike(cpfCnpj, searchValue) ||
-        isLike(firstName, searchValue) ||
-        isLike(lastName, searchValue)
-      );
-    });
-  }, [tableRows, searchValue]);
-
-  const loading = !data && !error;
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: cleanedFilters,
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
 
   const handleRowClick = async (e: GridRowParams) => {
     await router.push(`/admin/customers/${e.id}`);
   };
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
+  const handlePaginationChange = async (
+    newPaginationModel: PaginationModelType
+  ) => {
+    const filterToFetch = {
+      ...newPaginationModel,
+      ...filters,
+      offset: newPaginationModel.pageSize,
+    };
+    const dataFetch = await trigger(filterToFetch);
+    setData(dataFetch);
+    setPaginationModel(newPaginationModel);
+    setQueryParamsUrl(filterToFetch);
   };
+
+  const handleOnSearch = async (filters: CustomerFilterType) => {
+    const paginationModelReset = { ...paginationModel, page: 1 };
+    const filterToFetch = { ...filters, ...paginationModelReset };
+    setPaginationModel(paginationModelReset);
+    setFilters(filters);
+    const dataFetch = await trigger(filterToFetch);
+    setData(dataFetch);
+    setQueryParamsUrl(filterToFetch);
+  };
+
+  const loading = (!data && isMutating) || isMutating;
 
   return (
     <MainCard title="Token Holders">
-      <Grid container>
-        <Grid item md={4}>
-          <TextInput
-            label="Search"
-            onChange={handleSearch}
-            value={searchValue}
-          />
-        </Grid>
-      </Grid>
-      <div style={{ height: "70vh" }}>
-        <div style={{ display: "flex", height: "100%" }}>
-          <DataGrid
-            rows={filteredRows}
-            columns={columns}
-            loading={loading}
-            onRowClick={handleRowClick}
-          />
+      <CustomerSearchFilters onSearch={handleOnSearch} />
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
         </div>
-      </div>
+      ) : (
+        <CustomerDataGrid
+          data={data}
+          loading={loading}
+          handleRowClick={handleRowClick}
+          tableRows={tableRows}
+          columns={columns}
+          paginationModel={paginationModel}
+          handlePaginationChange={handlePaginationChange}
+        />
+      )}
     </MainCard>
+  );
+};
+
+interface CustomerDataGridProps {
+  data: CustomerTableResponse | undefined;
+  loading: boolean;
+  handleRowClick: (e: GridRowParams) => void;
+  tableRows: any[];
+  columns: GridColDef[];
+  paginationModel: {
+    page: number;
+    pageSize: number;
+  };
+  handlePaginationChange: (newPaginationModel: {
+    page: number;
+    pageSize: number;
+  }) => void;
+}
+
+const CustomerDataGrid: React.FC<CustomerDataGridProps> = ({
+  data,
+  loading,
+  handleRowClick,
+  tableRows,
+  columns,
+  paginationModel,
+  handlePaginationChange,
+}) => {
+  if (!data || data.customers.length === 0) return null;
+
+  return (
+    <>
+      <DataGrid
+        rows={tableRows}
+        columns={columns}
+        autoHeight
+        loading={loading}
+        onRowClick={handleRowClick}
+        hideFooter={true}
+        rowCount={data.customers.length}
+      />
+      <Pagination
+        paginationModel={paginationModel}
+        onPaginationChange={handlePaginationChange}
+        data={data}
+      />
+    </>
   );
 };

@@ -1,5 +1,10 @@
 import { BlockchainAccountResponse } from "@/bff/types/blockchainAccountResponse";
 
+export interface CustomerTableResponse {
+  count: number;
+  customers: CustomerResponse[];
+}
+
 export interface CustomerResponse {
   cpfCnpj: string;
   createdAt: string;

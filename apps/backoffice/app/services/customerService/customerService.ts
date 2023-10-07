@@ -1,14 +1,24 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { jsonToQueryString } from "@/app/jsonToQueryString";
-import { CustomerResponse } from "@/bff/types/customerResponse";
+import {
+  CustomerResponse,
+  CustomerTableResponse,
+} from "@/bff/types/customerResponse";
 import { CustomerInstanceService } from "./customerInstanceService";
 
 type Troolean = "all" | "true" | "false" | boolean;
 
 interface FetchPendingCustomersArgs {
-  verified?: Troolean;
+  name?: string;
+  cpf?: string;
+  email?: string;
   active?: Troolean;
   blocked?: Troolean;
+  brazilian?: Troolean;
+  invited?: Troolean;
+  verified?: Troolean;
+  page?: number;
+  offset?: number;
 }
 
 export class CustomerService {
@@ -27,10 +37,11 @@ export class CustomerService {
 
   async fetchCustomers(args?: FetchPendingCustomersArgs) {
     const params = args ? jsonToQueryString(args) : "";
+
     const { response } = await this.http.get(
       params ? `/customers?${params}` : "/customers"
     );
-    return response as CustomerResponse[];
+    return response as CustomerTableResponse;
   }
 
   fetchPendingCustomers() {

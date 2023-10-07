@@ -62,7 +62,7 @@ export const PendingCustomerTable = () => {
     if (!data) {
       return [];
     }
-    return data.map(
+    return data.customers.map(
       ({
         cuid,
         firstName,
