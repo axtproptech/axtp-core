@@ -2,38 +2,36 @@ import { RouteHandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 // @ts-ignore
 import { bffLoggingService } from "@/bff/bffLoggingService";
-import {date, object, string} from 'yup';
+import { date, object, string, mixed, boolean } from "yup";
 
+const CpfCnpjRegex =
+  /^\d{3}\.\d{3}\.\d{3}\-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
 
-const CpfCnpjRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
-
-const CustomerSchema= object({
+const CustomerSchema = object({
   firstName: string().required(),
   lastName: string().required(),
   firstNameMother: string().required(),
   lastNameMother: string().required(),
   email1: string().required(),
-  cpfCnpj: string().matches(CpfCnpjRegex).required(),
-  dateOfBirth: date().required(),
-  placeOfBirth: string().required(),
-  nationality: string(),
-  phone1: string(),
+  cpf: string().matches(CpfCnpjRegex).required(),
+  birthDate: date().required(),
+  birthPlace: string().required(),
+  phone: string(),
   profession: string(),
-  documents: object({
-
-  }),
-  address: object({
-    state: string().required(),
-    city: string().required(),
-    line1: string(),
-    line2: string(),
-    line3: string(),
-    line4: string(),
-    postCodeZip: string().required(),
-    country: string().required(),
-  }).required()
+  streetAddress: string().required(),
+  complementaryStreetAddress: string(),
+  state: string().required(),
+  city: string().required(),
+  zipCode: string().required(),
+  country: string().required(),
+  proofOfAddress: string().required(), // object Id
+  documentType: mixed().oneOf(["cnh", "rne"]).required(),
+  frontSide: string().required(), // object Id
+  backSide: string().required(), // object Id
+  publicKey: string().required(),
+  agreeTerms: boolean().oneOf([true]).required(),
+  agreeSafetyTerms: boolean().oneOf([true]).required(),
 });
-
 
 export const registerCustomer: RouteHandlerFunction = async (req, res) => {
   try {
@@ -169,7 +167,10 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
       detail: { cpfCnpj: answers.cpf, cuid: newCustomer.cuid },
     });
 
-    res.redirect(302, `/kyc/setup/success?cuid=${newCustomer.cuid}`);
+    res.status(201).json({
+      cuid: newCustomer.cuid,
+    });
+    // res.redirect(302, `/kyc/setup/success?cuid=${newCustomer.cuid}`);
   } catch (e: any) {
     // TODO: logging
     res.redirect(302, "/500");

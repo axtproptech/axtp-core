@@ -1,6 +1,7 @@
 import { useTranslation } from "next-i18next";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppSelector } from "@/states/hooks";
 import { useNotification } from "@/app/hooks/useNotification";
 import { KycWizard } from "./validation/types";
 import { KycWizardSchema } from "./validation/schemas";
@@ -14,10 +15,12 @@ import { DocumentFiles } from "./steps/DocumentFiles";
 import { BlockchainAccountSetup } from "./steps/BlockchainAccountSetup";
 import { BlockchainAccountSeed } from "./steps/BlockchainAccountSeed";
 import { BlockchainAccountSeedVerification } from "./steps/BlockchainAccountSeedVerification";
+import { selectInitialSetupStep } from "../../state";
 
 export const Wizard = () => {
   const { t } = useTranslation();
   const { showError } = useNotification();
+  const currentInitialSetupStep = useAppSelector(selectInitialSetupStep);
 
   const methods = useForm<KycWizard>({
     mode: "onChange",
@@ -65,6 +68,7 @@ export const Wizard = () => {
   const { handleSubmit } = methods;
 
   const onSubmit: SubmitHandler<KycWizard> = async (data) => {
+    const { firstName, email, lastName, code } = currentInitialSetupStep;
     console.log(data);
   };
 
