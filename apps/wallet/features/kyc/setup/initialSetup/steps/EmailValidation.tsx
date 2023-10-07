@@ -6,7 +6,7 @@ import { RiClipboardLine } from "react-icons/ri";
 import { FieldBox } from "@/app/components/fieldBox";
 import { useNotification } from "@/app/hooks/useNotification";
 import { mapValidationError } from "@/app/mapValidationError";
-import { InitialStep } from "@/app/types/kycData";
+import { InitialSetupStep } from "@/app/types/kycData";
 import { AnimatedIconMailSend } from "@/app/components/animatedIcons/animatedIconMailSend";
 
 export const EmailValidation = () => {
@@ -17,7 +17,7 @@ export const EmailValidation = () => {
     control,
     setValue,
     formState: { errors },
-  } = useFormContext<InitialStep>();
+  } = useFormContext<InitialSetupStep>();
 
   const email = watch("email");
 

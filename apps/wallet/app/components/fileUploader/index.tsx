@@ -138,7 +138,8 @@ export function FileUploader({ onUploadSuccess, fileTypes = [] }: Props) {
         >
           <RiArrowUpCircleLine size={24} />
 
-          {t("upload_file")}
+          {isUploading && `${t("uploading")}...`}
+          {!isUploading && `${t("upload_file")}`}
         </button>
       </div>
 

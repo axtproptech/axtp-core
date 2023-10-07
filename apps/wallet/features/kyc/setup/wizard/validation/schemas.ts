@@ -3,6 +3,8 @@ import * as yup from "yup";
 import {
   booleanField,
   requiredStringField,
+  optionalStringField,
+  requiredNumberFieldDefaultZero,
 } from "@/app/validation/defaultSchemaMethods";
 
 import "@/app/validation/defaultSchema";
@@ -37,11 +39,13 @@ export const KycWizardSchema = yup
     // Document files step
     documentType: requiredStringField,
     frontSide: requiredStringField,
-    backSide: requiredStringField,
+    backSide: optionalStringField,
 
     // Blockchain Account Step
     accountId: requiredStringField,
     accountSeedPhrase: requiredStringField,
+    seedPhraseVerification: requiredStringField,
+    seedPhraseVerificationIndex: requiredNumberFieldDefaultZero,
     agreeSafetyTerms: booleanField,
   })
   .required();

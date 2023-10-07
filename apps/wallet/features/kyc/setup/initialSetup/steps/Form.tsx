@@ -2,14 +2,14 @@ import { useTranslation } from "next-i18next";
 import { useFormContext, Controller } from "react-hook-form";
 import { FieldBox } from "@/app/components/fieldBox";
 import { mapValidationError } from "@/app/mapValidationError";
-import { InitialStep } from "@/app/types/kycData";
+import { InitialSetupStep } from "@/app/types/kycData";
 
 export const Form = () => {
   const { t } = useTranslation();
   const {
     control,
     formState: { errors },
-  } = useFormContext<InitialStep>();
+  } = useFormContext<InitialSetupStep>();
 
   let firstNameFieldError = "";
   if (errors.firstName?.message) {

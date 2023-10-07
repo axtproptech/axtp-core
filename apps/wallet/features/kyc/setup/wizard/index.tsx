@@ -62,9 +62,13 @@ export const Wizard = () => {
       // Blockchain Account Step
       accountId: "",
       accountSeedPhrase: "",
+      seedPhraseVerification: "",
+      seedPhraseVerificationIndex: 0,
       agreeSafetyTerms: false,
     },
   });
+
+  const { handleSubmit } = methods;
 
   const onSubmit: SubmitHandler<KycWizard> = async (data) => {
     console.log(data);
@@ -72,7 +76,7 @@ export const Wizard = () => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <WizardLayout>
           <div className="carousel w-full mx-[2px]  overflow-x-hidden">
             <div id="step0" className="carousel-item relative w-full">

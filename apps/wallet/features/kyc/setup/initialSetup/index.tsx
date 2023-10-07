@@ -8,7 +8,7 @@ import { useNotification } from "@/app/hooks/useNotification";
 import { Layout } from "@/app/components/layout";
 import { voidFn } from "@/app/voidFn";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
-import { InitialStep } from "@/app/types/kycData";
+import { InitialSetupStep } from "@/app/types/kycData";
 import { initialFormSchema } from "./validation/schemas";
 import { EmailValidation } from "./steps/EmailValidation";
 import { Steps } from "./types/steps";
@@ -20,7 +20,7 @@ export const InitialSetup = () => {
   const router = useRouter();
 
   const [currentStep, setCurrentStep] = useState(Steps.Form);
-  const methods = useForm<InitialStep>({
+  const methods = useForm<InitialSetupStep>({
     mode: "onChange",
     resolver: yupResolver(initialFormSchema),
     defaultValues: { firstName: "", lastName: "", email: "", code: "" },
@@ -64,7 +64,7 @@ export const InitialSetup = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<InitialStep> = async (data) => {
+  const onSubmit: SubmitHandler<InitialSetupStep> = async (data) => {
     switch (currentStep) {
       // TODO: Send request to API for getting email code
       // As discussed, temportal DB table will be created for email validation

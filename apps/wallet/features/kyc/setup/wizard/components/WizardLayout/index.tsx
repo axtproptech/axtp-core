@@ -1,20 +1,25 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { ReactNode, useCallback } from "react";
+import { ReactNode, useCallback, useMemo } from "react";
 import { Address } from "@signumjs/core";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
+import {
+  RiArrowLeftCircleLine,
+  RiArrowRightCircleLine,
+  RiProfileFill,
+} from "react-icons/ri";
 import { useFormContext } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "@/states/hooks";
 import { voidFn } from "@/app/voidFn";
+import { useAppDispatch, useAppSelector } from "@/states/hooks";
 import { Layout } from "@/app/components/layout";
 import { Stepper } from "@/app/components/stepper";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { PrintableSeedDocument } from "@/features/account/components/printableSeedDocument";
-import { selectCurrentStep } from "../../../state";
-import { KycWizard } from "../validation/types";
-import { Steps, StepsCount } from "../../../types/steps";
-import { kycActions } from "../../../state";
+import { selectCurrentStep } from "../../../../state";
+import { KycWizard } from "../../validation/types";
+import { Steps, StepsCount } from "../../../../types/steps";
+import { kycActions } from "../../../../state";
+import { FormProgressTracker } from "./components/FormProgressTracker";
 
 import differenceInYears from "date-fns/differenceInYears";
 
@@ -74,6 +79,9 @@ export const WizardLayout = ({ children }: Props) => {
   const backSide = watch("backSide");
   const accountId = watch("accountId");
   const accountSeedPhrase = watch("accountSeedPhrase");
+  const seedPhraseVerification = watch("seedPhraseVerification");
+  const seedPhraseVerificationIndex = watch("seedPhraseVerificationIndex");
+  const agreeSafetyTerms = watch("agreeSafetyTerms");
 
   const accountRS = accountId
     ? Address.fromNumericId(
@@ -179,6 +187,25 @@ export const WizardLayout = ({ children }: Props) => {
       canMoveToNextStep = true;
       break;
 
+    case Steps.BlockchainAccountSeedVerification:
+      if (
+        accountSeedPhrase &&
+        seedPhraseVerification &&
+        seedPhraseVerificationIndex
+      ) {
+        const seedArray = ["", ...accountSeedPhrase.split(" ")];
+
+        const selectedWord = seedArray[seedPhraseVerificationIndex] || "";
+
+        canMoveToNextStep = !!(
+          agreeSafetyTerms &&
+          selectedWord &&
+          selectedWord === seedPhraseVerification
+        );
+      }
+
+      break;
+
     default:
       break;
   }
@@ -215,6 +242,10 @@ export const WizardLayout = ({ children }: Props) => {
 
       case Steps.BlockchainAccountSeed:
         stepMovement(Steps.BlockchainAccountSetup);
+        break;
+
+      case Steps.BlockchainAccountSeedVerification:
+        stepMovement(Steps.BlockchainAccountSeed);
         break;
 
       default:
@@ -305,35 +336,52 @@ export const WizardLayout = ({ children }: Props) => {
     backSide,
   ]);
 
-  const bottomNav: BottomNavigationItem[] = [
-    {
-      label: t("back"),
-      icon: <RiArrowLeftCircleLine />,
-      onClick: handleBackButton,
-      type: "button",
-    },
-    {
-      onClick: voidFn,
-      label: "",
-      type: "button",
-      icon: <div />,
-    },
-    {
-      label: t("next"),
-      icon: <RiArrowRightCircleLine />,
-      onClick: handleNextButton,
-      type:
-        currentStep === Steps.BlockchainAccountSeedVerification
-          ? "submit"
-          : "button",
-      color: "secondary",
-      disabled: !canMoveToNextStep,
-    },
-  ];
+  const bottomNav: BottomNavigationItem[] = useMemo(
+    () => [
+      {
+        label: t("back"),
+        icon: <RiArrowLeftCircleLine />,
+        onClick: handleBackButton,
+        type: "button",
+      },
+      {
+        onClick: voidFn,
+        label: "",
+        type: "button",
+        icon: <div />,
+      },
+      {
+        label: t(
+          currentStep === Steps.BlockchainAccountSeedVerification
+            ? "submit"
+            : "next"
+        ),
+        icon:
+          currentStep === Steps.BlockchainAccountSeedVerification ? (
+            <RiProfileFill />
+          ) : (
+            <RiArrowRightCircleLine />
+          ),
+        onClick: handleNextButton,
+        type:
+          currentStep === Steps.BlockchainAccountSeedVerification
+            ? "submit"
+            : "button",
+        color:
+          currentStep === Steps.BlockchainAccountSeedVerification
+            ? "accent"
+            : "secondary",
+        disabled: !canMoveToNextStep,
+      },
+    ],
+    [canMoveToNextStep, currentStep, handleBackButton, handleNextButton, t]
+  );
 
   return (
     <>
       <PrintableSeedDocument seed={accountSeedPhrase} address={accountRS} />
+
+      <FormProgressTracker />
 
       <Layout bottomNav={bottomNav}>
         <div className="print:hidden mt-4">

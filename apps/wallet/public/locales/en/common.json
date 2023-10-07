@@ -257,5 +257,15 @@
   "save_seed_phrase_hint": "It is very important that you [Download] this Recovery Phrase and store it in a safe place. Without the Recovery Phrase you lose your access to your accumulated assets and we cannot help you recovering your funds once lost.",
   "for_your_eyes_only": "For your eyes only",
   "if_you_switch_device_hint": "If you ever switch devices, you'll need this passphrase to access your account",
-  "copy_seed_recomendation": "Before you continue, we recommend that\nyou make a pass phrase backup "
+  "copy_seed_recomendation": "Before you continue, we recommend that\nyou make a pass phrase backup ",
+  "enter_seed_phrase_verification": "Enter word {{seedIndex}} from your Recovery Phrase. Please, be sure you downloaded or wrote it down!",
+  "uploading": "Uploading",
+  "submit": "Submit",
+  "enter_word_number": "Enter word {{number}}",
+  "confirm_saved_seed_phrase_paragraph": "I acknowledge that I have stored the recovery phrase in a safe place. I understand that if I lose my recovery phrase, I will lose access to my account.",
+  "safety_terms": "Safety Terms",
+  "pick_where_you_left_off": "Pick up where you left off",
+  "pick_where_you_left_off_paragraph": "Do you want to continue where you left off or do you want to create a new one?",
+  "pick_where_you_left_off_accept_btn_label": "Yes, continue where i left off",
+  "pick_where_you_left_off_reject_btn_label": "Start from scratch (Create a new one)"
 }

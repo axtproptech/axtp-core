@@ -26,7 +26,7 @@ export const BlockchainAccountSeed = () => {
         </p>
       </section>
 
-      <section className="flex flex-col justify-center items-center gap-2">
+      <section className="flex flex-col justify-start items-center gap-2">
         <div className="w-16 h-16">
           <AttentionSeeker effect="heartBeat">
             <AnimatedIconContract loopDelay={500} />

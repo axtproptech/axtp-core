@@ -27,14 +27,23 @@ export const BlockchainAccountSetup = () => {
     return words.join(" ");
   };
 
+  const pickRandomKeyIndex = () => {
+    const min = 1;
+    const max = 12;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
   const setupAccount = async () => {
     const accountSeedphrase = await generateSeed().then((seed) => seed);
+
+    const randomKey = pickRandomKeyIndex();
 
     const keys = generateMasterKeys(accountSeedphrase);
     const accountId = Address.fromPublicKey(keys.publicKey).getNumericId();
 
     setValue("accountId", accountId);
     setValue("accountSeedPhrase", accountSeedphrase);
+    setValue("seedPhraseVerificationIndex", randomKey);
   };
 
   const accountRS = accountId
@@ -44,7 +53,6 @@ export const BlockchainAccountSetup = () => {
       ).getReedSolomonAddress()
     : "";
 
-  // TODO: Assign dynamic passphrase following security practices
   // This is NOT STORED ON REDUX, THIS IS ONLY TEMPORALY STORED ON VOLATILE DATA (a.k.a React Hook Form States)
   useEffect(() => {
     setupAccount();

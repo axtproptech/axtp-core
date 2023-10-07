@@ -1,5 +1,7 @@
 import { useTranslation } from "next-i18next";
 import { useFormContext, Controller } from "react-hook-form";
+import { Alert } from "react-daisyui";
+import { RiCheckboxCircleLine } from "react-icons/ri";
 import { FieldBox } from "@/app/components/fieldBox";
 import { mapValidationError } from "@/app/mapValidationError";
 import { FileUploader } from "@/app/components/fileUploader";
@@ -9,9 +11,12 @@ export const ResidencyData = () => {
   const { t } = useTranslation();
   const {
     control,
+    watch,
     formState: { errors },
     setValue,
   } = useFormContext<KycWizard>();
+
+  const proofOfAddress = watch("proofOfAddress");
 
   const setProofOfAddressValue = (value: string) => {
     setValue("proofOfAddress", value);
@@ -147,6 +152,15 @@ export const ResidencyData = () => {
           <h3 className="my-0 mb-4">{t("proof_of_address")}</h3>
           <div className="card glass w-full bg-base-100 shadow-xl">
             <div className="card-body flex-col justify-center items-center">
+              {!!proofOfAddress && (
+                <Alert
+                  status="success"
+                  className="text-sm text-center font-bold"
+                >
+                  <RiCheckboxCircleLine size={24} /> {t("file_upload_success")}
+                </Alert>
+              )}
+
               <FileUploader
                 onUploadSuccess={setProofOfAddressValue}
                 fileTypes={["image/*", "application/pdf"]}

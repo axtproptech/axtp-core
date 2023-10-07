@@ -1,6 +1,7 @@
 import { useTranslation } from "next-i18next";
 import { useFormContext } from "react-hook-form";
-import { Form, Checkbox } from "react-daisyui";
+import { Form, Checkbox, Alert } from "react-daisyui";
+import { RiCheckboxCircleLine } from "react-icons/ri";
 import { FileUploader } from "@/app/components/fileUploader";
 import { KycWizard } from "../validation/types";
 
@@ -9,6 +10,8 @@ export const DocumentFiles = () => {
   const { watch, setValue } = useFormContext<KycWizard>();
 
   const documentType = watch("documentType");
+  const frontSide = watch("frontSide");
+  const backSide = watch("backSide");
 
   const pickCnh = () => setValue("documentType", "cnh");
   const pickRne = () => setValue("documentType", "rne");
@@ -63,6 +66,15 @@ export const DocumentFiles = () => {
           <h3 className="my-0 mb-4 text-left">{t("front_side")}</h3>
           <div className="card glass w-full bg-base-100 shadow-xl">
             <div className="card-body flex-col justify-center items-center">
+              {!!frontSide && (
+                <Alert
+                  status="success"
+                  className="text-sm text-center font-bold"
+                >
+                  <RiCheckboxCircleLine size={24} /> {t("file_upload_success")}
+                </Alert>
+              )}
+
               <FileUploader
                 onUploadSuccess={setDocumentFrontSideImageValue}
                 fileTypes={["image/*", "application/pdf"]}
@@ -75,6 +87,15 @@ export const DocumentFiles = () => {
           <h3 className="my-0 mb-4 text-left">{t("back_side")}</h3>
           <div className="card glass w-full bg-base-100 shadow-xl">
             <div className="card-body flex-col justify-center items-center">
+              {!!backSide && (
+                <Alert
+                  status="success"
+                  className="text-sm text-center font-bold"
+                >
+                  <RiCheckboxCircleLine size={24} /> {t("file_upload_success")}
+                </Alert>
+              )}
+
               <FileUploader
                 onUploadSuccess={setDocumentBackSideImageValue}
                 fileTypes={["image/*", "application/pdf"]}

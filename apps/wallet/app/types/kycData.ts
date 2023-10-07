@@ -1,4 +1,4 @@
-export type InitialStep = {
+export type InitialSetupStep = {
   firstName: string;
   lastName: string;
   email: string;
@@ -35,10 +35,4 @@ export type DocumentStep = {
   documentType: "cnh" | "rne";
   frontSide: string;
   backSide: string;
-};
-
-export type BlockchainAccountStep = {
-  accountId: string;
-  accountSeedPhrase: string;
-  agreeSafetyTerms: boolean;
 };

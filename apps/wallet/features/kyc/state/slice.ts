@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  InitialStep,
+  InitialSetupStep,
   SecondStep,
   ThirdStep,
   FourthStep,
@@ -10,9 +10,9 @@ import {
 import { Steps } from "../types/steps";
 
 export interface KycState {
-  currentStep: Steps;
+  step: Steps;
+  initialSetupStep: InitialSetupStep;
   agreeTerms: boolean;
-  initialStep: InitialStep;
   secondStep: SecondStep;
   thirdStep: ThirdStep;
   fourthStep: FourthStep;
@@ -21,9 +21,9 @@ export interface KycState {
 }
 
 export const initialState: KycState = {
-  currentStep: Steps.AgreeTerms,
+  step: Steps.AgreeTerms,
+  initialSetupStep: { firstName: "", lastName: "", email: "", code: "" },
   agreeTerms: false,
-  initialStep: { firstName: "", lastName: "", email: "", code: "" },
   secondStep: { cpf: "", birthDate: "", birthPlace: "" },
   thirdStep: { phone: "", profession: "" },
   fourthStep: {
@@ -45,13 +45,13 @@ export const kycSlice = createSlice({
   reducers: {
     reset: () => initialState,
     setCurrentStep: (state, action: PayloadAction<Steps>) => {
-      state.currentStep = action.payload;
+      state.step = action.payload;
     },
     setAgreeTerms: (state, action: PayloadAction<boolean>) => {
       state.agreeTerms = action.payload;
     },
-    setInitialStep: (state, action: PayloadAction<InitialStep>) => {
-      state.initialStep = action.payload;
+    setInitialSetupStep: (state, action: PayloadAction<InitialSetupStep>) => {
+      state.initialSetupStep = action.payload;
     },
     setSecondStep: (state, action: PayloadAction<SecondStep>) => {
       state.secondStep = action.payload;
