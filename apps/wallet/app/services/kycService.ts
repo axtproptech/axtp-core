@@ -2,6 +2,29 @@ import { Http, HttpError } from "@signumjs/http";
 import retry, { AbortError } from "p-retry";
 import { CustomerSafeData } from "@/types/customerSafeData";
 import { CustomerPaymentData } from "@/types/customerPaymentData";
+import {
+  DocumentStep,
+  FourthStep,
+  InitialSetupStep,
+  MotherDataStep,
+  SecondStep,
+  ThirdStep,
+} from "@/app/types/kycData";
+
+export interface RegisterCustomerArgs
+  extends Omit<InitialSetupStep, "code">,
+    SecondStep,
+    ThirdStep,
+    FourthStep,
+    MotherDataStep,
+    DocumentStep {
+  publicKey: string;
+  agreeTerms: boolean;
+}
+
+export interface RegisterCustomerResponse {
+  customerId: string;
+}
 
 export class KycService {
   constructor(private bffClient: Http) {}
@@ -20,6 +43,23 @@ export class KycService {
     });
   }
 
+  /**
+   * Registers a customer.
+   *
+   * @param {RegisterCustomerArgs} args - The arguments for registering a customer.
+   * @return {Promise<RegisterCustomerResponse>} - A promise that resolves to the response from the registration.
+   */
+  registerCustomer(args: RegisterCustomerArgs) {
+    return retry<RegisterCustomerResponse>(async () => {
+      const { response } = await this.bffClient.post("/customer", args);
+      return response;
+    });
+  }
+
+  /**
+   * @deprecated Will be done on registerCustomer
+   * @param customerId
+   */
   acceptTermsOfUse(customerId: string) {
     return retry(async () => {
       const { response } = await this.bffClient.put("/termsOfUse", {
@@ -28,6 +68,13 @@ export class KycService {
       return response;
     });
   }
+
+  /**
+   * @deprecated Account creation/assignment is done on registerCustomer
+   * @param customerId
+   * @param publicKey
+   * @param isTestnet
+   */
 
   assignPublicKeyToCustomer(
     customerId: string,
