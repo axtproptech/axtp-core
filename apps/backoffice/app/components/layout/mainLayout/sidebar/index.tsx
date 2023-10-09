@@ -26,7 +26,9 @@ export const Sidebar: FC<Props> = ({ drawerOpen, drawerToggle, window }) => {
           <LogoSection />
         </Box>
       </Box>
+      {/* @ts-ignore  */}
       <BrowserView>
+        {/* @ts-ignore  */}
         <PerfectScrollbar
           component="div"
           style={{
@@ -38,6 +40,7 @@ export const Sidebar: FC<Props> = ({ drawerOpen, drawerToggle, window }) => {
           <MenuList />
         </PerfectScrollbar>
       </BrowserView>
+      {/* @ts-ignore  */}
       <MobileView>
         <Box sx={{ px: 2 }}>
           <MenuList />

@@ -1,36 +1,64 @@
 import { RouteHandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 // @ts-ignore
-import jotform from "jotform";
-import { JotFormSubmissionContent } from "@/bff/handler/customer/jotFormSubmissionResponse";
-import { JotFormSubmissionParser } from "@/bff/handler/customer/jotFormSubmissionParser";
 import { bffLoggingService } from "@/bff/bffLoggingService";
+import { date, object, string, mixed, boolean } from "yup";
+import { badRequest, conflict } from "@hapi/boom";
+import { createR2BucketObjectUrl } from "@axtp/core/common/r2";
+import { getEnvVar } from "@/bff/getEnvVar";
+import { Address } from "@signumjs/core";
+import { handleError } from "@/bff/handler/handleError";
 
-jotform.options({
-  debug: process.env.NODE_ENV !== "production",
-  apiKey: process.env.JOTFORM_API_KEY || "",
+const CpfCnpjRegex =
+  /^\d{3}\.\d{3}\.\d{3}\-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
+
+const CustomerSchema = object({
+  firstName: string().required(),
+  lastName: string().required(),
+  firstNameMother: string().required(),
+  lastNameMother: string().required(),
+  email: string().required(),
+  cpf: string().matches(CpfCnpjRegex).required(),
+  birthDate: date().required(),
+  birthPlace: string().required(),
+  phone: string().required(),
+  profession: string().required(),
+  streetAddress: string().required(),
+  complementaryStreetAddress: string(),
+  state: string().required(),
+  city: string().required(),
+  zipCode: string().required(),
+  country: string().required(),
+  proofOfAddress: string().required(), // object Id
+  documentType: mixed().oneOf(["cnh", "rne"]).required(),
+  frontSide: string().required(), // object Id
+  backSide: string(),
+  publicKey: string().required(),
+  agreeTerms: boolean().oneOf([true]).required(),
+  agreeSafetyTerms: boolean().oneOf([true]).required(),
 });
 
+function createBlockchainAccountData(publicKey: string) {
+  try {
+    const isTestnet = getEnvVar("NEXT_PUBLIC_LEDGER_IS_TESTNET") === "true";
+    const address = Address.fromPublicKey(publicKey, isTestnet ? "TS" : "S");
+    return {
+      publicKey,
+      accountId: address.getNumericId(),
+      rsAddress: address.getReedSolomonAddress(true),
+    };
+  } catch (e) {
+    throw badRequest("Invalid public key");
+  }
+}
 export const registerCustomer: RouteHandlerFunction = async (req, res) => {
   try {
-    const { submission_id } = req.body;
-    const submission = (await jotform.getSubmission(
-      submission_id
-    )) as JotFormSubmissionContent;
-    const answers = new JotFormSubmissionParser(submission);
-    bffLoggingService.info({
-      msg: "Registering customer",
-      domain: "customer",
-      detail: {
-        answers,
-        submission,
-      },
-    });
+    const data = CustomerSchema.validateSync(req.body);
 
     // check if is registered already
     const existingCustomer = await prisma.customer.findUnique({
       where: {
-        cpfCnpj: answers.cpf,
+        cpfCnpj: data.cpf,
       },
     });
 
@@ -38,28 +66,50 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
       bffLoggingService.info({
         msg: "Customer exists already",
         domain: "customer",
-        detail: { cpfCnpj: answers.cpf },
+        detail: { cpfCnpj: data.cpf },
       });
-      res.redirect(302, `/kyc/setup/success?cuid=${existingCustomer.cuid}`);
-      return;
+      throw conflict("Customer already exists");
     }
 
     const preregisteredCustomer = await prisma.customer.findFirst({
       where: {
-        email1: answers.email,
+        email1: data.email,
       },
     });
 
-    const documents = answers.residentProofUrls.map((url) => ({
-      type: "ProofOfAddress",
-      url,
-    }));
-    documents.push(
-      ...answers.documentUrls.map((url) => ({
-        type: answers.documentType === "cnh" ? "DriverLicense" : "Id",
-        url,
-      }))
-    );
+    const blockchainAccountData = createBlockchainAccountData(data.publicKey);
+    const bucket = getEnvVar("NEXT_SERVER_CF_R2_AXTP_KYC_BUCKET");
+    const accountId = getEnvVar("NEXT_SERVER_CF_R2_ACCOUNT_ID");
+    const documents = [
+      {
+        type: "ProofOfAddress",
+        url: createR2BucketObjectUrl({
+          objectId: data.proofOfAddress,
+          bucket,
+          accountId,
+        }),
+      },
+    ];
+
+    documents.push({
+      type: data.documentType === "cnh" ? "DriverLicense" : "Id",
+      url: createR2BucketObjectUrl({
+        objectId: data.frontSide,
+        bucket,
+        accountId,
+      }),
+    });
+
+    if (data.backSide) {
+      documents.push({
+        type: data.documentType === "cnh" ? "DriverLicense" : "Id",
+        url: createR2BucketObjectUrl({
+          objectId: data.backSide,
+          bucket,
+          accountId,
+        }),
+      });
+    }
 
     let newCustomer;
     if (preregisteredCustomer) {
@@ -68,18 +118,18 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
           cuid: preregisteredCustomer.cuid,
         },
         data: {
-          firstName: answers.fullName.first,
-          lastName: answers.fullName.last,
-          firstNameMother: answers.mothersName.first,
-          lastNameMother: answers.mothersName.last,
-          email1: answers.email,
-          cpfCnpj: answers.cpf,
-          dateOfBirth: answers.birthDate,
-          placeOfBirth: answers.birthPlace,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          firstNameMother: data.firstNameMother,
+          lastNameMother: data.lastNameMother,
+          email1: data.email,
+          cpfCnpj: data.cpf,
+          dateOfBirth: data.birthDate,
+          placeOfBirth: data.birthPlace,
           verificationLevel: "Pending",
           nationality: "",
-          phone1: answers.phone,
-          profession: answers.occupation,
+          phone1: data.phone,
+          profession: data.profession,
           documents: {
             createMany: {
               // @ts-ignore
@@ -88,34 +138,37 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
           },
           addresses: {
             create: {
-              state: answers.address.state,
-              city: answers.address.city,
+              state: data.state,
+              city: data.city,
               type: "Residential",
-              country: answers.address.country,
-              line1: answers.address.addr_line1,
-              line2: answers.address.addr_line2 || "",
+              country: data.country,
+              line1: data.streetAddress,
+              line2: data.complementaryStreetAddress || "",
               line3: "",
               line4: "",
-              postCodeZip: answers.address.postal,
+              postCodeZip: data.zipCode,
             },
+          },
+          blockchainAccounts: {
+            create: blockchainAccountData,
           },
         },
       });
     } else {
       newCustomer = await prisma.customer.create({
         data: {
-          firstName: answers.fullName.first,
-          lastName: answers.fullName.last,
-          firstNameMother: answers.mothersName.first,
-          lastNameMother: answers.mothersName.last,
-          email1: answers.email,
-          cpfCnpj: answers.cpf,
-          dateOfBirth: answers.birthDate,
-          placeOfBirth: answers.birthPlace,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          firstNameMother: data.firstNameMother,
+          lastNameMother: data.lastNameMother,
+          email1: data.email,
+          cpfCnpj: data.cpf,
+          dateOfBirth: data.birthDate,
+          placeOfBirth: data.birthPlace,
           verificationLevel: "Pending",
           nationality: "",
-          phone1: answers.phone,
-          profession: answers.occupation,
+          phone1: data.phone,
+          profession: data.profession,
           documents: {
             createMany: {
               // @ts-ignore
@@ -124,30 +177,52 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
           },
           addresses: {
             create: {
-              state: answers.address.state,
-              city: answers.address.city,
+              state: data.state,
+              city: data.city,
               type: "Residential",
-              country: answers.address.country,
-              line1: answers.address.addr_line1,
-              line2: answers.address.addr_line2 || "",
+              country: data.country,
+              line1: data.streetAddress,
+              line2: data.complementaryStreetAddress || "",
               line3: "",
               line4: "",
-              postCodeZip: answers.address.postal,
+              postCodeZip: data.zipCode,
             },
+          },
+          blockchainAccounts: {
+            create: blockchainAccountData,
           },
         },
       });
     }
 
+    const termsOfUseId = Number(getEnvVar("ACTIVE_TERMS_OF_USE_ID") || "1");
+    await prisma.termsOfUseOnCustomer.upsert({
+      where: {
+        customerId_termsOfUseId: {
+          termsOfUseId,
+          customerId: newCustomer.id,
+        },
+      },
+      update: {
+        accepted: true,
+      },
+      create: {
+        accepted: true,
+        termsOfUseId,
+        customerId: newCustomer.id,
+      },
+    });
+
     bffLoggingService.info({
       msg: "New customer registered",
       domain: "customer",
-      detail: { cpfCnpj: answers.cpf, cuid: newCustomer.cuid },
+      detail: { cpfCnpj: data.cpf, cuid: newCustomer.cuid },
     });
 
-    res.redirect(302, `/kyc/setup/success?cuid=${newCustomer.cuid}`);
+    res.status(201).json({
+      cuid: newCustomer.cuid,
+    });
   } catch (e: any) {
-    // TODO: logging
-    res.redirect(302, "/500");
+    handleError({ e, res });
   }
 };

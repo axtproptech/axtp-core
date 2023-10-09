@@ -78,6 +78,7 @@ export const Layout: FC<Props> = ({ children, bottomNav, noBody = false }) => {
       {noBody ? children : <Body>{children}</Body>}
       <BottomNavigation nav={bottomNav || DefaultNav} />
       <Notification />
+      {/* @ts-ignore */}
       <PWAPrompt
         /* @ts-ignore */
         copyTitle={t("pwa-ios-copy-title")}

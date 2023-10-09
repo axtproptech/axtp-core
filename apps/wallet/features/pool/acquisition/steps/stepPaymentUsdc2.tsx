@@ -88,6 +88,7 @@ export const StepPaymentUsdc2: FC<Props> = ({ quantity, poolId, protocol }) => {
             <small>{label}</small>
           </div>
           <div className={`${!depositAddress ? "blur-sm" : ""}`}>
+            {/* @ts-ignore */}
             <QRCode
               size={256}
               style={{ height: "auto", maxWidth: "100%", width: "100%" }}

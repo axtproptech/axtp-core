@@ -126,6 +126,7 @@ export const ProfileMenu: FC<Props> = ({
                     <Typography variant="h5">{userName}</Typography>
                   </Stack>
                 </Box>
+                {/* @ts-ignore  */}
                 <PerfectScrollbar
                   style={{
                     height: "100%",

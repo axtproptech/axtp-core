@@ -160,6 +160,7 @@ export const CustomerSearchFilters = ({
                 }
                 maskChar=" "
               >
+                {/* @ts-ignore */}
                 {<TextInput label={input.label} />}
               </InputMask>
             ) : (

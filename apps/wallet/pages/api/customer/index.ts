@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { protectedRoute } from "@/bff/route";
-import { searchCustomer } from "@/bff/handler/customer";
+import { searchCustomer, registerCustomer } from "@/bff/handler/customer";
 
 export default function handler(
   req: NextApiRequest,
@@ -10,5 +10,6 @@ export default function handler(
     req,
     res,
     get: searchCustomer,
+    post: registerCustomer,
   });
 }
