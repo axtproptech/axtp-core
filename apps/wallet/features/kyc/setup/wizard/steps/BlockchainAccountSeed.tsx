@@ -3,7 +3,6 @@ import { Button } from "react-daisyui";
 import { RiFileDownloadLine } from "react-icons/ri";
 import { useFormContext } from "react-hook-form";
 import { AttentionSeeker } from "react-awesome-reveal";
-import { CopyButton } from "@/app/components/buttons/copyButton";
 import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
 import { KycWizard } from "../validation/types";
 
@@ -50,21 +49,15 @@ export const BlockchainAccountSeed = () => {
         </span>
 
         <div className="w-full flex flex-row items-center justify-between gap-2">
-          <div className="w-1/2">
-            <CopyButton textToCopy={accountSeedPhrase} />
-          </div>
-
-          <div className="w-1/2">
-            <Button
-              type="button"
-              className="animate-wiggle"
-              onClick={downloadSeedPhrase}
-              color="primary"
-            >
-              <RiFileDownloadLine className="mr-2" />
-              {t("download")}
-            </Button>
-          </div>
+          <Button
+            type="button"
+            className="animate-wiggle w-full"
+            onClick={downloadSeedPhrase}
+            color="primary"
+          >
+            <RiFileDownloadLine className="mr-2" />
+            {t("download")}
+          </Button>
         </div>
       </section>
 

@@ -35,7 +35,7 @@ export const initialState: KycState = {
     country: "",
     proofOfAddress: "",
   },
-  motherDataStep: { firstName: "", lastName: "" },
+  motherDataStep: { firstNameMother: "", lastNameMother: "" },
   documentStep: { documentType: "cnh", frontSide: "", backSide: "" },
 };
 

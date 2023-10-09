@@ -25,7 +25,6 @@ export function FileUploader({ onUploadSuccess, fileTypes = [] }: Props) {
 
   const [isUploading, setIsUploading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
-  const [uploadedFile, setUploadedFile] = useState("");
   const [uploadProgress, setUploadProgress] = useState<
     Record<string, Progress>
   >({});
@@ -77,7 +76,6 @@ export function FileUploader({ onUploadSuccess, fileTypes = [] }: Props) {
       if (results[0]) {
         // @ts-ignore
         const objectName = results[0]?.value?.objectName;
-        setUploadedFile(objectName);
         onUploadSuccess(objectName);
       }
 
@@ -90,17 +88,13 @@ export function FileUploader({ onUploadSuccess, fileTypes = [] }: Props) {
   };
 
   const handleDelete = async () => {
-    const objectKey = uploadedFile;
+    if (!inputRef.current) return;
 
-    const response = await FileService.deleteFile({ objectKey });
-    if (response.deleted && inputRef.current) {
-      showInfo(t("file_deletion_success"));
-      onUploadSuccess("");
-      setUploadProgress({});
-      setUploadedFile("");
-      setSelectedFiles(null);
-      inputRef.current.value = "";
-    }
+    showInfo(t("file_deletion_success"));
+    onUploadSuccess("");
+    setUploadProgress({});
+    setSelectedFiles(null);
+    inputRef.current.value = "";
   };
 
   const progresses = useMemo(() => {

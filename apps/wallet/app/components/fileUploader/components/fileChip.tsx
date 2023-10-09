@@ -9,7 +9,7 @@ interface Props {
   handleDelete: () => void;
 }
 
-export const FileChip = ({ file, loaded, total, handleDelete }: Props) => {
+export const FileChip = ({ file, handleDelete }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -30,12 +30,6 @@ export const FileChip = ({ file, loaded, total, handleDelete }: Props) => {
           {t("delete")}
         </Button>
       </div>
-
-      <progress
-        className="progress progress-success w-full"
-        value={loaded}
-        max={total}
-      />
     </div>
   );
 };

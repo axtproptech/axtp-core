@@ -78,7 +78,9 @@ export const InitialSetup = () => {
       case Steps.Form:
         try {
           setIsSendingRequest(true);
+
           await KycService.sendAddressVerificationMail(email, firstName);
+
           await moveToCodeVerificationStep();
         } catch (e: any) {
           console.error(e);
@@ -91,10 +93,9 @@ export const InitialSetup = () => {
       case Steps.VerifyCode:
         try {
           setIsSendingRequest(true);
-          // TODO: Persist Initial Data on Redux
+
           await KycService.verifyEmailVerificationToken(email, code);
 
-          // Reset to default
           dispatch(reset());
 
           // Now with a clean KYCState, start the KYC wizard
@@ -158,6 +159,7 @@ export const InitialSetup = () => {
       label: isSendingRequest ? t("loading") + "..." : t("next"),
       icon: <RiArrowRightCircleLine />,
       disabled: !canSubmit || isSendingRequest,
+      loading: isSendingRequest,
       color: "secondary",
     },
   ];

@@ -12,13 +12,13 @@ export const MotherData = () => {
   } = useFormContext<KycWizard>();
 
   let firstNameFieldError = "";
-  if (errors.firstName?.message) {
-    firstNameFieldError = t(mapValidationError(errors.firstName.message));
+  if (errors.firstNameMother?.message) {
+    firstNameFieldError = t(mapValidationError(errors.firstNameMother.message));
   }
 
   let lastNameFieldError = "";
-  if (errors.lastName?.message) {
-    lastNameFieldError = t(mapValidationError(errors.lastName.message));
+  if (errors.lastNameMother?.message) {
+    lastNameFieldError = t(mapValidationError(errors.lastNameMother.message));
   }
 
   return (
@@ -32,7 +32,7 @@ export const MotherData = () => {
 
       <section className="flex flex-col justify-center items-center gap-2">
         <Controller
-          name="firstName"
+          name="firstNameMother"
           control={control}
           render={({ field }) => (
             <FieldBox
@@ -45,7 +45,7 @@ export const MotherData = () => {
         />
 
         <Controller
-          name="lastName"
+          name="lastNameMother"
           control={control}
           render={({ field }) => (
             <FieldBox

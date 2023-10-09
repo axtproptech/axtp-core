@@ -2,16 +2,12 @@ import { useTranslation } from "next-i18next";
 import { Form, Checkbox } from "react-daisyui";
 import { useFormContext, Controller } from "react-hook-form";
 import { FieldBox } from "@/app/components/fieldBox";
-import { AttentionSeeker } from "react-awesome-reveal";
-import { CopyButton } from "@/app/components/buttons/copyButton";
-import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
 import { KycWizard } from "../validation/types";
 
 export const BlockchainAccountSeedVerification = () => {
   const { t } = useTranslation();
   const { control, watch } = useFormContext<KycWizard>();
 
-  const accountSeedPhrase = watch("accountSeedPhrase");
   const seedPhraseVerificationIndex = watch("seedPhraseVerificationIndex");
 
   const defaultFieldText = t("enter_word_number", {
@@ -45,9 +41,9 @@ export const BlockchainAccountSeedVerification = () => {
 
         <div className="divider" />
 
-        <h6 className="text-center font-bold">{t("safety_terms")}</h6>
+        <h6 className="text-justify font-bold">{t("safety_terms")}</h6>
 
-        <span className="text-white text-center font-medium mb-2">
+        <span className="text-white text-justify font-bold mb-2">
           {t("confirm_saved_seed_phrase_paragraph")}
         </span>
 

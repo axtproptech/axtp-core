@@ -23,6 +23,7 @@ export const sendAddressVerificationMail: RouteHandlerFunction = async (
     const { emailAddress, name } = SendAddressVerificationMailBody.validateSync(
       req.body
     );
+
     const existingToken = await prisma.securityToken.findUnique({
       where: {
         subjectId_purpose: {

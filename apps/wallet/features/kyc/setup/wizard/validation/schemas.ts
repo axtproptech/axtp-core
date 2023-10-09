@@ -25,16 +25,16 @@ export const KycWizardSchema = yup
 
     // Residency data step
     streetAddress: requiredStringField,
-    complementaryStreetAddress: requiredStringField,
+    complementaryStreetAddress: optionalStringField,
     zipCode: requiredStringField,
     city: requiredStringField,
     state: requiredStringField,
-    country: requiredStringField,
+    country: optionalStringField,
     proofOfAddress: requiredStringField,
 
     // Mother's data step
-    firstName: requiredStringField,
-    lastName: requiredStringField,
+    firstNameMother: requiredStringField,
+    lastNameMother: requiredStringField,
 
     // Document files step
     documentType: requiredStringField,
@@ -42,7 +42,7 @@ export const KycWizardSchema = yup
     backSide: optionalStringField,
 
     // Blockchain Account Step
-    accountId: requiredStringField,
+    accountPublicKey: requiredStringField,
     accountSeedPhrase: requiredStringField,
     seedPhraseVerification: requiredStringField,
     seedPhraseVerificationIndex: requiredNumberFieldDefaultZero,

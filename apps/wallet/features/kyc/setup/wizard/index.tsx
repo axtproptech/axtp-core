@@ -44,12 +44,12 @@ export const Wizard = () => {
       zipCode: "",
       city: "",
       state: "",
-      country: "",
+      country: "BR",
       proofOfAddress: "",
 
       // Mother's data step
-      firstName: "",
-      lastName: "",
+      firstNameMother: "",
+      lastNameMother: "",
 
       // Document files step
       documentType: "cnh",
@@ -57,7 +57,7 @@ export const Wizard = () => {
       backSide: "",
 
       // Blockchain Account Step
-      accountId: "",
+      accountPublicKey: "",
       accountSeedPhrase: "",
       seedPhraseVerification: "",
       seedPhraseVerificationIndex: 0,
