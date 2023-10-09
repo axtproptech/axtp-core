@@ -21,7 +21,7 @@ export const InitialSetup = () => {
   const { t } = useTranslation();
   const { KycService } = useAppContext();
   const { showError } = useNotification();
-  const { setInitialSetupStep } = kycActions;
+  const { setInitialSetupStep, reset } = kycActions;
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -91,12 +91,16 @@ export const InitialSetup = () => {
       case Steps.VerifyCode:
         try {
           setIsSendingRequest(true);
-          // TODO: Verify code
           // TODO: Persist Initial Data on Redux
-          dispatch(
-            setInitialSetupStep({ firstName, email, lastName, code: "" })
-          );
-          router.push("/kyc/setup/wizard");
+          await KycService.verifyEmailVerificationToken(email, code);
+
+          // Reset to default
+          dispatch(reset());
+
+          // Now with a clean KYCState, start the KYC wizard
+          dispatch(setInitialSetupStep({ firstName, email, lastName, code }));
+
+          await router.push("/kyc/setup/wizard");
         } catch (e: any) {
           console.error(e);
           showError(e);
