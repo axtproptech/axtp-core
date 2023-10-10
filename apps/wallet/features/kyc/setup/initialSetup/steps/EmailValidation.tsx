@@ -41,7 +41,7 @@ export const EmailValidation = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center text-center h-[80vh] relative prose w-full max-w-xs mx-auto">
+    <div className="flex flex-col justify-center text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto">
       <section>
         <h2>{t("verify_your_email")}</h2>
       </section>
