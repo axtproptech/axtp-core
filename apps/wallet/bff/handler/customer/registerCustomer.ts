@@ -51,6 +51,7 @@ function createBlockchainAccountData(publicKey: string) {
     throw badRequest("Invalid public key");
   }
 }
+
 export const registerCustomer: RouteHandlerFunction = async (req, res) => {
   try {
     const data = CustomerSchema.validateSync(req.body);
@@ -220,7 +221,7 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
     });
 
     res.status(201).json({
-      cuid: newCustomer.cuid,
+      customerId: newCustomer.cuid,
     });
   } catch (e: any) {
     handleError({ e, res });

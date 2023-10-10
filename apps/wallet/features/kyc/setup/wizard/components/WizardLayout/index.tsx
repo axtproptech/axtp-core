@@ -16,7 +16,7 @@ import { Layout } from "@/app/components/layout";
 import { Stepper } from "@/app/components/stepper";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { PrintableSeedDocument } from "@/features/account/components/printableSeedDocument";
-import { selectCurrentStep } from "../../../../state";
+import { selectCurrentStep, selectInitialSetupStep } from "../../../../state";
 import { KycWizard } from "../../validation/types";
 import { Steps, StepsCount } from "../../../../types/steps";
 import { kycActions } from "../../../../state";
@@ -26,9 +26,10 @@ import differenceInYears from "date-fns/differenceInYears";
 
 interface Props {
   children: ReactNode;
+  isSubmitting: boolean;
 }
 
-export const WizardLayout = ({ children }: Props) => {
+export const WizardLayout = ({ children, isSubmitting }: Props) => {
   const { t } = useTranslation();
   const { Ledger } = useAppContext();
 
@@ -41,6 +42,9 @@ export const WizardLayout = ({ children }: Props) => {
     setMotherDataStep,
     setDocumentStep,
   } = kycActions;
+  const { firstName, lastName, email, code } = useAppSelector(
+    selectInitialSetupStep
+  );
   const currentStep = useAppSelector(selectCurrentStep);
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -111,7 +115,13 @@ export const WizardLayout = ({ children }: Props) => {
 
   switch (currentStep) {
     case Steps.AgreeTerms:
-      canMoveToNextStep = agreeTerms;
+      canMoveToNextStep = !!(
+        agreeTerms &&
+        firstName &&
+        lastName &&
+        email &&
+        code
+      );
       break;
 
     case Steps.BasicData:
@@ -377,9 +387,17 @@ export const WizardLayout = ({ children }: Props) => {
             ? "accent"
             : "secondary",
         disabled: !canMoveToNextStep,
+        loading: isSubmitting,
       },
     ],
-    [canMoveToNextStep, currentStep, handleBackButton, handleNextButton, t]
+    [
+      canMoveToNextStep,
+      currentStep,
+      handleBackButton,
+      handleNextButton,
+      t,
+      isSubmitting,
+    ]
   );
 
   return (

@@ -271,5 +271,6 @@
   "loading": "Loading",
   "too_many_request": "Too many request",
   "blocked": "Blocked",
-  "invalid_cpf": "Invalid CPF"
+  "invalid_cpf": "Invalid CPF",
+  "axt_club_member": "AXT Club Member"
 }

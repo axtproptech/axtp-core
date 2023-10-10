@@ -1,8 +1,12 @@
+import { useRouter } from "next/router";
+import { useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAppSelector } from "@/states/hooks";
+import { cpf } from "cpf-cnpj-validator";
+import { useAppSelector, useAppDispatch } from "@/states/hooks";
 import { useNotification } from "@/app/hooks/useNotification";
+import { useAppContext } from "@/app/hooks/useAppContext";
 import { KycWizard } from "./validation/types";
 import { KycWizardSchema } from "./validation/schemas";
 import { WizardLayout } from "./components/WizardLayout";
@@ -15,12 +19,17 @@ import { DocumentFiles } from "./steps/DocumentFiles";
 import { BlockchainAccountSetup } from "./steps/BlockchainAccountSetup";
 import { BlockchainAccountSeed } from "./steps/BlockchainAccountSeed";
 import { BlockchainAccountSeedVerification } from "./steps/BlockchainAccountSeedVerification";
-import { selectInitialSetupStep } from "../../state";
+import { selectInitialSetupStep, kycActions } from "../../state";
 
 export const Wizard = () => {
   const { t } = useTranslation();
+  const { KycService } = useAppContext();
   const { showError } = useNotification();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const currentInitialSetupStep = useAppSelector(selectInitialSetupStep);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const methods = useForm<KycWizard>({
     mode: "onChange",
@@ -68,14 +77,76 @@ export const Wizard = () => {
   const { handleSubmit } = methods;
 
   const onSubmit: SubmitHandler<KycWizard> = async (data) => {
-    const { firstName, email, lastName, code } = currentInitialSetupStep;
-    console.log(data);
+    try {
+      setIsSubmitting(true);
+      const { firstName, email, lastName } = currentInitialSetupStep;
+      const {
+        firstNameMother,
+        lastNameMother,
+        cpf: customerCpf,
+        birthDate,
+        birthPlace,
+        phone,
+        profession,
+        streetAddress,
+        complementaryStreetAddress,
+        state,
+        city,
+        zipCode,
+        country,
+        proofOfAddress,
+        documentType,
+        frontSide,
+        backSide,
+        accountPublicKey,
+        agreeTerms,
+        agreeSafetyTerms,
+      } = data;
+
+      const payload = {
+        firstName,
+        lastName,
+        firstNameMother,
+        lastNameMother,
+        email,
+        cpf: cpf.format(customerCpf),
+        birthDate,
+        birthPlace,
+        phone,
+        profession,
+        streetAddress,
+        complementaryStreetAddress,
+        state,
+        city,
+        zipCode,
+        country,
+        proofOfAddress,
+        documentType,
+        frontSide,
+        backSide,
+        publicKey: accountPublicKey,
+        agreeTerms,
+        agreeSafetyTerms,
+      };
+
+      const response = await KycService.registerCustomer(payload);
+
+      if (response.customerId) {
+        dispatch(kycActions.reset());
+        await router.replace(`/kyc/setup/success?cuid=${response.customerId}`);
+      }
+    } catch (e: any) {
+      console.error(e);
+      showError(e);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <WizardLayout>
+        <WizardLayout isSubmitting={isSubmitting}>
           <div className="carousel w-full mx-[2px]  overflow-x-hidden">
             <div id="step0" className="carousel-item relative w-full">
               <AgreeTerms />
