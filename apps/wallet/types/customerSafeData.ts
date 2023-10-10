@@ -7,6 +7,5 @@ export interface CustomerSafeData {
   isActive: boolean;
   isBlocked: boolean;
   firstName: string;
-
   publicKey: string;
 }

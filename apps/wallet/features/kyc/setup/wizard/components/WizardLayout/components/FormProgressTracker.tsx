@@ -61,7 +61,9 @@ export const FormProgressTracker = () => {
       documentStep: currentDocumentStep,
     };
 
-    return !isEqual(initialState, copyDraft) ? openDialog() : null;
+    return currentStep > Steps.AgreeTerms && !isEqual(initialState, copyDraft)
+      ? openDialog()
+      : null;
   };
 
   useEffect(() => {
@@ -90,7 +92,7 @@ export const FormProgressTracker = () => {
       proofOfAddress,
     } = currentFourthStep;
 
-    const { firstName, lastName } = currentMotherDataStep;
+    const { firstNameMother, lastNameMother } = currentMotherDataStep;
 
     const { documentType, frontSide, backSide } = currentDocumentStep;
 
@@ -111,21 +113,21 @@ export const FormProgressTracker = () => {
     setValue("country", country);
     setValue("proofOfAddress", proofOfAddress);
 
-    setValue("firstName", firstName);
-    setValue("lastName", lastName);
+    setValue("firstNameMother", firstNameMother);
+    setValue("lastNameMother", lastNameMother);
 
     setValue("documentType", documentType);
     setValue("frontSide", frontSide);
     setValue("backSide", backSide);
 
-    closeDialog();
-
     let stepToMove = currentStep;
 
-    if (currentStep >= Steps.BlockchainAccountSeedVerification)
+    if (currentStep >= Steps.BlockchainAccountSetup)
       stepToMove = Steps.BlockchainAccountSetup;
 
     stepMovement(currentStep);
+
+    closeDialog();
   };
 
   return (

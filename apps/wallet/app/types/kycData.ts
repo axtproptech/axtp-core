@@ -27,8 +27,8 @@ export interface FourthStep {
 }
 
 export interface MotherDataStep {
-  firstName: string;
-  lastName: string;
+  firstNameMother: string;
+  lastNameMother: string;
 }
 
 export interface DocumentStep {

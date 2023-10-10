@@ -1,7 +1,7 @@
+import useSWR, { SWRConfig } from "swr";
 import { Layout } from "@/app/components/layout";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BackendForFrontendService } from "@/bff/backendForFrontendService";
-import useSWR, { SWRConfig } from "swr";
 import { RegisterSuccess } from "@/features/kyc/setup/registerSuccess";
 import { CustomerSafeData } from "@/types/customerSafeData";
 

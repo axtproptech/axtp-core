@@ -46,13 +46,4 @@ export class FileService {
       return { signedUrl: "", objectUrl: "", objectName: "" };
     });
   }
-
-  async deleteFile({
-    objectKey,
-  }: DeleteFileArgs): Promise<{ deleted: boolean }> {
-    return retry(async () => {
-      const { response } = await this.bffClient.delete(`/files/${objectKey}`);
-      return response as { deleted: boolean };
-    });
-  }
 }

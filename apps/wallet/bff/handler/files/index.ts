@@ -1,9 +1,10 @@
-import { RouteHandlerFunction } from "@/bff/route";
-import aws from "aws-sdk";
-import { getEnvVar } from "@/bff/getEnvVar";
 import { nanoid } from "nanoid";
+import { RouteHandlerFunction } from "@/bff/route";
+import { getEnvVar } from "@/bff/getEnvVar";
 import { CreateUploadUrlResponse } from "@/types/createUploadUrlResponse";
 import { CreateUploadUrlRequest } from "@/types/createUploadUrlRequest";
+
+import aws from "aws-sdk";
 
 const TargetBucketName = getEnvVar("NEXT_SERVER_CF_R2_AXTP_KYC_BUCKET");
 const AccountId = getEnvVar("NEXT_SERVER_CF_R2_ACCOUNT_ID");
@@ -42,28 +43,6 @@ export const createUploadURL: RouteHandlerFunction = async (req, res) => {
       objectUrl,
       objectName,
     } as CreateUploadUrlResponse);
-  } catch (err) {
-    return res.status(500).json(err);
-  }
-};
-
-// TODO: Discuss about security improvements for not allowing users delete someone'elses KYC files
-export const deleteFile: RouteHandlerFunction = async (req, res) => {
-  const { query } = req;
-
-  try {
-    const params = {
-      Bucket: TargetBucketName,
-      Key: `${query.objectKey}`,
-    };
-
-    await r2
-      .deleteObject(params, (err) => {
-        if (err) throw err;
-      })
-      .promise();
-
-    return res.status(200).json({ deleted: true });
   } catch (err) {
     return res.status(500).json(err);
   }

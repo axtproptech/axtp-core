@@ -7,7 +7,6 @@ import { useAppContext } from "@/app/hooks/useAppContext";
 import { generateMasterKeys, PassPhraseGenerator } from "@signumjs/crypto";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { voidFn } from "@/app/voidFn";
-import { CopyButton } from "@/app/components/buttons/copyButton";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 import { KycWizard } from "../validation/types";
 
@@ -16,7 +15,7 @@ export const BlockchainAccountSetup = () => {
   const { Ledger } = useAppContext();
   const { watch, setValue } = useFormContext<KycWizard>();
 
-  const accountId = watch("accountId");
+  const accountPublicKey = watch("accountPublicKey");
 
   const generateSeed = async () => {
     const arr = new Uint8Array(128);
@@ -39,16 +38,16 @@ export const BlockchainAccountSetup = () => {
     const randomKey = pickRandomKeyIndex();
 
     const keys = generateMasterKeys(accountSeedphrase);
-    const accountId = Address.fromPublicKey(keys.publicKey).getNumericId();
+    const { publicKey } = keys;
 
-    setValue("accountId", accountId);
+    setValue("accountPublicKey", publicKey);
     setValue("accountSeedPhrase", accountSeedphrase);
     setValue("seedPhraseVerificationIndex", randomKey);
   };
 
-  const accountRS = accountId
-    ? Address.fromNumericId(
-        accountId,
+  const accountRS = accountPublicKey
+    ? Address.fromPublicKey(
+        accountPublicKey,
         Ledger.AddressPrefix
       ).getReedSolomonAddress()
     : "";
@@ -82,8 +81,6 @@ export const BlockchainAccountSetup = () => {
           onChange={voidFn}
           readOnly
         />
-
-        <CopyButton textToCopy={accountRS} />
       </section>
 
       <section />

@@ -1,5 +1,6 @@
 import { useTranslation } from "next-i18next";
 import { Input } from "react-daisyui";
+import { cpf } from "cpf-cnpj-validator";
 import { useFormContext, Controller } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
 import { FieldBox } from "@/app/components/fieldBox";
@@ -16,6 +17,7 @@ export const BasicData = () => {
     formState: { errors },
   } = useFormContext<KycWizard>();
 
+  const customerCpf = watch("cpf");
   const birthDate = watch("birthDate");
 
   let cpfFieldError = "";
@@ -24,6 +26,11 @@ export const BasicData = () => {
       mapValidationError(errors.cpf.message),
       mapValidationError(errors.cpf.message, true)
     );
+  }
+
+  // Custom CPF Validation
+  if (!cpfFieldError && customerCpf && !cpf.isValid(`${customerCpf}`)) {
+    cpfFieldError = t("invalid_cpf");
   }
 
   let birthDateFieldError = "";

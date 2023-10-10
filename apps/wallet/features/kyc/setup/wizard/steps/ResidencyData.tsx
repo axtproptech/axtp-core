@@ -1,7 +1,8 @@
 import { useTranslation } from "next-i18next";
 import { useFormContext, Controller } from "react-hook-form";
-import { Alert } from "react-daisyui";
+import { Alert, Input } from "react-daisyui";
 import { RiCheckboxCircleLine } from "react-icons/ri";
+import { PatternFormat } from "react-number-format";
 import { FieldBox } from "@/app/components/fieldBox";
 import { mapValidationError } from "@/app/mapValidationError";
 import { FileUploader } from "@/app/components/fileUploader";
@@ -51,11 +52,6 @@ export const ResidencyData = () => {
     stateFieldError = t(mapValidationError(errors.state.message));
   }
 
-  let countryFieldError = "";
-  if (errors.country?.message) {
-    countryFieldError = t(mapValidationError(errors.country.message));
-  }
-
   return (
     <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full max-w-xs mx-auto">
       <section>
@@ -91,15 +87,32 @@ export const ResidencyData = () => {
 
         <div className="flex justify-between items-start w-full">
           <div className="w-1/2 pr-2">
+            <label className="label">
+              <span className="label-text font-bold text-base">
+                {t("zip_code")}
+              </span>
+            </label>
             <Controller
               name="zipCode"
               control={control}
               render={({ field }) => (
-                <FieldBox
-                  field={field}
+                <PatternFormat
+                  {...field}
+                  format="#####-###"
+                  customInput={Input}
+                  // @ts-ignore
+                  ref={undefined}
+                  inputRef={field.ref}
+                  allowEmptyFormatting
                   label={t("zip_code")}
                   placeholder={t("zip_code")}
-                  errorLabel={zipCodeFieldError}
+                  onChange={undefined}
+                  onValueChange={(values) => {
+                    field.onChange(values.floatValue);
+                  }}
+                  mask="_"
+                  size="lg"
+                  className="font-semibold w-full"
                 />
               )}
             />
@@ -130,19 +143,6 @@ export const ResidencyData = () => {
               label={t("state")}
               placeholder={t("state")}
               errorLabel={stateFieldError}
-            />
-          )}
-        />
-
-        <Controller
-          name="country"
-          control={control}
-          render={({ field }) => (
-            <FieldBox
-              field={field}
-              label={`${t("country")}/${t("region")}`}
-              placeholder={`${t("country")}/${t("region")}`}
-              errorLabel={countryFieldError}
               className="mb-4"
             />
           )}

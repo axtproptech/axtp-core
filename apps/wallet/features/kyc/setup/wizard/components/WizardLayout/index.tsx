@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { ReactNode, useCallback, useMemo } from "react";
+import { cpf } from "cpf-cnpj-validator";
 import { Address } from "@signumjs/core";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import {
@@ -15,7 +16,7 @@ import { Layout } from "@/app/components/layout";
 import { Stepper } from "@/app/components/stepper";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { PrintableSeedDocument } from "@/features/account/components/printableSeedDocument";
-import { selectCurrentStep } from "../../../../state";
+import { selectCurrentStep, selectInitialSetupStep } from "../../../../state";
 import { KycWizard } from "../../validation/types";
 import { Steps, StepsCount } from "../../../../types/steps";
 import { kycActions } from "../../../../state";
@@ -25,9 +26,10 @@ import differenceInYears from "date-fns/differenceInYears";
 
 interface Props {
   children: ReactNode;
+  isSubmitting: boolean;
 }
 
-export const WizardLayout = ({ children }: Props) => {
+export const WizardLayout = ({ children, isSubmitting }: Props) => {
   const { t } = useTranslation();
   const { Ledger } = useAppContext();
 
@@ -40,6 +42,9 @@ export const WizardLayout = ({ children }: Props) => {
     setMotherDataStep,
     setDocumentStep,
   } = kycActions;
+  const { firstName, lastName, email, code } = useAppSelector(
+    selectInitialSetupStep
+  );
   const currentStep = useAppSelector(selectCurrentStep);
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -60,7 +65,7 @@ export const WizardLayout = ({ children }: Props) => {
   );
 
   const agreeTerms = watch("agreeTerms");
-  const cpf = watch("cpf");
+  const customerCpf = watch("cpf");
   const birthDate = watch("birthDate");
   const birthPlace = watch("birthPlace");
   const phone = watch("phone");
@@ -72,23 +77,16 @@ export const WizardLayout = ({ children }: Props) => {
   const state = watch("state");
   const country = watch("country");
   const proofOfAddress = watch("proofOfAddress");
-  const firstName = watch("firstName");
-  const lastName = watch("lastName");
+  const firstNameMother = watch("firstNameMother");
+  const lastNameMother = watch("lastNameMother");
   const documentType = watch("documentType");
   const frontSide = watch("frontSide");
   const backSide = watch("backSide");
-  const accountId = watch("accountId");
+  const accountPublicKey = watch("accountPublicKey");
   const accountSeedPhrase = watch("accountSeedPhrase");
   const seedPhraseVerification = watch("seedPhraseVerification");
   const seedPhraseVerificationIndex = watch("seedPhraseVerificationIndex");
   const agreeSafetyTerms = watch("agreeSafetyTerms");
-
-  const accountRS = accountId
-    ? Address.fromNumericId(
-        accountId,
-        Ledger.AddressPrefix
-      ).getReedSolomonAddress()
-    : "";
 
   const cpfFieldError = !!errors.cpf?.message;
   const birthDateFieldError = !!errors.birthDate?.message;
@@ -103,19 +101,32 @@ export const WizardLayout = ({ children }: Props) => {
   const stateFieldError = !!errors.state?.message;
   const countryFieldError = !!errors.country?.message;
   const proofOfAddressFieldError = !!errors.proofOfAddress?.message;
-  const firstNameFieldError = !!errors.firstName?.message;
-  const lastNameFieldError = !!errors.lastName?.message;
+  const firstNameMotherFieldError = !!errors.firstNameMother?.message;
+  const lastNameMotherFieldError = !!errors.lastNameMother?.message;
+
+  const accountRS = accountPublicKey
+    ? Address.fromPublicKey(
+        accountPublicKey,
+        Ledger.AddressPrefix
+      ).getReedSolomonAddress()
+    : "";
 
   let canMoveToNextStep = false;
 
   switch (currentStep) {
     case Steps.AgreeTerms:
-      canMoveToNextStep = agreeTerms;
+      canMoveToNextStep = !!(
+        agreeTerms &&
+        firstName &&
+        lastName &&
+        email &&
+        code
+      );
       break;
 
     case Steps.BasicData:
       canMoveToNextStep = !!(
-        cpf &&
+        customerCpf &&
         birthDate &&
         birthPlace &&
         !cpfFieldError &&
@@ -123,8 +134,13 @@ export const WizardLayout = ({ children }: Props) => {
         !birthPlaceFieldError
       );
 
-      // Custom Birth Date Validation
       if (canMoveToNextStep) {
+        // Custom CPF validation
+        if (!cpf.isValid(`${customerCpf}`)) {
+          canMoveToNextStep = false;
+        }
+
+        // Custom Birth Date Validation
         const currentDate = new Date();
         const formattedBirthDate = new Date(birthDate);
 
@@ -146,11 +162,9 @@ export const WizardLayout = ({ children }: Props) => {
     case Steps.ResidencyData:
       canMoveToNextStep = !!(
         streetAddress &&
-        complementaryStreetAddress &&
         zipCode &&
         city &&
         state &&
-        country &&
         proofOfAddress &&
         !streetAddressFieldError &&
         !complementaryStreetAddressFieldError &&
@@ -164,23 +178,19 @@ export const WizardLayout = ({ children }: Props) => {
 
     case Steps.MotherData:
       canMoveToNextStep = !!(
-        firstName &&
-        lastName &&
-        !firstNameFieldError &&
-        !lastNameFieldError
+        firstNameMother &&
+        lastNameMother &&
+        !firstNameMotherFieldError &&
+        !lastNameMotherFieldError
       );
       break;
 
     case Steps.DocumentFiles:
-      if (documentType === "cnh")
-        canMoveToNextStep = !!(documentType && frontSide);
-
-      if (documentType === "rne")
-        canMoveToNextStep = !!(documentType && frontSide && backSide);
+      canMoveToNextStep = !!(documentType && frontSide);
       break;
 
     case Steps.BlockchainAccountSetup:
-      canMoveToNextStep = !!(accountId && accountSeedPhrase);
+      canMoveToNextStep = !!(accountPublicKey && accountSeedPhrase);
       break;
 
     case Steps.BlockchainAccountSeed:
@@ -261,7 +271,7 @@ export const WizardLayout = ({ children }: Props) => {
         break;
 
       case Steps.BasicData:
-        dispatch(setSecondStep({ cpf, birthDate, birthPlace }));
+        dispatch(setSecondStep({ cpf: customerCpf, birthDate, birthPlace }));
         stepMovement(Steps.ComplementaryData);
         break;
 
@@ -286,7 +296,12 @@ export const WizardLayout = ({ children }: Props) => {
         break;
 
       case Steps.MotherData:
-        dispatch(setMotherDataStep({ firstName, lastName }));
+        dispatch(
+          setMotherDataStep({
+            firstNameMother: firstNameMother,
+            lastNameMother: lastNameMother,
+          })
+        );
         stepMovement(Steps.DocumentFiles);
         break;
 
@@ -317,7 +332,7 @@ export const WizardLayout = ({ children }: Props) => {
     setDocumentStep,
     currentStep,
     agreeTerms,
-    cpf,
+    customerCpf,
     birthDate,
     birthPlace,
     phone,
@@ -329,8 +344,8 @@ export const WizardLayout = ({ children }: Props) => {
     state,
     country,
     proofOfAddress,
-    firstName,
-    lastName,
+    firstNameMother,
+    lastNameMother,
     documentType,
     frontSide,
     backSide,
@@ -372,9 +387,17 @@ export const WizardLayout = ({ children }: Props) => {
             ? "accent"
             : "secondary",
         disabled: !canMoveToNextStep,
+        loading: isSubmitting,
       },
     ],
-    [canMoveToNextStep, currentStep, handleBackButton, handleNextButton, t]
+    [
+      canMoveToNextStep,
+      currentStep,
+      handleBackButton,
+      handleNextButton,
+      t,
+      isSubmitting,
+    ]
   );
 
   return (
