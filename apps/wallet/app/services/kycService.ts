@@ -36,7 +36,7 @@ export class KycService {
       } catch (e: any) {
         if (e instanceof HttpError) {
           if (e.status >= 400 && e.status <= 500) {
-            throw new AbortError(e.message);
+            throw new AbortError(e.data.message);
           }
         }
       }

@@ -131,9 +131,9 @@ export const Wizard = () => {
 
       const response = await KycService.registerCustomer(payload);
 
-      if (response.customerId) {
+      if (response!.customerId) {
         dispatch(kycActions.reset());
-        await router.replace(`/kyc/setup/success?cuid=${response.customerId}`);
+        await router.replace(`/kyc/setup/success?cuid=${response!.customerId}`);
       }
     } catch (e: any) {
       console.error(e);
