@@ -83,8 +83,19 @@ export const InitialSetup = () => {
 
           await moveToCodeVerificationStep();
         } catch (e: any) {
-          console.error(e);
-          showError(e);
+          switch (e.message) {
+            case "Blocked":
+              showError(t("email_blocked", { email }));
+              break;
+
+            case "Too many requests":
+              showError(t("wait_time_for_token_req"));
+              break;
+
+            default:
+              showError(e);
+              break;
+          }
         } finally {
           setIsSendingRequest(false);
         }
@@ -103,8 +114,15 @@ export const InitialSetup = () => {
 
           await router.push("/kyc/setup/wizard");
         } catch (e: any) {
-          console.error(e);
-          showError(e);
+          switch (e.message) {
+            case "invalid":
+              showError(t("invalid_token"));
+              break;
+
+            default:
+              showError(e);
+              break;
+          }
         } finally {
           setIsSendingRequest(false);
         }

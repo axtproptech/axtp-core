@@ -29,7 +29,7 @@ export const verifySecurityToken: RouteHandlerFunction = async (req, res) => {
       result.token === token;
 
     if (!isValidAndNotExpired) {
-      throw unauthorized();
+      throw unauthorized("invalid");
     }
 
     await prisma.securityToken.update({
