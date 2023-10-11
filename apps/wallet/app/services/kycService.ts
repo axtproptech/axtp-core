@@ -35,8 +35,8 @@ export class KycService {
         return (await fetchFn()) as T;
       } catch (e: any) {
         if (e instanceof HttpError) {
-          if (e.status === 404 || e.status === 400 || e.status === 401) {
-            throw new AbortError(e.message);
+          if (e.status >= 400 && e.status <= 500) {
+            throw new AbortError(e.data.message);
           }
         }
       }
@@ -50,7 +50,7 @@ export class KycService {
    * @return {Promise<RegisterCustomerResponse>} - A promise that resolves to the response from the registration.
    */
   registerCustomer(args: RegisterCustomerArgs) {
-    return retry<RegisterCustomerResponse>(async () => {
+    return this.tryCall<RegisterCustomerResponse>(async () => {
       const { response } = await this.bffClient.post("/customer", args);
       return response;
     });

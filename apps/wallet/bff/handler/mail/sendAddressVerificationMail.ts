@@ -33,8 +33,9 @@ export const sendAddressVerificationMail: RouteHandlerFunction = async (
       },
     });
 
+    console.log("existingToken", existingToken);
     if (existingToken && existingToken.status === "Blocked") {
-      throw unauthorized("Blocked");
+      throw unauthorized(`The email [${emailAddress}] is blocked`);
     }
 
     const rateLimitWindow =
