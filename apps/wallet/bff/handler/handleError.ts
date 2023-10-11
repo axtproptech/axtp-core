@@ -18,5 +18,6 @@ export const handleError = ({ e, res }: { e: any; res: NextApiResponse }) => {
     domain: "-",
     detail: output,
   });
+
   res.status(output.statusCode).json(output.payload);
 };
