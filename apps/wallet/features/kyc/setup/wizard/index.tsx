@@ -136,8 +136,15 @@ export const Wizard = () => {
         await router.replace(`/kyc/setup/success?cuid=${response!.customerId}`);
       }
     } catch (e: any) {
-      console.error(e);
-      showError(e);
+      switch (e.message) {
+        case "Customer already exists":
+          showError(t("customer_already_exists"));
+          break;
+
+        default:
+          showError(e);
+          break;
+      }
     } finally {
       setIsSubmitting(false);
     }
