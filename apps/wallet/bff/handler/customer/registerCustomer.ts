@@ -10,7 +10,7 @@ import { Address } from "@signumjs/core";
 import { handleError } from "@/bff/handler/handleError";
 import { cpf as CpfValidator, cnpj as CnpjValidator } from "cpf-cnpj-validator";
 
-function isValidCpfOrCnpj(cpfCnpj: string | undefined) {
+function isValidCpfOrCnpj(cpfCnpj?: string) {
   if (!cpfCnpj) {
     return false;
   }
