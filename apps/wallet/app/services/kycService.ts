@@ -109,6 +109,13 @@ export class KycService {
     });
   }
 
+  async fetchCustomerDataByEmail(email: string) {
+    return this.tryCall<CustomerSafeData>(async () => {
+      const { response } = await this.bffClient.get(`/customer?email=${email}`);
+      return response as CustomerSafeData;
+    });
+  }
+
   async fetchCustomerDataByCpf(cpf: string) {
     return this.tryCall<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.get(`/customer?cpf=${cpf}`);
