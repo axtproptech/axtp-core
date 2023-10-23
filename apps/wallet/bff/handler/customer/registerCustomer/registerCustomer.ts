@@ -2,12 +2,13 @@ import { RouteHandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 // @ts-ignore
 import { bffLoggingService } from "@/bff/bffLoggingService";
-import { date, object, string, mixed, boolean } from "yup";
-import { badRequest, conflict } from "@hapi/boom";
+import { boolean, date, mixed, object, string } from "yup";
+import { conflict } from "@hapi/boom";
 import { createR2BucketObjectUrl } from "@axtp/core/common/r2";
 import { getEnvVar } from "@/bff/getEnvVar";
-import { Address } from "@signumjs/core";
 import { handleError } from "@/bff/handler/handleError";
+import { createBlockchainAccountData } from "./createBlockchainAccountData";
+import { sendSuccessfulRegistrationMails } from "./sendSuccessfulRegistrationMails";
 
 const CpfCnpjRegex =
   /^\d{3}\.\d{3}\.\d{3}\-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
@@ -37,20 +38,6 @@ const CustomerSchema = object({
   agreeTerms: boolean().oneOf([true]).required(),
   agreeSafetyTerms: boolean().oneOf([true]).required(),
 });
-
-function createBlockchainAccountData(publicKey: string) {
-  try {
-    const isTestnet = getEnvVar("NEXT_PUBLIC_LEDGER_IS_TESTNET") === "true";
-    const address = Address.fromPublicKey(publicKey, isTestnet ? "TS" : "S");
-    return {
-      publicKey,
-      accountId: address.getNumericId(),
-      rsAddress: address.getReedSolomonAddress(true),
-    };
-  } catch (e) {
-    throw badRequest("Invalid public key");
-  }
-}
 
 export const registerCustomer: RouteHandlerFunction = async (req, res) => {
   try {
@@ -213,6 +200,8 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
         customerId: newCustomer.id,
       },
     });
+
+    await sendSuccessfulRegistrationMails(newCustomer);
 
     bffLoggingService.info({
       msg: "New customer registered",
