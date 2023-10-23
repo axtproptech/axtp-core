@@ -38,9 +38,10 @@ export class CrmClient {
   public async createNewContact(args: CreateContactArgs) {
     const contact = new Brevo.CreateContact();
     contact.email = args.email;
-    contact.ext_id = args.cuid;
+    contact.ext_id = args.cuid; // not sure where to see this in brevo!
     contact.listIds = [ContactListId.KycCompleted];
     contact.attributes = {
+      CUID: args.cuid,
       FIRSTNAME: args.firstName,
       LASTNAME: args.lastName,
       PHONE: args.phone,
