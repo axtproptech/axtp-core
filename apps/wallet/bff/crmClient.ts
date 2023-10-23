@@ -4,10 +4,11 @@ import * as Brevo from "@getbrevo/brevo";
 interface CreateContactArgs {
   email: string;
   cuid: string;
+  cpfCnpj: string;
   firstName: string;
   lastName: string;
   phone: string;
-  birthDate: Date;
+  birthDate: Date | null;
   isTokenHolder?: boolean;
 }
 
@@ -43,6 +44,8 @@ export class CrmClient {
       FIRSTNAME: args.firstName,
       LASTNAME: args.lastName,
       PHONE: args.phone,
+      SMS: args.phone,
+      CPF: args.cpfCnpj,
       BIRTHDATE: args.birthDate,
       IS_TOKENHOLDER: args.isTokenHolder ?? false,
       IS_VERIFIED: false,
