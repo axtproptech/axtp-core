@@ -58,6 +58,7 @@ async function sendRegistrationMailToAXT(
         lastName: newCustomer.lastName,
         email: newCustomer.email1,
         phone: newCustomer.phone1,
+        cpf: newCustomer.cpfCnpj,
         cuid: newCustomer.cuid,
       },
     });
