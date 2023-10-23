@@ -8,9 +8,16 @@ import { createR2BucketObjectUrl } from "@axtp/core/common/r2";
 import { getEnvVar } from "@/bff/getEnvVar";
 import { Address } from "@signumjs/core";
 import { handleError } from "@/bff/handler/handleError";
+import { cpf as CpfValidator, cnpj as CnpjValidator } from "cpf-cnpj-validator";
 
-const CpfCnpjRegex =
-  /^\d{3}\.\d{3}\.\d{3}\-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
+function isValidCpfOrCnpj(cpfCnpj: string | undefined) {
+  if (!cpfCnpj) {
+    return false;
+  }
+  return /\d{3}\.\d{3}\.\d{3}-\d{2}/.test(cpfCnpj)
+    ? CpfValidator.isValid(cpfCnpj)
+    : CnpjValidator.isValid(cpfCnpj);
+}
 
 const CustomerSchema = object({
   firstName: string().required(),
@@ -18,7 +25,9 @@ const CustomerSchema = object({
   firstNameMother: string().required(),
   lastNameMother: string().required(),
   email: string().required(),
-  cpf: string().matches(CpfCnpjRegex).required(),
+  cpf: string()
+    .required()
+    .test("validate-cpf-cnpj", "Invalid CPF or CNPJ", isValidCpfOrCnpj),
   birthDate: date().required(),
   birthPlace: string().required(),
   phone: string().required(),
