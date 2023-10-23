@@ -46,8 +46,8 @@ export class KycService {
   /**
    * Registers a customer.
    *
-   * @param {RegisterCustomerArgs} args - The arguments for registering a customer.
-   * @return {Promise<RegisterCustomerResponse>} - A promise that resolves to the response from the registration.
+   * @param args - The arguments for registering a customer.
+   * @return - A promise that resolves to the response from the registration.
    */
   registerCustomer(args: RegisterCustomerArgs) {
     return this.tryCall<RegisterCustomerResponse>(async () => {
