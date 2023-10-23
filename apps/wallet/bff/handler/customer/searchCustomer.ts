@@ -2,7 +2,8 @@ import { RouteHandlerFunction } from "@/bff/route";
 import { prisma } from "@axtp/db";
 import { notFound } from "@hapi/boom";
 import { handleError } from "@/bff/handler/handleError";
-import { toSafeCustomerResponse } from "@/bff/handler/customer/toSafeCustomerResponse";
+import { toSafeCustomerResponse } from "./toSafeCustomerResponse";
+import { object, string } from "yup";
 
 function formatCpfCnpj(cpfCnpj: string) {
   const pruned = cpfCnpj.replace(/\D/g, "");
@@ -53,15 +54,32 @@ async function fetchCustomerByCpf(cpf: string) {
   });
 }
 
+async function fetchCustomerByEmail(email: string) {
+  return prisma.customer.findFirst({
+    where: {
+      email1: email,
+    },
+    include: {
+      blockchainAccounts: true,
+      termsOfUse: {
+        where: {
+          termsOfUseId: Number(process.env.ACTIVE_TERMS_OF_USE_ID || "1"),
+        },
+      },
+    },
+  });
+}
 export const searchCustomer: RouteHandlerFunction = async (req, res) => {
   try {
-    const { publicKey, cpf } = req.query;
+    const { publicKey, cpf, email } = req.query;
 
     let customer;
     if (publicKey) {
       customer = await fetchCustomerByPublicKey(publicKey as string);
     } else if (cpf) {
       customer = await fetchCustomerByCpf(cpf as string);
+    } else if (email) {
+      customer = await fetchCustomerByEmail(email as string);
     }
 
     if (!customer || customer.isBlocked) {
