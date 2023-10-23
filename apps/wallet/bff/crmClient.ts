@@ -48,7 +48,7 @@ export class CrmClient {
       SMS: args.phone,
       CPF: args.cpfCnpj,
       BIRTHDATE: args.birthDate,
-      IS_TOKENHOLDER: args.isTokenHolder ?? false,
+      IS_TOKENHOLDER: false,
       IS_VERIFIED: false,
     };
 
