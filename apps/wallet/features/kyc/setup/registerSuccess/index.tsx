@@ -45,7 +45,10 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
               />
             </div>
 
-            <div className="flex flex-row items-start justify-start gap-x-4 px-4 drop-shadow min-w-[380px] w-full h-16">
+            <div
+              className="flex flex-row items-start justify-start gap-x-4 px-4 drop-shadow w-full h-16"
+              style={{ width: "calc(100vw - 48px)", maxWidth: "400px" }}
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/assets/img/axt-logo-only.svg"
