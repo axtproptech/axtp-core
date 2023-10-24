@@ -22,5 +22,7 @@
   "no_assets_yet_hint": "Este pool ainda não tem ativos registrados. Estamos trabalhando arduamente na aquisição de ativos para esse pool. Volte mais tarde.",
   "performance": "ROI",
   "total_accumulated_costs": "Custos Totais Acumulados",
-  "total_estimated_value": "Valor Total Estimado"
+  "total_estimated_value": "Valor Total Estimado",
+  "asset_history_loading_text": "O histórico está sendo carregado do Signum Blockchain...",
+  "asset_history_loading_title": "Carregando histórico de ativos"
 }
