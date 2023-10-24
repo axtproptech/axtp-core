@@ -53,9 +53,9 @@ export const ResidencyData = () => {
   }
 
   return (
-    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto">
+    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
       <section>
-        <h3 className="text-white">{t("residency_address")}</h3>
+        <h3>{t("residency_address")}</h3>
       </section>
 
       <section className="flex flex-col justify-center items-center gap-2">

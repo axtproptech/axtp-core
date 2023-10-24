@@ -3,6 +3,8 @@ import { useFormContext, Controller } from "react-hook-form";
 import { FieldBox } from "@/app/components/fieldBox";
 import { mapValidationError } from "@/app/mapValidationError";
 import { InitialSetupStep } from "@/app/types/kycData";
+import { AttentionSeeker, Slide } from "react-awesome-reveal";
+import * as React from "react";
 
 export const Form = () => {
   const { t } = useTranslation();
@@ -27,59 +29,63 @@ export const Form = () => {
   }
 
   return (
-    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto">
-      <section>
-        <h3>{t("initial_setup_title")}</h3>
-      </section>
-
-      <section className="flex flex-col justify-center items-center gap-2">
-        <Controller
-          name="firstName"
-          control={control}
-          render={({ field }) => (
-            <FieldBox
-              field={field}
-              label={t("first_name")}
-              placeholder={t("enter_first_name_placeholder")}
-              errorLabel={firstNameFieldError}
+    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
+      <Slide direction="down" triggerOnce>
+        <section>
+          <AttentionSeeker effect="heartBeat" delay={1000} triggerOnce>
+            <img
+              src="/assets/img/axt-logo-only.svg"
+              className="w-[64px] mx-auto"
+              alt="AXT Logo"
             />
-          )}
-        />
+          </AttentionSeeker>
+          <h3>{t("initial_setup_title")}</h3>
+        </section>
+      </Slide>
 
-        <Controller
-          name="lastName"
-          control={control}
-          render={({ field }) => (
-            <FieldBox
-              field={field}
-              label={t("last_name")}
-              placeholder={t("enter_last_name_placeholder")}
-              errorLabel={lastNameFieldError}
-            />
-          )}
-        />
+      <Slide direction="up" triggerOnce>
+        <section className="flex flex-col justify-center items-center gap-2">
+          <Controller
+            name="firstName"
+            control={control}
+            render={({ field }) => (
+              <FieldBox
+                field={field}
+                label={t("first_name")}
+                placeholder={t("enter_first_name_placeholder")}
+                errorLabel={firstNameFieldError}
+              />
+            )}
+          />
 
-        <p className="text-white text-center text-sm mb-0 whitespace-pre-wrap">
-          {t("enter_legal_name_hint")}
-        </p>
+          <Controller
+            name="lastName"
+            control={control}
+            render={({ field }) => (
+              <FieldBox
+                field={field}
+                label={t("last_name")}
+                placeholder={t("enter_last_name_placeholder")}
+                errorLabel={lastNameFieldError}
+              />
+            )}
+          />
 
-        <div className="divider m-0" />
-
-        <Controller
-          name="email"
-          control={control}
-          render={({ field }) => (
-            <FieldBox
-              field={field}
-              type="email"
-              label={t("email_address")}
-              placeholder={t("enter_email_address_placeholder")}
-              helperText={t("enter_email_address_label")}
-              errorLabel={emailFieldError}
-            />
-          )}
-        />
-      </section>
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <FieldBox
+                field={field}
+                type="email"
+                label={t("email_address")}
+                placeholder={t("enter_email_address_placeholder")}
+                errorLabel={emailFieldError}
+              />
+            )}
+          />
+        </section>
+      </Slide>
 
       <section />
     </div>

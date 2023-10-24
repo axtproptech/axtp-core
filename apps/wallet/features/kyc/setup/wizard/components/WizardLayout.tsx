@@ -16,11 +16,11 @@ import { Layout } from "@/app/components/layout";
 import { Stepper } from "@/app/components/stepper";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { PrintableSeedDocument } from "@/features/account/components/printableSeedDocument";
-import { selectCurrentStep, selectInitialSetupStep } from "../../../../state";
-import { KycWizard } from "../../validation/types";
-import { Steps, StepsCount } from "../../../../types/steps";
-import { kycActions } from "../../../../state";
-import { FormProgressTracker } from "./components/FormProgressTracker";
+import { selectCurrentStep, selectInitialSetupStep } from "../../../state";
+import { KycWizard } from "../validation/types";
+import { Steps, StepsCount } from "../../../types/steps";
+import { kycActions } from "../../../state";
+import { FormProgressTracker } from "../../components/FormProgressTracker";
 
 import differenceInYears from "date-fns/differenceInYears";
 

@@ -39,7 +39,7 @@ const CustomerSchema = object({
   state: string().required(),
   city: string().required(),
   zipCode: string().required(),
-  country: string().required(),
+  countryCode: string().max(2).optional(),
   proofOfAddress: string().required(), // object Id
   documentType: mixed().oneOf(["cnh", "rne"]).required(),
   frontSide: string().required(), // object Id
@@ -139,7 +139,7 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
               state: data.state,
               city: data.city,
               type: "Residential",
-              country: data.country,
+              country: data.countryCode || "BR",
               line1: data.streetAddress,
               line2: data.complementaryStreetAddress || "",
               line3: "",
@@ -178,7 +178,7 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
               state: data.state,
               city: data.city,
               type: "Residential",
-              country: data.country,
+              country: data.countryCode || "BR",
               line1: data.streetAddress,
               line2: data.complementaryStreetAddress || "",
               line3: "",

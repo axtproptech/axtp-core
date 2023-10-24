@@ -41,19 +41,17 @@ export const EmailValidation = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto">
+    <div className="flex flex-col justify-center text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
       <section>
         <h2>{t("verify_your_email")}</h2>
       </section>
 
       <section className="flex flex-col justify-center items-center gap-4">
         <div className="w-40 h-32">
-          <AttentionSeeker effect="heartBeat">
-            <AnimatedIconMailSend loopDelay={500} />
-          </AttentionSeeker>
+          <AnimatedIconMailSend loopDelay={500} />
         </div>
 
-        <span className="text-white text-center text-base">
+        <span className="text-center text-base">
           {t("verify_your_email_hint", { email })}
         </span>
 
@@ -79,10 +77,6 @@ export const EmailValidation = () => {
         >
           {t("paste_code")}
         </Button>
-
-        <span className="text-zinc-300 text-sm text-center">
-          {t("go_check_inbox")}
-        </span>
       </section>
 
       <section />

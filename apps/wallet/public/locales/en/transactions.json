@@ -28,7 +28,7 @@
   "typeSinglePayment": "Payment",
   "typeSubscriptionCancel": "Subscription Cancellation",
   "typeSubscriptionPayment": "Subscription Payment",
-  "typeSubscriptionSubscribe": "Subscription Subscription",
+  "typeSubscriptionSubscribe": "Subscription",
   "typeTokenAddTreasuryAccount": "Token Treasury Assignment",
   "typeTokenAskOrderCancellation": "Token Order Cancellation",
   "typeTokenAskOrderPlacement": "Token Ask Order",

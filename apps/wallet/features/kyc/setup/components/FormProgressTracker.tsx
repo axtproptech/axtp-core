@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Button, Modal } from "react-daisyui";
 import { useFormContext } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "@/states/hooks";
+import { AnimatedIconWarn } from "@/app/components/animatedIcons/animatedIconWarn";
 import {
   initialState,
   kycActions,
@@ -17,10 +18,9 @@ import {
   selectMotherDataStep,
   selectDocumentStep,
   KycState,
-} from "../../../../../state";
-import { AnimatedIconWarn } from "@/app/components/animatedIcons/animatedIconWarn";
-import { KycWizard } from "../../../validation/types";
-import { Steps } from "../../../../../types/steps";
+} from "../../state";
+import { KycWizard } from "../wizard/validation/types";
+import { Steps } from "../../types/steps";
 
 export const FormProgressTracker = () => {
   const { t } = useTranslation();
@@ -61,23 +61,30 @@ export const FormProgressTracker = () => {
       documentStep: currentDocumentStep,
     };
 
-    return currentStep > Steps.AgreeTerms && !isEqual(initialState, copyDraft)
-      ? openDialog()
-      : null;
+    return !isEqual(initialState, copyDraft) ? openDialog() : null;
   };
 
   useEffect(() => {
-    searchForProgress();
+    if (router.query?.continueProgress == "true") {
+      continueWizard();
+    } else {
+      searchForProgress();
+    }
   }, []);
 
-  const resetProgress = () => {
+  const resetProcess = () => {
     dispatch(reset());
     closeDialog();
-    stepMovement(Steps.AgreeTerms);
+
+    if (router.pathname === "/kyc/setup/wizard") stepMovement(Steps.AgreeTerms);
   };
 
   // Migrate persisted data from redux to react hook form
-  const continueWithCurrentProgress = () => {
+  const continueWizard = () => {
+    if (router.pathname === "/kyc/setup") {
+      return router.replace("/kyc/setup/wizard?continueProgress=true");
+    }
+
     const { cpf, birthDate, birthPlace } = currentSecondStep;
 
     const { phone, profession } = currentThirdStep;
@@ -122,10 +129,13 @@ export const FormProgressTracker = () => {
 
     let stepToMove = currentStep;
 
-    if (currentStep >= Steps.BlockchainAccountSetup)
+    if (currentStep >= Steps.BlockchainAccountSetup) {
       stepToMove = Steps.BlockchainAccountSetup;
+    }
 
-    stepMovement(currentStep);
+    if (!(router.query?.continueProgress == "true")) {
+      stepMovement(stepToMove);
+    }
 
     closeDialog();
   };
@@ -149,7 +159,7 @@ export const FormProgressTracker = () => {
       <Modal.Actions className="flex flex-col items-center justify-center ">
         <Button
           type="button"
-          onClick={continueWithCurrentProgress}
+          onClick={continueWizard}
           className="mb-2 text-sm capitalize"
           color="secondary"
         >
@@ -158,7 +168,7 @@ export const FormProgressTracker = () => {
 
         <Button
           type="button"
-          onClick={resetProgress}
+          onClick={resetProcess}
           className="text-sm capitalize"
         >
           {t("pick_where_you_left_off_reject_btn_label")}

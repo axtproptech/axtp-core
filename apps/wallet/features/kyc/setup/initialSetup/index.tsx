@@ -16,11 +16,12 @@ import { EmailValidation } from "./steps/EmailValidation";
 import { Steps } from "./types/steps";
 import { Form } from "./steps/Form";
 import { kycActions } from "../../state";
+import { FormProgressTracker } from "../components/FormProgressTracker";
 
 export const InitialSetup = () => {
   const { t } = useTranslation();
   const { KycService } = useAppContext();
-  const { showError } = useNotification();
+  const { showError, showInfo } = useNotification();
   const { setInitialSetupStep, reset } = kycActions;
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -77,8 +78,13 @@ export const InitialSetup = () => {
     switch (currentStep) {
       case Steps.Form:
         try {
-          setIsSendingRequest(true);
+          const response = await KycService.fetchCustomerDataByEmail(email);
+          if (response) {
+            await router.replace("/account/import");
+            return showInfo(t("account_already_created"));
+          }
 
+          setIsSendingRequest(true);
           await KycService.sendAddressVerificationMail(email, firstName);
 
           await moveToCodeVerificationStep();
@@ -184,6 +190,7 @@ export const InitialSetup = () => {
 
   return (
     <FormProvider {...methods}>
+      <FormProgressTracker />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Layout bottomNav={bottomNav}>
           <div className="carousel w-full mx-[2px] overflow-x-hidden">
