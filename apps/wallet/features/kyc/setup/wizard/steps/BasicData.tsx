@@ -93,7 +93,7 @@ export const BasicData = () => {
                 {cpfFieldError}
               </span>
             ) : (
-              <span className="label-text-alt font-bold text-white">
+              <span className="label-text-alt opacity-70">
                 {t("enter_cpf_field_hint")}
               </span>
             )}
@@ -122,6 +122,7 @@ export const BasicData = () => {
               label={t("birth_place")}
               placeholder={t("birth_place_placeholder")}
               errorLabel={birthPlaceFieldError}
+              helperText={t("birth_place_helper_text")}
             />
           )}
         />

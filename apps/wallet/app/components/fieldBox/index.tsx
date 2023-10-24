@@ -38,9 +38,7 @@ export const FieldBox = ({
       {(helperText || errorLabel) && (
         <label className="label">
           {helperText && !errorLabel && (
-            <span className="label-text-alt font-bold text-white">
-              {helperText}
-            </span>
+            <span className="label-text-alt opacity-70">{helperText}</span>
           )}
 
           {errorLabel && (

@@ -156,7 +156,7 @@ export const Wizard = () => {
         <WizardLayout isSubmitting={isSubmitting}>
           <div className="carousel w-full mx-[2px]  overflow-x-hidden">
             <div id="step0" className="carousel-item relative w-full">
-              <AgreeTerms />
+              <AgreeTerms firstName={currentInitialSetupStep.firstName} />
             </div>
             <div id="step1" className="carousel-item relative w-full">
               <BasicData />

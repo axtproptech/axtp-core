@@ -25,9 +25,7 @@ export const DocumentFiles = () => {
     <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
       <section>
         <h3>{t("document")}</h3>
-        <p className="text-white text-justify font-bold">
-          {t("document_upload_description")}
-        </p>
+        <p className="text-justify">{t("document_upload_description")}</p>
       </section>
 
       <section className="flex flex-col justify-center items-center gap-2">

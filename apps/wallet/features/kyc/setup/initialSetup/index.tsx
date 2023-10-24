@@ -82,9 +82,8 @@ export const InitialSetup = () => {
           const response = await KycService.fetchCustomerDataByEmail(email);
 
           if (response) {
-            showInfo(t("account_already_created"));
-
-            return await router.replace("/account/import");
+            await router.replace("/account/import");
+            return showInfo(t("account_already_created"));
           }
         } catch (error) {}
 

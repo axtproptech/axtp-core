@@ -61,19 +61,13 @@ export const BlockchainAccountSetup = () => {
     <div className="flex flex-col justify-center text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
       <section>
         <h2>{t("creation_of_blockchain_account")}</h2>
+        <div className="text-justify">{t("your_account_hint")}</div>
       </section>
 
-      <section className="flex flex-col justify-center items-center gap-4">
-        <div className="w-40 h-32">
-          <AttentionSeeker effect="heartBeat">
-            <AnimatedIconCoins loopDelay={500} />
-          </AttentionSeeker>
+      <section className="relative flex flex-col justify-center items-center gap-4 mt-10">
+        <div className="absolute left-[4px] top-[-40px] w-[64px] bg-base-100">
+          <AnimatedIconCoins loopDelay={500} />
         </div>
-
-        <span className="text-white text-center font-bold">
-          {t("your_account_hint")}
-        </span>
-
         <Input
           className="w-full text-center border-base-content font-bold"
           size="lg"

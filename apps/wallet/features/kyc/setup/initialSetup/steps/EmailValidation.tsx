@@ -53,7 +53,7 @@ export const EmailValidation = () => {
           </AttentionSeeker>
         </div>
 
-        <span className="text-white text-center text-base">
+        <span className="text-center text-base">
           {t("verify_your_email_hint", { email })}
         </span>
 
@@ -79,10 +79,6 @@ export const EmailValidation = () => {
         >
           {t("paste_code")}
         </Button>
-
-        <span className="text-zinc-300 text-sm text-center">
-          {t("go_check_inbox")}
-        </span>
       </section>
 
       <section />

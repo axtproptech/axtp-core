@@ -25,9 +25,7 @@ export const MotherData = () => {
     <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
       <section>
         <h3>{t("mothers_full_name")}</h3>
-        <p className="text-white text-justify font-bold">
-          {t("mothers_full_name_description")}
-        </p>
+        <p className="text-justify">{t("mothers_full_name_description")}</p>
       </section>
 
       <section className="flex flex-col justify-center items-center gap-2">
@@ -37,7 +35,7 @@ export const MotherData = () => {
           render={({ field }) => (
             <FieldBox
               field={field}
-              label={t("first_name")}
+              label={t("mothers_first_name")}
               placeholder={t("enter_first_name_placeholder")}
               errorLabel={firstNameFieldError}
             />
@@ -50,16 +48,12 @@ export const MotherData = () => {
           render={({ field }) => (
             <FieldBox
               field={field}
-              label={t("last_name")}
+              label={t("mothers_last_name")}
               placeholder={t("enter_last_name_placeholder")}
               errorLabel={lastNameFieldError}
             />
           )}
         />
-
-        <p className="text-white text-center text-sm mb-0 whitespace-pre-wrap">
-          {t("enter_mothers_legal_name_hint")}
-        </p>
       </section>
     </div>
   );

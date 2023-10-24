@@ -3,56 +3,67 @@ import { Form, Checkbox } from "react-daisyui";
 import { useFormContext, Controller } from "react-hook-form";
 import { FieldBox } from "@/app/components/fieldBox";
 import { KycWizard } from "../validation/types";
+import { RiCheckboxCircleLine } from "react-icons/ri";
 
 export const BlockchainAccountSeedVerification = () => {
   const { t } = useTranslation();
-  const { control, watch } = useFormContext<KycWizard>();
+  const { control, watch, getValues } = useFormContext<KycWizard>();
 
   const seedPhraseVerificationIndex = watch("seedPhraseVerificationIndex");
+  const enteredWord = watch("seedPhraseVerification");
 
   const defaultFieldText = t("enter_word_number", {
     number: seedPhraseVerificationIndex,
   });
 
+  const isCorrectWord =
+    enteredWord ===
+    getValues("accountSeedPhrase")
+      .split(" ")
+      .at(seedPhraseVerificationIndex - 1);
+
   return (
     <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
       <section>
         <h3>{t("verification")}</h3>
-        <p className="text-white text-justify font-bold">
+        <p className="text-justify font-bold">
           {t("enter_seed_phrase_verification", {
             seedIndex: seedPhraseVerificationIndex,
           })}
         </p>
       </section>
 
-      <section className="flex flex-col justify-start items-center gap-2">
+      <section>
         <Controller
           name="seedPhraseVerification"
           control={control}
           render={({ field }) => (
-            <FieldBox
-              field={field}
-              label={defaultFieldText}
-              placeholder={defaultFieldText}
-              className="text-center font-bold text-white"
-            />
+            <div className="relative">
+              <FieldBox
+                field={field}
+                label={defaultFieldText}
+                placeholder={defaultFieldText}
+                className="text-center font-bold text-white"
+              />
+              {isCorrectWord && (
+                <RiCheckboxCircleLine className="absolute top-[48px] right-2" />
+              )}
+            </div>
           )}
         />
+      </section>
 
-        <div className="divider" />
-
+      <section className="flex flex-col justify-start items-center gap-2 mt-10">
         <h3 className="m-0">{t("safety_terms")}</h3>
-
-        <span className="text-white text-justify font-bold mb-2">
+        <div className="text-justify mb-2">
           {t("confirm_saved_seed_phrase_paragraph")}
-        </span>
-
+        </div>
         <Controller
           name="agreeSafetyTerms"
           control={control}
           render={({ field }) => (
-            <div className="shadow bg-base-200 w-64 rounded-lg p-4">
-              <Form.Label title={t("accept")}>
+            <div className="shadow bg-base-200 rounded-lg p-4">
+              <Form.Label className="text-left" title={t("accept_terms")}>
                 {/* @ts-ignore */}
                 <Checkbox {...field} size="lg" />
               </Form.Label>
@@ -60,8 +71,6 @@ export const BlockchainAccountSeedVerification = () => {
           )}
         />
       </section>
-
-      <section />
     </div>
   );
 };

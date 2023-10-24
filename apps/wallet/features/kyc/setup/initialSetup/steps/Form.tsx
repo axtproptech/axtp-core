@@ -59,12 +59,6 @@ export const Form = () => {
           )}
         />
 
-        <p className="text-white text-center text-sm mb-0 whitespace-pre-wrap">
-          {t("enter_legal_name_hint")}
-        </p>
-
-        <div className="divider m-0" />
-
         <Controller
           name="email"
           control={control}
@@ -74,7 +68,6 @@ export const Form = () => {
               type="email"
               label={t("email_address")}
               placeholder={t("enter_email_address_placeholder")}
-              helperText={t("enter_email_address_label")}
               errorLabel={emailFieldError}
             />
           )}
