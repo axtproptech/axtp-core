@@ -10,6 +10,7 @@ import { handleError } from "@/bff/handler/handleError";
 import { cpf as CpfValidator, cnpj as CnpjValidator } from "cpf-cnpj-validator";
 import { createBlockchainAccountData } from "./createBlockchainAccountData";
 import { sendSuccessfulRegistrationMails } from "./sendSuccessfulRegistrationMails";
+import { createCrmContact } from "@/bff/handler/customer/registerCustomer/createCrmContact";
 
 function isValidCpfOrCnpj(cpfCnpj?: string) {
   if (!cpfCnpj) {
@@ -210,7 +211,10 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
       },
     });
 
-    await sendSuccessfulRegistrationMails(newCustomer);
+    await Promise.all([
+      sendSuccessfulRegistrationMails(newCustomer),
+      createCrmContact(newCustomer),
+    ]);
 
     bffLoggingService.info({
       msg: "New customer registered",
