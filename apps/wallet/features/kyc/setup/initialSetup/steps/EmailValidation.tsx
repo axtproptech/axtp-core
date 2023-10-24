@@ -48,9 +48,7 @@ export const EmailValidation = () => {
 
       <section className="flex flex-col justify-center items-center gap-4">
         <div className="w-40 h-32">
-          <AttentionSeeker effect="heartBeat">
-            <AnimatedIconMailSend loopDelay={500} />
-          </AttentionSeeker>
+          <AnimatedIconMailSend loopDelay={500} />
         </div>
 
         <span className="text-center text-base">

@@ -21,10 +21,6 @@ export const HomeKYC = () => {
   return (
     <div className="flex justify-center items-center h-[75vh]">
       <div className="flex flex-col justify-center max-w-sm gap-4">
-        <p className="text-white text-center font-bold">
-          {t("kyc_home_welcome_title")}
-        </p>
-
         <Glasscard
           icon={
             <AttentionSeeker effect="tada" delay={500}>
@@ -36,9 +32,7 @@ export const HomeKYC = () => {
           onClick={handleCardClick("/account/import")}
         />
 
-        <p className="text-zinc-300 text-center font-bold mt-8">
-          {t("are_you_new_here")}
-        </p>
+        <p className="text-center mt-8">{t("are_you_new_here")}</p>
 
         <Glasscard
           icon={
