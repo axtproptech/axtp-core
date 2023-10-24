@@ -65,23 +65,26 @@ export const FormProgressTracker = () => {
   };
 
   useEffect(() => {
-    searchForProgress();
+    if (router.query?.continueProgress == "true") {
+      continueWizard();
+    } else {
+      searchForProgress();
+    }
   }, []);
 
-  useEffect(() => {
-    if (isOpen && router.pathname === "/kyc/setup") {
-      router.push("/kyc/setup/wizard");
-    }
-  }, [isOpen, router]);
-
-  const resetProgress = () => {
+  const resetProcess = () => {
     dispatch(reset());
     closeDialog();
-    stepMovement(Steps.AgreeTerms);
+
+    if (router.pathname === "/kyc/setup/wizard") stepMovement(Steps.AgreeTerms);
   };
 
   // Migrate persisted data from redux to react hook form
-  const continueWithCurrentProgress = () => {
+  const continueWizard = () => {
+    if (router.pathname === "/kyc/setup") {
+      return router.replace("/kyc/setup/wizard?continueProgress=true");
+    }
+
     const { cpf, birthDate, birthPlace } = currentSecondStep;
 
     const { phone, profession } = currentThirdStep;
@@ -126,10 +129,13 @@ export const FormProgressTracker = () => {
 
     let stepToMove = currentStep;
 
-    if (currentStep >= Steps.BlockchainAccountSetup)
+    if (currentStep >= Steps.BlockchainAccountSetup) {
       stepToMove = Steps.BlockchainAccountSetup;
+    }
 
-    stepMovement(currentStep);
+    if (!(router.query?.continueProgress == "true")) {
+      stepMovement(stepToMove);
+    }
 
     closeDialog();
   };
@@ -153,7 +159,7 @@ export const FormProgressTracker = () => {
       <Modal.Actions className="flex flex-col items-center justify-center ">
         <Button
           type="button"
-          onClick={continueWithCurrentProgress}
+          onClick={continueWizard}
           className="mb-2 text-sm capitalize"
           color="secondary"
         >
@@ -162,7 +168,7 @@ export const FormProgressTracker = () => {
 
         <Button
           type="button"
-          onClick={resetProgress}
+          onClick={resetProcess}
           className="text-sm capitalize"
         >
           {t("pick_where_you_left_off_reject_btn_label")}
