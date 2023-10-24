@@ -72,26 +72,20 @@ export const InitialSetup = () => {
     }
   };
 
-  const assertNewCustomer = useCallback(
-    async (email: string) => {
-      try {
-        const response = await KycService.fetchCustomerDataByEmail(email);
-        if (response) {
-          await router.replace("/account/import");
-          return showInfo(t("account_already_created"));
-        }
-      } catch (error) {}
-    },
-    [KycService, router, showInfo, t]
-  );
-
   const onSubmit: SubmitHandler<InitialSetupStep> = async (data) => {
     const { firstName, lastName, email } = data;
 
     switch (currentStep) {
       case Steps.Form:
         try {
-          await assertNewCustomer(email);
+          const response = await KycService.fetchCustomerDataByEmail(email);
+          if (response) {
+            await router.replace("/account/import");
+            return showInfo(t("account_already_created"));
+          }
+        } catch (error) {}
+
+        try {
           setIsSendingRequest(true);
           await KycService.sendAddressVerificationMail(email, firstName);
           await moveToCodeVerificationStep();
