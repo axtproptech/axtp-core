@@ -26,17 +26,15 @@ export const BlockchainAccountSeed = () => {
 
       <section className="flex flex-col justify-start items-center gap-2 mt-8">
         <span className="text-center font-bold">
-          🔺 {t("for_your_eyes_only")}🔺
+          🤫 {t("for_your_eyes_only")}🤫
         </span>
-
         <HintBox>
           <div className="absolute w-[64px] top-[-40px] left-[4px] bg-base-100">
             <AnimatedIconContract loopDelay={500} />
           </div>
           <div className="text-xl mt-2">{accountSeedPhrase}</div>
         </HintBox>
-
-        <div className="w-full flex flex-row items-center justify-between px-4 mt-4">
+        <div className="w-full flex flex-row items-center justify-between px-4 mt-10">
           <Button
             type="button"
             className="animate-wiggle w-full"
@@ -48,8 +46,6 @@ export const BlockchainAccountSeed = () => {
           </Button>
         </div>
       </section>
-
-      <section />
     </div>
   );
 };
