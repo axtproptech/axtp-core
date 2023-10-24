@@ -77,20 +77,14 @@ export const InitialSetup = () => {
 
     switch (currentStep) {
       case Steps.Form:
-        // Verify if customer exists
         try {
           const response = await KycService.fetchCustomerDataByEmail(email);
-
           if (response) {
             await router.replace("/account/import");
             return showInfo(t("account_already_created"));
           }
-        } catch (error) {}
 
-        // Send code
-        try {
           setIsSendingRequest(true);
-
           await KycService.sendAddressVerificationMail(email, firstName);
 
           await moveToCodeVerificationStep();
