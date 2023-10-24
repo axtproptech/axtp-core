@@ -17,7 +17,7 @@ export const BlockchainAccountSeed = () => {
   };
 
   return (
-    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto">
+    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
       <section>
         <h3>{t("you_recovery_phrase")}</h3>
         <p className="text-white text-justify font-bold">
@@ -40,15 +40,11 @@ export const BlockchainAccountSeed = () => {
           🔺 {t("for_your_eyes_only")}🔺
         </span>
 
-        <span className="text-zinc-300 text-center text-sm">
-          {t("if_you_switch_device_hint")}
-        </span>
-
         <span className="text-zinc-300 text-center whitespace-pre font-medium">
           {t("copy_seed_recomendation")}
         </span>
 
-        <div className="w-full flex flex-row items-center justify-between gap-2">
+        <div className="w-full flex flex-row items-center justify-between px-4">
           <Button
             type="button"
             className="animate-wiggle w-full"

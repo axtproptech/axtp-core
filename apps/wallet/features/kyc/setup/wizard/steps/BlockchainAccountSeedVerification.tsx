@@ -15,7 +15,7 @@ export const BlockchainAccountSeedVerification = () => {
   });
 
   return (
-    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto">
+    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
       <section>
         <h3>{t("verification")}</h3>
         <p className="text-white text-justify font-bold">
@@ -41,7 +41,7 @@ export const BlockchainAccountSeedVerification = () => {
 
         <div className="divider" />
 
-        <h6 className="text-justify font-bold">{t("safety_terms")}</h6>
+        <h3 className="m-0">{t("safety_terms")}</h3>
 
         <span className="text-white text-justify font-bold mb-2">
           {t("confirm_saved_seed_phrase_paragraph")}

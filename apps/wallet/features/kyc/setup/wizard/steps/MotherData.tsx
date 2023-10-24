@@ -22,10 +22,10 @@ export const MotherData = () => {
   }
 
   return (
-    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto">
+    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
       <section>
         <h3>{t("mothers_full_name")}</h3>
-        <p className="text-white text-justify font-medium text-sm">
+        <p className="text-white text-justify font-bold">
           {t("mothers_full_name_description")}
         </p>
       </section>

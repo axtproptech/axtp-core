@@ -27,7 +27,7 @@ export const Form = () => {
   }
 
   return (
-    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto">
+    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
       <section>
         <h3>{t("initial_setup_title")}</h3>
       </section>
