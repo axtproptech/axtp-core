@@ -108,7 +108,7 @@ export const ResidencyData = () => {
                   placeholder={t("zip_code")}
                   onChange={undefined}
                   onValueChange={(values) => {
-                    field.onChange(values.floatValue);
+                    field.onChange(values.value);
                   }}
                   mask="_"
                   size="lg"

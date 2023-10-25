@@ -7,6 +7,7 @@ import {
 } from "@/app/types/kycData";
 
 interface BlockchainAccountStep {
+  devicePin: string;
   accountPublicKey: string;
   accountSeedPhrase: string;
   agreeSafetyTerms: boolean;

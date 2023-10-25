@@ -1,12 +1,12 @@
 import { useTranslation } from "next-i18next";
 import { useEffect } from "react";
-import { Input } from "react-daisyui";
+import { Divider, Input } from "react-daisyui";
 import { useFormContext } from "react-hook-form";
 import { Address } from "@signumjs/core";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { generateMasterKeys, PassPhraseGenerator } from "@signumjs/crypto";
-import { AttentionSeeker } from "react-awesome-reveal";
 import { voidFn } from "@/app/voidFn";
+import { PinInput } from "@/app/components/pinInput";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 import { KycWizard } from "../validation/types";
 
@@ -15,6 +15,7 @@ export const BlockchainAccountSetup = () => {
   const { Ledger } = useAppContext();
   const { watch, setValue } = useFormContext<KycWizard>();
 
+  const devicePin = watch("devicePin");
   const accountPublicKey = watch("accountPublicKey");
 
   const generateSeed = async () => {
@@ -25,6 +26,12 @@ export const BlockchainAccountSetup = () => {
 
     return words.join(" ");
   };
+
+  const handlePinChange = (value: string) => {
+    setValue("devicePin", value);
+  };
+
+  const isWeak = !!devicePin.startsWith("12345");
 
   const pickRandomKeyIndex = () => {
     const min = 1;
@@ -75,6 +82,20 @@ export const BlockchainAccountSetup = () => {
           onChange={voidFn}
           readOnly
         />
+      </section>
+
+      <Divider />
+
+      <section>
+        <h2>{t("define_pin")}</h2>
+        <div className="text-justify">{t("define_pin_hint")}</div>
+
+        <section className="relative flex flex-col justify-center items-center gap-4 mt-10">
+          <PinInput onPinChange={handlePinChange} />
+          {isWeak && (
+            <small className="text-error mt-2">{t("pin_weak_pin")}</small>
+          )}
+        </section>
       </section>
 
       <section />

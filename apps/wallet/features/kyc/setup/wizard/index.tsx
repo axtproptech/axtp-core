@@ -4,9 +4,12 @@ import { useTranslation } from "next-i18next";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { cpf } from "cpf-cnpj-validator";
+import { generateMasterKeys } from "@signumjs/crypto";
+import { encrypt, stretchKey } from "@/app/sec";
 import { useAppSelector, useAppDispatch } from "@/states/hooks";
 import { useNotification } from "@/app/hooks/useNotification";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { accountActions } from "@/app/states/accountState";
 import { KycWizard } from "./validation/types";
 import { KycWizardSchema } from "./validation/schemas";
 import { WizardLayout } from "./components/WizardLayout";
@@ -66,6 +69,7 @@ export const Wizard = () => {
       backSide: "",
 
       // Blockchain Account Step
+      devicePin: "",
       accountPublicKey: "",
       accountSeedPhrase: "",
       seedPhraseVerification: "",
@@ -101,6 +105,8 @@ export const Wizard = () => {
         accountPublicKey,
         agreeTerms,
         agreeSafetyTerms,
+        devicePin,
+        accountSeedPhrase,
       } = data;
 
       const payload = {
@@ -133,6 +139,19 @@ export const Wizard = () => {
 
       if (response!.customerId) {
         dispatch(kycActions.reset());
+
+        const keys = generateMasterKeys(accountSeedPhrase);
+        const { salt, key } = await stretchKey(devicePin);
+        const securedKeys = await encrypt(key, JSON.stringify(keys));
+
+        dispatch(
+          accountActions.setAccount({
+            publicKey: keys.publicKey,
+            securedKeys,
+            salt,
+          })
+        );
+
         await router.replace(`/kyc/setup/success?cuid=${response!.customerId}`);
       }
     } catch (e: any) {

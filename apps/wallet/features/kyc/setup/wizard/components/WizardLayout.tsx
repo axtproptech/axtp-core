@@ -82,6 +82,7 @@ export const WizardLayout = ({ children, isSubmitting }: Props) => {
   const documentType = watch("documentType");
   const frontSide = watch("frontSide");
   const backSide = watch("backSide");
+  const devicePin = watch("devicePin");
   const accountPublicKey = watch("accountPublicKey");
   const accountSeedPhrase = watch("accountSeedPhrase");
   const seedPhraseVerification = watch("seedPhraseVerification");
@@ -190,7 +191,12 @@ export const WizardLayout = ({ children, isSubmitting }: Props) => {
       break;
 
     case Steps.BlockchainAccountSetup:
-      canMoveToNextStep = !!(accountPublicKey && accountSeedPhrase);
+      canMoveToNextStep = !!(
+        accountPublicKey &&
+        accountSeedPhrase &&
+        devicePin.length >= 5 &&
+        devicePin.length <= 9
+      );
       break;
 
     case Steps.BlockchainAccountSeed:
