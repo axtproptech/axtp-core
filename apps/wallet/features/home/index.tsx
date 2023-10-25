@@ -54,7 +54,6 @@ export const Home = () => {
       <div className="relative overflow-x-hidden h-[calc(100vh_-_100px_-_64px)] lg:h-[calc(100vh_-_120px_-_64px)]">
         <section className="w-full">
           <DashboardStats stats={stats} />
-          <FileUploader onUploadSuccess={console.log} />
         </section>
         <section className="prose text-center mx-auto mt-4">
           <Greeting />
