@@ -21,6 +21,7 @@ const r2 = new aws.S3({
   accessKeyId: `${AccessKeyId}`,
   secretAccessKey: `${AccessKeySecret}`,
   signatureVersion: "v4",
+  region: "auto",
 });
 
 export const createUploadURL: RouteHandlerFunction = async (req, res) => {
