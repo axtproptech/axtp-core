@@ -1,6 +1,6 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { CreateUploadUrlResponse } from "@/types/createUploadUrlResponse";
-import retry from "p-retry";
+import retry, { AbortError } from "p-retry";
 
 interface UploadFileArgs {
   file: File;
@@ -41,6 +41,10 @@ export class FileService {
 
       if (status === 200) {
         return { signedUrl, objectUrl, objectName };
+      }
+
+      if (status >= 400 && status < 500) {
+        throw new AbortError("Failed to upload file(s)");
       }
 
       return { signedUrl: "", objectUrl: "", objectName: "" };
