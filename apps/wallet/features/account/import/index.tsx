@@ -63,7 +63,6 @@ export const AccountImport: FC<Props> = ({ onStepChange }) => {
   );
 
   const nextStep = async () => {
-    console.log("nextStep called");
     const newStep = Math.min(currentStep + 1, StepCount - 1);
     setCurrentStep(newStep);
     await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
