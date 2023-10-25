@@ -22,10 +22,7 @@ export const BasicData = () => {
 
   let cpfFieldError = "";
   if (errors.cpf?.message) {
-    cpfFieldError = t(
-      mapValidationError(errors.cpf.message),
-      mapValidationError(errors.cpf.message, true)
-    );
+    cpfFieldError = t(mapValidationError(errors.cpf.message));
   }
 
   // Custom CPF Validation
@@ -78,7 +75,7 @@ export const BasicData = () => {
                 allowEmptyFormatting
                 onChange={undefined}
                 onValueChange={(values) => {
-                  field.onChange(values.floatValue);
+                  field.onChange(values.value);
                 }}
                 mask="_"
                 size="lg"
