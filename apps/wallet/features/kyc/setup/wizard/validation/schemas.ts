@@ -15,7 +15,7 @@ export const KycWizardSchema = yup
     agreeTerms: booleanField,
 
     // Basic data step
-    cpf: requiredStringField.min(11),
+    cpf: requiredStringField,
     birthDate: requiredStringField,
     birthPlace: requiredStringField,
 
@@ -42,6 +42,7 @@ export const KycWizardSchema = yup
     backSide: optionalStringField,
 
     // Blockchain Account Step
+    devicePin: requiredStringField,
     accountPublicKey: requiredStringField,
     accountSeedPhrase: requiredStringField,
     seedPhraseVerification: requiredStringField,
