@@ -49,6 +49,10 @@ export const FormProgressTracker = () => {
   const openDialog = () => setIsOpen(true);
 
   const searchForProgress = () => {
+    if (router.pathname === "/kyc/setup" && currentInitialSetupStep.code) {
+      return router.replace("/kyc/setup/wizard");
+    }
+
     // Made a copy because we do not want to mutate the redux state
     const copyDraft: KycState = {
       step: currentStep,
@@ -61,30 +65,24 @@ export const FormProgressTracker = () => {
       documentStep: currentDocumentStep,
     };
 
-    return !isEqual(initialState, copyDraft) ? openDialog() : null;
+    return currentStep > Steps.AgreeTerms && !isEqual(initialState, copyDraft)
+      ? openDialog()
+      : null;
   };
 
   useEffect(() => {
-    if (router.query?.continueProgress == "true") {
-      continueWizard();
-    } else {
-      searchForProgress();
-    }
+    searchForProgress();
   }, []);
 
   const resetProcess = () => {
     dispatch(reset());
     closeDialog();
 
-    if (router.pathname === "/kyc/setup/wizard") stepMovement(Steps.AgreeTerms);
+    if (router.pathname === "/kyc/setup/wizard") router.replace("/kyc/setup");
   };
 
   // Migrate persisted data from redux to react hook form
   const continueWizard = () => {
-    if (router.pathname === "/kyc/setup") {
-      return router.replace("/kyc/setup/wizard?continueProgress=true");
-    }
-
     const { cpf, birthDate, birthPlace } = currentSecondStep;
 
     const { phone, profession } = currentThirdStep;
@@ -133,9 +131,7 @@ export const FormProgressTracker = () => {
       stepToMove = Steps.BlockchainAccountSetup;
     }
 
-    if (!(router.query?.continueProgress == "true")) {
-      stepMovement(stepToMove);
-    }
+    stepMovement(stepToMove);
 
     closeDialog();
   };

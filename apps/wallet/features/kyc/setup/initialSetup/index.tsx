@@ -1,6 +1,6 @@
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
@@ -83,21 +83,20 @@ export const InitialSetup = () => {
             await router.replace("/account/import");
             return showInfo(t("account_already_created"));
           }
+        } catch (error) {}
 
+        try {
           setIsSendingRequest(true);
           await KycService.sendAddressVerificationMail(email, firstName);
-
           await moveToCodeVerificationStep();
         } catch (e: any) {
           switch (e.message) {
             case "Blocked":
               showError(t("email_blocked", { email }));
               break;
-
             case "Too many requests":
               showError(t("wait_time_for_token_req"));
               break;
-
             default:
               showError(e);
               break;
