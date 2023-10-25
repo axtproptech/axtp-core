@@ -11,6 +11,7 @@ import { JoinClubButton } from "@/app/components/buttons/joinClubButton";
 import { ShowAccountButton } from "@/app/components/buttons/showAccountButton";
 import { RegisterCustomerButton } from "@/app/components/buttons/registerCustomerButton";
 import { Greeting } from "@/app/components/greeting";
+import { FileUploader } from "@/app/components/fileUploader";
 
 export const Home = () => {
   const pools = useAppSelector(selectAllPools);
@@ -53,6 +54,7 @@ export const Home = () => {
       <div className="relative overflow-x-hidden h-[calc(100vh_-_100px_-_64px)] lg:h-[calc(100vh_-_120px_-_64px)]">
         <section className="w-full">
           <DashboardStats stats={stats} />
+          <FileUploader onUploadSuccess={console.log} />
         </section>
         <section className="prose text-center mx-auto mt-4">
           <Greeting />
