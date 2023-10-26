@@ -6,6 +6,7 @@ export class CrmServiceError extends BrevoError {}
 
 export enum ContactListType {
   KycCompleted = 7,
+  TokenHolder = 8,
 }
 
 export interface CreateContactArgs {
@@ -26,13 +27,13 @@ export interface CreateContactArgs {
 
 export interface UpdateContactArgs {
   email: string;
-  cuid: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  birthDate: Date;
-  isTokenHolder: boolean;
-  isVerified: boolean;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  cpfCnpj?: string;
+  birthDate?: Date | null;
+  isTokenHolder?: boolean;
+  isVerified?: boolean;
 }
 
 /**
@@ -74,12 +75,32 @@ export class CrmService {
     }
   }
 
+  /**
+   * Updates an existing contact
+   * Partial update is possible
+   * @param args
+   */
   public async updateContact(args: UpdateContactArgs) {
     try {
-      throw new Error("Not implemented yet");
-      // TODO:
-      // const contact = new Brevo.UpdateContact();
-      // await this.contactsApi.updateContact(contact);
+      const contact = new Brevo.UpdateContact();
+      contact.attributes = {
+        FIRSTNAME: args.firstName,
+        LASTNAME: args.lastName,
+        PHONE: args.phone,
+        CPF: args.cpfCnpj,
+        BIRTHDATE: args.birthDate,
+        IS_TOKENHOLDER: args.isTokenHolder ?? false,
+        IS_VERIFIED: args.isVerified ?? false,
+      };
+      if (args.isTokenHolder) {
+        contact.listIds = [
+          ContactListType.TokenHolder,
+          ContactListType.KycCompleted,
+        ];
+      } else {
+        contact.listIds = [ContactListType.KycCompleted];
+      }
+      await this.contactsApi.updateContact(args.email, contact);
     } catch (e: any) {
       throw new CrmServiceError(e);
     }
