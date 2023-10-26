@@ -45,7 +45,6 @@ export class CrmClient {
       FIRSTNAME: args.firstName,
       LASTNAME: args.lastName,
       PHONE: args.phone,
-      SMS: args.phone,
       CPF: args.cpfCnpj,
       BIRTHDATE: args.birthDate,
       IS_TOKENHOLDER: false,

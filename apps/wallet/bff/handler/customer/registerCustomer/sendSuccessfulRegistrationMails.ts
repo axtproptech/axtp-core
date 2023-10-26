@@ -30,7 +30,11 @@ async function sendRegistrationMailToCustomer(
     bffLoggingService.error({
       msg: "Error sending registration mail to customer: " + e.message,
       domain: "customer",
-      detail: { email: newCustomer.email1, cuid: newCustomer.cuid },
+      detail: {
+        email: newCustomer.email1,
+        cuid: newCustomer.cuid,
+        detail: e.text,
+      },
     });
   }
 }
@@ -66,7 +70,11 @@ async function sendRegistrationMailToAXT(
     bffLoggingService.error({
       msg: "Error sending internal notification mail: " + e.message,
       domain: "customer",
-      detail: { email: newCustomer.email1, cuid: newCustomer.cuid },
+      detail: {
+        email: newCustomer.email1,
+        cuid: newCustomer.cuid,
+        detail: e.text,
+      },
     });
   }
 }

@@ -26,7 +26,12 @@ export async function createCrmContact(newCustomer: Customer) {
     bffLoggingService.error({
       msg: "Error creating new contact in CRM: " + e.message,
       domain: "customer",
-      detail: { cpfCnpj: newCustomer.cpfCnpj, cuid: newCustomer.cuid, data },
+      detail: {
+        cpfCnpj: newCustomer.cpfCnpj,
+        cuid: newCustomer.cuid,
+        data,
+        detail: e.text,
+      },
     });
     throw e;
   }
