@@ -76,9 +76,10 @@ export class CrmService {
 
   public async updateContact(args: UpdateContactArgs) {
     try {
-      const contact = new Brevo.UpdateContact();
+      throw new Error("Not implemented yet");
       // TODO:
-      await this.contactsApi.updateContact(contact);
+      // const contact = new Brevo.UpdateContact();
+      // await this.contactsApi.updateContact(contact);
     } catch (e: any) {
       throw new CrmServiceError(e);
     }
