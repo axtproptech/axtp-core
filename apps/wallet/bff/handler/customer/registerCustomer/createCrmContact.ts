@@ -1,7 +1,7 @@
 import { Customer } from "@axtp/db";
-import { CrmClient } from "@/bff/crmClient";
 import { bffLoggingService } from "@/bff/bffLoggingService";
 import { getEnvVar } from "@/bff/getEnvVar";
+import { CrmService } from "@axtp/core/crm";
 
 export async function createCrmContact(newCustomer: Customer) {
   const data = {
@@ -20,7 +20,7 @@ export async function createCrmContact(newCustomer: Customer) {
       domain: "customer",
       detail: { cpfCnpj: newCustomer.cpfCnpj, cuid: newCustomer.cuid },
     });
-    const client = new CrmClient(getEnvVar("NEXT_SERVER_BREVO_API_KEY"));
+    const client = new CrmService(getEnvVar("NEXT_SERVER_BREVO_API_KEY"));
     await client.createNewContact(data);
   } catch (e: any) {
     bffLoggingService.error({
