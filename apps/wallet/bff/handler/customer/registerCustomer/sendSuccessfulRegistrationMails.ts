@@ -29,7 +29,7 @@ async function sendRegistrationMailToCustomer(
   } catch (e: any) {
     bffLoggingService.error({
       msg: "Error sending registration mail to customer: " + e.message,
-      domain: "mail",
+      domain: "customer",
       detail: { email: newCustomer.email1, cuid: newCustomer.cuid },
     });
   }
@@ -65,22 +65,21 @@ async function sendRegistrationMailToAXT(
   } catch (e: any) {
     bffLoggingService.error({
       msg: "Error sending internal notification mail: " + e.message,
-      domain: "mail",
+      domain: "customer",
       detail: { email: newCustomer.email1, cuid: newCustomer.cuid },
     });
   }
-  return Promise.resolve();
 }
 
 export async function sendSuccessfulRegistrationMails(newCustomer: Customer) {
   bffLoggingService.info({
     msg: "Sending Registration Emails for Customer",
-    domain: "mail",
+    domain: "customer",
     detail: { cpfCnpj: newCustomer.cpfCnpj, cuid: newCustomer.cuid },
   });
 
   const mailClient = new MailClient(getEnvVar("NEXT_SERVER_BREVO_API_KEY"));
-  return Promise.all([
+  await Promise.all([
     sendRegistrationMailToCustomer(newCustomer, mailClient),
     sendRegistrationMailToAXT(newCustomer, mailClient),
   ]);
