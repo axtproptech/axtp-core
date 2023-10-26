@@ -25,7 +25,7 @@ import { Steps } from "../../types/steps";
 export const FormProgressTracker = () => {
   const { t } = useTranslation();
   const { setValue } = useFormContext<KycWizard>();
-  const { reset } = kycActions;
+  const { reset, setCurrentStep } = kycActions;
   const router = useRouter();
 
   const stepMovement = async (newStep: Steps) => {
@@ -132,6 +132,7 @@ export const FormProgressTracker = () => {
     }
 
     stepMovement(stepToMove);
+    dispatch(setCurrentStep(stepToMove));
 
     closeDialog();
   };
