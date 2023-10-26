@@ -15,4 +15,12 @@ export class BrevoError extends Error {
     }
     this.status = brevoError.status;
   }
+
+  get errorCode() {
+    return this.code;
+  }
+
+  get errorStatus() {
+    return this.status;
+  }
 }
