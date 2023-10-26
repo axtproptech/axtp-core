@@ -33,6 +33,6 @@ export async function createCrmContact(newCustomer: Customer) {
         detail: e.text,
       },
     });
-    throw e;
+    // no re-throw intended...being a bit more robust.
   }
 }
