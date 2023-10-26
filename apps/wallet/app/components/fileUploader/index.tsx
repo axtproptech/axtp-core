@@ -13,11 +13,14 @@ type FileTypes = "image/*" | "application/pdf";
 interface Props {
   fileTypes?: FileTypes[];
   onUploadSuccess: (value: string) => void;
+  maxFiles?: number;
 }
 
-const MAX_FILES = 1;
-
-export function FileUploader({ onUploadSuccess, fileTypes = [] }: Props) {
+export function FileUploader({
+  onUploadSuccess,
+  fileTypes = [],
+  maxFiles = 1,
+}: Props) {
   const { t } = useTranslation();
   const { FileService } = useAppContext();
   const { showSuccess, showError, showInfo } = useNotification();
@@ -40,8 +43,8 @@ export function FileUploader({ onUploadSuccess, fileTypes = [] }: Props) {
   }, [fileTypes]);
 
   const handleFileInputChange = (event: any) => {
-    if (event.target.files.length > MAX_FILES) {
-      return showError(t("too_many_files", { count: MAX_FILES }));
+    if (event.target.files.length > maxFiles) {
+      return showError(t("too_many_files", { count: maxFiles }));
     }
 
     setSelectedFiles(event.target.files);
@@ -108,7 +111,7 @@ export function FileUploader({ onUploadSuccess, fileTypes = [] }: Props) {
   const canSubmitFile = !!(
     !isUploading &&
     selectedFiles &&
-    Object.entries(uploadProgress).length < MAX_FILES
+    Object.entries(uploadProgress).length < maxFiles
   );
 
   return (
