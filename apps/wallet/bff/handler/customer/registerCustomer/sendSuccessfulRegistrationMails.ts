@@ -1,15 +1,15 @@
 import { Customer } from "@axtp/db";
-import { MailClient } from "@/bff/mailClient";
+import { MailService } from "@axtp/core/mailer";
 import { getEnvVar } from "@/bff/getEnvVar";
 import { EmailTemplates } from "@/bff/types/emailTemplates";
 import { bffLoggingService } from "@/bff/bffLoggingService";
 
 async function sendRegistrationMailToCustomer(
   newCustomer: Customer,
-  mailClient: MailClient
+  mailService: MailService
 ) {
   try {
-    await mailClient.sendTransactionalEmail({
+    await mailService.sendTransactionalEmail({
       sender: {
         name: getEnvVar("NEXT_SERVER_BREVO_SENDER_NAME"),
         email: getEnvVar("NEXT_SERVER_BREVO_SENDER_EMAIL"),
@@ -33,7 +33,6 @@ async function sendRegistrationMailToCustomer(
       detail: {
         email: newCustomer.email1,
         cuid: newCustomer.cuid,
-        detail: e.text,
       },
     });
   }
@@ -41,10 +40,10 @@ async function sendRegistrationMailToCustomer(
 
 async function sendRegistrationMailToAXT(
   newCustomer: Customer,
-  mailClient: MailClient
+  mailService: MailService
 ) {
   try {
-    await mailClient.sendTransactionalEmail({
+    await mailService.sendTransactionalEmail({
       sender: {
         name: getEnvVar("NEXT_SERVER_BREVO_SENDER_NAME"),
         email: getEnvVar("NEXT_SERVER_BREVO_SENDER_EMAIL"),
@@ -73,7 +72,6 @@ async function sendRegistrationMailToAXT(
       detail: {
         email: newCustomer.email1,
         cuid: newCustomer.cuid,
-        detail: e.text,
       },
     });
   }
@@ -86,9 +84,9 @@ export async function sendSuccessfulRegistrationMails(newCustomer: Customer) {
     detail: { cpfCnpj: newCustomer.cpfCnpj, cuid: newCustomer.cuid },
   });
 
-  const mailClient = new MailClient(getEnvVar("NEXT_SERVER_BREVO_API_KEY"));
+  const mailService = new MailService(getEnvVar("NEXT_SERVER_BREVO_API_KEY"));
   await Promise.all([
-    sendRegistrationMailToCustomer(newCustomer, mailClient),
-    sendRegistrationMailToAXT(newCustomer, mailClient),
+    sendRegistrationMailToCustomer(newCustomer, mailService),
+    sendRegistrationMailToAXT(newCustomer, mailService),
   ]);
 }

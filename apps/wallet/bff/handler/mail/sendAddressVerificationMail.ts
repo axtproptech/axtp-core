@@ -1,11 +1,11 @@
+import { tooManyRequests, unauthorized } from "@hapi/boom";
+import { prisma, SecurityToken } from "@axtp/db";
+import { MailService } from "@axtp/core/mailer";
 import { RouteHandlerFunction } from "@/bff/route";
 import { handleError } from "../handleError";
 import { getEnvVar } from "@/bff/getEnvVar";
-import { prisma, SecurityToken } from "@axtp/db";
 import { object, string } from "yup";
-import { tooManyRequests, unauthorized } from "@hapi/boom";
 import { bffLoggingService } from "@/bff/bffLoggingService";
-import { MailClient } from "@/bff/mailClient";
 import { EmailTemplates } from "@/bff/types/emailTemplates";
 import { generateRandomHexToken } from "@/bff/generateRandomHexToken";
 
@@ -52,8 +52,8 @@ export const sendAddressVerificationMail: RouteHandlerFunction = async (
       emailAddress,
       existingToken
     );
-    const mailClient = new MailClient(getEnvVar("NEXT_SERVER_BREVO_API_KEY"));
-    await mailClient.sendTransactionalEmail({
+    const mailService = new MailService(getEnvVar("NEXT_SERVER_BREVO_API_KEY"));
+    await mailService.sendTransactionalEmail({
       sender: {
         name: getEnvVar("NEXT_SERVER_BREVO_SENDER_NAME"),
         email: getEnvVar("NEXT_SERVER_BREVO_SENDER_EMAIL"),
