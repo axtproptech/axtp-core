@@ -1,6 +1,5 @@
 import aws from "aws-sdk";
 import { nanoid } from "nanoid";
-import { createR2BucketObjectUrl } from "../common/r2";
 
 export interface ServerSideFileServiceContext {
   accountId: string;
