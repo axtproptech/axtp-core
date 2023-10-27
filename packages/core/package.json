@@ -10,7 +10,8 @@
   "scripts": {
     "generate-core": "yarn run build",
     "build": "tsup",
-    "dev": "tsup --dev"
+    "dev": "tsup --dev",
+    "test": "jest"
   },
   "dependencies": {
     "@signumjs/core": "^1.0.0-rc.75",

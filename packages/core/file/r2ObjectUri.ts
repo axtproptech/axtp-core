@@ -10,32 +10,29 @@ interface R2ObjectUriParts {
  * Used for serialized object URIs in database.
  */
 export class R2ObjectUri {
-  constructor(private parts: R2ObjectUriParts) {}
+  constructor(private _parts: R2ObjectUriParts) {}
 
-  static fromUrl(url: string): R2ObjectUri {
-    const parsedUrl = new URL(url);
-    if (parsedUrl.protocol !== "r2:") {
-      throw new Error("Invalid R2 Object URI");
+  static fromUrl(uri: string): R2ObjectUri {
+    const result =
+      /^r2:\/\/(?<accountId>.+)\/(?<bucket>.+)\?id=(?<objectId>.+)$/gi.exec(
+        uri
+      );
+
+    if (result?.groups) {
+      return new R2ObjectUri({
+        accountId: result.groups.accountId,
+        bucket: result.groups.bucket,
+        objectId: result.groups.objectId,
+      });
     }
+    throw new Error("Invalid R2 Object URI");
+  }
 
-    const objectId = parsedUrl.searchParams.get("id");
-    if (!objectId) {
-      throw new Error("Invalid R2 Object URI");
-    }
-
-    const [accountId, bucket] = parsedUrl.pathname.split("/");
-    if (!accountId || !bucket || !objectId) {
-      throw new Error("Invalid R2 Object URI");
-    }
-
-    return new R2ObjectUri({
-      accountId,
-      bucket,
-      objectId,
-    });
+  get parts(): R2ObjectUriParts {
+    return this._parts;
   }
 
   toString() {
-    return `r2://${this.parts.accountId}/${this.parts.bucket}?id=${this.parts.objectId}`;
+    return `r2://${this._parts.accountId}/${this._parts.bucket}?id=${this._parts.objectId}`;
   }
 }
