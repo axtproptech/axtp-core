@@ -1,9 +1,10 @@
 import { RouteHandlerFunction } from "@/bff/route";
 import { getEnvVar } from "@/bff/getEnvVar";
-import { CreateUploadUrlResponse } from "@/types/createUploadUrlResponse";
-import { CreateUploadUrlRequest } from "@/types/createUploadUrlRequest";
-
 import { ServerSideFileService } from "@axtp/core/file";
+import { CreateUploadUrlRequest } from "@/types/createUploadUrlRequest";
+import { CreateDownloadUrlRequest } from "@/types/createDownloadUrlRequest";
+import { CreateUploadUrlResponse } from "@/types/createUploadUrlResponse";
+import { CreateDownloadUrlResponse } from "@/types/createDownloadUrlResponse";
 
 const TargetBucketName = getEnvVar("NEXT_SERVER_CF_R2_AXTP_KYC_BUCKET");
 const AccountId = getEnvVar("NEXT_SERVER_CF_R2_ACCOUNT_ID");
@@ -31,6 +32,28 @@ export const createUploadURL: RouteHandlerFunction = async (req, res) => {
     );
 
     res.status(201).json(signedUrl as CreateUploadUrlResponse);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+export const createDownloadURL: RouteHandlerFunction = async (req, res) => {
+  const { objectId } = req.body as CreateDownloadUrlRequest;
+
+  try {
+    const fileService = new ServerSideFileService({
+      accessKeyId: AccessKeyId,
+      accountId: AccountId,
+      accessKeySecret: AccessKeySecret,
+      targetBucketName: TargetBucketName,
+    });
+
+    const signedUrl = await fileService.fetchSignedDownloadUrl(
+      objectId,
+      5 * 60
+    );
+
+    res.status(201).json(signedUrl as CreateDownloadUrlResponse);
   } catch (err) {
     return res.status(500).json(err);
   }

@@ -14,7 +14,9 @@ export class FileService {
 
   private async getUploadUrl(contentType: string) {
     return retry(async () => {
-      const { response } = await this.bffClient.post("/files", { contentType });
+      const { response } = await this.bffClient.post("/files/upload", {
+        contentType,
+      });
       return response as CreateUploadUrlResponse;
     });
   }

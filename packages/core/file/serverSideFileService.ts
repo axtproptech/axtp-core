@@ -57,13 +57,15 @@ export class ServerSideFileService {
     const params = {
       Bucket: this.bucketName,
       Key: nanoid(),
-      Expires: new Date(Date.now() + expirySeconds * 1000),
       ContentType: contentType,
     };
 
     const signedUrl = await getSignedUrl(
       this.cloudflareR2,
-      new PutObjectCommand(params)
+      new PutObjectCommand(params),
+      {
+        expiresIn: expirySeconds,
+      }
     );
     const objectUrl = `https://${this.accountId}.r2.cloudflarestorage.com/${params.Bucket}/${params.Key}`;
     const objectName = params.Key;
@@ -74,6 +76,7 @@ export class ServerSideFileService {
       objectName,
     };
   }
+
   /**
    * Fetches a signed download URL for an object.
    *
@@ -85,12 +88,12 @@ export class ServerSideFileService {
     const params = {
       Bucket: this.bucketName,
       Key: objectId,
-      Expires: new Date(Date.now() + expirySeconds * 1000),
     };
 
     const signedUrl = await getSignedUrl(
       this.cloudflareR2,
-      new GetObjectCommand(params)
+      new GetObjectCommand(params),
+      { expiresIn: expirySeconds }
     );
     const objectUrl = `https://${this.accountId}.r2.cloudflarestorage.com/${params.Bucket}/${params.Key}`;
     const objectName = params.Key;
