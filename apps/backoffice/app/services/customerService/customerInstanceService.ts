@@ -46,4 +46,30 @@ export class CustomerInstanceService {
     });
     return response as CustomerFullResponse;
   }
+
+  async updateCustomer({
+    firstName,
+    lastName,
+    email1,
+    phone1,
+    dateOfBirth,
+    placeOfBirth,
+  }: {
+    firstName?: string;
+    lastName?: string;
+    email1?: string;
+    phone1?: string;
+    dateOfBirth?: string;
+    placeOfBirth?: string;
+  }) {
+    const { response } = await this.http.put("", {
+      firstName,
+      lastName,
+      email1,
+      phone1,
+      dateOfBirth,
+      placeOfBirth,
+    });
+    return response as CustomerFullResponse;
+  }
 }

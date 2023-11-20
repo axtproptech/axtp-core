@@ -2,28 +2,50 @@ import { prisma } from "@axtp/db";
 import { ApiHandler } from "@/bff/types/apiHandler";
 import { notFound, badRequest } from "@hapi/boom";
 
-import { boolean, mixed, object, string, ValidationError } from "yup";
+import { boolean, date, mixed, object, string, ValidationError } from "yup";
 import { asFullCustomerResponse } from "./asFullCustomerResponse";
 
 let customerRequestSchema = object({ cuid: string() });
 
 // TODO: extend as needed
 let customerUpdateBodySchema = object({
-  verificationLevel: mixed().oneOf(["Level1", "Level2"]),
-  isBlocked: boolean(),
-  isActive: boolean(),
-  isInvited: boolean(),
+  firstName: string().optional(),
+  lastName: string().optional(),
+  email1: string().optional(),
+  phone1: string().optional(),
+  dateOfBirth: date().optional(),
+  placeOfBirth: string().optional(),
+  verificationLevel: mixed().oneOf(["Level1", "Level2"]).optional(),
+  isBlocked: boolean().optional(),
+  isActive: boolean().optional(),
+  isInvited: boolean().optional(),
 });
 
 export const updateCustomer: ApiHandler = async ({ req, res }) => {
   try {
     const { cuid } = customerRequestSchema.validateSync(req.query);
-    const { verificationLevel, isBlocked, isActive, isInvited } =
-      customerUpdateBodySchema.validateSync(req.body);
+    const {
+      verificationLevel,
+      isBlocked,
+      isActive,
+      isInvited,
+      firstName,
+      lastName,
+      email1,
+      phone1,
+      dateOfBirth,
+      placeOfBirth,
+    } = customerUpdateBodySchema.validateSync(req.body);
 
     const customer = await prisma.customer.update({
       where: { cuid },
       data: {
+        firstName,
+        lastName,
+        email1,
+        phone1,
+        dateOfBirth,
+        placeOfBirth,
         verificationLevel,
         isBlocked,
         isActive,
