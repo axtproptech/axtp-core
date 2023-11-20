@@ -1,4 +1,5 @@
-import aws from "aws-sdk";
+import awsV3, { PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { nanoid } from "nanoid";
 
 export interface ServerSideFileServiceContext {
@@ -16,18 +17,26 @@ export interface ServerSideFileServiceContext {
  * @note Must not used on client side!
  */
 export class ServerSideFileService {
-  private cloudflareR2: aws.S3;
+  private cloudflareR2: awsV3.S3Client;
 
   constructor(private context: ServerSideFileServiceContext) {
     if (typeof window !== "undefined") {
       throw new Error("This function must be called on the server");
     }
 
-    this.cloudflareR2 = new aws.S3({
+    // this.cloudflareR2 = new awsV3.S3({
+    //   endpoint: `https://${context.accountId}.r2.cloudflarestorage.com`,
+    //   accessKeyId: `${context.accessKeyId}`,
+    //   secretAccessKey: `${context.accessKeySecret}`,
+    //   signatureVersion: "v4",
+    //   region: "auto",
+    // });
+    this.cloudflareR2 = new awsV3.S3Client({
       endpoint: `https://${context.accountId}.r2.cloudflarestorage.com`,
-      accessKeyId: `${context.accessKeyId}`,
-      secretAccessKey: `${context.accessKeySecret}`,
-      signatureVersion: "v4",
+      credentials: {
+        accessKeyId: `${context.accessKeyId}`,
+        secretAccessKey: `${context.accessKeySecret}`,
+      },
       region: "auto",
     });
   }
@@ -52,13 +61,13 @@ export class ServerSideFileService {
     const params = {
       Bucket: this.bucketName,
       Key: nanoid(),
-      Expires: expirySeconds,
+      Expires: new Date(Date.now() + expirySeconds * 1000),
       ContentType: contentType,
     };
 
-    const signedUrl = await this.cloudflareR2.getSignedUrlPromise(
-      "putObject",
-      params
+    const signedUrl = await getSignedUrl(
+      this.cloudflareR2,
+      new PutObjectCommand(params)
     );
     const objectUrl = `https://${this.accountId}.r2.cloudflarestorage.com/${params.Bucket}/${params.Key}`;
     const objectName = params.Key;
@@ -74,12 +83,12 @@ export class ServerSideFileService {
     const params = {
       Bucket: this.bucketName,
       Key: objectId,
-      Expires: expirySeconds,
+      Expires: new Date(Date.now() + expirySeconds * 1000),
     };
 
-    const signedUrl = await this.cloudflareR2.getSignedUrlPromise(
-      "getObject",
-      params
+    const signedUrl = await getSignedUrl(
+      this.cloudflareR2,
+      new PutObjectCommand(params)
     );
     const objectUrl = `https://${this.accountId}.r2.cloudflarestorage.com/${params.Bucket}/${params.Key}`;
     const objectName = params.Key;
