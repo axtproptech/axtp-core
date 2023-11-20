@@ -8,7 +8,8 @@ interface UploadFileArgs {
 }
 
 interface DownloadFileArgs {
-  objectKey: string;
+  signedDownloadUrl: string;
+  onProgress: (progress: { loaded: number; total: number }) => void;
 }
 
 export class ClientSideFileService {
@@ -32,7 +33,14 @@ export class ClientSideFileService {
     });
   }
 
-  downloadFile() {
-    throw new Error("Implement me!");
+  async downloadFile({ signedDownloadUrl, onProgress }: DownloadFileArgs) {
+    const http = HttpClientFactory.createHttpClient(signedDownloadUrl);
+    const { status } = await http.get("", {
+      onDownloadProgress: onProgress,
+    });
+
+    if (status >= 400 && status < 500) {
+      throw new AbortError("Failed to download file(s)");
+    }
   }
 }

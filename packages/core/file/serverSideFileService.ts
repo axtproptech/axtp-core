@@ -69,4 +69,25 @@ export class ServerSideFileService {
       objectName,
     };
   }
+
+  async fetchSignedDownloadUrl(objectId: string, expirySeconds = 5 * 60) {
+    const params = {
+      Bucket: this.bucketName,
+      Key: objectId,
+      Expires: expirySeconds,
+    };
+
+    const signedUrl = await this.cloudflareR2.getSignedUrlPromise(
+      "getObject",
+      params
+    );
+    const objectUrl = `https://${this.accountId}.r2.cloudflarestorage.com/${params.Bucket}/${params.Key}`;
+    const objectName = params.Key;
+
+    return {
+      signedUrl,
+      objectUrl,
+      objectName,
+    };
+  }
 }
