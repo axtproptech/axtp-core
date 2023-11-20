@@ -15,7 +15,7 @@
     "preserveWatchOutput": true,
     "skipLibCheck": true,
     "strict": true,
-    "lib": ["ES2021"],
+    "lib": ["ES2021", "dom"],
     "module": "commonjs",
     "target": "ES2021"
   },

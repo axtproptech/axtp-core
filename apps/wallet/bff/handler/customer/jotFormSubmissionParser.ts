@@ -22,6 +22,9 @@ const AnswerIndex = {
   Documents: 13,
 };
 
+/**
+ * @deprecated Use native KYC solution
+ */
 export class JotFormSubmissionParser {
   constructor(private submission: JotFormSubmissionContent) {}
 

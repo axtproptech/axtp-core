@@ -1,10 +1,10 @@
-import { nanoid } from "nanoid";
 import { RouteHandlerFunction } from "@/bff/route";
 import { getEnvVar } from "@/bff/getEnvVar";
-import { CreateUploadUrlResponse } from "@/types/createUploadUrlResponse";
+import { ServerSideFileService } from "@axtp/core/file";
 import { CreateUploadUrlRequest } from "@/types/createUploadUrlRequest";
-
-import aws from "aws-sdk";
+import { CreateDownloadUrlRequest } from "@/types/createDownloadUrlRequest";
+import { CreateUploadUrlResponse } from "@/types/createUploadUrlResponse";
+import { CreateDownloadUrlResponse } from "@/types/createDownloadUrlResponse";
 
 const TargetBucketName = getEnvVar("NEXT_SERVER_CF_R2_AXTP_KYC_BUCKET");
 const AccountId = getEnvVar("NEXT_SERVER_CF_R2_ACCOUNT_ID");
@@ -15,35 +15,45 @@ const AccessKeySecret = getEnvVar(
   "NEXT_SERVER_CF_R2_AXTP_KYC_BUCKET_ACCESS_SECRET"
 );
 
-// CF is AWS compatible
-const r2 = new aws.S3({
-  endpoint: `https://${AccountId}.r2.cloudflarestorage.com`,
-  accessKeyId: `${AccessKeyId}`,
-  secretAccessKey: `${AccessKeySecret}`,
-  signatureVersion: "v4",
-  region: "auto",
-});
-
 export const createUploadURL: RouteHandlerFunction = async (req, res) => {
   const { contentType } = req.body as CreateUploadUrlRequest;
 
   try {
-    const params = {
-      Bucket: TargetBucketName,
-      Key: nanoid(),
-      Expires: 5 * 60,
-      ContentType: contentType,
-    };
+    const fileService = new ServerSideFileService({
+      accessKeyId: AccessKeyId,
+      accountId: AccountId,
+      accessKeySecret: AccessKeySecret,
+      targetBucketName: TargetBucketName,
+    });
 
-    const signedUrl = await r2.getSignedUrlPromise("putObject", params);
-    const objectUrl = `https://${AccountId}.r2.cloudflarestorage.com/${params.Bucket}/${params.Key}`;
-    const objectName = params.Key;
+    const signedUrl = await fileService.fetchSignedUploadUrl(
+      contentType,
+      5 * 60
+    );
 
-    res.status(201).json({
-      signedUrl,
-      objectUrl,
-      objectName,
-    } as CreateUploadUrlResponse);
+    res.status(201).json(signedUrl as CreateUploadUrlResponse);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
+export const createDownloadURL: RouteHandlerFunction = async (req, res) => {
+  const { objectId } = req.body as CreateDownloadUrlRequest;
+
+  try {
+    const fileService = new ServerSideFileService({
+      accessKeyId: AccessKeyId,
+      accountId: AccountId,
+      accessKeySecret: AccessKeySecret,
+      targetBucketName: TargetBucketName,
+    });
+
+    const signedUrl = await fileService.fetchSignedDownloadUrl(
+      objectId,
+      5 * 60
+    );
+
+    res.status(201).json(signedUrl as CreateDownloadUrlResponse);
   } catch (err) {
     return res.status(500).json(err);
   }

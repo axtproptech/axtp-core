@@ -4,13 +4,13 @@ import { prisma } from "@axtp/db";
 import { bffLoggingService } from "@/bff/bffLoggingService";
 import { boolean, date, mixed, object, string } from "yup";
 import { conflict } from "@hapi/boom";
-import { createR2BucketObjectUrl } from "@axtp/core/common/r2";
 import { getEnvVar } from "@/bff/getEnvVar";
 import { handleError } from "@/bff/handler/handleError";
 import { cpf as CpfValidator, cnpj as CnpjValidator } from "cpf-cnpj-validator";
 import { createBlockchainAccountData } from "./createBlockchainAccountData";
 import { sendSuccessfulRegistrationMails } from "./sendSuccessfulRegistrationMails";
 import { createCrmContact } from "@/bff/handler/customer/registerCustomer/createCrmContact";
+import { R2ObjectUri } from "@axtp/core/file";
 
 function isValidCpfOrCnpj(cpfCnpj?: string) {
   if (!cpfCnpj) {
@@ -81,31 +81,31 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
     const documents = [
       {
         type: "ProofOfAddress",
-        url: createR2BucketObjectUrl({
+        url: new R2ObjectUri({
           objectId: data.proofOfAddress,
           bucket,
           accountId,
-        }),
+        }).toString(),
       },
     ];
 
     documents.push({
       type: data.documentType === "cnh" ? "DriverLicense" : "Id",
-      url: createR2BucketObjectUrl({
+      url: new R2ObjectUri({
         objectId: data.frontSide,
         bucket,
         accountId,
-      }),
+      }).toString(),
     });
 
     if (data.backSide) {
       documents.push({
         type: data.documentType === "cnh" ? "DriverLicense" : "Id",
-        url: createR2BucketObjectUrl({
+        url: new R2ObjectUri({
           objectId: data.backSide,
           bucket,
           accountId,
-        }),
+        }).toString(),
       });
     }
 
