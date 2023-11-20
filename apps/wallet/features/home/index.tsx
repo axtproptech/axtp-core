@@ -48,12 +48,6 @@ export const Home = () => {
           </Fade>
         </Slide>
       </section>
-
-      <FileUploader
-        onUploadSuccess={console.log}
-        fileTypes={["image/*", "application/pdf"]}
-      />
-
       <div className="relative">
         <div className="absolute z-10 top-[-1px] bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
       </div>
