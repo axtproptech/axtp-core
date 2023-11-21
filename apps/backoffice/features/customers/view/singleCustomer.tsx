@@ -27,7 +27,6 @@ import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
 import { ExternalLink } from "@/app/components/links/externalLink";
 import { VerificationChip } from "@/app/components/chips/verificationChip";
 import { useExplorerLink } from "@/app/hooks/useExplorerLink";
-import { DownloadButton } from "@/app/components/buttons/downloadButton";
 import { cpf } from "cpf-cnpj-validator";
 import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
 import { useRouter } from "next/router";
@@ -44,6 +43,7 @@ import {
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { format, isValid } from "date-fns";
 import AddressEditor from "./components/addressEditor";
+import { CustomerDocuments } from "@/features/customers/view/components/customerDocuments";
 
 const gridSpacing = Config.Layout.GridSpacing;
 export const SingleCustomer = () => {
@@ -561,21 +561,7 @@ const CustomerDetails: FC<DetailsProps> = ({ customer }) => {
       </Grid>
       <Divider />
       <Grid item xs={12} md={6} lg={4}>
-        <Typography variant="h4">Documents</Typography>
-        <Grid container spacing={gridSpacing} direction="row">
-          {documents.map((d, index) => {
-            return (
-              <Grid item xs={12} lg={3} sx={{ my: 2 }} key={index}>
-                <LabeledTextField label="Type" text={d.type} />
-                <LabeledTextField
-                  label="Upload Date"
-                  text={toDateStr(new Date(d.createdAt))}
-                />
-                <DownloadButton url={d.url} />
-              </Grid>
-            );
-          })}
-        </Grid>
+        <CustomerDocuments customer={customer} />
       </Grid>
     </Grid>
   );

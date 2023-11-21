@@ -1,6 +1,18 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
 
+interface CustomerUpdateAddressArgs {
+  addressId: string;
+  address: {
+    city: string;
+    country: string;
+    line1: string;
+    line2: string;
+    postalCode: string;
+    state: string;
+  };
+}
+
 export class CustomerInstanceService {
   private http: Http;
 
@@ -71,5 +83,22 @@ export class CustomerInstanceService {
       placeOfBirth,
     });
     return response as CustomerFullResponse;
+  }
+
+  async updateCustomerAddress(address: CustomerUpdateAddressArgs) {
+    throw new Error("Not implemented");
+    // const { response } = await this.http.put("", {
+    //   firstName,
+    //   lastName,
+    //   email1,
+    //   phone1,
+    //   dateOfBirth,
+    //   placeOfBirth,
+    // });
+    // return response as CustomerFullResponse;
+  }
+
+  async uploadDocuments() {
+    console.log("Implement uploadDocuments");
   }
 }

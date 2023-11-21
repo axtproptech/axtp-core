@@ -11,6 +11,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import { useForm } from "react-hook-form";
 import { Address } from "@/bff/types/address";
+import { ActionButton } from "@/app/components/buttons/actionButton";
 
 type AddressEditorProps = {
   address: number | Address;
@@ -58,23 +59,12 @@ const AddressEditor = ({ address }: AddressEditorProps) => {
 
   return (
     <div>
-      <Tooltip title="Edit Address">
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<EditIcon />}
-          onClick={handleOpen}
-          style={{
-            backgroundColor: "#3f51b5",
-            color: "white",
-            textTransform: "none",
-            borderRadius: "8px",
-            padding: "8px 16px",
-          }}
-        >
-          Edit Address
-        </Button>
-      </Tooltip>
+      <ActionButton
+        actionLabel="Edit Address"
+        onClick={handleOpen}
+        actionIcon={<EditIcon />}
+        color="info"
+      />
 
       <Modal
         open={open}

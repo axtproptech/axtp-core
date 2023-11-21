@@ -13,6 +13,12 @@ export interface ServerSideFileServiceContext {
   targetBucketName: string;
 }
 
+export interface SignedUrl {
+  signedUrl: string;
+  objectUrl: string;
+  objectName: string;
+}
+
 /**
  * Server Side File Service
  *
@@ -53,7 +59,10 @@ export class ServerSideFileService {
    * @param contentType A valid mime type
    * @param expirySeconds Url validity duration in seconds
    */
-  async fetchSignedUploadUrl(contentType: string, expirySeconds = 5 * 60) {
+  async fetchSignedUploadUrl(
+    contentType: string,
+    expirySeconds = 5 * 60
+  ): Promise<SignedUrl> {
     const params = {
       Bucket: this.bucketName,
       Key: nanoid(),
@@ -82,19 +91,27 @@ export class ServerSideFileService {
    *
    * @param {string} objectId - The ID of the object.
    * @param {number} [expirySeconds=300] - The number of seconds until the signed URL expires.
-   * @return {Promise<Object>} An object containing the signed URL, object URL, and object name.
+   * @return {Promise<SignedUrl>} An object containing the signed URL, object URL, and object name.
    */
-  async fetchSignedDownloadUrl(objectId: string, expirySeconds = 5 * 60) {
+  async fetchSignedDownloadUrl(
+    objectId: string,
+    expirySeconds = 5 * 60
+  ): Promise<SignedUrl> {
     const params = {
       Bucket: this.bucketName,
       Key: objectId,
     };
+
+    console.log("params", params);
 
     const signedUrl = await getSignedUrl(
       this.cloudflareR2,
       new GetObjectCommand(params),
       { expiresIn: expirySeconds }
     );
+
+    console.log("signedUrl", signedUrl);
+
     const objectUrl = `https://${this.accountId}.r2.cloudflarestorage.com/${params.Bucket}/${params.Key}`;
     const objectName = params.Key;
 
