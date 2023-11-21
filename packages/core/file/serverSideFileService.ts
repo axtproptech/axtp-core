@@ -102,15 +102,11 @@ export class ServerSideFileService {
       Key: objectId,
     };
 
-    console.log("params", params);
-
     const signedUrl = await getSignedUrl(
       this.cloudflareR2,
       new GetObjectCommand(params),
       { expiresIn: expirySeconds }
     );
-
-    console.log("signedUrl", signedUrl);
 
     const objectUrl = `https://${this.accountId}.r2.cloudflarestorage.com/${params.Bucket}/${params.Key}`;
     const objectName = params.Key;
