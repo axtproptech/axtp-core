@@ -31,39 +31,45 @@ export const LabeledTextField: FC<Props> = ({
   children,
   onEditClick,
 }) => {
+  const canEdit = onEditClick !== undefined;
+  const editableSx = canEdit
+    ? {
+        cursor: "pointer",
+        ":hover": {
+          backgroundColor: "rgba(0, 0, 0, 0.04)",
+          borderRadius: 2,
+        },
+      }
+    : {};
+
   return (
     <Grid
       container
       direction="column"
       justifyContent="space-between"
-      sx={{ my: 1, overflowWrap: "anywhere" }}
+      sx={{
+        my: 1,
+        overflowWrap: "anywhere",
+        ...editableSx,
+      }}
+      onClick={canEdit ? onEditClick : undefined}
     >
       <Grid item>
-        <Typography variant="caption" color="inherit">
-          {label}
-        </Typography>
-      </Grid>
-      <Grid item>
-        {onEditClick ? (
-          <Stack
-            direction="row"
-            alignItems="center"
-            onClick={onEditClick}
-            sx={{
-              cursor: "pointer",
-              ":hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.04)",
-              },
-            }}
-          >
-            <IconButton size="small" color="inherit">
-              <EditIcon sx={{ fontSize: 16 }} />
-            </IconButton>
-            <Body text={text}>{children}</Body>
+        {canEdit ? (
+          <Stack direction="row" alignItems="center">
+            <EditIcon color="info" sx={{ fontSize: 12, mr: 0.25 }} />
+            <Typography variant="caption" color="inherit">
+              {label}
+            </Typography>
           </Stack>
         ) : (
-          <Body text={text}>{children}</Body>
+          <Typography variant="caption" color="inherit">
+            {label}
+          </Typography>
         )}
+      </Grid>
+      <Grid item>
+        <Body text={text}>{children}</Body>
       </Grid>
     </Grid>
   );

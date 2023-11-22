@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { route } from "@/bff/route";
-import { deleteCustomerDocument } from "@/bff/handler/customers/deleteCustomerDocument";
+import { updateCustomerAddress } from "@/bff/handler/customers/updateCustomerAddress";
 import { requireAuth } from "@/bff/middlewares/requireAuth";
 
 export default function handler(
@@ -10,7 +10,7 @@ export default function handler(
   return route({
     req,
     res,
-    delete: deleteCustomerDocument,
+    put: updateCustomerAddress,
     middlewares: [requireAuth],
   });
 }

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
+import { Grid, InputAdornment, TextField } from "@mui/material";
 import {
   DesktopDatePicker as DatePicker,
   LocalizationProvider,
@@ -10,7 +9,6 @@ import { format, isValid } from "date-fns";
 import { Check as CheckIcon } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
 import { LabeledTextField } from "@/app/components/labeledTextField";
 
 interface Props {
@@ -28,18 +26,18 @@ export const EditableField = ({
 }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(initialValue);
-  const { register, handleSubmit, control } = useForm();
 
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
   const handleCancelClick = () => {
+    setValue(initialValue);
     setIsEditing(false);
   };
 
-  const onFieldSubmit = (data: any) => {
-    onSubmit(name, data);
+  const onFieldSubmit = () => {
+    onSubmit(name, value.toString());
     setIsEditing(false);
   };
 
@@ -48,58 +46,48 @@ export const EditableField = ({
       container
       direction="column"
       justifyContent="space-between"
-      sx={{ my: 1, overflowWrap: "anywhere" }}
+      sx={{ overflowWrap: "anywhere" }}
     >
       <Grid item>
         {isEditing ? (
           <form
-            style={{ padding: "16px 0" }}
-            onSubmit={handleSubmit(onFieldSubmit)}
+            style={{ padding: "16px 0", width: "auto" }}
+            onSubmit={onFieldSubmit}
           >
             {initialValue instanceof Date ? (
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Controller
-                  name={name}
-                  control={control}
-                  defaultValue={initialValue}
-                  render={({ field }) => (
-                    <DatePicker
-                      {...field}
-                      value={field.value}
-                      onChange={(date) => {
-                        field.onChange(date);
-                        isValid(date) && setValue(format(date, `dd/MM/yyyy`));
+                <DatePicker
+                  value={value}
+                  onChange={(date) => {
+                    isValid(date) && setValue(date!);
+                  }}
+                  inputFormat="dd/MM/yyyy"
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={label}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton type="submit">
+                              <CheckIcon />
+                            </IconButton>
+                            <IconButton onClick={handleCancelClick}>
+                              <CloseIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
                       }}
-                      inputFormat="dd/MM/yyyy"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label={label}
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton type="submit">
-                                  <CheckIcon />
-                                </IconButton>
-                                <IconButton onClick={handleCancelClick}>
-                                  <CloseIcon />
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                          }}
-                          fullWidth
-                        />
-                      )}
+                      fullWidth
                     />
                   )}
                 />
               </LocalizationProvider>
             ) : (
               <TextField
-                {...register(name)}
-                defaultValue={value}
                 label={label}
                 fullWidth
+                value={value}
                 onChange={(e) => setValue(e.target.value)}
                 InputProps={{
                   endAdornment: (

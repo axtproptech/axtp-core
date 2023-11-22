@@ -5,7 +5,7 @@ import { notFound, badRequest } from "@hapi/boom";
 import { object, string, ValidationError } from "yup";
 import { asFullCustomerResponse } from "./asFullCustomerResponse";
 
-let customerRequestSchema = object({ cuid: string() });
+let customerRequestSchema = object({ cuid: string().required() });
 
 export const getCustomer: ApiHandler = async ({ req, res }) => {
   try {
