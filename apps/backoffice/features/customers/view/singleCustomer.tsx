@@ -1,4 +1,4 @@
-import { Box, Chip, CircularProgress, Grid } from "@mui/material";
+import { Box, Chip, CircularProgress, Divider, Grid } from "@mui/material";
 import { Config } from "@/app/config";
 import { useMemo } from "react";
 import { customerService } from "@/app/services/customerService/customerService";
@@ -8,7 +8,6 @@ import {
   CustomerActions,
   CustomerActionType,
 } from "./components/customerActions";
-import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
 import { ExternalLink } from "@/app/components/links/externalLink";
 import { VerificationChip } from "@/app/components/chips/verificationChip";
 import { useExplorerLink } from "@/app/hooks/useExplorerLink";
@@ -158,6 +157,7 @@ export const SingleCustomer = () => {
   return (
     <MainCard
       title={title}
+      actionsOnTop={true}
       actions={
         <CustomerActions
           onAction={handleCustomerAction}

@@ -1,5 +1,4 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
-import retry from "p-retry";
 
 import { ClientSideFileService, SignedUrl } from "@axtp/core/file";
 

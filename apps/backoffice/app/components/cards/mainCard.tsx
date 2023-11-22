@@ -19,6 +19,7 @@ interface Props {
   boxShadow?: boolean;
   children: ReactNode;
   actions?: ReactNode;
+  actionsOnTop?: boolean;
   content?: boolean;
   contentClass?: string;
   contentSX?: object;
@@ -46,6 +47,7 @@ export const MainCard = forwardRef<any, Props>(
       sx = {},
       title,
       actions,
+      actionsOnTop = false,
       ...others
     },
     ref
@@ -67,6 +69,12 @@ export const MainCard = forwardRef<any, Props>(
           ...sx,
         }}
       >
+        {actions && actionsOnTop && (
+          <>
+            <CardActions>{actions}</CardActions>
+            <Divider />
+          </>
+        )}
         {!darkTitle && title && (
           <CardHeader sx={headerSX} title={title} action={secondary} />
         )}
@@ -86,7 +94,7 @@ export const MainCard = forwardRef<any, Props>(
           </CardContent>
         )}
         {!content && children}
-        {actions && <CardActions>{actions}</CardActions>}
+        {actions && !actionsOnTop && <CardActions>{actions}</CardActions>}
       </Card>
     );
   }

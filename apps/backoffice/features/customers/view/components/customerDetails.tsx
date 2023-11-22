@@ -66,16 +66,56 @@ export const CustomerDetails: FC<Props> = ({ customer }) => {
 
   return (
     <Grid container spacing={gridSpacing} direction="column">
-      <Grid item xs={12} md={6}>
-        <Grid container spacing={2}>
+      {/* ACCOUNT SECTION */}
+      <Grid
+        item
+        xs={12}
+        m={2}
+        sx={{ border: "1px solid lightgrey", borderRadius: 2 }}
+      >
+        <Typography variant="h4">Blockchain Account</Typography>
+        {account ? (
+          <>
+            <Stack
+              direction="row"
+              spacing={1}
+              justifyContent="start"
+              alignItems="center"
+            >
+              <div>
+                <LabeledTextField
+                  label="Account Address"
+                  text={account.rsAddress}
+                />
+              </div>
+              <OpenExplorerButton id={account.accountId} type="address" />
+            </Stack>
+            <LabeledTextField label="Account Id" text={account.accountId} />
+            <LabeledTextField
+              label="Public Key"
+              text={account.publicKey.toUpperCase()}
+            />
+          </>
+        ) : (
+          <>
+            <Typography variant="h4">No Blockchain Account yet</Typography>
+            <Typography variant="subtitle2">
+              (Or wallet not connected)
+            </Typography>
+          </>
+        )}
+      </Grid>
+
+      <Grid item xs={12} m={2}>
+        <Grid container spacing={gridSpacing}>
           <Grid
             item
             xs={12}
-            md={5}
-            m={2}
+            md={6}
             sx={{ border: "1px solid lightgrey", borderRadius: 2 }}
             pr={2}
           >
+            <Typography variant="h4">Personal Information</Typography>
             <EditableField
               label="CPF"
               initialValue={cpf.format(customer.cpfCnpj)}
@@ -167,11 +207,12 @@ export const CustomerDetails: FC<Props> = ({ customer }) => {
           <Grid
             item
             xs={12}
-            md={5}
-            m={2}
+            md={6}
             sx={{ border: "1px solid lightgrey", borderRadius: 2 }}
             pr={2}
           >
+            <Typography variant="h4">Address</Typography>
+
             {address ? (
               <>
                 <EditableField
@@ -222,47 +263,14 @@ export const CustomerDetails: FC<Props> = ({ customer }) => {
               <Typography variant="h4">No address provided</Typography>
             )}
           </Grid>
-          <Grid
-            item
-            xs={12}
-            m={2}
-            sx={{ border: "1px solid lightgrey", borderRadius: 2 }}
-          >
-            {account ? (
-              <>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  justifyContent="start"
-                  alignItems="center"
-                >
-                  <div>
-                    <LabeledTextField
-                      label="Account Address"
-                      text={account.rsAddress}
-                    />
-                  </div>
-                  <OpenExplorerButton id={account.accountId} type="address" />
-                </Stack>
-                <LabeledTextField label="Account Id" text={account.accountId} />
-                <LabeledTextField
-                  label="Public Key"
-                  text={account.publicKey.toUpperCase()}
-                />
-              </>
-            ) : (
-              <>
-                <Typography variant="h4">No Blockchain Account yet</Typography>
-                <Typography variant="subtitle2">
-                  (Or wallet not connected)
-                </Typography>
-              </>
-            )}
-          </Grid>
         </Grid>
       </Grid>
-      <Divider />
-      <Grid item xs={12} md={6} lg={4}>
+      <Grid
+        item
+        xs={12}
+        mx={2}
+        sx={{ border: "1px solid lightgrey", borderRadius: 2 }}
+      >
         <CustomerDocuments customer={customer} />
       </Grid>
     </Grid>
