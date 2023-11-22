@@ -33,7 +33,7 @@ export class FileService {
     return uploadUrlResponse;
   }
 
-  public async getDownloadUrl(objectId: string) {
+  async getDownloadUrl(objectId: string) {
     const { response } = await this.bffClient.post("/download", {
       objectId,
     });

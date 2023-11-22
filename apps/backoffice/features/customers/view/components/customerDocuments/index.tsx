@@ -18,7 +18,7 @@ export const CustomerDocuments = ({ customer }: Props) => {
       <Grid container spacing={gridSpacing} direction="row">
         {documents.map((d, index) => (
           <Grid item xs={12} lg={3} sx={{ my: 2 }} key={d.id}>
-            <DocumentItem document={d} />
+            <DocumentItem document={d} cuid={customer.cuid} />
           </Grid>
         ))}
       </Grid>

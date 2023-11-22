@@ -101,4 +101,8 @@ export class CustomerInstanceService {
   async uploadDocuments() {
     console.log("Implement uploadDocuments");
   }
+
+  async deleteDocument(documentId: number) {
+    return this.http.delete(`documents/${documentId}`);
+  }
 }

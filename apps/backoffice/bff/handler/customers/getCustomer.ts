@@ -10,14 +10,17 @@ let customerRequestSchema = object({ cuid: string() });
 export const getCustomer: ApiHandler = async ({ req, res }) => {
   try {
     const query = req.query;
-
     const { cuid } = customerRequestSchema.validateSync(query);
     const customer = await prisma.customer.findUnique({
       where: { cuid },
       include: {
         termsOfUse: true,
         blockchainAccounts: true,
-        documents: true,
+        documents: {
+          where: {
+            active: true,
+          },
+        },
         verificationResult: true,
         addresses: true,
       },
