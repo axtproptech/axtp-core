@@ -16,6 +16,7 @@ import { useSnackbar } from "@/app/hooks/useSnackbar";
 
 import { IconUpload } from "@tabler/icons";
 import { customerService } from "@/app/services/customerService/customerService";
+import { useSWRConfig } from "swr";
 
 const DocumentOptions = [
   { label: "Selfie", value: "Selfie" },
@@ -47,6 +48,7 @@ export const AddDocumentDialog = ({ cuid, open, onClose }: Props) => {
   const [isUploading, setIsUploading] = useState(false);
   const [percentUploaded, setPercentUploaded] = useState(0);
   const { showSuccess, showError, showWarning } = useSnackbar();
+  const { mutate } = useSWRConfig();
 
   const handleUpload = async () => {
     try {
@@ -65,7 +67,7 @@ export const AddDocumentDialog = ({ cuid, open, onClose }: Props) => {
           }
         },
       });
-
+      await mutate(`getCustomer/${cuid}`);
       reset();
       showSuccess("Successfully uploaded");
     } catch (e) {
