@@ -1,5 +1,7 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
+import { fileService } from "@/app/services/fileService";
+import { R2ObjectUri } from "@axtp/core/file";
 
 interface CustomerUpdateAddressArgs {
   addressId: number;
@@ -13,10 +15,13 @@ interface CustomerUpdateAddressArgs {
   state?: string;
 }
 
+interface UploadDocumentArgs {
+  documentType: string;
+  file: File;
+  onProgress: (progress: { loaded: number; total: number }) => void;
+}
 export class CustomerInstanceService {
-  createCustomerAddress(updatedData: any) {
-    throw new Error("Method not implemented.");
-  }
+  private fileService = fileService;
   private http: Http;
 
   constructor(private cuid: string) {
@@ -99,8 +104,28 @@ export class CustomerInstanceService {
     return response as CustomerFullResponse;
   }
 
-  async uploadDocuments() {
-    console.log("Implement uploadDocuments");
+  async uploadDocument({ documentType, file, onProgress }: UploadDocumentArgs) {
+    const { objectUrl } = await fileService.uploadFile({
+      file,
+      onProgress,
+    });
+    const URLParser =
+      /https:\/\/(?<accountId>.+)\.r2\.cloudflarestorage\.com\/(?<bucket>.+)\/(?<objectId>.+)/;
+    const match = URLParser.exec(objectUrl);
+    if (!match?.groups) {
+      throw new Error("Got Invalid URL");
+    }
+
+    const { accountId, bucket, objectId } = match.groups;
+    const r2Uri = new R2ObjectUri({
+      accountId,
+      bucket,
+      objectId,
+    });
+    return this.http.post("documents", {
+      type: documentType,
+      url: r2Uri.toString(),
+    });
   }
 
   async deleteDocument(documentId: number) {

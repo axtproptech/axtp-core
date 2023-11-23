@@ -9,13 +9,13 @@ import {
   Typography,
 } from "@mui/material";
 import { SelectInput } from "@/app/components/inputs";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { ActionButton } from "@/app/components/buttons/actionButton";
 import { FileInput } from "@/app/components/inputs/FileInput";
-import { fileService } from "@/app/services/fileService";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
 
 import { IconUpload } from "@tabler/icons";
+import { customerService } from "@/app/services/customerService/customerService";
 
 const DocumentOptions = [
   { label: "Selfie", value: "Selfie" },
@@ -34,11 +34,12 @@ export interface DocumentationAddedArgs {
 }
 
 interface Props {
+  cuid: string;
   open: boolean;
   onClose: () => void;
 }
 
-export const AddDocumentDialog = ({ open, onClose }: Props) => {
+export const AddDocumentDialog = ({ cuid, open, onClose }: Props) => {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
   const [selectedDocumentType, setSelectedDocumentType] = useState(
     DefaultOption.value
@@ -54,9 +55,9 @@ export const AddDocumentDialog = ({ open, onClose }: Props) => {
         return;
       }
       setIsUploading(true);
-      const file = selectedFiles[0];
-      await fileService.uploadFile({
-        file,
+      await customerService.with(cuid).uploadDocument({
+        documentType: selectedDocumentType,
+        file: selectedFiles[0],
         onProgress: (progress) => {
           const { total, loaded } = progress;
           if (total > 0) {
@@ -64,6 +65,7 @@ export const AddDocumentDialog = ({ open, onClose }: Props) => {
           }
         },
       });
+
       reset();
       showSuccess("Successfully uploaded");
     } catch (e) {

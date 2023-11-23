@@ -20,10 +20,6 @@ export const CustomerDocuments = ({ customer }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { documents } = customer;
 
-  const handleOnDialogClose = (args: DocumentationAddedArgs) => {
-    setIsDialogOpen(false);
-    return Promise.resolve();
-  };
   return (
     <section>
       <Stack
@@ -50,8 +46,8 @@ export const CustomerDocuments = ({ customer }: Props) => {
       </Grid>
       <AddDocumentDialog
         open={isDialogOpen}
-        onClose={handleOnDialogClose}
-        onCancel={() => setIsDialogOpen(false)}
+        onClose={() => setIsDialogOpen(false)}
+        cuid={customer.cuid}
       />
     </section>
   );
