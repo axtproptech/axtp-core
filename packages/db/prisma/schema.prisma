@@ -143,6 +143,7 @@ model Document {
   customerId Int
   type       DocumentType
   url        String
+  active     Boolean     @default(true)
 }
 
 model VerificationResult {

@@ -1,7 +1,27 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
+import { fileService } from "@/app/services/fileService";
+import { R2ObjectUri } from "@axtp/core/file";
 
+interface CustomerUpdateAddressArgs {
+  addressId: number;
+  city?: string;
+  country?: string;
+  line1?: string;
+  line2?: string;
+  line3?: string;
+  line4?: string;
+  postCodeZip?: string;
+  state?: string;
+}
+
+interface UploadDocumentArgs {
+  documentType: string;
+  file: File;
+  onProgress: (progress: { loaded: number; total: number }) => void;
+}
 export class CustomerInstanceService {
+  private fileService = fileService;
   private http: Http;
 
   constructor(private cuid: string) {
@@ -71,5 +91,32 @@ export class CustomerInstanceService {
       placeOfBirth,
     });
     return response as CustomerFullResponse;
+  }
+
+  async updateCustomerAddress({
+    addressId,
+    ...updateData
+  }: CustomerUpdateAddressArgs) {
+    const { response } = await this.http.put(
+      `/address/${addressId}`,
+      updateData
+    );
+    return response as CustomerFullResponse;
+  }
+
+  async uploadDocument({ documentType, file, onProgress }: UploadDocumentArgs) {
+    const r2Uri = await fileService.uploadFile({
+      file,
+      onProgress,
+    });
+
+    return this.http.post("documents", {
+      type: documentType,
+      url: r2Uri.toString(),
+    });
+  }
+
+  async deleteDocument(documentId: number) {
+    return this.http.delete(`documents/${documentId}`);
   }
 }
