@@ -105,23 +105,11 @@ export class CustomerInstanceService {
   }
 
   async uploadDocument({ documentType, file, onProgress }: UploadDocumentArgs) {
-    const { objectUrl } = await fileService.uploadFile({
+    const r2Uri = await fileService.uploadFile({
       file,
       onProgress,
     });
-    const URLParser =
-      /https:\/\/(?<accountId>.+)\.r2\.cloudflarestorage\.com\/(?<bucket>.+)\/(?<objectId>.+)/;
-    const match = URLParser.exec(objectUrl);
-    if (!match?.groups) {
-      throw new Error("Got Invalid URL");
-    }
 
-    const { accountId, bucket, objectId } = match.groups;
-    const r2Uri = new R2ObjectUri({
-      accountId,
-      bucket,
-      objectId,
-    });
     return this.http.post("documents", {
       type: documentType,
       url: r2Uri.toString(),

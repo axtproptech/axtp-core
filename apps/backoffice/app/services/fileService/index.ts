@@ -1,6 +1,6 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 
-import { ClientSideFileService, SignedUrl } from "@axtp/core/file";
+import { ClientSideFileService, R2ObjectUri, SignedUrl } from "@axtp/core/file";
 
 interface UploadFileArgs {
   file: File;
@@ -14,6 +14,22 @@ export class FileService {
     this.bffClient = HttpClientFactory.createHttpClient("/api/admin/files");
   }
 
+  private getR2UriFromObjectUrl(objectUrl: string) {
+    const URLParser =
+      /https:\/\/(?<accountId>.+)\.r2\.cloudflarestorage\.com\/(?<bucket>.+)\/(?<objectId>.+)/;
+    const match = URLParser.exec(objectUrl);
+    if (!match?.groups) {
+      throw new Error("Got Invalid URL");
+    }
+
+    const { accountId, bucket, objectId } = match.groups;
+    return new R2ObjectUri({
+      accountId,
+      bucket,
+      objectId,
+    });
+  }
+
   private async getUploadUrl(contentType: string) {
     const { response } = await this.bffClient.post("/upload", {
       contentType,
@@ -21,7 +37,7 @@ export class FileService {
     return response as SignedUrl;
   }
 
-  async uploadFile({ file, onProgress }: UploadFileArgs): Promise<SignedUrl> {
+  async uploadFile({ file, onProgress }: UploadFileArgs): Promise<R2ObjectUri> {
     const uploadUrlResponse = await this.getUploadUrl(file.type);
     const fileService = new ClientSideFileService();
     await fileService.uploadFile({
@@ -29,7 +45,7 @@ export class FileService {
       file,
       onProgress,
     });
-    return uploadUrlResponse;
+    return this.getR2UriFromObjectUrl(uploadUrlResponse.objectUrl);
   }
 
   async getDownloadUrl(objectId: string) {
