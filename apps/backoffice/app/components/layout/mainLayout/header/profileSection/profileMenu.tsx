@@ -1,9 +1,7 @@
 import {
   Box,
-  Chip,
   ClickAwayListener,
   Divider,
-  Grid,
   List,
   ListItemButton,
   ListItemIcon,
@@ -16,13 +14,7 @@ import {
 import { Transition } from "@/app/components/animation";
 import { MainCard, WalletConnectorCard } from "@/app/components/cards";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import {
-  IconLogout,
-  IconSettings,
-  IconUser,
-  IconRecycle,
-  IconRefreshAlert,
-} from "@tabler/icons";
+import { IconLogout, IconRecycle, IconRefreshAlert } from "@tabler/icons";
 import React, { FC, useState } from "react";
 import { VirtualElement } from "@popperjs/core";
 import { useTheme } from "@mui/material/styles";
