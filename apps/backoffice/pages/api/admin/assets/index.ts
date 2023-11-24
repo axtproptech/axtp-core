@@ -3,6 +3,7 @@ import { route } from "@/bff/route";
 import { requireAuth } from "@/bff/middlewares/requireAuth";
 import { registerAsset } from "@/bff/handler/assets/registerAsset";
 import { updateAsset } from "@/bff/handler/assets/updateAsset";
+import { audit } from "@/bff/middlewares/audit";
 
 export default function handler(
   req: NextApiRequest,

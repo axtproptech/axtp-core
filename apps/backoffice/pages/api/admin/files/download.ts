@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { route } from "@/bff/route";
 import { createDownloadURL } from "@/bff/handler/files";
+import { requireAuth } from "@/bff/middlewares/requireAuth";
 
 export default function handler(
   req: NextApiRequest,
@@ -10,5 +11,6 @@ export default function handler(
     req,
     res,
     post: createDownloadURL,
+    middlewares: [requireAuth],
   });
 }

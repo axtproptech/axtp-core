@@ -3,6 +3,7 @@ import { context } from "@/bff/context";
 import { withMiddleware, Middleware } from "@/bff/withMiddleware";
 import { ApiHandler } from "./types/apiHandler";
 import { handleError } from "@/bff/handleError";
+import { audit } from "@/bff/middlewares/audit";
 
 interface RouteArgs {
   req: NextApiRequest;
@@ -24,6 +25,7 @@ export async function route(routeArgs: RouteArgs): Promise<void> {
       routeArgs[req.method.toLowerCase()]
     : undefined;
   try {
+    middlewares.push(audit);
     if (handlerFunction) {
       await withMiddleware(...middlewares).do(handlerFunction)(
         req,
