@@ -40,8 +40,6 @@ export const updateCustomerAddress: ApiHandler = async ({ req, res }) => {
       },
     });
 
-    console.log("updateCustomerAddress", req.body);
-
     const customer = await prisma.customer.findUnique({
       where: { cuid },
       include: {

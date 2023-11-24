@@ -217,3 +217,13 @@ model SecurityToken {
   refreshCounter Int         @default(0)
   @@unique([subjectId, purpose])
 }
+
+model Audit {
+    id Int              @id @default(autoincrement())
+    createdAt DateTime  @default(now())
+    method              String
+    url                 String
+    payload             String  @db.Text
+    user                String
+    @@index([method, url])
+}
