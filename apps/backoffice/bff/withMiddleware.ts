@@ -12,8 +12,11 @@ export type Middleware = (
   args: MiddlewareArgs
 ) => Promise<boolean | undefined> | boolean | undefined;
 
-function isPromise(value: any) {
-  return Boolean(value && typeof value.then === "function");
+function isAsync(func: any) {
+  return (
+    Boolean(func && typeof func.then === "function") ||
+    Object.getPrototypeOf(func).constructor.name === "AsyncFunction"
+  );
 }
 
 export const withMiddleware = (...warez: Middleware[]) => ({
@@ -21,12 +24,14 @@ export const withMiddleware = (...warez: Middleware[]) => ({
     (handler: ApiHandler) =>
     async (req: NextApiRequest, res: NextApiResponse, ctx: ContextType) => {
       for (let ware of warez) {
-        let result = await Promise.resolve(ware({ req, res, ctx }));
-        // if (isPromise(ware)) {
-        //     result = await ware({req, res, ctx})
-        // } else {
-        //     result =
-        // }
+        let result; //= await Promise.resolve(ware({ req, res, ctx }));
+        if (isAsync(ware)) {
+          console.log("async middleware", ware.name);
+          result = await ware({ req, res, ctx });
+        } else {
+          console.log("middleware", ware.name);
+          result = ware({ req, res, ctx });
+        }
         if (!result) {
           return;
         }

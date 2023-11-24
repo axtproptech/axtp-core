@@ -17,20 +17,20 @@ export const audit: Middleware = async ({
   ctx,
 }): Promise<boolean | undefined> => {
   if (
-    req.method !== "PUT" &&
-    req.method !== "POST" &&
-    req.method !== "DELETE"
+    req.method === "PUT" ||
+    req.method === "POST" ||
+    req.method === "DELETE"
   ) {
-    return Promise.resolve(true);
+    const session = await getServerSession(req, res, authOptions);
+    const audit = await prisma.audit.create({
+      data: {
+        user: session?.user?.email ?? "",
+        method: req.method,
+        url: req.url || "",
+        payload: stringifyBody(req.body),
+      },
+    });
+    console.log("Audited", audit);
   }
-  const session = await getServerSession(req, res, authOptions);
-  await prisma.audit.create({
-    data: {
-      user: session?.user?.email ?? "",
-      method: req.method,
-      url: req.url || "",
-      payload: stringifyBody(req.body),
-    },
-  });
   return true;
 };
