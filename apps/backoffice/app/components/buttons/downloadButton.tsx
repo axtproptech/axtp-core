@@ -1,7 +1,7 @@
 import { Button, CircularProgress, Tooltip } from "@mui/material";
 import { IconDownload, IconDownloadOff } from "@tabler/icons";
 import { FC, useState } from "react";
-import { R2ObjectUri } from "@axtp/core/file";
+import { R2ObjectUri } from "@axtp/core/file/r2ObjectUri";
 import { fileService } from "@/app/services/fileService";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
 import IconButton from "@mui/material/IconButton";

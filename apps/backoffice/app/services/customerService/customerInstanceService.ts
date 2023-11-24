@@ -1,7 +1,6 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
 import { fileService } from "@/app/services/fileService";
-import { R2ObjectUri } from "@axtp/core/file";
 
 interface CustomerUpdateAddressArgs {
   addressId: number;

@@ -1,5 +1,5 @@
 import { getEnvVar } from "@/bff/getEnvVar";
-import { ServerSideFileService } from "@axtp/core/file";
+import { ServerSideFileService } from "@axtp/core/file/serverSideFileService";
 import { ApiHandler } from "@/bff/types/apiHandler";
 
 const TargetBucketName = getEnvVar("NEXT_SERVER_CF_R2_AXTP_KYC_BUCKET");
