@@ -7,10 +7,11 @@ import { asFullCustomerResponse } from "./asFullCustomerResponse";
 
 let customerRequestSchema = object({ cuid: string() });
 
-// TODO: extend as needed
 let customerUpdateBodySchema = object({
   firstName: string().optional(),
   lastName: string().optional(),
+  firstNameMother: string().optional(),
+  lastNameMother: string().optional(),
   email1: string().optional(),
   phone1: string().optional(),
   dateOfBirth: date().optional(),
@@ -35,6 +36,8 @@ export const updateCustomer: ApiHandler = async ({ req, res }) => {
       phone1,
       dateOfBirth,
       placeOfBirth,
+      firstNameMother,
+      lastNameMother,
     } = customerUpdateBodySchema.validateSync(req.body);
 
     const customer = await prisma.customer.update({
@@ -50,6 +53,8 @@ export const updateCustomer: ApiHandler = async ({ req, res }) => {
         isBlocked,
         isActive,
         isInvited,
+        firstNameMother,
+        lastNameMother,
       },
       include: {
         termsOfUse: true,
