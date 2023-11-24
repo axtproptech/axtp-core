@@ -17,6 +17,7 @@ import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton"
 import { EditableField } from "./editableField";
 import { CustomerDocuments } from "./customerDocuments";
 import { Config } from "@/app/config";
+import { EditableFirstNameLastName, Name } from "./editableFirstNameLastName";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
@@ -40,10 +41,11 @@ export const CustomerDetails: FC<Props> = ({ customer }) => {
   const handleFieldValueChange = async (name: string, updatedData: any) => {
     try {
       await customerService.with(cuid).updateCustomer({ [name]: updatedData });
-      await mutate(`getCustomer/${cuid}`);
     } catch (e: any) {
       console.error("Updating customer failed!", e);
       showError("Updating customer failed!");
+    } finally {
+      await mutate(`getCustomer/${cuid}`);
     }
   };
 
@@ -58,6 +60,23 @@ export const CustomerDetails: FC<Props> = ({ customer }) => {
       });
     } catch (e: any) {
       console.error("Updating customer address failed!", e);
+      showError("Updating customer failed!");
+    } finally {
+      await mutate(`getCustomer/${cuid}`);
+    }
+  };
+
+  const handleMotherNameChange = async ({ firstName, lastName }: Name) => {
+    try {
+      await customerService
+        .with(cuid)
+        .updateCustomer({
+          firstNameMother: firstName,
+          lastNameMother: lastName,
+        });
+      await mutate(`getCustomer/${cuid}`);
+    } catch (e: any) {
+      console.error("Updating customer failed!", e);
       showError("Updating customer failed!");
     } finally {
       await mutate(`getCustomer/${cuid}`);
@@ -184,10 +203,13 @@ export const CustomerDetails: FC<Props> = ({ customer }) => {
               label="Brazilian Resident"
               text={customer.isInBrazil ? "YES" : "NO"}
             />
-            {/*TODO: first name, lastname */}
-            <LabeledTextField
+            <EditableFirstNameLastName
               label="Mother's Name"
-              text={`${customer.firstNameMother} ${customer.lastNameMother}`}
+              name={{
+                firstName: customer.firstNameMother,
+                lastName: customer.lastNameMother,
+              }}
+              onSubmit={handleMotherNameChange}
             />
             <LabeledTextField
               label="Verification Level"
