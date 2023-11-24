@@ -1,4 +1,4 @@
-import { Box, Chip, CircularProgress, Divider, Grid } from "@mui/material";
+import { Box, Chip, CircularProgress, Grid } from "@mui/material";
 import { Config } from "@/app/config";
 import { useMemo } from "react";
 import { customerService } from "@/app/services/customerService/customerService";
@@ -14,7 +14,7 @@ import { useExplorerLink } from "@/app/hooks/useExplorerLink";
 import { useRouter } from "next/router";
 import { auth0Service } from "@/app/services/auth0Service";
 import { EditableName } from "./components/nameEditor";
-import { CustomerDetails } from "@/features/customers/view/components/customerDetails";
+import { CustomerDetails } from "./components/customerDetails";
 
 const gridSpacing = Config.Layout.GridSpacing;
 export const SingleCustomer = () => {

@@ -5,18 +5,13 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { nanoid } from "nanoid";
+import { SignedUrl } from "./signedUrl";
 
 export interface ServerSideFileServiceContext {
   accountId: string;
   accessKeyId: string;
   accessKeySecret: string;
   targetBucketName: string;
-}
-
-export interface SignedUrl {
-  signedUrl: string;
-  objectUrl: string;
-  objectName: string;
 }
 
 /**

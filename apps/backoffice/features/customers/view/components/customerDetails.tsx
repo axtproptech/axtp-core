@@ -5,7 +5,7 @@ import { useSWRConfig } from "swr";
 import { cpf } from "cpf-cnpj-validator";
 import { customerService } from "@/app/services/customerService/customerService";
 import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
-import { Divider, Grid, Stack, Tooltip, Typography } from "@mui/material";
+import { Grid, Stack, Tooltip, Typography } from "@mui/material";
 import {
   Check as CheckIcon,
   ErrorOutline as ErrorIcon,
@@ -68,12 +68,10 @@ export const CustomerDetails: FC<Props> = ({ customer }) => {
 
   const handleMotherNameChange = async ({ firstName, lastName }: Name) => {
     try {
-      await customerService
-        .with(cuid)
-        .updateCustomer({
-          firstNameMother: firstName,
-          lastNameMother: lastName,
-        });
+      await customerService.with(cuid).updateCustomer({
+        firstNameMother: firstName,
+        lastNameMother: lastName,
+      });
       await mutate(`getCustomer/${cuid}`);
     } catch (e: any) {
       console.error("Updating customer failed!", e);
