@@ -24,12 +24,10 @@ export const withMiddleware = (...warez: Middleware[]) => ({
     (handler: ApiHandler) =>
     async (req: NextApiRequest, res: NextApiResponse, ctx: ContextType) => {
       for (let ware of warez) {
-        let result; //= await Promise.resolve(ware({ req, res, ctx }));
+        let result;
         if (isAsync(ware)) {
-          console.log("async middleware", ware.name);
           result = await ware({ req, res, ctx });
         } else {
-          console.log("middleware", ware.name);
           result = ware({ req, res, ctx });
         }
         if (!result) {

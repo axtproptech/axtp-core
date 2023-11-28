@@ -4,6 +4,7 @@ import { badRequest } from "@hapi/boom";
 
 import { number, object, string, ValidationError } from "yup";
 import { asFullCustomerResponse } from "./asFullCustomerResponse";
+import { mailService } from "@/bff/backofficeMailService";
 
 let customerRequestSchema = object({
   cuid: string().required(),
@@ -55,7 +56,13 @@ export const updateCustomerAddress: ApiHandler = async ({ req, res }) => {
       },
     });
 
-    return res.status(200).json(asFullCustomerResponse(customer));
+    await mailService.sendInternalCustomerUpdated({
+      action: "Customer Address Updated",
+      // @ts-ignore
+      customer,
+    });
+
+    res.status(200).json(asFullCustomerResponse(customer));
   } catch (e: any) {
     if (e instanceof ValidationError) {
       throw badRequest(e.errors.join(","));
