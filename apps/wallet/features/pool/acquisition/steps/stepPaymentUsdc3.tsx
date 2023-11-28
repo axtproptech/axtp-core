@@ -84,6 +84,9 @@ export const StepPaymentUsdc3: FC<Props> = ({
         }
         // throws if status is not confirmed
         await PaymentService.getUsdcPaymentStatus(transactionHash, protocol);
+        const tokenQnt = ChainValue.create(token.decimals)
+          .setCompound(quantity)
+          .getCompound();
         await PaymentService.createPaymentRecord({
           poolId,
           paymentType: protocolToPaymentType(protocol),
@@ -94,9 +97,8 @@ export const StepPaymentUsdc3: FC<Props> = ({
           tokenId: token.id,
           customerId: customer.customerId,
           accountPk: accountPublicKey,
-          tokenQnt: ChainValue.create(token.decimals)
-            .setCompound(quantity)
-            .getCompound(),
+          tokenQnt,
+          tokenName: token.name,
         });
         setTxStatus("confirmed");
         onStatusChange("confirmed");

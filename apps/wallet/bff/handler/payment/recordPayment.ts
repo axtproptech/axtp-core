@@ -2,12 +2,11 @@ import { createLedgerClient } from "@/bff/createLedgerClient";
 import { PaymentRecordService, PaymentRecord } from "@axtp/core";
 import { Amount } from "@signumjs/util";
 import { getEnvVar } from "@/bff/getEnvVar";
-import { Address, TransactionId } from "@signumjs/core";
+import { Address } from "@signumjs/core";
 import { RegisterPaymentRequest } from "@/bff/types/registerPaymentRequest";
 import { prisma } from "@axtp/db";
-export const recordPayment = async (
-  args: RegisterPaymentRequest
-): Promise<TransactionId> => {
+
+export const recordPayment = async (args: RegisterPaymentRequest) => {
   const {
     customerId,
     accountPk,

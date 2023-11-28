@@ -43,15 +43,17 @@ export const StepPaymentPix: FC<Props> = ({
     try {
       setIsConfirming(true);
 
+      const tokenQnt = ChainValue.create(token.decimals)
+        .setCompound(quantity)
+        .getCompound();
       const payment = {
         paymentType: "pix",
         currency: "BRL",
         usd: totalAXTC.toString(),
         txId: "",
         tokenId: token.id,
-        tokenQnt: ChainValue.create(token.decimals)
-          .setCompound(quantity)
-          .getCompound(),
+        tokenQnt,
+        tokenName: token.name,
         amount: totalBRL.toString(),
         customerId: customer.customerId,
         poolId,
