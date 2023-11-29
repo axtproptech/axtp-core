@@ -14,7 +14,7 @@ const Body = ({ text, children }: BodyProps) => {
       {text}
     </Typography>
   ) : (
-    <>children</>
+    <>{children}</>
   );
 };
 

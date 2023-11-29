@@ -4,6 +4,7 @@ export interface RegisterPaymentRequest {
   poolId: string;
   tokenId: string;
   tokenQnt: string;
+  tokenName: string;
   amount: string;
   paymentType: string;
   txId: string;

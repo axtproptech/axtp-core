@@ -165,6 +165,7 @@ export const RegisterPaymentCard = () => {
         txId: formValues.paymentReference,
         poolId: formValues.poolId,
         tokenId: selectedPool.token.id,
+        tokenName: selectedPool.token.name,
         tokenQnt,
         currency,
         amount,

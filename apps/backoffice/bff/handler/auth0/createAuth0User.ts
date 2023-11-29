@@ -49,7 +49,7 @@ export const createAuth0User: ApiHandler = async ({ req, res }) => {
       });
       console.timeLog("createAuth0User");
       console.log("sending mail...");
-      await mailService.sendExclusiveAreaInvitation({
+      await mailService.external.sendExclusiveAreaInvitation({
         to: {
           email1,
           firstName,

@@ -23,19 +23,6 @@ let customerUpdateBodySchema = object({
   isInvited: boolean().optional(),
 });
 
-async function sendSuccessfulVerificationMail(customer: Customer) {
-  return mailService.sendInternalCustomerUpdated({
-    action: "Customer Verified",
-    customer,
-  });
-}
-async function sendBlockMail(customer: Customer) {
-  return mailService.sendInternalCustomerUpdated({
-    action: "Customer Blocked",
-    customer,
-  });
-}
-
 export const updateCustomer: ApiHandler = async ({ req, res }) => {
   try {
     const { cuid } = customerRequestSchema.validateSync(req.query);
@@ -86,19 +73,34 @@ export const updateCustomer: ApiHandler = async ({ req, res }) => {
     let action = "Customer Updated";
     if (verificationLevel === "Level1" || verificationLevel === "Level2") {
       action = "Customer Verified";
+      await mailService.external.sendSuccessfulVerification({
+        params: {
+          firstName: customer.firstName,
+        },
+        to: {
+          firstName: customer.firstName,
+          lastName: customer.lastName,
+          email1: customer.email1,
+        },
+      });
     } else if (isBlocked) {
       action = "Customer Blocked";
+      // TODO: send external mail
     } else if (isBlocked === false) {
       action = "Customer Unblocked";
+      // TODO: send external mail
     } else if (isActive) {
       action = "Customer (Re)Activated";
+      // TODO: send external mail
     } else if (isActive === false) {
       action = "Customer Deactivated";
+      // TODO: send external mail
     } else if (isInvited) {
       action = "Customer Invited to Exclusive Area";
+      // mail sent by auth0 user creation!
     }
 
-    await mailService.sendInternalCustomerUpdated({
+    await mailService.internal.sendCustomerUpdated({
       action,
       customer,
     });

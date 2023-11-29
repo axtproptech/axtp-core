@@ -1,21 +1,54 @@
 import { prisma } from "@axtp/db";
 import { notFound, badRequest } from "@hapi/boom";
+import { mailService } from "@/bff/services/backofficeMailService";
 import { createLedgerClient } from "@/bff/createLedgerClient";
-import { getEnvVar } from "@/bff/getEnvVar";
-import { PaymentRecord, PaymentRecordService, PaymentType } from "@axtp/core";
-import { Amount } from "@signumjs/util";
+
+async function sendConfirmationMails(payment: any, tokenName: string) {
+  try {
+    await Promise.all([
+      mailService.internal.sendPaymentConfirmation({
+        params: {
+          firstName: payment.customer.firstName,
+          lastName: payment.customer.lastName,
+          email: payment.customer.email1,
+          phone: payment.customer.phone1,
+          amount: payment.amount.toString(),
+          currency: payment.currency || "",
+          paymentId: payment.id.toString(),
+          tokenQuantity: payment.tokenQuantity.toString(),
+          tokenName,
+        },
+      }),
+      mailService.external.sendPaymentConfirmation({
+        to: {
+          firstName: payment.customer.firstName,
+          lastName: payment.customer.lastName,
+          email1: payment.customer.email1,
+        },
+        params: {
+          firstName: payment.customer.firstName,
+          lastName: payment.customer.lastName,
+          poolId: payment.poolId,
+          tokenName,
+          tokenQnt: payment.tokenQuantity.toString(),
+        },
+      }),
+    ]);
+  } catch (e) {
+    console.error("Sending mails failed", e);
+  }
+}
 
 export async function registerTransactionId(id: any, body: any) {
   const { transactionId, status } = body;
 
-  let payment = await prisma.payment.findUnique({
+  const payment = await prisma.payment.findUnique({
     where: {
       id,
     },
     include: {
       customer: {
-        select: {
-          cuid: true,
+        include: {
           blockchainAccounts: true,
         },
       },
@@ -30,68 +63,31 @@ export async function registerTransactionId(id: any, body: any) {
     throw badRequest(`Payment [${id}] has already a transaction id registered`);
   }
 
-  const ledger = createLedgerClient();
-  const senderSeed = getEnvVar("NEXT_SERVER_PRINCIPAL_SIGNUM_ACCOUNT_SECRET");
-  const paymentRecordAccountPubKey = getEnvVar(
-    "NEXT_SERVER_PAYMENT_SIGNUM_ACCOUNT_PUBKEY"
-  );
-  const sendFeeSigna = parseFloat(getEnvVar("NEXT_SERVER_SIGNUM_SEND_FEE"));
-
-  const service = new PaymentRecordService({
-    ledger,
-    senderSeed,
-    sendFee: Amount.fromSigna(sendFeeSigna),
-  });
-
-  const {
-    poolId,
-    tokenId,
-    tokenQuantity,
-    amount,
-    usd,
-    currency,
-    type,
-    customer,
-    accountId,
-  } = payment;
-
   if (payment.customer.blockchainAccounts.length === 0) {
     throw badRequest(
       `Customer [${payment.customer.cuid}] has no blockchain account yet`
     );
   }
-  const publicKey = payment.customer.blockchainAccounts[0].publicKey;
-  const record: PaymentRecord = {
-    accountId,
-    poolId,
-    tokenId,
-    tokenQuantity: tokenQuantity.toString(),
-    paymentUsd: Number(usd || 0).toString(),
-    paymentAmount: Number(amount || 0).toString(),
-    paymentCurrency: currency || "",
-    paymentTransactionId: transactionId,
-    paymentType: type as PaymentType,
-    customerId: customer.cuid,
-  };
-
-  const [recordTx] = await Promise.all([
-    service.sendPaymentRecord(record, paymentRecordAccountPubKey),
-    service.sendPaymentReceiptToCustomer(record, publicKey),
-  ]);
-
-  return prisma.payment.update({
-    where: { id },
-    data: {
-      status,
-      transactionId,
-      recordId: recordTx?.transaction,
-    },
-    include: {
-      customer: {
-        select: {
-          cuid: true,
+  const ledger = createLedgerClient();
+  const [updatedPayment, token] = await Promise.all([
+    prisma.payment.update({
+      where: { id },
+      data: {
+        status,
+        transactionId,
+      },
+      include: {
+        customer: {
+          select: {
+            cuid: true,
+          },
         },
       },
-    },
-  });
+    }),
+    ledger.asset.getAsset({ assetId: payment.tokenId }),
+  ]);
+
+  await sendConfirmationMails(payment, token.name);
+
+  return updatedPayment;
 }

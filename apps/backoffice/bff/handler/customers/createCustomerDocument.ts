@@ -49,7 +49,7 @@ export const createCustomerDocument: ApiHandler = async ({ req, res }) => {
       },
     });
 
-    await mailService.sendInternalCustomerUpdated({
+    await mailService.internal.sendCustomerUpdated({
       action: "Customer Document Uploaded",
       customer,
     });

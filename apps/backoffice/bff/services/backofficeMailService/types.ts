@@ -1,14 +1,3 @@
-// ids from Brevo templates
-export enum EmailTemplates {
-  ExclusiveAreaInvitation = 6,
-  SuccessfulVerification,
-  PaymentReceived,
-}
-
-export enum InternalEmailTemplates {
-  CustomerUpdated = 8,
-}
-
 export interface MailRecipient {
   firstName: string;
   lastName: string;

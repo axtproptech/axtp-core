@@ -30,7 +30,7 @@ export const deleteCustomerDocument: ApiHandler = async ({ req, res }) => {
       },
     });
 
-    await mailService.sendInternalCustomerUpdated({
+    await mailService.internal.sendCustomerUpdated({
       action: "Customer Document Removed",
       customer,
     });
