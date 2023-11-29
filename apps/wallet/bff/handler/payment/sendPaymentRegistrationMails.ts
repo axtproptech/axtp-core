@@ -7,6 +7,11 @@ import { notFound } from "@hapi/boom";
 import { RegisterPaymentRequest } from "@/bff/types/registerPaymentRequest";
 import { TransactionId } from "@signumjs/core";
 
+const Sender = {
+  name: getEnvVar("NEXT_SERVER_BREVO_SENDER_NAME"),
+  email: getEnvVar("NEXT_SERVER_BREVO_SENDER_EMAIL"),
+};
+
 type RecordPaymentTx = RegisterPaymentRequest & { recordTx: TransactionId };
 
 async function sendInternalPaymentRegistrationMail(
@@ -16,10 +21,7 @@ async function sendInternalPaymentRegistrationMail(
 ) {
   try {
     await mailService.sendTransactionalEmail({
-      sender: {
-        name: getEnvVar("NEXT_SERVER_BREVO_SENDER_NAME"),
-        email: getEnvVar("NEXT_SERVER_BREVO_SENDER_EMAIL"),
-      },
+      sender: Sender,
       to: [
         {
           name: "[AXT Notification] Incoming Payment",
@@ -68,10 +70,7 @@ async function sendCustomerPaymentRegistrationMail(
 ) {
   try {
     await mailService.sendTransactionalEmail({
-      sender: {
-        name: getEnvVar("NEXT_SERVER_BREVO_SENDER_NAME"),
-        email: getEnvVar("NEXT_SERVER_BREVO_SENDER_EMAIL"),
-      },
+      sender: Sender,
       to: [
         {
           name: `${customer.firstName} ${customer.lastName}`,

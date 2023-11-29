@@ -2,7 +2,7 @@ import { ApiHandler } from "@/bff/types/apiHandler";
 import { prisma } from "@axtp/db";
 import { notFound, badRequest, notAcceptable } from "@hapi/boom";
 import { object, string, ValidationError } from "yup";
-import { mailService } from "@/bff/backofficeMailService";
+import { mailService } from "@/bff/services/backofficeMailService/backofficeMailService";
 import { Auth0Service } from "./internal/auth0Service";
 import { findCustomerById } from "./internal/findCustomerById";
 import { HttpError } from "@signumjs/http";

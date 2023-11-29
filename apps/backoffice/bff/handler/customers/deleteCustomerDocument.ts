@@ -2,7 +2,7 @@ import { ApiHandler } from "@/bff/types/apiHandler";
 import { prisma } from "@axtp/db";
 import { badRequest, notFound } from "@hapi/boom";
 import { object, number, ValidationError, string } from "yup";
-import { mailService } from "@/bff/backofficeMailService";
+import { mailService } from "@/bff/services/backofficeMailService/backofficeMailService";
 
 let documentRequestSchema = object({
   documentId: number().required(),

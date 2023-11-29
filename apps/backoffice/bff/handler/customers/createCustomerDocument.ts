@@ -2,7 +2,7 @@ import { ApiHandler } from "@/bff/types/apiHandler";
 import { prisma } from "@axtp/db";
 import { badRequest, notFound } from "@hapi/boom";
 import { object, ValidationError, string, mixed } from "yup";
-import { mailService } from "@/bff/backofficeMailService";
+import { mailService } from "@/bff/services/backofficeMailService";
 
 const documentQuerySchema = object({
   cuid: string().required(),

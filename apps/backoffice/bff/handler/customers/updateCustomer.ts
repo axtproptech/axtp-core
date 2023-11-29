@@ -4,7 +4,7 @@ import { notFound, badRequest } from "@hapi/boom";
 
 import { boolean, date, mixed, object, string, ValidationError } from "yup";
 import { asFullCustomerResponse } from "./asFullCustomerResponse";
-import { mailService } from "@/bff/backofficeMailService";
+import { mailService } from "@/bff/services/backofficeMailService/backofficeMailService";
 
 let customerRequestSchema = object({ cuid: string() });
 

@@ -1,24 +1,13 @@
 import { MailService } from "@axtp/core/mailer";
 import { Customer } from "@axtp/db";
-import { getEnvVar } from "./getEnvVar";
+import { getEnvVar } from "../../getEnvVar";
+import { EmailTemplates, InternalEmailTemplates, Mail } from "./types";
 
-// ids from Brevo templates
-enum EmailTemplates {
-  ExclusiveAreaInvitation = 6,
-  SuccessfulVerification,
-  PaymentReceived,
-}
-
-interface MailRecipient {
-  firstName: string;
-  lastName: string;
-  email1: string;
-}
-
-interface Mail<PARAMS> {
-  to: MailRecipient;
-  params: PARAMS;
-}
+const IsStaging = getEnvVar("NEXT_PUBLIC_SIGNUM_IS_TESTNET") === "true";
+const Sender = {
+  name: getEnvVar("NEXT_SERVER_BREVO_SENDER_NAME"),
+  email: getEnvVar("NEXT_SERVER_BREVO_SENDER_EMAIL"),
+};
 
 interface InvitationParams {
   firstName: string;
@@ -34,10 +23,6 @@ interface SendExclusiveAreaInvitationArgs extends Mail<InvitationParams> {}
 interface SendSuccessfulVerificationArgs
   extends Mail<SuccessfulVerificationParams> {}
 
-enum InternalEmailTemplates {
-  CustomerUpdated = 8,
-}
-
 interface GenericInternalParams {
   customer: Customer;
 }
@@ -47,7 +32,6 @@ interface SendInternalMailArgs<T> extends Omit<Mail<T>, "to"> {}
 interface SendInternalCustomerUpdateArgs
   extends SendInternalMailArgs<GenericInternalParams> {}
 
-const IsStaging = getEnvVar("NEXT_PUBLIC_SIGNUM_IS_TESTNET") === "true";
 export class BackofficeMailService {
   private service: MailService;
 
@@ -66,10 +50,7 @@ export class BackofficeMailService {
   }) {
     try {
       await this.service.sendTransactionalEmail({
-        sender: {
-          name: getEnvVar("NEXT_SERVER_BREVO_SENDER_NAME"),
-          email: getEnvVar("NEXT_SERVER_BREVO_SENDER_EMAIL"),
-        },
+        sender: Sender,
         to: [
           {
             name: `${mail.to.firstName} ${mail.to.lastName}`,
@@ -90,23 +71,22 @@ export class BackofficeMailService {
     mail,
     tags,
     action,
+    toEmail,
     templateId,
   }: {
     mail: SendInternalMailArgs<T>;
     action: string;
+    toEmail: string;
     tags: string[];
     templateId: InternalEmailTemplates;
   }) {
     try {
       await this.service.sendTransactionalEmail({
-        sender: {
-          name: getEnvVar("NEXT_SERVER_BREVO_SENDER_NAME"),
-          email: getEnvVar("NEXT_SERVER_BREVO_SENDER_EMAIL"),
-        },
+        sender: Sender,
         to: [
           {
             name: `[AXT Notification] ${action}`,
-            email: getEnvVar("NEXT_SERVER_AXT_KYC_MAIL_ADDRESS"),
+            email: toEmail,
           },
         ],
         templateId,
@@ -137,6 +117,7 @@ export class BackofficeMailService {
         },
       },
       action,
+      toEmail: getEnvVar("NEXT_SERVER_AXT_KYC_MAIL_ADDRESS"),
       templateId: InternalEmailTemplates.CustomerUpdated,
       tags: ["CustomerUpdate"],
     });
