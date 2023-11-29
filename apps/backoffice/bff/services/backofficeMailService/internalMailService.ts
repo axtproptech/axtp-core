@@ -6,11 +6,13 @@ import { Mail } from "./types";
 const IsStaging = getEnvVar("NEXT_PUBLIC_SIGNUM_IS_TESTNET") === "true";
 interface InternalMailArgs<T> extends Omit<Mail<T>, "to"> {}
 
+// Brevo IDs
 enum InternalEmailTemplates {
   CustomerUpdated = 8,
   PaymentRegistration = 9,
   PaymentConfirmation = 11,
   PaymentCancellation = 12,
+  PaymentProcessing = 16,
 }
 interface SendInternalCustomerUpdateArgs
   extends InternalMailArgs<{
@@ -119,6 +121,16 @@ export class InternalMailService {
       toEmail: this.recipientFinancial,
       templateId: InternalEmailTemplates.PaymentRegistration,
       tags: ["PaymentRegistration"],
+    });
+  }
+
+  async sendPaymentProcessing(args: SendInternalPaymentMailArgs) {
+    return this.sendInternalMail({
+      mail: args,
+      action: "Payment Processed (Token Transferred)",
+      toEmail: this.recipientFinancial,
+      templateId: InternalEmailTemplates.PaymentProcessing,
+      tags: ["PaymentProcessing"],
     });
   }
 

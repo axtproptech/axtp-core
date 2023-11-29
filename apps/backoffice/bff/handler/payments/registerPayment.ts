@@ -108,8 +108,6 @@ export const registerPayment: ApiHandler = async ({ req, res }) => {
       service.sendPaymentReceiptToCustomer(record, accountPk),
     ]);
 
-    // send mail.
-
     const createdPayment = await prisma.payment.create({
       data: {
         tokenId,

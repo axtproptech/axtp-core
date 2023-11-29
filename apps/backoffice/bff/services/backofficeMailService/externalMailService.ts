@@ -8,6 +8,7 @@ export enum ExternalEmailTemplates {
   PaymentRegistration = 10,
   PaymentCancellation = 13,
   PaymentConfirmation = 14,
+  PaymentProcessing = 15,
 }
 interface SendExclusiveAreaInvitationArgs
   extends Mail<{
@@ -28,6 +29,7 @@ interface SendExternalPaymentArgs
     tokenName: string;
     poolId: string;
     reason?: string;
+    txId?: string;
   }> {}
 
 export class ExternalMailService {
@@ -90,6 +92,13 @@ export class ExternalMailService {
       mail: args,
       templateId: ExternalEmailTemplates.PaymentConfirmation,
       tags: ["PaymentConfirmation"],
+    });
+  }
+  async sendPaymentProcessing(args: SendExternalPaymentArgs) {
+    return this.sendExternalMail({
+      mail: args,
+      templateId: ExternalEmailTemplates.PaymentProcessing,
+      tags: ["PaymentProcessing"],
     });
   }
 
