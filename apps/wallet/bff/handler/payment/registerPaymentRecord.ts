@@ -17,7 +17,7 @@ const bodySchema = object({
   paymentType: string()
     .oneOf(["pix", "usdeth", "usdsol", "usdalg", "usdmat"])
     .required(),
-  txId: string().required(),
+  txId: string().optional(),
   usd: string().required(),
   currency: string().required(),
 });
@@ -26,7 +26,7 @@ export const registerPaymentRecord: RouteHandlerFunction = async (req, res) => {
     const params = bodySchema.validateSync(req.body) as RegisterPaymentRequest;
     const recordTx = await recordPayment(params);
 
-    await sendPaymentRegistrationMails(params);
+    await sendPaymentRegistrationMails({ ...params, recordTx });
 
     bffLoggingService.info({
       msg: "Payment recorded",

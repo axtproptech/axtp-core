@@ -100,10 +100,13 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
       (p) => p.id === pool.token.id
     );
 
-    const maxTokenPerCustomer = Math.min(
-      availableShares,
-      pool.aliasData.maximumTokensPerCustomer
-    );
+    // FIXME : put it back
+    // const maxTokenPerCustomer = Math.min(
+    //   availableShares,
+    //   pool.aliasData.maximumTokensPerCustomer
+    // );
+
+    const maxTokenPerCustomer = 100;
 
     if (!poolBalance) return maxTokenPerCustomer;
 

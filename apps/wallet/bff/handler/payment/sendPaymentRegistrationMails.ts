@@ -5,10 +5,13 @@ import { EmailTemplates } from "@/bff/types/emailTemplates";
 import { Customer, prisma } from "@axtp/db";
 import { notFound } from "@hapi/boom";
 import { RegisterPaymentRequest } from "@/bff/types/registerPaymentRequest";
+import { TransactionId } from "@signumjs/core";
+
+type RecordPaymentTx = RegisterPaymentRequest & { recordTx: TransactionId };
 
 async function sendInternalPaymentRegistrationMail(
   customer: Customer,
-  payment: RegisterPaymentRequest,
+  payment: RecordPaymentTx,
   mailService: MailService
 ) {
   try {
@@ -47,6 +50,7 @@ async function sendInternalPaymentRegistrationMail(
       domain: "payment",
       detail: {
         txId: payment.txId,
+        recordTx: payment.recordTx.transaction,
         poolId: payment.poolId,
         tokenName: payment.tokenName,
         tokenQnt: payment.tokenQnt,
@@ -59,7 +63,7 @@ async function sendInternalPaymentRegistrationMail(
 
 async function sendCustomerPaymentRegistrationMail(
   customer: Customer,
-  payment: RegisterPaymentRequest,
+  payment: RecordPaymentTx,
   mailService: MailService
 ) {
   try {
@@ -77,8 +81,8 @@ async function sendCustomerPaymentRegistrationMail(
       templateId: EmailTemplates.PaymentRegistration,
       tags: ["PaymentRegistration"],
       params: {
-        txId: payment.txId,
-        name: customer.firstName,
+        recordTx: payment.recordTx.transaction,
+        firstName: customer.firstName,
         tokenQnt: payment.tokenQnt,
         tokenName: payment.tokenName,
         poolId: payment.poolId,
@@ -95,6 +99,7 @@ async function sendCustomerPaymentRegistrationMail(
       domain: "payment",
       detail: {
         txId: payment.txId,
+        recordTx: payment.recordTx.transaction,
         poolId: payment.poolId,
         tokenName: payment.tokenName,
         tokenQnt: payment.tokenQnt,
@@ -105,10 +110,8 @@ async function sendCustomerPaymentRegistrationMail(
   }
 }
 
-export async function sendPaymentRegistrationMails(
-  payment: RegisterPaymentRequest
-) {
-  const { txId, customerId, poolId, tokenQnt, tokenName } = payment;
+export async function sendPaymentRegistrationMails(payment: RecordPaymentTx) {
+  const { customerId } = payment;
 
   const customer = await prisma.customer.findUnique({
     where: {
