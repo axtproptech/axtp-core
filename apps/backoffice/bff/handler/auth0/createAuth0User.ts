@@ -1,11 +1,10 @@
 import { ApiHandler } from "@/bff/types/apiHandler";
 import { prisma } from "@axtp/db";
-import { notFound, badRequest, notAcceptable } from "@hapi/boom";
+import { badRequest, notAcceptable } from "@hapi/boom";
 import { object, string, ValidationError } from "yup";
-import { mailService } from "@/bff/mailService";
+import { mailService } from "../../services/backofficeMailService";
 import { Auth0Service } from "./internal/auth0Service";
 import { findCustomerById } from "./internal/findCustomerById";
-import * as process from "process";
 import { HttpError } from "@signumjs/http";
 
 async function markCustomerAsInvited(cuid: string) {
@@ -50,12 +49,15 @@ export const createAuth0User: ApiHandler = async ({ req, res }) => {
       });
       console.timeLog("createAuth0User");
       console.log("sending mail...");
-      await mailService.sendExclusiveAreaInvitation({
-        to: customer.email1,
+      await mailService.external.sendExclusiveAreaInvitation({
+        to: {
+          email1,
+          firstName,
+          lastName,
+        },
         params: {
           firstName: customer.firstName,
           accessLink: accessLink,
-          exclusiveAreaUrl: "https://axtp.com.br/exclusive",
         },
       });
       console.log("mail sent");

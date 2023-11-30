@@ -1,9 +1,10 @@
-import { prisma } from "@axtp/db";
+import { prisma, Customer } from "@axtp/db";
 import { ApiHandler } from "@/bff/types/apiHandler";
 import { notFound, badRequest } from "@hapi/boom";
 
 import { boolean, date, mixed, object, string, ValidationError } from "yup";
 import { asFullCustomerResponse } from "./asFullCustomerResponse";
+import { mailService } from "@/bff/services/backofficeMailService/backofficeMailService";
 
 let customerRequestSchema = object({ cuid: string() });
 
@@ -68,6 +69,41 @@ export const updateCustomer: ApiHandler = async ({ req, res }) => {
     if (!customer) {
       throw notFound();
     }
+
+    let action = "Customer Updated";
+    if (verificationLevel === "Level1" || verificationLevel === "Level2") {
+      action = "Customer Verified";
+      await mailService.external.sendSuccessfulVerification({
+        params: {
+          firstName: customer.firstName,
+        },
+        to: {
+          firstName: customer.firstName,
+          lastName: customer.lastName,
+          email1: customer.email1,
+        },
+      });
+    } else if (isBlocked) {
+      action = "Customer Blocked";
+      // TODO: send external mail
+    } else if (isBlocked === false) {
+      action = "Customer Unblocked";
+      // TODO: send external mail
+    } else if (isActive) {
+      action = "Customer (Re)Activated";
+      // TODO: send external mail
+    } else if (isActive === false) {
+      action = "Customer Deactivated";
+      // TODO: send external mail
+    } else if (isInvited) {
+      action = "Customer Invited to Exclusive Area";
+      // mail sent by auth0 user creation!
+    }
+
+    await mailService.internal.sendCustomerUpdated({
+      action,
+      customer,
+    });
 
     return res.status(200).json(asFullCustomerResponse(customer));
   } catch (e: any) {

@@ -1,7 +1,8 @@
 import { ApiHandler } from "@/bff/types/apiHandler";
-import { prisma, DocumentType } from "@axtp/db";
+import { prisma } from "@axtp/db";
 import { badRequest, notFound } from "@hapi/boom";
 import { object, ValidationError, string, mixed } from "yup";
+import { mailService } from "@/bff/services/backofficeMailService";
 
 const documentQuerySchema = object({
   cuid: string().required(),
@@ -47,6 +48,13 @@ export const createCustomerDocument: ApiHandler = async ({ req, res }) => {
         },
       },
     });
+
+    await mailService.internal.sendCustomerUpdated({
+      action: "Customer Document Uploaded",
+      customer,
+    });
+
+    res.status(201);
   } catch (e: any) {
     if (e instanceof ValidationError) {
       throw badRequest(e.errors.join(","));

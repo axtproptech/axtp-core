@@ -7,6 +7,43 @@ import { prisma } from "@axtp/db";
 import { ApiHandler } from "@/bff/types/apiHandler";
 import { badRequest } from "@hapi/boom";
 import { mixed, number, object, string, ValidationError } from "yup";
+import { mailService } from "@/bff/services/backofficeMailService";
+
+async function sendRegistrationMails(payment: any, tokenName: string) {
+  try {
+    await Promise.all([
+      mailService.internal.sendPaymentRegistration({
+        params: {
+          firstName: payment.customer.firstName,
+          lastName: payment.customer.lastName,
+          email: payment.customer.email1,
+          phone: payment.customer.phone1,
+          amount: payment.amount.toString(),
+          currency: payment.currency || "",
+          paymentId: payment.id.toString(),
+          tokenQuantity: payment.tokenQuantity.toString(),
+          tokenName,
+        },
+      }),
+      mailService.external.sendPaymentRegistration({
+        to: {
+          firstName: payment.customer.firstName,
+          lastName: payment.customer.lastName,
+          email1: payment.customer.email1,
+        },
+        params: {
+          firstName: payment.customer.firstName,
+          lastName: payment.customer.lastName,
+          poolId: payment.poolId,
+          tokenName,
+          tokenQnt: payment.tokenQuantity.toString(),
+        },
+      }),
+    ]);
+  } catch (e) {
+    console.error("Sending mails failed", e);
+  }
+}
 
 const registerPaymentBodySchema = object({
   customerId: string().required(),
@@ -14,6 +51,7 @@ const registerPaymentBodySchema = object({
   poolId: string().required(),
   tokenId: string().required(),
   tokenQnt: number().required(),
+  tokenName: string().required(),
   amount: number().required(),
   paymentType: string().required(),
   txId: string().required(),
@@ -29,6 +67,7 @@ export const registerPayment: ApiHandler = async ({ req, res }) => {
       poolId,
       tokenId,
       tokenQnt,
+      tokenName,
       usd,
       amount,
       paymentType,
@@ -69,7 +108,7 @@ export const registerPayment: ApiHandler = async ({ req, res }) => {
       service.sendPaymentReceiptToCustomer(record, accountPk),
     ]);
 
-    await prisma.payment.create({
+    const createdPayment = await prisma.payment.create({
       data: {
         tokenId,
         tokenQuantity: tokenQnt,
@@ -88,8 +127,12 @@ export const registerPayment: ApiHandler = async ({ req, res }) => {
           },
         },
       },
+      include: {
+        customer: true,
+      },
     });
 
+    await sendRegistrationMails(createdPayment, tokenName);
     res.status(201).json(recordTx);
   } catch (e: any) {
     if (e instanceof ValidationError) {

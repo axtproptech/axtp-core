@@ -4,6 +4,49 @@ import { PaymentRecord, PaymentRecordService, PaymentType } from "@axtp/core";
 import { Amount } from "@signumjs/util";
 import { prisma } from "@axtp/db";
 import { notFound } from "@hapi/boom";
+import { mailService } from "@/bff/services/backofficeMailService";
+
+async function sendCancellationMails(
+  payment: any,
+  reason: string,
+  tokenName: string
+) {
+  try {
+    await Promise.all([
+      mailService.internal.sendPaymentCancellation({
+        params: {
+          reason: payment.observations,
+          firstName: payment.customer.firstName,
+          lastName: payment.customer.lastName,
+          email: payment.customer.email1,
+          phone: payment.customer.phone1,
+          amount: payment.amount.toString(),
+          currency: payment.currency || "",
+          paymentId: payment.id.toString(),
+          tokenQuantity: payment.tokenQuantity.toString(),
+          tokenName,
+        },
+      }),
+      mailService.external.sendPaymentCancellation({
+        to: {
+          firstName: payment.customer.firstName,
+          lastName: payment.customer.lastName,
+          email1: payment.customer.email1,
+        },
+        params: {
+          firstName: payment.customer.firstName,
+          lastName: payment.customer.lastName,
+          poolId: payment.poolId,
+          tokenName,
+          tokenQnt: payment.tokenQuantity.toString(),
+          reason: reason,
+        },
+      }),
+    ]);
+  } catch (e) {
+    console.error("Sending cancellation mails failed", e);
+  }
+}
 
 export async function cancelPayment(id: any, body: any) {
   const { status, observations, transactionId: reference } = body;
@@ -19,7 +62,7 @@ export async function cancelPayment(id: any, body: any) {
     senderSeed,
     sendFee: Amount.fromSigna(sendFeeSigna),
   });
-  let payment = await prisma.payment.findUnique({
+  const payment = await prisma.payment.findUnique({
     where: {
       id,
     },
@@ -67,14 +110,15 @@ export async function cancelPayment(id: any, body: any) {
     customerId: customer.cuid,
   };
 
-  const [recordTx] = await Promise.all([
+  const [recordTx, token] = await Promise.all([
     service.sendPaymentRecord(record, paymentRecordAccountPubKey),
+    ledger.asset.getAsset({ assetId: tokenId }),
     publicKey
       ? service.sendPaymentCancellationReceiptToCustomer(record, publicKey)
       : Promise.resolve(null),
   ]);
 
-  return prisma.payment.update({
+  const updatedPayment = await prisma.payment.update({
     where: { id },
     data: {
       status,
@@ -90,4 +134,8 @@ export async function cancelPayment(id: any, body: any) {
       },
     },
   });
+
+  await sendCancellationMails(payment, observations, token.name);
+
+  return updatedPayment;
 }

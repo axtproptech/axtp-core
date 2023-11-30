@@ -127,10 +127,10 @@ export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
 
   return (
     <ActionCard
-      title="Send Share to Token Holder"
+      title="Send Digital Asset to Token Holder"
       description="With this action you can transfer a pool token to a specific holder"
       actionIcon={<IconUsers />}
-      actionLabel="Send Share"
+      actionLabel="Send Asset"
       onClick={handleOnSendAction}
       isLoading={isSubmitting}
       disabled={!address || !floatAmount}
@@ -159,7 +159,7 @@ export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
             </div>
           </Tooltip>
         </Stack>
-        <Typography>{address && address.getReedSolomonAddress()}</Typography>
+        <Typography>{address?.getReedSolomonAddress()}</Typography>
         <Box sx={{ py: 1 }} />
         <Controller
           render={({ field }) => (

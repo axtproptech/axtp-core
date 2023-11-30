@@ -1,13 +1,27 @@
 import { ApiHandler } from "@/bff/types/apiHandler";
 import { prisma } from "@axtp/db";
-import { badRequest } from "@hapi/boom";
-import { object, number, ValidationError } from "yup";
+import { badRequest, notFound } from "@hapi/boom";
+import { object, number, ValidationError, string } from "yup";
+import { mailService } from "@/bff/services/backofficeMailService/backofficeMailService";
 
-let documentRequestSchema = object({ documentId: number().required() });
+let documentRequestSchema = object({
+  documentId: number().required(),
+  cuid: string().required(),
+});
 
 export const deleteCustomerDocument: ApiHandler = async ({ req, res }) => {
   try {
-    const { documentId } = documentRequestSchema.validateSync(req.query);
+    const { documentId, cuid } = documentRequestSchema.validateSync(req.query);
+
+    const customer = await prisma.customer.findUnique({
+      where: {
+        cuid,
+      },
+    });
+
+    if (!customer) {
+      throw notFound();
+    }
 
     await prisma.document.update({
       where: { id: documentId },
@@ -15,6 +29,13 @@ export const deleteCustomerDocument: ApiHandler = async ({ req, res }) => {
         active: false,
       },
     });
+
+    await mailService.internal.sendCustomerUpdated({
+      action: "Customer Document Removed",
+      customer,
+    });
+
+    res.status(204);
   } catch (e: any) {
     if (e instanceof ValidationError) {
       throw badRequest(e.errors.join(","));
