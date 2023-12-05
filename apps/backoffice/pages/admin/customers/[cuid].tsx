@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import { singleQueryArg } from "@/app/singleQueryArg";
 export default function CustomersPage() {
   const { query } = useRouter();
-  const aliasId = singleQueryArg(query.aliasId);
-  if (!aliasId) return null;
+  const cuid = singleQueryArg(query.cuid);
+  if (!cuid) return null;
   return (
     <Layout>
-      <SingleCustomer cuid={aliasId} />
+      <SingleCustomer cuid={cuid} />
     </Layout>
   );
 }
