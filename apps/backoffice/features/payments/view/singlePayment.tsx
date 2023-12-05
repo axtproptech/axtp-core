@@ -38,12 +38,11 @@ import { toDateStr } from "@/app/toDateStr";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
-export const SinglePayment = () => {
+export const SinglePayment = ({ paymentId }: { paymentId: number }) => {
   const router = useRouter();
   const { showError, showSuccess } = useSnackbar();
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
-  const paymentId = parseInt(router.query.id as string);
   const {
     data: payment,
     error,

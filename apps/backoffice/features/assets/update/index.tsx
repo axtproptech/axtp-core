@@ -8,9 +8,7 @@ import { useLedgerService } from "@/app/hooks/useLedgerService";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
-export const UpdateAsset = () => {
-  const { query } = useRouter();
-  const aliasId = singleQueryArg(query.aliasId);
+export const UpdateAsset = ({ aliasId }: { aliasId: string }) => {
   const { ledgerService } = useLedgerService();
 
   const { data, error } = useSWR(`assets/${aliasId}`, () =>

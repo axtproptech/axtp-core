@@ -1,9 +1,14 @@
 import { Layout } from "@/app/components/layout";
 import { SinglePayment } from "@/features/payments/view/singlePayment";
-export default function paymentsPage() {
+import { useRouter } from "next/router";
+import { singleQueryArg } from "@/app/singleQueryArg";
+export default function PaymentsPage() {
+  const router = useRouter();
+  const paymentId = parseInt(singleQueryArg(router.query.id));
+  if (!paymentId || !Number.isInteger(paymentId)) return null;
   return (
     <Layout>
-      <SinglePayment />
+      <SinglePayment paymentId={paymentId} />
     </Layout>
   );
 }

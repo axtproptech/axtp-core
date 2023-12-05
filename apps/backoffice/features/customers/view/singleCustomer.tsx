@@ -17,9 +17,7 @@ import { EditableName } from "./components/nameEditor";
 import { CustomerDetails } from "./components/customerDetails";
 
 const gridSpacing = Config.Layout.GridSpacing;
-export const SingleCustomer = () => {
-  const { query } = useRouter();
-  const cuid = query.cuid as string;
+export const SingleCustomer = ({ cuid }: { cuid: string }) => {
   const { getAccountLink } = useExplorerLink();
   const { mutate } = useSWRConfig();
   const { data: customer, error } = useSWR(`getCustomer/${cuid}`, () => {
@@ -171,7 +169,7 @@ export const SingleCustomer = () => {
           <CircularProgress />
         </Box>
       )}
-      {!loading && <CustomerDetails customer={customer!} />}
+      {!loading && customer && <CustomerDetails customer={customer} />}
     </MainCard>
   );
 };
