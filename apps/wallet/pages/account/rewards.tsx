@@ -1,27 +1,26 @@
 import { Layout } from "@/app/components/layout";
-import { AccountDashboard } from "@/features/account/dashboard";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { useTranslation } from "next-i18next";
 import {
   RiArrowLeftCircleLine,
-  RiFileListLine,
+  RiHome6Line,
   RiSettings4Line,
-  RiAwardLine,
 } from "react-icons/ri";
 import { WithAccountOnly } from "@/app/components/withAccountOnly";
+import { AccountRewards } from "@/features/account/rewards";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale)),
+      ...(await serverSideTranslations(locale, ["common", "transactions"])),
       // Will be passed to the page component as props
     },
   };
 }
 
 export default function Page() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("common");
 
   const bottomNav: BottomNavigationItem[] = [
     {
@@ -30,14 +29,9 @@ export default function Page() {
       icon: <RiArrowLeftCircleLine />,
     },
     {
-      label: t("rewards"),
-      route: "/account/rewards",
-      icon: <RiAwardLine />,
-    },
-    {
-      label: t("transactions"),
-      route: "/account/transactions",
-      icon: <RiFileListLine />,
+      label: t("home"),
+      route: "/",
+      icon: <RiHome6Line />,
     },
     {
       label: t("settings"),
@@ -49,7 +43,7 @@ export default function Page() {
   return (
     <WithAccountOnly>
       <Layout noBody bottomNav={bottomNav}>
-        <AccountDashboard />
+        <AccountRewards />
       </Layout>
     </WithAccountOnly>
   );
