@@ -1,8 +1,3 @@
-import { RouteHandlerFunction } from "@/bff/route";
-import { handleError } from "@/bff/handler/handleError";
-import { HttpClientFactory } from "@signumjs/http";
-import { getEnvVar } from "@/bff/getEnvVar";
-
 /*
 {
   "_meta": {
@@ -79,25 +74,45 @@ import { getEnvVar } from "@/bff/getEnvVar";
   ]
 }*/
 
-export const getCustomerRewards: RouteHandlerFunction = async (req, res) => {
-  try {
-    const { customerId } = req.query;
-    const baseUrl = `${getEnvVar("NEXT_SERVER_NFT_API_URL")}/api`;
-    const nftClient = HttpClientFactory.createHttpClient(baseUrl, {
-      headers: {
-        "x-api-key": getEnvVar("NEXT_SERVER_NFT_API_KEY"),
-      },
-    });
-    // call to NFT API
-    // const {response} = await nftClient.get(`items?ownerId=${customerId}&creatorId=${getEnvVar("NEXT_PUBLIC_ACCOUNT_PRINCIPAL")}&p=100`);
-    // TODO: add ownerId
-    const { response } = await nftClient.get(
-      `items?creatorId=${getEnvVar("NEXT_PUBLIC_ACCOUNT_PRINCIPAL")}&p=100`
-    );
+import { RewardItemData } from "@/types/rewardItemData";
+import { getEnvVar } from "@/bff/getEnvVar";
 
-    // eventually map the response
-    return res.status(200).json(response);
-  } catch (e: any) {
-    handleError({ e, res });
+const SignumArtUrl = getEnvVar("NEXT_PUBLIC_SIGNUMART_URL");
+function createMediaUrl(mediaCID: string) {
+  if (!mediaCID) {
+    console.warn("createMediaUrl: no mediaCID");
+    return "";
   }
-};
+  const [cid, type] = mediaCID.split(":");
+  return `https://${cid}.ipfs.w3s.link`;
+}
+
+function mapSingleItem(rewardItem: any): RewardItemData {
+  const {
+    attributes,
+    name,
+    description,
+    edition,
+    media,
+    nftId,
+    updatedAt,
+    ownerId,
+  } = rewardItem;
+  return {
+    attributes: attributes.map((a: any) => ({
+      key: a.key,
+      value: a.value,
+    })),
+    title: name,
+    description: description,
+    edition: edition,
+    url: `${SignumArtUrl}/item/${nftId}`,
+    nftId: nftId,
+    imageUrl: createMediaUrl(media[0].thumbCID),
+    received: updatedAt,
+    ownerId: ownerId,
+  };
+}
+export function toRewardResponse(rewardResponse: any): RewardItemData[] {
+  return rewardResponse.data.map(mapSingleItem);
+}

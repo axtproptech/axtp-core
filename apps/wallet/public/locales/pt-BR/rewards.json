@@ -1,4 +1,7 @@
 {
-  "loadingRewards": "Loading Rewards",
-  "loadingRewardsHint": "Your rewards are being loaded..."
+  "loadingRewards": "Carregando prêmios...",
+  "loadingRewardsHint": "Seus prêmios estão sendo carregados...",
+  "noRewards": "Nenhum prêmio",
+  "noRewardsHint": "Desculpe, você não tem prêmios ainda. Por favor, tente novamente uma outra vez.",
+  "clickViewNft": "Clique para ver NFT"
 }

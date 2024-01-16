@@ -13,7 +13,7 @@ import { AccountRewards } from "@/features/account/rewards";
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common", "transactions"])),
+      ...(await serverSideTranslations(locale, ["common", "rewards"])),
       // Will be passed to the page component as props
     },
   };

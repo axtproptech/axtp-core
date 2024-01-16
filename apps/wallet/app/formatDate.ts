@@ -9,6 +9,7 @@ import { ptBR, enUS } from "date-fns/locale";
 export interface FormatNumberArgs {
   date: Date | string;
   locale?: string;
+  withTime?: boolean;
 }
 
 const localization = {
@@ -16,12 +17,21 @@ const localization = {
   "pt-BR": ptBR,
 };
 
-const formats = {
+const formatsWithTime = {
   "en-US": "MM/dd/yyyy hh:mm aaa",
   "pt-BR": "dd.MM.yyyy HH:mm",
 };
 
-export function formatDate({ date, locale = "pt-BR" }: FormatNumberArgs) {
+const formats = {
+  "en-US": "MM/dd/yyyy",
+  "pt-BR": "dd.MM.yyyy",
+};
+
+export function formatDate({
+  date,
+  locale = "pt-BR",
+  withTime = true,
+}: FormatNumberArgs) {
   const now = new Date();
   const d = typeof date === "string" ? new Date(date) : date;
   const delta = differenceInHours(now, d);
@@ -32,7 +42,10 @@ export function formatDate({ date, locale = "pt-BR" }: FormatNumberArgs) {
     // @ts-ignore
     return formatRelative(d, now, { locale: localization[locale] || enUS });
   } else {
-    // @ts-ignore
-    return format(d, formats[locale] || formats["en-US"]);
+    return withTime
+      ? // @ts-ignore
+        format(d, formatsWithTime[locale] || formatsWithTime["en-US"])
+      : // @ts-ignore
+        format(d, formats[locale] || formats["en-US"]);
   }
 }

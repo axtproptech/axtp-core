@@ -1,9 +1,6 @@
 import { Body } from "@/app/components/layout/body";
-import { ComponentType, useEffect, useRef, useState } from "react";
-import {
-  FixedSizeList as _FixedSizeList,
-  FixedSizeListProps,
-} from "react-window";
+import { useEffect, useRef, useState } from "react";
+import { FixedSizeList } from "react-window";
 import {
   PaddingSize,
   TransactionItemCard,
@@ -15,8 +12,8 @@ import * as React from "react";
 import { useTranslation } from "next-i18next";
 import { TransactionDetailsModal } from "./transactionItem/transactionDetailsModal";
 import { LoadingBox } from "@/app/components/hintBoxes/loadingBox";
-
-const FixedSizeList = _FixedSizeList as ComponentType<FixedSizeListProps>;
+import { TransactionData } from "@/types/transactionData";
+import { Slide, Zoom } from "react-awesome-reveal";
 
 export const AccountTransactions = () => {
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -57,30 +54,32 @@ export const AccountTransactions = () => {
       <Body className="relative">
         {isLoading && (
           <section className="mt-[30%]">
-            <LoadingBox
-              title={t("loadingTransactions")}
-              text={t("loadingTransactionsHint")}
-            />
+            <Zoom triggerOnce>
+              <LoadingBox
+                title={t("loadingTransactions")}
+                text={t("loadingTransactionsHint")}
+              />
+            </Zoom>
           </section>
         )}
 
         {!isLoading && (
           <>
             <div className="absolute z-10 top-4 bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
-            {/* @ts-ignore */}
-            <FixedSizeList
-              className={
-                "overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh_-_440px)]"
-              }
-              height={height}
-              width="100%"
-              itemCount={allTransactions.length}
-              itemSize={80 + PaddingSize * 2}
-              itemData={allTransactions}
-            >
-              {/* @ts-ignore */}
-              {TransactionItemCard}
-            </FixedSizeList>
+            <Slide direction="up" triggerOnce>
+              <FixedSizeList<TransactionData[]>
+                className={
+                  "overflow-x-auto scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh_-_440px)]"
+                }
+                height={height}
+                width="100%"
+                itemCount={allTransactions.length}
+                itemSize={80 + PaddingSize * 2}
+                itemData={allTransactions}
+              >
+                {TransactionItemCard}
+              </FixedSizeList>
+            </Slide>
             <div className="absolute z-10 bottom-4 bg-gradient-to-t from-base-100 h-4 w-full opacity-80" />
           </>
         )}

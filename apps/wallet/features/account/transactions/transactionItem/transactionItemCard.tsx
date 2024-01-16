@@ -10,7 +10,7 @@ import { FcSynchronize } from "react-icons/fc";
 
 interface Props {
   style: CSSProperties;
-  data: any;
+  data: TransactionData[];
   index: number;
 }
 
@@ -21,7 +21,7 @@ export const TransactionItemCard = ({ style, data, index }: Props) => {
   const { t } = useTranslation("transactions");
 
   const txData = useMemo(() => {
-    const txData = data[index] as TransactionData;
+    const txData = data[index];
     return getTransactionUiElements(txData);
   }, [data, index]);
 

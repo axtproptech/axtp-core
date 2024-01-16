@@ -4,19 +4,13 @@ import {
   isMultiOutSameTransaction,
   isMultiOutTransaction,
   Transaction,
-  TransactionArbitrarySubtype,
   TransactionAssetSubtype,
-  TransactionEscrowSubtype,
-  TransactionMiningSubtype,
-  TransactionPaymentSubtype,
-  TransactionSmartContractSubtype,
   TransactionType,
 } from "@signumjs/core";
 import { TransactionData } from "@/types/transactionData";
 import { ChainTime, Amount, ChainValue } from "@signumjs/util";
 import { Config } from "@/app/config";
 import { TokenMetaData } from "@/types/tokenMetaData";
-import { toQuantity, toStableCoinAmount } from "@/app/tokenQuantity";
 
 type Direction = "out" | "in" | "burn" | "self";
 
