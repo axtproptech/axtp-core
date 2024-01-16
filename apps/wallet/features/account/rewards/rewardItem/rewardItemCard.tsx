@@ -1,9 +1,8 @@
 import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
-import { CSSProperties, useMemo, useState } from "react";
+import { CSSProperties, useState } from "react";
 import { formatDate } from "@/app/formatDate";
 import { PaddingSize } from "@/features/account/transactions/transactionItem/transactionItemCard";
-import { RewardItemData } from "@/types/rewardItemData";
+import { RewardAttribute, RewardItemData } from "@/types/rewardItemData";
 
 interface Props {
   style: CSSProperties;
@@ -54,11 +53,7 @@ export const RewardItemCard = ({ style, data, index }: Props) => {
           <div>
             <div className="flex flex-row justify-between text-xs my-2">
               {rewardItem.attributes.map((a) => (
-                <AttributeItem
-                  key={`${rewardItem.nftId}-${a.key}`}
-                  k={a.key}
-                  v={a.value}
-                />
+                <AttributeItem key={`${rewardItem.nftId}-${a.key}`} attr={a} />
               ))}
             </div>
           </div>
@@ -68,6 +63,10 @@ export const RewardItemCard = ({ style, data, index }: Props) => {
   );
 };
 
-const AttributeItem = ({ k, v }: { k: string; v: string }) => (
-  <div className="uppercase bg-base-100 py-1 px-4 rounded-badge text-center">{`${k}  ${v}`}</div>
+interface AttributeItemProps {
+  attr: RewardAttribute;
+}
+
+const AttributeItem = ({ attr: { key, value } }: AttributeItemProps) => (
+  <div className="uppercase bg-base-100 py-1 px-4 rounded-badge text-center">{`${key}  ${value}`}</div>
 );
