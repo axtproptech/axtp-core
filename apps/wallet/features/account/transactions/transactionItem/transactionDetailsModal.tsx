@@ -10,9 +10,8 @@ import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { openExternalUrl } from "@/app/openExternalUrl";
 import { Number } from "@/app/components/number";
 import { ChildrenProps } from "@/types/childrenProps";
-import { InOutAmount } from "@/features/account/transactions/transactionItem/inOutAmount";
-import { HintBoxEncryptedMessage } from "@/features/account/transactions/transactionItem/hintBoxEncryptedMessage";
-import { Fade, Zoom } from "react-awesome-reveal";
+import { InOutAmount } from "./inOutAmount";
+import { HintBoxEncryptedMessage } from "./hintBoxEncryptedMessage";
 
 const RowItem: FC<ChildrenProps & { className?: string }> = ({
   children,
