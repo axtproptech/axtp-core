@@ -27,7 +27,7 @@ Signum SmartC Contracts
 
 ## Before executing commands
 
-- Make sure to have all enviroments variables required `you can see the ones required in their respective .env.example` file
+- Make sure to have all environments variables required `you can see the ones required in their respective .env.example` file
 
 ## Initial Development Setup
 

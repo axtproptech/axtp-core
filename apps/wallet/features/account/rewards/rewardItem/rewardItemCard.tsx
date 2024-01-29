@@ -68,5 +68,8 @@ interface AttributeItemProps {
 }
 
 const AttributeItem = ({ attr: { key, value } }: AttributeItemProps) => (
-  <div className="uppercase bg-base-100 py-1 px-4 rounded-badge text-center">{`${key}  ${value}`}</div>
+  <div className="bg-base-100 py-1 px-4 rounded-badge">
+    <div className="uppercase text-center text-[9px]">{key}</div>
+    <div className="uppercase text-center">{value}</div>
+  </div>
 );
