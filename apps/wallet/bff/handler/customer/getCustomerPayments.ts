@@ -15,7 +15,7 @@ export const getCustomerPayments: RouteHandlerFunction = async (req, res) => {
     });
 
     return res.status(200).json(
-      payments.map((p) => {
+      payments.map((p: any) => {
         // @ts-ignore
         delete p.id;
         return p;

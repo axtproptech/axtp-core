@@ -3,7 +3,7 @@ import { TransactionData } from "@/types/transactionData";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useTranslation } from "next-i18next";
 import { FcDocument, FcPrivacy } from "react-icons/fc";
-import { InOutAmount } from "@/features/account/transactions/transactionItem/InOutAmount";
+import { InOutAmount } from "@/features/account/transactions/transactionItem/inOutAmount";
 
 interface Props {
   txData: TransactionData;

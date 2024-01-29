@@ -1,9 +1,7 @@
 import { FC, useMemo } from "react";
 import { AccountData } from "@/types/accountData";
 import { usePortfolioBalance } from "@/app/hooks/usePortfolioBalance";
-import { Badge } from "react-daisyui";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
 import { VerificationLevelType } from "@/types/verificationLevelType";
 import { VerificationBadge } from "@/app/components/badges/verificationBadge";
 import {
@@ -11,14 +9,11 @@ import {
   PieChart,
   PieChartDatum,
 } from "@/features/account/dashboard/sections/pieChart";
-import { AttentionSeeker, Fade, Roll, Zoom } from "react-awesome-reveal";
+import { Fade } from "react-awesome-reveal";
 import { useAppSelector } from "@/states/hooks";
 import { selectAXTToken } from "@/app/states/tokenState";
 import { selectBrlUsdMarketData } from "@/app/states/marketState";
-import { SafeExternalLink } from "@/app/components/navigation/externalLink";
-import { RiExternalLinkLine } from "react-icons/ri";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import { Greeting } from "@/app/components/greeting";
 import { AccountHeader } from "@/features/account/components/accountHeader";
 
 interface Props {

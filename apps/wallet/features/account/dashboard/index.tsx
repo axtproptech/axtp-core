@@ -13,8 +13,6 @@ import { useDispatch } from "react-redux";
 import { accountActions } from "@/app/states/accountState";
 import useSWR from "swr";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import Link from "next/link";
-import { RiSurveyLine } from "react-icons/ri";
 import { RegisterCustomerButton } from "@/app/components/buttons/registerCustomerButton";
 
 const StatusSlugMap = {
