@@ -1,6 +1,6 @@
 #program name AXTBurnContract
 #program description This contract burns and tracks burned tokens.
-#program activationAmount 2000_0000
+#program activationAmount 3000_0000
 
 #pragma maxAuxVars 3
 #pragma verboseAssembly
@@ -95,6 +95,7 @@ void creditTrackedToken(long tokenId, long quantity, long accountId){
     if(!hasPermission()){
         return;
     }
+
     // we don't check for trackable tokens, because
     // it may happen that a trackable was removed, but still has credits
     // it must be possible to de-credit at anytime.
