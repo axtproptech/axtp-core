@@ -1,6 +1,7 @@
 import {join} from 'path';
 
 export const Context = {
+    CodeHashId: 10089491455344783515n,
     ContractPath: join(__dirname + '/burn-contract.smart.c'),
     SenderAccount1: 10n,
     SenderAccount2: 20n,

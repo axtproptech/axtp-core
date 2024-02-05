@@ -15,14 +15,14 @@ export const AddTrackableTokens: UserTransactionObj[] = [
     },
     {
         blockheight: 2,
-        amount: 2000_0000n,
+        amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
         messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[0]]),
         recipient: Context.ThisContract,
     },
     {
         blockheight: 2,
-        amount: 2000_0000n,
+        amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
         messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[1]]),
         recipient: Context.ThisContract,
@@ -43,14 +43,14 @@ export const AddTrackableTokensNotAllowed: UserTransactionObj[] = [
     },
     {
         blockheight: 2,
-        amount: 2000_0000n,
+        amount: Context.ActivationFee,
         sender: Context.SenderAccount1,
         messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[0]]),
         recipient: Context.ThisContract,
     },
     {
         blockheight: 2,
-        amount: 2000_0000n,
+        amount: Context.ActivationFee,
         sender: Context.SenderAccount1,
         messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[1]]),
         recipient: Context.ThisContract,

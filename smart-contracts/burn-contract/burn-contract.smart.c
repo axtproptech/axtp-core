@@ -2,7 +2,7 @@
 #program description This contract burns and tracks burned tokens.
 #program activationAmount 3000_0000
 
-#pragma maxAuxVars 3
+#pragma maxAuxVars 2
 #pragma verboseAssembly
 #pragma optimizationLevel 3
 #pragma version 2.1.1
@@ -20,8 +20,6 @@ struct TXINFO {
     long sender;
     long message[4];
 } currentTx;
-
-constructor();
 
 void main () {
     // loops over the transactions of the current block
@@ -45,10 +43,6 @@ void main () {
                     processTransaction();
             }
     }
-};
-
-
-void constructor() {
 };
 
 void catch() {
