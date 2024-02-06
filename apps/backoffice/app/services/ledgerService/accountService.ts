@@ -1,5 +1,5 @@
 import { ServiceContext } from "./serviceContext";
-import { withError } from "./withError";
+import { withError } from "@axtp/core/common/withError";
 
 export class AccountService {
   constructor(private context: ServiceContext) {}
