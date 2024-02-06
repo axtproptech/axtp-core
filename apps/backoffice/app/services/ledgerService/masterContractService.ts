@@ -1,12 +1,13 @@
 import { ServiceContext } from "./serviceContext";
 import { Config } from "@/app/config";
-import { withError } from "./withError";
 import { Amount } from "@signumjs/util";
 import { MasterContractDataView } from "./masterContractDataView";
 import { InputValidationService } from "@/app/services/inputValidationService";
 import { MasterContractData } from "@/types/masterContractData";
-import { GenericContractService } from "@/app/services/ledgerService/genericContractService";
+import { GenericContractService } from "./genericContractService";
+import { withError } from "@axtp/core/common/withError";
 
+// TODO: refactor to use shared core package
 export class MasterContractService extends GenericContractService {
   constructor(context: ServiceContext) {
     super(context);

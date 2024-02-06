@@ -7,7 +7,7 @@ export const Context = {
     SenderAccount2: 20n,
     CreatorAccount: 555n,
     ThisContract: 999n,
-    ActivationFee: 3000_0000n,
+    ActivationFee: 2500_0000n,
     Tokens: [10001n,10002n,10003n],
     Methods: {
         AddTrackableToken: 1n,

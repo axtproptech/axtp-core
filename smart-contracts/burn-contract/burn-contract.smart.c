@@ -1,6 +1,6 @@
 #program name AXTBurnContract
 #program description This contract burns and tracks burned tokens.
-#program activationAmount 3000_0000
+#program activationAmount 2500_0000
 
 #pragma maxAuxVars 2
 #pragma verboseAssembly

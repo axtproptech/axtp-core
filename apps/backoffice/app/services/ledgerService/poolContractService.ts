@@ -9,8 +9,8 @@ import {
   convertHexStringToDecString,
   convertStringToHexString,
 } from "@signumjs/util";
-import { withError } from "./withError";
-import { MasterContractService } from "@/app/services/ledgerService/masterContractService";
+import { MasterContractService } from "./masterContractService";
+import { withError } from "@axtp/core/common/withError";
 
 interface CreatePoolInstanceArgs {
   alias: string;
