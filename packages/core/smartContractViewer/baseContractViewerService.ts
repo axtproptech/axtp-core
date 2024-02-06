@@ -44,19 +44,23 @@ export abstract class BaseContractViewerService {
         decimals: 0,
       });
     }
-    const [assetInfo, tokenBalances] = await Promise.all([
-      this.ledger.asset.getAsset({ assetId: tokenId }),
-      this.getTokenBalances(),
-    ]);
 
     let balance = "";
+    let assetInfo;
     if (withBalance) {
+      const [_assetInfo, tokenBalances] = await Promise.all([
+        this.ledger.asset.getAsset({ assetId: tokenId }),
+        this.getTokenBalances(),
+      ]);
+      assetInfo = _assetInfo;
       const tokenBalance = tokenBalances.find(({ asset }) => tokenId === asset);
       if (tokenBalance) {
         balance = ChainValue.create(assetInfo.decimals)
           .setAtomic(tokenBalance.unconfirmedBalanceQNT)
           .getCompound();
       }
+    } else {
+      assetInfo = await this.ledger.asset.getAsset({ assetId: tokenId });
     }
 
     const {
