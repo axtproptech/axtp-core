@@ -49,7 +49,7 @@ export abstract class BaseContractViewerService {
       this.getTokenBalances(),
     ]);
 
-    let balance: string = "-1";
+    let balance = "";
     if (withBalance) {
       const tokenBalance = tokenBalances.find(({ asset }) => tokenId === asset);
       if (tokenBalance) {
