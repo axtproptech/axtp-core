@@ -1,20 +1,20 @@
-import { ServiceContext } from "./serviceContext";
 import { PoolInstanceService } from "./poolInstanceService";
 import { withError } from "../common/withError";
 import { AxtcContractService } from "./axtcContractService";
+import { Ledger } from "@signumjs/core";
 
 interface FetchAllContractsArgs {
   contractIds: string[];
 }
 export class PoolContractService {
   constructor(
-    private context: ServiceContext,
+    private ledger: Ledger,
     private masterContractService: AxtcContractService
   ) {}
 
   with(poolId: string): PoolInstanceService {
     return new PoolInstanceService(
-      this.context,
+      this.ledger,
       this.masterContractService,
       poolId
     );

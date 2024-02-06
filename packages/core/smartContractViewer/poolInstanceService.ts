@@ -1,19 +1,19 @@
-import { ServiceContext } from "./serviceContext";
 import { withError } from "../common/withError";
 import { Amount, ChainValue } from "@signumjs/util";
 import { PoolContractDataView } from "./poolContractDataView";
-import { GenericContractViewerService } from "./genericContractViewerService";
+import { BaseContractViewerService } from "./baseContractViewerService";
 import { AxtcContractService } from "./axtcContractService";
 import { PoolContractData } from "./poolContractData";
 import { DescriptorData } from "@signumjs/standards";
+import { Ledger } from "@signumjs/core";
 
-export class PoolInstanceService extends GenericContractViewerService {
+export class PoolInstanceService extends BaseContractViewerService {
   constructor(
-    context: ServiceContext,
+    ledger: Ledger,
     private masterContractService: AxtcContractService,
     private poolId: string
   ) {
-    super(context);
+    super(ledger);
   }
 
   contractId(): string {
@@ -22,10 +22,9 @@ export class PoolInstanceService extends GenericContractViewerService {
 
   public readContractData() {
     return withError<PoolContractData>(async () => {
-      const { ledger } = this.context;
       const masterContractData =
         await this.masterContractService.readContractData();
-      const contract = await ledger.contract.getContract(this.poolId);
+      const contract = await this.ledger.contract.getContract(this.poolId);
       const contractDataView = new PoolContractDataView(contract);
       const [token, masterToken, tokenBalances] = await Promise.all([
         this.getTokenData(contractDataView.getPoolTokenId()),
@@ -81,9 +80,8 @@ export class PoolInstanceService extends GenericContractViewerService {
     lastIndex?: number
   ) {
     return withError(async () => {
-      const { ledger } = this.context;
       const [{ accountAssets }, masterContractData] = await Promise.all([
-        ledger.asset.getAssetHolders({
+        this.ledger.asset.getAssetHolders({
           assetId: tokenId,
           ignoreTreasuryAccount: true,
           firstIndex,
@@ -92,7 +90,7 @@ export class PoolInstanceService extends GenericContractViewerService {
         this.masterContractService.readContractData(),
       ]);
       const accountRequests = accountAssets.map(({ account }) =>
-        ledger.account.getAccount({
+        this.ledger.account.getAccount({
           accountId: account,
           includeEstimatedCommitment: false,
           includeCommittedAmount: false,

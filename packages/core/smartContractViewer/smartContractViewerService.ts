@@ -1,34 +1,39 @@
 import { LedgerClientFactory } from "@signumjs/core";
 import { AxtcContractService } from "./axtcContractService";
-import { ServiceContext } from "./serviceContext";
 import { PoolContractService } from "./poolContractService";
+import { BurnContractService } from "./burnContractService";
 
 export class SmartContractViewerService {
   private readonly axtcContractService: AxtcContractService;
   private readonly poolContractService: PoolContractService;
+  private readonly burnContractService: BurnContractService;
 
-  constructor(private nodeHost: string, private axtcContractId: string) {
+  constructor(
+    private nodeHost: string,
+    private axtcContractId: string,
+    private burnContractId: string
+  ) {
     const ledger = LedgerClientFactory.createClient({
       nodeHost,
     });
 
-    const context: ServiceContext = {
-      ledger,
-      axtcContractId,
-    };
-
-    this.axtcContractService = new AxtcContractService(context);
+    this.axtcContractService = new AxtcContractService(ledger, axtcContractId);
+    this.burnContractService = new BurnContractService(ledger, burnContractId);
     this.poolContractService = new PoolContractService(
-      context,
+      ledger,
       this.axtcContractService
     );
   }
 
-  get atxcContract(): AxtcContractService {
+  get axtcContract(): AxtcContractService {
     return this.axtcContractService;
   }
 
   get poolContract(): PoolContractService {
     return this.poolContractService;
+  }
+
+  get burnContract(): BurnContractService {
+    return this.burnContractService;
   }
 }

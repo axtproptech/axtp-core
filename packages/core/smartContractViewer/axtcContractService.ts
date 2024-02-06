@@ -1,27 +1,30 @@
-import { ServiceContext } from "./serviceContext";
 import { withError } from "../common/withError";
 import { Amount } from "@signumjs/util";
 import { AxtcContractDataView } from "./axtcContractDataView";
-import { GenericContractViewerService } from "./genericContractViewerService";
+import { BaseContractViewerService } from "./baseContractViewerService";
 import { AxtcContractData } from "./axtcContractData";
+import { Ledger } from "@signumjs/core";
 
-export class AxtcContractService extends GenericContractViewerService {
-  constructor(context: ServiceContext) {
-    super(context);
+export class AxtcContractService extends BaseContractViewerService {
+  constructor(ledger: Ledger, private axtcContractId: string) {
+    super(ledger);
   }
 
   public contractId(): string {
-    return this.context.axtcContractId;
+    return this.axtcContractId;
   }
 
   public async readContractData(): Promise<AxtcContractData> {
     return withError<AxtcContractData>(async () => {
-      const { ledger } = this.context;
-      const contract = await ledger.contract.getContract(this.contractId());
+      const contract = await this.ledger.contract.getContract(
+        this.contractId()
+      );
       const contractDataView = new AxtcContractDataView(contract);
       const [token] = await Promise.all([
         this.getTokenData(contractDataView.getTokenId()),
-        ledger.account.getAccountTransactions({ accountId: this.contractId() }),
+        this.ledger.account.getAccountTransactions({
+          accountId: this.contractId(),
+        }),
       ]);
 
       return {

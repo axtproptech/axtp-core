@@ -1,18 +1,21 @@
-import { ServiceContext } from "./serviceContext";
 import { ChainValue } from "@signumjs/util";
 import { DescriptorDataClient } from "@signumjs/standards";
 import { BasicTokenInfo } from "./basicTokenInfo";
 import { UnconfirmedAssetBalance } from "@signumjs/core/out/typings/unconfirmedAssetBalance";
+import { Ledger } from "@signumjs/core";
 
-export abstract class GenericContractViewerService {
-  protected constructor(protected context: ServiceContext) {}
+export abstract class BaseContractViewerService {
+  protected constructor(protected _ledger: Ledger) {}
+
+  get ledger(): Ledger {
+    return this._ledger;
+  }
 
   public abstract contractId(): string;
 
   protected async getTokenBalances(): Promise<UnconfirmedAssetBalance[]> {
     try {
-      const { ledger } = this.context;
-      const account = await ledger.account.getAccount({
+      const account = await this.ledger.account.getAccount({
         accountId: this.contractId(),
         includeCommittedAmount: false,
         includeEstimatedCommitment: false,
@@ -27,7 +30,10 @@ export abstract class GenericContractViewerService {
     return [];
   }
 
-  protected async getTokenData(tokenId: string): Promise<BasicTokenInfo> {
+  protected async getTokenData(
+    tokenId: string,
+    withBalance = true
+  ): Promise<BasicTokenInfo> {
     if (!tokenId || tokenId === "0") {
       return Promise.resolve({
         name: "",
@@ -38,18 +44,19 @@ export abstract class GenericContractViewerService {
         decimals: 0,
       });
     }
-    const { ledger } = this.context;
     const [assetInfo, tokenBalances] = await Promise.all([
-      ledger.asset.getAsset({ assetId: tokenId }),
+      this.ledger.asset.getAsset({ assetId: tokenId }),
       this.getTokenBalances(),
     ]);
 
-    const tokenBalance = tokenBalances.find(({ asset }) => tokenId === asset);
-    let balance = "0";
-    if (tokenBalance) {
-      balance = ChainValue.create(assetInfo.decimals)
-        .setAtomic(tokenBalance.unconfirmedBalanceQNT)
-        .getCompound();
+    let balance: string = "-1";
+    if (withBalance) {
+      const tokenBalance = tokenBalances.find(({ asset }) => tokenId === asset);
+      if (tokenBalance) {
+        balance = ChainValue.create(assetInfo.decimals)
+          .setAtomic(tokenBalance.unconfirmedBalanceQNT)
+          .getCompound();
+      }
     }
 
     const {
@@ -71,8 +78,7 @@ export abstract class GenericContractViewerService {
   }
 
   protected async getAliasName() {
-    const { ledger } = this.context;
-    const client = new DescriptorDataClient(ledger);
+    const client = new DescriptorDataClient(this.ledger);
     try {
       const descriptor = await client.getFromContract(this.contractId());
       return descriptor.alias;
