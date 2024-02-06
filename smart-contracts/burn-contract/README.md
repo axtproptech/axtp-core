@@ -23,6 +23,7 @@ as a "withdrawal" request.
 | Add Trackable Token    | 1    | Token Id |          |            | Creator         | Allows to set which Tokens are trackable (SIGNA is not trackable). Trackable Tokens are kept in a map                                                     |
 | Remove Trackable Token | 2    | Token Id |          |            | Creator         | Removes a trackable token from map.                                                                                                                       |
 | Credit Tracked Token   | 3    | Token Id | Quantity | Account Id | Creator         | If given Token Id is trackable, then this command credits token (in form of offchain payouts), giving AXT control of how much on payout is still pending. |
+| Burn Token             |      |          |          |            | Anybody         | Everyone who sends a token to this contract, will automatically burn it, as this contract has no way to get received tokens and signa back                |
 
 ### Maps
 
