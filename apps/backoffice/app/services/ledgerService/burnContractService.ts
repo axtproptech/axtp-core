@@ -1,9 +1,9 @@
 import { BurnContractService as BurnContractViewerService } from "@axtp/core/smartContractViewer";
 import { ServiceContext } from "@/app/services/ledgerService/serviceContext";
 import { Config } from "@/app/config";
-import { withError } from "@/app/services/ledgerService/withError";
 import { Amount, ChainValue } from "@signumjs/util";
 import { ConfirmedTransaction } from "@signumjs/wallets";
+import { withError } from "@axtp/core/common/withError";
 
 // Using the new package already
 export class BurnContractService extends BurnContractViewerService {
