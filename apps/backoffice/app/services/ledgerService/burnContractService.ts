@@ -5,19 +5,28 @@ import { Amount, ChainValue } from "@signumjs/util";
 import { ConfirmedTransaction } from "@signumjs/wallets";
 import { withError } from "@axtp/core/common/withError";
 
-// Using the new package already
 export class BurnContractService extends BurnContractViewerService {
   constructor(private context: ServiceContext) {
     super(context.ledger, Config.BurnContract.Id);
   }
 
   async addTrackableToken(tokenId: string) {
+    return this.setTrackableToken(tokenId, true);
+  }
+
+  async removeTrackableToken(tokenId: string) {
+    return this.setTrackableToken(tokenId, false);
+  }
+
+  private async setTrackableToken(tokenId: string, enabled: boolean) {
     return withError(async () => {
       const { ledger, accountPublicKey, wallet } = this.context;
       const { unsignedTransactionBytes } =
         await ledger.contract.callContractMethod({
           contractId: this.contractId(),
-          methodHash: Config.BurnContract.Methods.AddTrackableToken,
+          methodHash: enabled
+            ? Config.BurnContract.Methods.AddTrackableToken
+            : Config.BurnContract.Methods.RemoveTrackableToken,
           methodArgs: [tokenId],
           senderPublicKey: accountPublicKey,
           amountPlanck: Amount.fromSigna(
@@ -33,14 +42,16 @@ export class BurnContractService extends BurnContractViewerService {
     });
   }
 
-  async removeTrackableToken(tokenId: string) {
+  private async setCreditor(accountId: string, enabled: boolean) {
     return withError(async () => {
       const { ledger, accountPublicKey, wallet } = this.context;
       const { unsignedTransactionBytes } =
         await ledger.contract.callContractMethod({
           contractId: this.contractId(),
-          methodHash: Config.BurnContract.Methods.RemoveTrackableToken,
-          methodArgs: [tokenId],
+          methodHash: enabled
+            ? Config.BurnContract.Methods.AddCreditor
+            : Config.BurnContract.Methods.RemoveCreditor,
+          methodArgs: [accountId],
           senderPublicKey: accountPublicKey,
           amountPlanck: Amount.fromSigna(
             Config.PoolContract.ActivationCosts

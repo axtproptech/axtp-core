@@ -1,5 +1,5 @@
 #program name AXTTokenBurnTracker
-#program description {"vs":1,"tp":"smc","nm":"AXT Token Burn Tracker","ds":"This contract tracks burned tokens of the AXT Ecosystem","av":{"bafybeicy4ffzm4to7sbklys257nf6vlqz34jpnertw7fvsb76se5v4h6ny":"image/jpg"}}
+#program description {"vs":1,"tp":"smc","nm":"AXT Token Burn Tracker","ds":"This contract tracks burned tokens of the AXT Ecosystem","av":{"bafkreif24abtng5qgo76yld6dipwyvld6cgxrqjuf4fqrrxo2fyp4adpoa":"image/jpg"}}
 #program activationAmount 2500_0000
 
 #pragma maxAuxVars 3

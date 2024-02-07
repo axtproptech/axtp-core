@@ -72,14 +72,11 @@ export const Config = {
     InteractionFee:
       toNumber(process.env.NEXT_PUBLIC_CONTRACT_BURN_INTERACTION_FEE) || "0.01",
     Methods: {
-      AddTrackableToken:
-        process.env.NEXT_PUBLIC_CONTRACT_BURN_METHOD_ADD_TRACKABLE_TOKEN || "1",
-      RemoveTrackableToken:
-        process.env.NEXT_PUBLIC_CONTRACT_BURN_METHOD_REMOVE_TRACKABLE_TOKEN ||
-        "2",
-      CreditTrackableToken:
-        process.env.NEXT_PUBLIC_CONTRACT_BURN_METHOD_CREDIT_TRACKED_TOKEN ||
-        "3",
+      AddTrackableToken: "1",
+      RemoveTrackableToken: "2",
+      CreditTrackableToken: "3",
+      AddCreditor: "4",
+      RemoveCreditor: "5",
     },
   },
 
