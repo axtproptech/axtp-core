@@ -63,6 +63,26 @@ export const Config = {
         "11206579990877624803",
     },
   },
+  BurnContract: {
+    LowBalanceThreshold: Amount.fromSigna(2),
+    Id: process.env.NEXT_PUBLIC_CONTRACT_BURN_ID || "",
+    ActivationCosts:
+      toNumber(process.env.NEXT_PUBLIC_CONTRACT_BURN_ACTIVATION_COSTS) ||
+      "0.25",
+    InteractionFee:
+      toNumber(process.env.NEXT_PUBLIC_CONTRACT_BURN_INTERACTION_FEE) || "0.01",
+    Methods: {
+      AddTrackableToken:
+        process.env.NEXT_PUBLIC_CONTRACT_BURN_METHOD_ADD_TRACKABLE_TOKEN || "1",
+      RemoveTrackableToken:
+        process.env.NEXT_PUBLIC_CONTRACT_BURN_METHOD_REMOVE_TRACKABLE_TOKEN ||
+        "2",
+      CreditTrackableToken:
+        process.env.NEXT_PUBLIC_CONTRACT_BURN_METHOD_CREDIT_TRACKED_TOKEN ||
+        "3",
+    },
+  },
+
   PoolContract: {
     LowBalanceThreshold: Amount.fromSigna(2),
     OriginId: process.env.NEXT_PUBLIC_CONTRACT_POOL_ORIGIN_ID || "",

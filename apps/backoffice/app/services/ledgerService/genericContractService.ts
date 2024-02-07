@@ -1,15 +1,13 @@
 import { ServiceContext } from "./serviceContext";
-import { withError } from "./withError";
 import { Amount } from "@signumjs/util";
 import { InputValidationService } from "@/app/services/inputValidationService";
 import { ConfirmedTransaction } from "@signumjs/wallets";
-import {
-  fromQuantity,
-  toQuantity,
-  toStableCoinAmount,
-} from "@/app/tokenQuantity";
+import { fromQuantity } from "@/app/tokenQuantity";
 import { BasicTokenInfo } from "@/types/basicTokenInfo";
 import { UnconfirmedAssetBalance } from "@signumjs/core/out/typings/unconfirmedAssetBalance";
+import { withError } from "@axtp/core/common/withError";
+
+// TODO: refactor to use shared core package
 
 export abstract class GenericContractService {
   protected constructor(protected context: ServiceContext) {}

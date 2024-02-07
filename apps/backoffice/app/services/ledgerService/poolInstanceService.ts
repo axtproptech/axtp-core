@@ -1,14 +1,16 @@
 import { ServiceContext } from "./serviceContext";
 import { Config } from "@/app/config";
-import { withError } from "./withError";
 import { Amount } from "@signumjs/util";
 import { InputValidationService } from "../inputValidationService";
 import { PoolContractDataView } from "./poolContractDataView";
 import { GenericContractService } from "./genericContractService";
 import { PoolContractData } from "@/types/poolContractData";
-import { MasterContractService } from "@/app/services/ledgerService/masterContractService";
+import { MasterContractService } from "./masterContractService";
 import { toStableCoinAmount } from "@/app/tokenQuantity";
 import { DescriptorData } from "@signumjs/standards";
+import { withError } from "@axtp/core/common/withError";
+
+// TODO: refactor to use shared core package
 
 export class PoolInstanceService extends GenericContractService {
   constructor(
