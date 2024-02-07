@@ -1,18 +1,24 @@
-#program name AXTBurnContract
-#program description This contract burns and tracks burned tokens.
+#program name AXTTokenBurnTracker
+#program description {"vs":1,"tp":"smc","nm":"AXT Token Burn Tracker","ds":"This contract tracks burned tokens of the AXT Ecosystem","av":{"bafybeicy4ffzm4to7sbklys257nf6vlqz34jpnertw7fvsb76se5v4h6ny":"image/jpg"}}
 #program activationAmount 2500_0000
 
-#pragma maxAuxVars 2
+#pragma maxAuxVars 3
 #pragma verboseAssembly
 #pragma optimizationLevel 3
 #pragma version 2.1.1
+
+#define TRUE 1
+#define FALSE 0
 
 // Magic codes for methods
 #define ADD_TRACKABLE_TOKEN 1
 #define REMOVE_TRACKABLE_TOKEN 2
 #define CREDIT_TRACKED_TOKEN 3
+#define ADD_CREDITOR_PERMISSION 4
+#define REMOVE_CREDITOR_PERMISSION 5
 
 #define MAP_KEY_TRACKABLE_TOKENS 1
+#define MAP_KEY_CREDITOR_PERMISSIONS 2
 
 // INTERNALS
 struct TXINFO {
@@ -28,16 +34,24 @@ void main () {
         readMessage(currentTx.txId, 0, currentTx.message);
             switch(currentTx.message[0]){
                 case ADD_TRACKABLE_TOKEN:
-                    // void addTrackableToken(long tokenId)
-                    addTrackableToken(currentTx.message[1]);
+                    // void setTrackableToken(long tokenId, long isEnabled)
+                    setTrackableToken(currentTx.message[1], TRUE);
                     break;
                 case REMOVE_TRACKABLE_TOKEN:
                     // void removeTrackableToken(long tokenId)
-                    removeTrackableToken(currentTx.message[1]);
+                    setTrackableToken(currentTx.message[1], FALSE);
                     break;
                 case CREDIT_TRACKED_TOKEN:
                     // void creditTrackedToken(long tokenId,long quantity,long accountId)
                     creditTrackedToken(currentTx.message[1], currentTx.message[2], currentTx.message[3]);
+                    break;
+                case ADD_CREDITOR_PERMISSION:
+                    // void addCreditorPermission(long accountId)
+                    setCreditorPermission(currentTx.message[1], TRUE);
+                    break;
+                case REMOVE_CREDITOR_PERMISSION:
+                    // void removeCreditorPermission(long accountId)
+                    setCreditorPermission(currentTx.message[1], FALSE);
                     break;
                 default:
                     processTransaction();
@@ -69,24 +83,23 @@ void eventuallyTrackToken(long tokenId){
     setMapValue(tokenId, currentTx.sender, currentCredits + newCredits);
 }
 
-void addTrackableToken(long tokenId){
-    if(!hasPermission()){
+void setTrackableToken(long tokenId, long isEnabled){
+    if(!hasCreatorPermission()){
         return;
     }
 
-    setMapValue(MAP_KEY_TRACKABLE_TOKENS, tokenId, 1);
+    setMapValue(MAP_KEY_TRACKABLE_TOKENS, tokenId, isEnabled);
 }
 
-void removeTrackableToken(long tokenId){
-    if(!hasPermission()){
+void setCreditorPermission(long accountId, long isEnabled) {
+    if(!hasCreatorPermission()){
         return;
     }
-
-    setMapValue(MAP_KEY_TRACKABLE_TOKENS, tokenId, 0);
+    setMapValue(MAP_KEY_CREDITOR_PERMISSIONS, accountId, isEnabled);
 }
 
 void creditTrackedToken(long tokenId, long quantity, long accountId){
-    if(!hasPermission()){
+    if(!hasCreditorPermission()){
         return;
     }
 
@@ -108,6 +121,11 @@ void creditTrackedToken(long tokenId, long quantity, long accountId){
 }
 
 // private
-long hasPermission(){
+long hasCreatorPermission(){
    return currentTx.sender == getCreator();
 }
+
+long hasCreditorPermission() {
+   return getMapValue(MAP_KEY_CREDITOR_PERMISSIONS, currentTx.sender);
+}
+
