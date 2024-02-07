@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useTheme } from "@mui/material/styles";
 import {
   Avatar,
@@ -9,16 +9,12 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
-  useMediaQuery,
 } from "@mui/material";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
-import { useAppSelector } from "@/states/hooks";
-import { selectIsLeftDrawerOpened } from "@/app/states/appState";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { selectMenuBadge } from "@/app/states/notificationsState";
-import { ChildrenProps } from "@/types/childrenProps";
 import { WithBadge } from "@/app/components/withBadge";
 
 interface Props {
@@ -29,10 +25,7 @@ interface Props {
 export const NavItem: FC<Props> = ({ item, level }) => {
   const theme = useTheme();
   const router = useRouter();
-  const dispatch = useDispatch();
-  const isLeftDrawerOpen = useAppSelector(selectIsLeftDrawerOpened);
   const menuBadge = useSelector(selectMenuBadge(item.id));
-  const matchesSM = useMediaQuery(theme.breakpoints.down("lg"));
 
   const isActive = router.asPath === item.url;
 

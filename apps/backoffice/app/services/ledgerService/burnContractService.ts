@@ -4,10 +4,39 @@ import { Config } from "@/app/config";
 import { Amount, ChainValue } from "@signumjs/util";
 import { ConfirmedTransaction } from "@signumjs/wallets";
 import { withError } from "@axtp/core/common/withError";
+import { MasterContractData } from "@/types/masterContractData";
+import { MasterContractDataView } from "@/app/services/ledgerService/masterContractDataView";
+import { BurnContractData } from "@/types/burnContractData";
 
 export class BurnContractService extends BurnContractViewerService {
   constructor(private context: ServiceContext) {
     super(context.ledger, Config.BurnContract.Id);
+  }
+  public async readContractData(): Promise<BurnContractData> {
+    return withError<BurnContractData>(async () => {
+      const { ledger } = this.context;
+      const [contract, trackedTokenIds, creditorAccountIds] = await Promise.all(
+        [
+          ledger.contract.getContract(this.contractId()),
+          this.getTrackedTokenIds(),
+          this.getCreditorAccounts(),
+        ]
+      );
+      const trackableTokens = await Promise.all(
+        trackedTokenIds.map((id) => this.getTokenData(id, true))
+      );
+      const tokenAccountCredits = await Promise.all(
+        trackedTokenIds.map((id) => this.getTokenAccountCredits(id))
+      );
+
+      return {
+        id: contract.at,
+        balanceSigna: Amount.fromPlanck(contract.balanceNQT).getSigna(),
+        creditorAccountIds,
+        trackableTokens,
+        tokenAccountCredits,
+      };
+    });
   }
 
   async addTrackableToken(tokenId: string) {

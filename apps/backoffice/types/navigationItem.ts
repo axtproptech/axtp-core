@@ -1,4 +1,5 @@
 import { TablerIcon } from "@tabler/icons";
+import { PermissionRole } from "@/types/permissionRole";
 
 export type NavigationItem =
   | NavigationGroupItem
@@ -30,4 +31,5 @@ export interface NavigationIconItem extends NavigationItemBase {
   breadcrumbs?: boolean;
   target?: boolean;
   external?: boolean;
+  permission?: PermissionRole[];
 }

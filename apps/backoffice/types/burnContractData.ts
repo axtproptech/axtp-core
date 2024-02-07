@@ -1,0 +1,10 @@
+import { BasicTokenInfo } from "@/types/basicTokenInfo";
+import { TokenAccountCredits } from "@axtp/core";
+
+export interface BurnContractData {
+  id: string;
+  balanceSigna: string;
+  trackableTokens: BasicTokenInfo[];
+  creditorAccountIds: string[];
+  tokenAccountCredits: TokenAccountCredits[];
+}
