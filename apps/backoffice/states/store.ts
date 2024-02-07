@@ -84,7 +84,7 @@ const rootReducer = combineReducers({
     masterContractSlice.reducer
   ),
   burnContractState: persist<ReturnType<typeof burnContractSlice.reducer>>(
-    masterContractPersistConfig,
+    burnContractPersistConfig,
     burnContractSlice.reducer
   ),
   poolsState: persist<ReturnType<typeof poolsSlice.reducer>>(

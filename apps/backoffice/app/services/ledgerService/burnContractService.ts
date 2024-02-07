@@ -71,6 +71,14 @@ export class BurnContractService extends BurnContractViewerService {
     });
   }
 
+  public async addCreditor(accountId: string) {
+    return this.setCreditor(accountId, true);
+  }
+
+  public async removeCreditor(accountId: string) {
+    return this.setCreditor(accountId, false);
+  }
+
   private async setCreditor(accountId: string, enabled: boolean) {
     return withError(async () => {
       const { ledger, accountPublicKey, wallet } = this.context;

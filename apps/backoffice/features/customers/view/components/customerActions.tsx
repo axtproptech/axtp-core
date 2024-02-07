@@ -2,12 +2,8 @@ import { FC, useState } from "react";
 import { Box } from "@mui/material";
 import { ActionButton } from "@/app/components/buttons/actionButton";
 import {
-  IconBarrierBlock,
-  IconBarrierBlockOff,
-  IconShieldCheck,
   IconUser,
   IconUserCheck,
-  IconUserExclamation,
   IconUserOff,
   IconUserX,
   IconMailForward,

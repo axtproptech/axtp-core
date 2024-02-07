@@ -5,6 +5,6 @@ export const useBurnContract = () => {
   const burnContractData = useAppSelector(selectBurnContractState);
   return {
     ...burnContractData,
-    isLoading: !burnContractData.id,
+    isLoading: burnContractData.id === "",
   };
 };

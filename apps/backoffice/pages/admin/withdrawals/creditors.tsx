@@ -1,10 +1,10 @@
-import { Dashboard } from "@/features/dashboard";
 import { Layout } from "@/app/components/layout";
+import { Creditors } from "@/features/withdrawals/creditors";
 
-export default function homePage() {
+export default function creditorsPage() {
   return (
     <Layout>
-      <Dashboard />
+      <Creditors />
     </Layout>
   );
 }
