@@ -1,11 +1,6 @@
-import { FC, useState } from "react";
 import { Box } from "@mui/material";
 import { ActionButton } from "@/app/components/buttons/actionButton";
-import {
-  IconCashBanknoteOff,
-  IconCirclePlus,
-  IconDiscount2,
-} from "@tabler/icons";
+import { IconUserCheck } from "@tabler/icons";
 
 export type CreditorsActionType = "register";
 
@@ -14,13 +9,13 @@ interface Props {
   isExecuting: boolean;
 }
 
-export const CreditorsActions: FC<Props> = ({ onAction, isExecuting }) => {
+export const CreditorsActions = ({ onAction, isExecuting }: Props) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "row" }}>
       <Box sx={{ ml: 2 }}>
         <ActionButton
           actionLabel="Register Creditor"
-          actionIcon={<IconDiscount2 />}
+          actionIcon={<IconUserCheck />}
           color="success"
           onClick={() => onAction("register")}
           isLoading={isExecuting}

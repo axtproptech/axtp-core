@@ -72,7 +72,7 @@ export class BurnContractService extends BaseContractViewerService {
       });
       return result.keyValues
         .filter(({ value }) => value != "0")
-        .map(({ value }) => value);
+        .map(({ key2 }) => key2);
     });
   }
 

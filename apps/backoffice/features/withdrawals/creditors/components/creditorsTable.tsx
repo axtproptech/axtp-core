@@ -1,11 +1,6 @@
 import { MainCard } from "@/app/components/cards";
 import { useEffect, useMemo, useState } from "react";
-import {
-  DataGrid,
-  GridAlignment,
-  GridColDef,
-  GridRenderCellParams,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useBurnContract } from "@/app/hooks/useBurnContract";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { Address } from "@signumjs/core";
@@ -34,13 +29,6 @@ const renderAddress = (params: GridRenderCellParams<string>) => {
   );
 };
 
-const FlagCellProps = {
-  flex: 0,
-  resizable: false,
-  width: 80,
-  align: "center" as GridAlignment,
-};
-
 const columns: GridColDef[] = [
   {
     field: "address",
@@ -48,7 +36,6 @@ const columns: GridColDef[] = [
     renderCell: renderAddress,
     flex: 1,
   },
-  { field: "actions", headerName: "Actions" },
 ];
 
 export const CreditorsTable = () => {
@@ -61,11 +48,10 @@ export const CreditorsTable = () => {
 
   const tableRows = useMemo(() => {
     if (!creditorAccountIds) return [];
-
     return creditorAccountIds.map((id) => {
       return {
         id,
-        address: Address.fromNumericId(id, Prefix),
+        address: Address.fromNumericId(id, Prefix).getReedSolomonAddress(),
         explorerLink: `${ExploreBaseUrl}/address/${id}`,
       };
     });

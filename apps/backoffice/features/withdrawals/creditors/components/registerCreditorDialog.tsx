@@ -87,8 +87,8 @@ export const RegisterCreditorDialog = ({ open, onClose, onCancel }: Props) => {
       <DialogContent>
         <DialogContentText>
           <Typography variant="subtitle1">
-            Verify, if the payment was done and enter the transaction reference
-            here, i.e. PIX transaction code, DOC/TED reference etc.
+            Creditors are allowed to register a payout for requested
+            withdrawals. Only existing accounts can be added as creditors.
           </Typography>
         </DialogContentText>
         <Controller
