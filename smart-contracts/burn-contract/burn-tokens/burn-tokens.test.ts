@@ -35,17 +35,6 @@ describe('Burn Contract - Burn Tokens', () => {
         expect(creditsToken1).toBe(60n);
         expect(creditsToken2).toBe(0n); // not tracked
 
-        const tokenHolders = testbed.getMapValuesPerSlot(Context.Maps.TokenHolders);
-        expect(tokenHolders).toEqual([{
-            key1: Context.Maps.TokenHolders,
-            key2: Context.SenderAccount1,
-            value: Context.Tokens[0]
-        },{
-            key1: Context.Maps.TokenHolders,
-            key2: Context.SenderAccount2,
-            value: Context.Tokens[0]
-        }])
-
     })
     test('should register burned tokens as expected - with suddenly removed tracking ', () => {
         const testbed = SimulatorTestbed

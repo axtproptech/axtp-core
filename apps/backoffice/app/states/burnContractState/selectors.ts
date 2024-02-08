@@ -4,8 +4,3 @@ import { BurnContractData } from "@/types/burnContractData";
 
 export const selectBurnContractState = (state: RootState): BurnContractData =>
   state.burnContractState.burnContract;
-
-// export const selectMasterTokenInfo = createSelector(
-//   selectMasterContractState,
-//   (state) => state.token
-// );

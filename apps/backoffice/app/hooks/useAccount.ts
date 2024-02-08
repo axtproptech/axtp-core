@@ -2,18 +2,12 @@ import { useAppSelector } from "@/states/hooks";
 import { AccountState } from "@/app/states/accountState";
 import { Address } from "@signumjs/core";
 import { Config } from "@/app/config";
-import { useLedgerService } from "@/app/hooks/useLedgerService";
-import { useEffect, useMemo } from "react";
-import { PermissionRole } from "@/types/permissionRole";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import { useMasterContract } from "@/app/hooks/useMasterContract";
-import useSWR from "swr";
 
 export const useAccount = () => {
   const {
     Accounts: { Principal },
   } = useAppContext();
-  // const {ledgerService} = useLedgerService();
   const { publicKey } = useAppSelector<AccountState>(
     (state) => state.accountState
   );

@@ -21,12 +21,6 @@ export const BurnContractContext = {
   },
 };
 
-// export interface TokenCredit {
-//   id: string;
-//   name: string;
-//   decimals: number;
-//   amount: ChainValue;
-// }
 interface AccountCredit {
   accountId: string;
   creditQuantity: string;

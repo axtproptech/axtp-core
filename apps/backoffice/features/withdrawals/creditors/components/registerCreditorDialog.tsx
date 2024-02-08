@@ -49,10 +49,14 @@ export const RegisterCreditorDialog = ({ open, onClose, onCancel }: Props) => {
       ledgerService.account
         .getAccount(accountId)
         .then((account) => {
-          setResolvedAddress(account.accountRS);
+          if (mountedRef.current) {
+            setResolvedAddress(account.accountRS);
+          }
         })
         .catch(() => {
-          setResolvedAddress("");
+          if (mountedRef.current) {
+            setResolvedAddress("");
+          }
         });
     }
   }, [ledgerService, accountId]);
