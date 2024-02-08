@@ -1,68 +1,24 @@
 import { MainCard } from "@/app/components/cards";
-import { useEffect, useMemo, useState } from "react";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { useMemo, useState } from "react";
+import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { useBurnContract } from "@/app/hooks/useBurnContract";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { Address } from "@signumjs/core";
-import { ExternalLink } from "@/app/components/links/externalLink";
-import { Button, Stack, Typography } from "@mui/material";
-import { IconLink, IconUserOff } from "@tabler/icons";
-import { CreditorsActions } from "./creditorsActions";
-import {
-  RegisterCreditorDialog,
-  RegistrationArgs,
-} from "./registerCreditorDialog";
+import { Typography } from "@mui/material";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
-import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
-import { ActionButton } from "@/app/components/buttons/actionButton";
-
-const AddressCell = (params: GridRenderCellParams<string>) => {
-  const explorerLink = params.row.explorerLink;
-  if (!explorerLink) return null;
-
-  return (
-    <ExternalLink href={explorerLink}>
-      <Button>
-        <IconLink />
-        {params.row.address}
-      </Button>
-    </ExternalLink>
-  );
-};
-const ActionsCell = (params: GridRenderCellParams<string>) => {
-  const accountId = params.id;
-  const { execute, isExecuting } = useLedgerAction();
-  if (!accountId) return null;
-
-  const unregisterCreditor = () => {
-    execute((ledgerService) =>
-      ledgerService.burnContract.removeCreditor(accountId.toString())
-    );
-  };
-
-  return (
-    <Stack direction="row" alignItems="center">
-      <ActionButton
-        actionLabel="Unregister"
-        onClick={unregisterCreditor}
-        color="warning"
-        actionIcon={<IconUserOff />}
-        isLoading={isExecuting}
-      />
-    </Stack>
-  );
-};
+import { AddressCell } from "../../components/addressCell";
+import { useRouter } from "next/router";
 
 const columns: GridColDef[] = [
   {
-    field: "accountAddress",
+    field: "address",
     headerName: "Address",
     renderCell: AddressCell,
     flex: 1,
   },
   {
     field: "tokenName",
-    headerName: "Token",
+    headerName: "Currency",
     flex: 1,
   },
   {
@@ -70,25 +26,20 @@ const columns: GridColDef[] = [
     headerName: "Amount",
     flex: 1,
   },
-  {
-    field: "actions",
-    headerName: "Actions",
-    width: 160,
-    align: "center",
-    renderCell: ActionsCell,
-  },
 ];
 
 interface WithdrawalRequestsGridRow {
   id: string;
   accountId: string;
-  accountAddress: string;
+  address: string;
+  explorerLink: string;
   tokenName: string;
   tokenId: string;
   quantity: string;
 }
 
 export const WithdrawalRequestsTable = () => {
+  const router = useRouter();
   const {
     Ledger: { ExploreBaseUrl, Prefix },
   } = useAppContext();
@@ -98,13 +49,15 @@ export const WithdrawalRequestsTable = () => {
 
   const tableRows = useMemo(() => {
     const rows: WithdrawalRequestsGridRow[] = [];
+
     for (let { tokenInfo, accountCredits } of tokenAccountCredits) {
       for (let { accountId, creditQuantity } of accountCredits) {
         rows.push({
-          id: `{tokenInfo.tokenId}.{accountId}`,
+          id: `${tokenInfo.id}.${accountId}`,
           accountId,
           tokenId: tokenInfo.id,
-          accountAddress: Address.fromNumericId(
+          explorerLink: `${ExploreBaseUrl}/address/${accountId}`,
+          address: Address.fromNumericId(
             accountId,
             Prefix
           ).getReedSolomonAddress(),
@@ -113,8 +66,15 @@ export const WithdrawalRequestsTable = () => {
         });
       }
     }
+
     return rows;
   }, [Prefix, tokenAccountCredits]);
+
+  const handleRowClick = async (e: GridRowParams) => {
+    const tokenId = e.row.tokenId;
+    const accountId = e.row.accountId;
+    await router.push(`/admin/withdrawals/requests/${tokenId}/${accountId}`);
+  };
 
   return (
     <>
@@ -122,17 +82,15 @@ export const WithdrawalRequestsTable = () => {
         <Typography variant="caption"></Typography>
         <div style={{ height: "50vh" }}>
           <div style={{ height: "100%" }}>
-            <DataGrid rows={tableRows} columns={columns} loading={isLoading} />
+            <DataGrid
+              rows={tableRows}
+              columns={columns}
+              loading={isLoading}
+              onRowClick={handleRowClick}
+            />
           </div>
         </div>
-        <SucceededTransactionSection transactionId={transactionId} />
       </MainCard>
-
-      {/*<RegisterCreditorDialog*/}
-      {/*  open={modalOpened}*/}
-      {/*  onClose={confirmRegisterCreditor}*/}
-      {/*  onCancel={() => setModalOpened(false)}*/}
-      {/*/>*/}
     </>
   );
 };

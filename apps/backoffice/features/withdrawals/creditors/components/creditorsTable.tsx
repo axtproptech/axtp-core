@@ -4,7 +4,6 @@ import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useBurnContract } from "@/app/hooks/useBurnContract";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { Address } from "@signumjs/core";
-import { ExternalLink } from "@/app/components/links/externalLink";
 import { Button, Stack, Typography } from "@mui/material";
 import { IconLink, IconUserOff } from "@tabler/icons";
 import {
@@ -14,20 +13,8 @@ import {
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
 import { ActionButton } from "@/app/components/buttons/actionButton";
 import { CreditorsTableHeader } from "./creditorsTableHeader";
+import { AddressCell } from "../../components/addressCell";
 
-const AddressCell = (params: GridRenderCellParams<string>) => {
-  const explorerLink = params.row.explorerLink;
-  if (!explorerLink) return null;
-
-  return (
-    <ExternalLink href={explorerLink}>
-      <Button>
-        <IconLink />
-        {params.row.address}
-      </Button>
-    </ExternalLink>
-  );
-};
 const ActionsCell = (params: GridRenderCellParams<string>) => {
   const accountId = params.id;
   const { execute, isExecuting } = useLedgerAction();
