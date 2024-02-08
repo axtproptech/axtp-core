@@ -15,10 +15,10 @@ export const withdrawals: NavigationItem = {
       breadcrumbs: false,
     },
     {
-      id: "manage-pending-withdrawals",
-      title: "Pending Withdrawals",
+      id: "manage-withdrawals-requests",
+      title: "Requests",
       type: "item",
-      url: "/admin/withdrawals/pending",
+      url: "/admin/withdrawals/requests",
       icon: IconArrowBigDownLines,
       breadcrumbs: false,
       permissions: ["creditor", "master"],

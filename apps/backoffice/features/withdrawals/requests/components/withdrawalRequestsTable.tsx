@@ -7,13 +7,14 @@ import { Address } from "@signumjs/core";
 import { ExternalLink } from "@/app/components/links/externalLink";
 import { Button, Stack, Typography } from "@mui/material";
 import { IconLink, IconUserOff } from "@tabler/icons";
+import { CreditorsActions } from "./creditorsActions";
 import {
   RegisterCreditorDialog,
   RegistrationArgs,
 } from "./registerCreditorDialog";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
+import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { ActionButton } from "@/app/components/buttons/actionButton";
-import { CreditorsTableHeader } from "./creditorsTableHeader";
 
 const AddressCell = (params: GridRenderCellParams<string>) => {
   const explorerLink = params.row.explorerLink;
@@ -54,9 +55,19 @@ const ActionsCell = (params: GridRenderCellParams<string>) => {
 
 const columns: GridColDef[] = [
   {
-    field: "address",
+    field: "accountAddress",
     headerName: "Address",
     renderCell: AddressCell,
+    flex: 1,
+  },
+  {
+    field: "tokenName",
+    headerName: "Token",
+    flex: 1,
+  },
+  {
+    field: "quantity",
+    headerName: "Amount",
     flex: 1,
   },
   {
@@ -68,66 +79,70 @@ const columns: GridColDef[] = [
   },
 ];
 
-export const CreditorsTable = () => {
+interface WithdrawalRequestsGridRow {
+  id: string;
+  accountId: string;
+  accountAddress: string;
+  tokenName: string;
+  tokenId: string;
+  quantity: string;
+}
+
+export const WithdrawalRequestsTable = () => {
   const {
     Ledger: { ExploreBaseUrl, Prefix },
   } = useAppContext();
-  const { isLoading, creditorAccountIds } = useBurnContract();
-  const [modalOpened, setModalOpened] = useState(false);
+  const { isLoading, tokenAccountCredits } = useBurnContract();
   const { transactionId, execute, isExecuting } = useLedgerAction();
+  const [modalOpened, setModalOpened] = useState(false);
 
   const tableRows = useMemo(() => {
-    if (!creditorAccountIds) return [];
-    return creditorAccountIds.map((id) => {
-      return {
-        id,
-        address: Address.fromNumericId(id, Prefix).getReedSolomonAddress(),
-        explorerLink: `${ExploreBaseUrl}/address/${id}`,
-      };
-    });
-  }, [ExploreBaseUrl, Prefix, creditorAccountIds]);
-
-  const handleCreditorsActions = (action: "register") => {
-    setModalOpened(action === "register");
-  };
-  const confirmRegisterCreditor = async ({
-    creditorAccountId,
-  }: RegistrationArgs) => {
-    return execute((ledgerService) =>
-      ledgerService.burnContract.addCreditor(creditorAccountId)
-    );
-  };
-
-  useEffect(() => {
-    if (!!transactionId) {
-      setModalOpened(false);
+    const rows: WithdrawalRequestsGridRow[] = [];
+    for (let { tokenInfo, accountCredits } of tokenAccountCredits) {
+      for (let { accountId, creditQuantity } of accountCredits) {
+        rows.push({
+          id: `{tokenInfo.tokenId}.{accountId}`,
+          accountId,
+          tokenId: tokenInfo.id,
+          accountAddress: Address.fromNumericId(
+            accountId,
+            Prefix
+          ).getReedSolomonAddress(),
+          tokenName: tokenInfo.name,
+          quantity: creditQuantity,
+        });
+      }
     }
-  }, [transactionId]);
+    return rows;
+  }, [Prefix, tokenAccountCredits]);
 
   return (
     <>
-      <MainCard
-        title={
-          <CreditorsTableHeader
-            transactionId={transactionId}
-            onAction={handleCreditorsActions}
-            isExecuting={isExecuting}
-          />
-        }
-      >
+      <MainCard title={<Title />}>
         <Typography variant="caption"></Typography>
         <div style={{ height: "50vh" }}>
           <div style={{ height: "100%" }}>
             <DataGrid rows={tableRows} columns={columns} loading={isLoading} />
           </div>
         </div>
+        <SucceededTransactionSection transactionId={transactionId} />
       </MainCard>
 
-      <RegisterCreditorDialog
-        open={modalOpened}
-        onClose={confirmRegisterCreditor}
-        onCancel={() => setModalOpened(false)}
-      />
+      {/*<RegisterCreditorDialog*/}
+      {/*  open={modalOpened}*/}
+      {/*  onClose={confirmRegisterCreditor}*/}
+      {/*  onCancel={() => setModalOpened(false)}*/}
+      {/*/>*/}
     </>
   );
 };
+
+const Title = () => (
+  <>
+    <Typography variant="h3">Withdrawal Requests</Typography>
+    <Typography variant="caption">
+      Here you can see all token holders who request withdrawal of their stable
+      coin balances.
+    </Typography>
+  </>
+);
