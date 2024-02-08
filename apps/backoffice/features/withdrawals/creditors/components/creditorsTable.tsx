@@ -5,8 +5,8 @@ import { useBurnContract } from "@/app/hooks/useBurnContract";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { Address } from "@signumjs/core";
 import { ExternalLink } from "@/app/components/links/externalLink";
-import { Button, Typography } from "@mui/material";
-import { IconLink } from "@tabler/icons";
+import { Button, Stack, Typography } from "@mui/material";
+import { IconLink, IconUserOff } from "@tabler/icons";
 import { CreditorsActions } from "./creditorsActions";
 import {
   RegisterCreditorDialog,
@@ -14,8 +14,9 @@ import {
 } from "./registerCreditorDialog";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
+import { ActionButton } from "@/app/components/buttons/actionButton";
 
-const renderAddress = (params: GridRenderCellParams<string>) => {
+const AddressCell = (params: GridRenderCellParams<string>) => {
   const explorerLink = params.row.explorerLink;
   if (!explorerLink) return null;
 
@@ -28,13 +29,43 @@ const renderAddress = (params: GridRenderCellParams<string>) => {
     </ExternalLink>
   );
 };
+const ActionsCell = (params: GridRenderCellParams<string>) => {
+  const accountId = params.id;
+  const { execute, isExecuting } = useLedgerAction();
+  if (!accountId) return null;
+
+  const unregisterCreditor = () => {
+    execute((ledgerService) =>
+      ledgerService.burnContract.removeCreditor(accountId.toString())
+    );
+  };
+
+  return (
+    <Stack direction="row" alignItems="center">
+      <ActionButton
+        actionLabel="Unregister"
+        onClick={unregisterCreditor}
+        color="warning"
+        actionIcon={<IconUserOff />}
+        isLoading={isExecuting}
+      />
+    </Stack>
+  );
+};
 
 const columns: GridColDef[] = [
   {
     field: "address",
     headerName: "Address",
-    renderCell: renderAddress,
+    renderCell: AddressCell,
     flex: 1,
+  },
+  {
+    field: "actions",
+    headerName: "Actions",
+    width: 160,
+    align: "center",
+    renderCell: ActionsCell,
   },
 ];
 
