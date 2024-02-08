@@ -21,7 +21,7 @@ export const withdrawals: NavigationItem = {
       url: "/admin/withdrawals/pending",
       icon: IconArrowBigDownLines,
       breadcrumbs: false,
-      permission: ["creditor"],
+      permissions: ["creditor", "master"],
     },
     {
       id: "manage-creditors",
@@ -30,7 +30,7 @@ export const withdrawals: NavigationItem = {
       url: "/admin/withdrawals/creditors",
       icon: IconUserCheck,
       breadcrumbs: false,
-      permission: ["creditor"],
+      permissions: ["master"],
     },
   ],
 };

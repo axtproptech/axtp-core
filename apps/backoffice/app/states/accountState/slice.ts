@@ -4,13 +4,11 @@ import { PermissionRole } from "@/types/permissionRole";
 export interface AccountState {
   publicKey: string;
   rememberWalletConnection: boolean;
-  role: PermissionRole;
 }
 
 const initialState: AccountState = {
   publicKey: "",
   rememberWalletConnection: false,
-  role: "",
 };
 
 export const accountSlice = createSlice({

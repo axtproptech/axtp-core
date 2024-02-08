@@ -31,5 +31,5 @@ export interface NavigationIconItem extends NavigationItemBase {
   breadcrumbs?: boolean;
   target?: boolean;
   external?: boolean;
-  permission?: PermissionRole[];
+  permissions?: PermissionRole[];
 }
