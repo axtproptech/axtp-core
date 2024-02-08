@@ -2,6 +2,7 @@ import { Ledger } from "@signumjs/core";
 import { withError } from "../common/withError";
 import { ChainValue } from "@signumjs/util";
 import { BaseContractViewerService } from "./baseContractViewerService";
+import { BasicTokenInfo } from "./basicTokenInfo";
 
 export const BurnContractContext = {
   CodeHashId: "4258024526314495767",
@@ -20,11 +21,14 @@ export const BurnContractContext = {
   },
 };
 
-export interface TokenCredit {
-  id: string;
-  name: string;
-  decimals: number;
-  amount: ChainValue;
+interface AccountCredit {
+  accountId: string;
+  creditQuantity: string;
+}
+
+export interface TokenAccountCredits {
+  tokenInfo: BasicTokenInfo;
+  accountCredits: AccountCredit[];
 }
 
 export class BurnContractService extends BaseContractViewerService {
@@ -62,41 +66,33 @@ export class BurnContractService extends BaseContractViewerService {
       });
       return result.keyValues
         .filter(({ value }) => value != "0")
-        .map(({ value }) => value);
+        .map(({ key2 }) => key2);
     });
   }
 
   /**
-   * Gets an accounts token credits.
-   * Token credits are registered amounts for payout request (Withdrawal) in FIAT (to be paid off-chain/banking)
-   * @param accountId
+   * Gets all creditable accounts for a token, i.e. all pending withdrawals
+   * @param tokenId The token id
+   * @return {TokenAccountCredits} The list of credits per account per token
    */
-  async getAccountTokenCredits(accountId: string): Promise<TokenCredit[]> {
-    return withError<TokenCredit[]>(async () => {
-      const accountTokens =
-        await this.ledger.contract.getContractMapValuesByFirstKey({
+  async getTokenAccountCredits(tokenId: string): Promise<TokenAccountCredits> {
+    return withError<TokenAccountCredits>(async () => {
+      const [tokenCredits, tokenInfo] = await Promise.all([
+        this.ledger.contract.getContractMapValuesByFirstKey({
           contractId: this.contractId(),
-          key1: accountId,
-        });
-      const tokensWithBalance = accountTokens.keyValues
-        .filter(({ value }) => value != "0")
-        .reduce((acc, curr) => {
-          acc[curr.key2] = curr.value;
-          return acc;
-        }, {} as Record<string, string>);
-
-      const tokenIds = Object.keys(tokensWithBalance).map((id) => id);
-      const tokenInfos = await Promise.all(
-        tokenIds.map((tokenId) => this.getTokenData(tokenId, false))
-      );
-      return tokenInfos.map<TokenCredit>((info) => ({
-        amount: ChainValue.create(info.decimals).setAtomic(
-          tokensWithBalance[info.id]
-        ),
-        decimals: info.decimals,
-        name: info.name,
-        id: info.id,
+          key1: tokenId,
+        }),
+        this.getTokenData(tokenId, false),
+      ]);
+      const accountCredits = tokenCredits.keyValues.map(({ key2, value }) => ({
+        creditQuantity: value,
+        accountId: key2,
       }));
+
+      return {
+        tokenInfo,
+        accountCredits,
+      };
     });
   }
 }

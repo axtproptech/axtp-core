@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PermissionRole } from "@/types/permissionRole";
 
 export interface AccountState {
   publicKey: string;

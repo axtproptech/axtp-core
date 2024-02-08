@@ -34,6 +34,7 @@ describe('Burn Contract - Burn Tokens', () => {
         expect(creditsToken0).toBe(50n);
         expect(creditsToken1).toBe(60n);
         expect(creditsToken2).toBe(0n); // not tracked
+
     })
     test('should register burned tokens as expected - with suddenly removed tracking ', () => {
         const testbed = SimulatorTestbed

@@ -20,6 +20,7 @@ import { storage } from "./storage";
 import { appSlice } from "@/app/states/appState";
 import { accountSlice } from "@/app/states/accountState";
 import { masterContractSlice } from "@/app/states/masterContractState";
+import { burnContractSlice } from "@/app/states/burnContractState";
 import { poolsSlice } from "@/app/states/poolsState";
 import { notificationsSlice } from "@/app/states/notificationsState";
 
@@ -50,6 +51,13 @@ const masterContractPersistConfig = {
   whitelist: ["masterContract"],
 };
 
+const burnContractPersistConfig = {
+  key: "burnContract",
+  version: 1,
+  storage,
+  whitelist: ["burnContract"],
+};
+
 const poolsPersistConfig = {
   key: "pools",
   version: 1,
@@ -74,6 +82,10 @@ const rootReducer = combineReducers({
   masterContractState: persist<ReturnType<typeof masterContractSlice.reducer>>(
     masterContractPersistConfig,
     masterContractSlice.reducer
+  ),
+  burnContractState: persist<ReturnType<typeof burnContractSlice.reducer>>(
+    burnContractPersistConfig,
+    burnContractSlice.reducer
   ),
   poolsState: persist<ReturnType<typeof poolsSlice.reducer>>(
     poolsPersistConfig,
