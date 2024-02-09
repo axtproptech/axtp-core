@@ -6,36 +6,20 @@ import { TokenAccountCredits } from "@axtp/core";
 export const MockTACs: TokenAccountCredits[] = [
   {
     tokenInfo: {
-      id: "5001",
-      name: "MOCK1",
-      balance: "100",
-      supply: "150",
+      id: "17364735717996724982",
+      name: "TAXTC",
+      balance: "0",
+      supply: "9500000",
       decimals: 2,
       numHolders: 20,
     },
     accountCredits: [
       {
-        accountId: "100001",
+        accountId: "2402520554221019656",
         creditQuantity: "10",
       },
       {
-        accountId: "100002",
-        creditQuantity: "10",
-      },
-    ],
-  },
-  {
-    tokenInfo: {
-      id: "5002",
-      name: "MOCK2",
-      balance: "100",
-      supply: "100",
-      decimals: 2,
-      numHolders: 10,
-    },
-    accountCredits: [
-      {
-        accountId: "100001",
+        accountId: "3744968806698214868",
         creditQuantity: "10",
       },
     ],
