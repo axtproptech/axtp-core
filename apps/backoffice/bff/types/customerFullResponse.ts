@@ -1,5 +1,5 @@
-import { Address } from "@/bff/types/address";
 import { BlockchainAccountResponse } from "@/bff/types/blockchainAccountResponse";
+import { Address } from "@/bff/types/address";
 
 export interface TermsOfUseResponse {
   customerId: number;
@@ -15,6 +15,12 @@ export interface Document {
   customerId: number;
   type: string;
   url: string;
+}
+
+export interface BankInformation {
+  id: number;
+  type: string;
+  identifier: string;
 }
 
 export interface CustomerFullResponse {
@@ -40,6 +46,7 @@ export interface CustomerFullResponse {
   verificationLevel: string;
   termsOfUse: TermsOfUseResponse[];
   blockchainAccounts: BlockchainAccountResponse[];
+  bankInformation: BankInformation[];
   addresses: Address[];
   documents: Document[];
   isInvited: boolean;

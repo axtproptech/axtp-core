@@ -67,14 +67,15 @@ export const WithdrawalInfoSection = ({ requestInfo }: Props) => {
             {isLoadingMarketData ? "Updating..." : data?.last_updated}
           </Typography>
           <Typography variant="caption">
-            1 USD: 1 BRL =&nbsp;
+            1 USD =&nbsp;
             {isLoadingMarketData
               ? "Updating..."
               : Math.max(
                   0,
                   (data?.current_price || 0) -
                     Config.Platform.Market.PriceAdjustment
-                )}{" "}
+                )}
+            {" BRL"}
             (adjusted)
           </Typography>
         </Stack>

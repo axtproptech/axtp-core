@@ -41,8 +41,7 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
     error: errorCustomer,
   } = useSWR(`fetchCustomer/${accountId}`, async () => {
     const customer = await customerService.fetchCustomerByAccountId(accountId);
-    // TODO: fetch bank information
-    return customer;
+    return customerService.with(customer.cuid).fetchCustomer();
   });
 
   if (!request) {

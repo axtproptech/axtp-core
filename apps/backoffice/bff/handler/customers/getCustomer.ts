@@ -23,6 +23,7 @@ export const getCustomer: ApiHandler = async ({ req, res }) => {
         },
         verificationResult: true,
         addresses: true,
+        bankInformation: true,
       },
     });
 

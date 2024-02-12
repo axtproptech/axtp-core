@@ -14,6 +14,17 @@ interface CustomerUpdateAddressArgs {
   state?: string;
 }
 
+interface CustomerCreateBankingInfoArgs {
+  type: string;
+  identifier: string;
+}
+
+interface CustomerUpdateBankingInfoArgs {
+  bankInfoId: number;
+  type: string;
+  identifier: string;
+}
+
 interface UploadDocumentArgs {
   documentType: string;
   file: File;
@@ -88,6 +99,19 @@ export class CustomerInstanceService {
       `/address/${addressId}`,
       updateData
     );
+    return response as CustomerFullResponse;
+  }
+
+  async createBankingInfo(args: CustomerCreateBankingInfoArgs) {
+    const { response } = await this.http.post(`/bank`, args);
+    return response as CustomerFullResponse;
+  }
+
+  async updateBankingInfo({
+    bankInfoId,
+    ...args
+  }: CustomerUpdateBankingInfoArgs) {
+    const { response } = await this.http.put(`/bank/${bankInfoId}`, args);
     return response as CustomerFullResponse;
   }
 

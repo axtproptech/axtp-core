@@ -1,25 +1,20 @@
-import { customerService } from "@/app/services/customerService/customerService";
 import useSWR from "swr";
-import { MainCard } from "@/app/components/cards";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
-import { Grid, Stack, Typography } from "@mui/material";
-import { LabeledTextField } from "@/app/components/labeledTextField";
-import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
+import { Grid } from "@mui/material";
 import { Config } from "@/app/config";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
-import { BlockchainAccountSection } from "@/features/withdrawals/singleRequest/components/blockchainAccountSection";
-import { CustomerSection } from "@/features/withdrawals/singleRequest/components/customerSection";
-import { CustomerResponse } from "@/bff/types/customerResponse";
-import { useEffect } from "react";
-import { WithdrawalInfoSection } from "@/features/withdrawals/singleRequest/components/withdrawalInfoSection";
-import { SingleWithdrawalRequestInfo } from "@/features/withdrawals/singleRequest/singleWithdrawalRequestInfo";
+import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
+import { BlockchainAccountSection } from "./blockchainAccountSection";
+import { CustomerSection } from "./customerSection";
+import { WithdrawalInfoSection } from "./withdrawalInfoSection";
+import { SingleWithdrawalRequestInfo } from "../singleWithdrawalRequestInfo";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
 interface Props {
   accountId: string;
   requestInfo?: SingleWithdrawalRequestInfo;
-  customer?: CustomerResponse;
+  customer?: CustomerFullResponse;
   isLoading: boolean;
 }
 
