@@ -4,6 +4,7 @@ import { Config } from "../config";
 import { DeeplinkableWallet, GenericExtensionWallet } from "@signumjs/wallets";
 import { isMobile } from "react-device-detect";
 import { ChildrenProps } from "@/types/childrenProps";
+import { FiatTickerService } from "@axtp/core/markets/fiatTickerService";
 
 export interface AppContextType {
   IsClientSide: boolean;
@@ -20,6 +21,7 @@ export interface AppContextType {
     Prefix: string;
     Ticker: string;
   };
+  FiatTickerService: FiatTickerService;
   Platform: typeof Config.Platform;
   Accounts: typeof Config.Accounts;
 }
@@ -45,6 +47,7 @@ const config: AppContextType = {
     Prefix: Config.Signum.IsTestnet ? "TS" : "S",
     Ticker: Config.Signum.IsTestnet ? "TSIGNA" : "SIGNA",
   },
+  FiatTickerService: new FiatTickerService(),
 };
 
 export const AppContext = createContext<AppContextType>(config);

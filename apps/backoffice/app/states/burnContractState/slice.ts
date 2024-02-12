@@ -16,11 +16,11 @@ export const MockTACs: TokenAccountCredits[] = [
     accountCredits: [
       {
         accountId: "2402520554221019656",
-        creditQuantity: "10",
+        creditQuantity: "1000",
       },
       {
         accountId: "3744968806698214868",
-        creditQuantity: "10",
+        creditQuantity: "20000",
       },
     ],
   },

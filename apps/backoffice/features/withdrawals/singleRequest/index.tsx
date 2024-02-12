@@ -1,13 +1,15 @@
-import { Box, Button, Grid } from "@mui/material";
-import { Config } from "@/app/config";
+import { Box, Button } from "@mui/material";
 import { useBurnContract } from "@/app/hooks/useBurnContract";
 import { useMemo, useState } from "react";
 import { MainCard } from "@/app/components/cards";
-import { CustomerView } from "./components/customerView";
+import { RequestView } from "./components/requestView";
 import router, { useRouter } from "next/router";
-import { SingleRequestActions } from "@/features/withdrawals/singleRequest/components/creditorsActions";
-
-const gridSpacing = Config.Layout.GridSpacing;
+import {
+  SingleRequestActions,
+  SingleRequestActionType,
+} from "@/features/withdrawals/singleRequest/components/singleRequestActions";
+import useSWR from "swr";
+import { customerService } from "@/app/services/customerService/customerService";
 
 interface Props {
   accountId: string;
@@ -33,6 +35,16 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
     return null;
   }, [accountId, tokenAccountCredits, tokenId]);
 
+  const {
+    data: customerData,
+    isLoading: isLoadingCustomer,
+    error: errorCustomer,
+  } = useSWR(`fetchCustomer/${accountId}`, async () => {
+    const customer = await customerService.fetchCustomerByAccountId(accountId);
+    // TODO: fetch bank information
+    return customer;
+  });
+
   if (!request) {
     return (
       <MainCard title={`Withdrawal Request`}>
@@ -52,8 +64,13 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
     );
   }
 
-  function handleActions(action: "confirm-payout") {
+  function handleActions(action: SingleRequestActionType) {
     console.log("action: ", action);
+    if (action === "confirm-payout") {
+      // todo
+    } else if (action === "view-customer") {
+      router.push(`/admin/customers/${customerData?.cuid}`);
+    }
   }
 
   return (
@@ -63,10 +80,16 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
         <SingleRequestActions
           onAction={handleActions}
           isExecuting={isExecuting}
+          customer={customerData}
         />
       }
     >
-      <CustomerView accountId={accountId} />
+      <RequestView
+        accountId={accountId}
+        customer={customerData}
+        requestInfo={request}
+        isLoading={isLoadingCustomer}
+      />
     </MainCard>
   );
 };

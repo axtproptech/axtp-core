@@ -1,0 +1,88 @@
+import { customerService } from "@/app/services/customerService/customerService";
+import useSWR from "swr";
+import { MainCard } from "@/app/components/cards";
+import { useMasterContract } from "@/app/hooks/useMasterContract";
+import { Grid, Stack, Typography } from "@mui/material";
+import { LabeledTextField } from "@/app/components/labeledTextField";
+import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
+import { Config } from "@/app/config";
+import { useLedgerService } from "@/app/hooks/useLedgerService";
+import { BlockchainAccountSection } from "@/features/withdrawals/singleRequest/components/blockchainAccountSection";
+import { CustomerSection } from "@/features/withdrawals/singleRequest/components/customerSection";
+import { CustomerResponse } from "@/bff/types/customerResponse";
+import { useEffect } from "react";
+import { WithdrawalInfoSection } from "@/features/withdrawals/singleRequest/components/withdrawalInfoSection";
+import { SingleWithdrawalRequestInfo } from "@/features/withdrawals/singleRequest/singleWithdrawalRequestInfo";
+
+const gridSpacing = Config.Layout.GridSpacing;
+
+interface Props {
+  accountId: string;
+  requestInfo?: SingleWithdrawalRequestInfo;
+  customer?: CustomerResponse;
+  isLoading: boolean;
+}
+
+export const RequestView = ({
+  requestInfo,
+  accountId,
+  customer,
+  isLoading,
+}: Props) => {
+  const { isLoading: isLoadingMC } = useMasterContract();
+  const { ledgerService } = useLedgerService();
+
+  const {
+    data: accountData,
+    isLoading: isLoadingAccount,
+    error: errorAccount,
+  } = useSWR(ledgerService ? `fetchAccount/${accountId}` : null, async () => {
+    if (ledgerService) {
+      return ledgerService.account.getAccount(accountId);
+    }
+  });
+
+  return (
+    <Grid
+      container
+      spacing={gridSpacing}
+      direction="row"
+      justifyContent="space-between"
+      mt={1}
+    >
+      <Grid
+        item
+        xs={12}
+        ml={4}
+        mb={2}
+        sx={{ border: "1px solid lightgrey", borderRadius: 2 }}
+      >
+        <WithdrawalInfoSection requestInfo={requestInfo} />
+      </Grid>
+
+      <Grid
+        item
+        xs={12}
+        sm={5}
+        ml={4}
+        mb={2}
+        sx={{ border: "1px solid lightgrey", borderRadius: 2 }}
+      >
+        <CustomerSection customer={customer} isLoading={isLoading} />
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        ml={4}
+        mb={2}
+        sx={{ border: "1px solid lightgrey", borderRadius: 2 }}
+      >
+        <BlockchainAccountSection
+          account={accountData}
+          isLoading={isLoadingAccount}
+        />
+      </Grid>
+    </Grid>
+  );
+};
