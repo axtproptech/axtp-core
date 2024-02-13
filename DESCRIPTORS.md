@@ -159,9 +159,9 @@ The Payment descriptor is for registering payments for Pool Token Acquisitions.
   "x-tnm": "AXTC",
   "x-tqnt": "1",
   "x-pt": "pix",
-  "x-pa": "-19600",
-  "x-usd": "-4000",
+  "x-pa": "19600",
   "x-cur": "BRL",
+  "x-usd": "4000",
   "x-ptx": "1322353"
 }
 ```
@@ -172,7 +172,7 @@ The Payment descriptor is for registering payments for Pool Token Acquisitions.
 - `x-tqnt`: Token Quantity,
 - `x-tnm`: Token Name, i.e. AXTC,
 - `x-pt`: Payment Type, i.e. pix, usdc, eth,
-- `x-pa`: Withdrawal Amount (positive for incoming, negative for outgoing, i.e. on cancelled acquisition),
-- `x-usd`: Withdrawal in USD,
+- `x-pa`: Withdrawal Amount, i.e. what was being paid
 - `x-cur`: Payout currency, e.g. 'BRL',
+- `x-usd`: Withdrawal Amount converted in USD,
 - `x-ptx`: Payment Transaction or Reference

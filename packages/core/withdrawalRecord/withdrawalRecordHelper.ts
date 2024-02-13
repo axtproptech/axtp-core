@@ -1,7 +1,7 @@
 import { Transaction } from "@signumjs/core";
 import { DescriptorData, DescriptorDataBuilder } from "@signumjs/standards";
 import { decryptMessage } from "@signumjs/crypto";
-import { WithdrawalRecord, PaymentType } from "./withdrawalRecord";
+import { WithdrawalRecord, WithdrawalPaymentType } from "./withdrawalRecord";
 
 export function createSRC44WithdrawalRecord(
   args: WithdrawalRecord
@@ -31,7 +31,7 @@ export function getWithdrawalRecordFromSRC44(
     tokenId: cx("x-tid"),
     tokenQuantity: cx("x-tqnt"),
     tokenName: cx("x-tnm"),
-    paymentType: cx("x-pt") as PaymentType,
+    paymentType: cx("x-pt") as WithdrawalPaymentType,
     paymentAmount: cx("x-pa"),
     paymentCurrency: cx("x-cur"),
     paymentUsd: cx("x-usd"),

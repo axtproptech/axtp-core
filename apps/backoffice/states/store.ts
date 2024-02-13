@@ -23,6 +23,7 @@ import { masterContractSlice } from "@/app/states/masterContractState";
 import { burnContractSlice } from "@/app/states/burnContractState";
 import { poolsSlice } from "@/app/states/poolsState";
 import { notificationsSlice } from "@/app/states/notificationsState";
+import { marketDataSlice } from "@/app/states/marketDataState";
 
 function persist<T = any>(config: any, reducer: Reducer) {
   return isClientSide()
@@ -70,6 +71,12 @@ const notificationsPersistConfig = {
   storage,
 };
 
+const marketDataConfig = {
+  key: "marketData",
+  version: 1,
+  storage,
+};
+
 const rootReducer = combineReducers({
   appState: persist<ReturnType<typeof appSlice.reducer>>(
     appPersistConfig,
@@ -94,6 +101,10 @@ const rootReducer = combineReducers({
   notificationsState: persist<ReturnType<typeof notificationsSlice.reducer>>(
     notificationsPersistConfig,
     notificationsSlice.reducer
+  ),
+  marketDataState: persist<ReturnType<typeof marketDataSlice.reducer>>(
+    marketDataConfig,
+    marketDataSlice.reducer
   ),
 });
 

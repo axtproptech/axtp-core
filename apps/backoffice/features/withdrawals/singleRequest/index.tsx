@@ -10,6 +10,10 @@ import {
 } from "@/features/withdrawals/singleRequest/components/singleRequestActions";
 import useSWR from "swr";
 import { customerService } from "@/app/services/customerService/customerService";
+import {
+  ConfirmationArgs,
+  ConfirmPayoutDialog,
+} from "@/features/withdrawals/singleRequest/components/confirmPayoutDialog";
 
 interface Props {
   accountId: string;
@@ -20,6 +24,7 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
   const { back } = useRouter();
   const { tokenAccountCredits } = useBurnContract();
   const [isExecuting, setIsExecuting] = useState(false);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
   const request = useMemo(() => {
     const tac = tokenAccountCredits.find((t) => t.tokenInfo.id === tokenId);
@@ -66,10 +71,15 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
   function handleActions(action: SingleRequestActionType) {
     console.log("action: ", action);
     if (action === "confirm-payout") {
+      setConfirmDialogOpen(true);
       // todo
     } else if (action === "view-customer") {
       router.push(`/admin/customers/${customerData?.cuid}`);
     }
+  }
+
+  async function handleConfirmPayout(args: ConfirmationArgs) {
+    console.log("handleConfirmPayout", args);
   }
 
   return (
@@ -88,6 +98,14 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
         customer={customerData}
         requestInfo={request}
         isLoading={isLoadingCustomer}
+      />
+      <ConfirmPayoutDialog
+        open={confirmDialogOpen}
+        onClose={handleConfirmPayout}
+        onCancel={() => {
+          setConfirmDialogOpen(false);
+        }}
+        withdrawalRequestInfo={request}
       />
     </MainCard>
   );
