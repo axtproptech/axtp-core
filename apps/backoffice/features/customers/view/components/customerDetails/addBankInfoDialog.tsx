@@ -18,13 +18,6 @@ import { IconUpload } from "@tabler/icons";
 import { customerService } from "@/app/services/customerService/customerService";
 import { useSWRConfig } from "swr";
 
-const BankInfoTypes = [
-  { label: "Pix", value: "Pix" },
-  { label: "IBAN", value: "Iban" },
-];
-
-const DefaultOption = BankInfoTypes[0];
-
 interface Props {
   cuid: string;
   open: boolean;
@@ -42,7 +35,7 @@ export const AddBankInfoDialog = ({ cuid, open, onClose }: Props) => {
       setIsSaving(true);
       await customerService.with(cuid).createBankingInfo({
         identifier,
-        type: "Pix",
+        type: "Pix", // atm: only Pix supported
       });
       await mutate(`getCustomer/${cuid}`);
       reset();
@@ -79,15 +72,6 @@ export const AddBankInfoDialog = ({ cuid, open, onClose }: Props) => {
             At this moment only Pix is supported. Add the PIX Key here.
           </Typography>
         </DialogContentText>
-        {/*<SelectInput*/}
-        {/*  // @ts-ignore*/}
-        {/*  disabled={isUploading}*/}
-        {/*  label="Document Type"*/}
-        {/*  options={BankInfoTypes}*/}
-        {/*  // @ts-ignore*/}
-        {/*  onChange={(e) => setSelectedDocumentType(e.target.value)}*/}
-        {/*  value={selectedDocumentType}*/}
-        {/*/>*/}
         <Stack direction="row" spacing={2} alignItems="center">
           <TextInput
             label="PIX Key"

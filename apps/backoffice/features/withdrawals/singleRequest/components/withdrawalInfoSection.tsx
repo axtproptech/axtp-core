@@ -1,17 +1,11 @@
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { LabeledTextField } from "@/app/components/labeledTextField";
-import { CustomerResponse } from "@/bff/types/customerResponse";
-import { formatCpfCnpj } from "@/app/formatCpfCnpj";
-import { ActivationChip } from "@/app/components/chips/activationChip";
-import { BlockingChip } from "@/app/components/chips/blockingChip";
-import { VerificationChip } from "@/app/components/chips/verificationChip";
-import { SingleWithdrawalRequestInfo } from "@/features/withdrawals/singleRequest/singleWithdrawalRequestInfo";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import useSWR from "swr";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { ChainValue } from "@signumjs/util";
-import { useNumericFormat } from "react-number-format";
 import { Config } from "@/app/config";
+import { SingleWithdrawalRequestInfo } from "../singleWithdrawalRequestInfo";
 
 interface Props {
   requestInfo?: SingleWithdrawalRequestInfo;
@@ -20,7 +14,6 @@ interface Props {
 export const WithdrawalInfoSection = ({ requestInfo }: Props) => {
   const { FiatTickerService } = useAppContext();
   const { token: axtcToken } = useMasterContract();
-  // const usdFormat = useNumericFormat({suffix: "USD"});
 
   const { isLoading: isLoadingMarketData, data } = useSWR(
     "fetchUsdBrl",
@@ -38,12 +31,13 @@ export const WithdrawalInfoSection = ({ requestInfo }: Props) => {
 
   let inUsd = "";
   let inBrl = "";
+  const amount = ChainValue.create(requestInfo.tokenInfo.decimals).setAtomic(
+    requestInfo.creditQuantity
+  );
   if (axtcToken.id === requestInfo.tokenInfo.id && data) {
-    const amount = ChainValue.create(requestInfo.tokenInfo.decimals).setAtomic(
-      requestInfo.creditQuantity
-    );
     inUsd = amount.getCompound();
     inBrl = amount
+      .clone()
       .multiply(data.current_price - Config.Platform.Market.PriceAdjustment)
       .getCompound();
   }
@@ -90,7 +84,7 @@ export const WithdrawalInfoSection = ({ requestInfo }: Props) => {
         >
           <LabeledTextField
             label="Withdrawal Amount"
-            text={`${requestInfo.creditQuantity} ${requestInfo.tokenInfo.name}`}
+            text={`${amount.getCompound()} ${requestInfo.tokenInfo.name}`}
           />
           <LabeledTextField
             label="In USD"

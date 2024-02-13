@@ -24,7 +24,6 @@ export const RequestView = ({
   customer,
   isLoading,
 }: Props) => {
-  const { isLoading: isLoadingMC } = useMasterContract();
   const { ledgerService } = useLedgerService();
 
   const {

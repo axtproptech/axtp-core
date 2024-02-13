@@ -30,7 +30,6 @@ interface Props {
 export const CustomerDetails: FC<Props> = ({ customer }) => {
   return (
     <Grid container spacing={gridSpacing} direction="column">
-      {/* ACCOUNT SECTION */}
       <Grid
         item
         xs={12}
