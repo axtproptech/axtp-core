@@ -11,7 +11,12 @@ import {
 import { NotificationType } from "@/types/notificationType";
 import { ListItemWrapper } from "./listItemWrapper";
 import Link from "next/link";
-import { IconCoin, IconUserCheck, IconUserPlus } from "@tabler/icons";
+import {
+  IconArrowBigDownLines,
+  IconCoin,
+  IconUserCheck,
+  IconUserPlus,
+} from "@tabler/icons";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 
 interface Props {
@@ -25,6 +30,7 @@ export const NotificationItem: FC<Props> = memo(({ notification }) => {
     "low-balance": <WarningAmberRoundedIcon color="warning" />,
     "pending-customer": <IconUserPlus />,
     "pending-payment": <IconCoin />,
+    "pending-withdrawals": <IconArrowBigDownLines />,
   };
 
   return (
