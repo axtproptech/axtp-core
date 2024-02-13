@@ -114,3 +114,65 @@ The last asset alias does not have an `al` field yet. Using this gives us contro
 - 2: Notification
 - 3: Title Deed (Acquired)
 - 4: Recovered
+
+## Payment Descriptor
+
+The Payment descriptor is for registering payments for Pool Token Acquisitions. These events are being sent as encrypted text messages to the account [`S-XPAY-VJSB-JSCH-EQH6S`](https://chain.signum.network/address/14704805683910333726)
+
+```json
+{
+  "vs": 1,
+  "ac": "2402520554221019656",
+  "x-cuid": "claoihved0000mc08cpcyz00u",
+  "x-pid": "17794542874900784390",
+  "x-tid": "8615352316450321898",
+  "x-tqnt": "1",
+  "x-pt": "pix",
+  "x-pa": "-19600",
+  "x-usd": "-4000",
+  "x-cur": "BRL",
+  "x-ptx": "1322353"
+}
+```
+
+- `ac`: Account related to Customer,
+- `x-cuid`: Customer Id,
+- `x-pid`: Pool Id,
+- `x-tid`: Token Id,
+- `x-tqnt`: Token Quantity,
+- `x-pt`: Payment Type, i.e. pix, usdc, eth,
+- `x-pa`: Payment Amount (positive for incoming, negative for outgoing, i.e. on cancelled acquisition),
+- `x-usd`: Payment in USD,
+- `x-cur`: Payment currency, e.g. 'BRL',
+- `x-ptx`: Payment Transaction or Reference
+
+## Withdrawal Descriptor
+
+The Payment descriptor is for registering payments for Pool Token Acquisitions.
+
+```json
+{
+  "vs": 1,
+  "ac": "2402520554221019656",
+  "x-cuid": "claoihved0000mc08cpcyz00u",
+  "x-tid": "8615352316450321898",
+  "x-tnm": "AXTC",
+  "x-tqnt": "1",
+  "x-pt": "pix",
+  "x-pa": "-19600",
+  "x-usd": "-4000",
+  "x-cur": "BRL",
+  "x-ptx": "1322353"
+}
+```
+
+- `ac`: Account related to Customer,
+- `x-cuid`: Customer Id,
+- `x-tid`: Token Id,
+- `x-tqnt`: Token Quantity,
+- `x-tnm`: Token Name, i.e. AXTC,
+- `x-pt`: Payment Type, i.e. pix, usdc, eth,
+- `x-pa`: Withdrawal Amount (positive for incoming, negative for outgoing, i.e. on cancelled acquisition),
+- `x-usd`: Withdrawal in USD,
+- `x-cur`: Payout currency, e.g. 'BRL',
+- `x-ptx`: Payment Transaction or Reference

@@ -8,8 +8,6 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FC, ReactElement } from "react";
-import { IconSeeding } from "@tabler/icons";
-import { HowToVoteRounded } from "@mui/icons-material";
 
 const Connector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {

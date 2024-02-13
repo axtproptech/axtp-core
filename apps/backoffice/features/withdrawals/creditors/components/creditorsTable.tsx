@@ -4,31 +4,17 @@ import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { useBurnContract } from "@/app/hooks/useBurnContract";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { Address } from "@signumjs/core";
-import { ExternalLink } from "@/app/components/links/externalLink";
 import { Button, Stack, Typography } from "@mui/material";
 import { IconLink, IconUserOff } from "@tabler/icons";
-import { CreditorsActions } from "./creditorsActions";
 import {
   RegisterCreditorDialog,
   RegistrationArgs,
 } from "./registerCreditorDialog";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
-import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 import { ActionButton } from "@/app/components/buttons/actionButton";
+import { CreditorsTableHeader } from "./creditorsTableHeader";
+import { AddressCell } from "../../components/addressCell";
 
-const AddressCell = (params: GridRenderCellParams<string>) => {
-  const explorerLink = params.row.explorerLink;
-  if (!explorerLink) return null;
-
-  return (
-    <ExternalLink href={explorerLink}>
-      <Button>
-        <IconLink />
-        {params.row.address}
-      </Button>
-    </ExternalLink>
-  );
-};
 const ActionsCell = (params: GridRenderCellParams<string>) => {
   const accountId = params.id;
   const { execute, isExecuting } = useLedgerAction();
@@ -74,8 +60,8 @@ export const CreditorsTable = () => {
     Ledger: { ExploreBaseUrl, Prefix },
   } = useAppContext();
   const { isLoading, creditorAccountIds } = useBurnContract();
-  const { transactionId, execute, isExecuting } = useLedgerAction();
   const [modalOpened, setModalOpened] = useState(false);
+  const { transactionId, execute, isExecuting } = useLedgerAction();
 
   const tableRows = useMemo(() => {
     if (!creditorAccountIds) return [];
@@ -88,14 +74,8 @@ export const CreditorsTable = () => {
     });
   }, [ExploreBaseUrl, Prefix, creditorAccountIds]);
 
-  useEffect(() => {
-    if (!!transactionId) {
-      setModalOpened(false);
-    }
-  }, [transactionId]);
   const handleCreditorsActions = (action: "register") => {
     setModalOpened(action === "register");
-    return Promise.resolve();
   };
   const confirmRegisterCreditor = async ({
     creditorAccountId,
@@ -105,17 +85,22 @@ export const CreditorsTable = () => {
     );
   };
 
+  useEffect(() => {
+    if (!!transactionId) {
+      setModalOpened(false);
+    }
+  }, [transactionId]);
+
   return (
     <>
       <MainCard
-        title={<Title />}
-        actions={
-          <CreditorsActions
-            isExecuting={isExecuting}
+        title={
+          <CreditorsTableHeader
+            transactionId={transactionId}
             onAction={handleCreditorsActions}
+            isExecuting={isExecuting}
           />
         }
-        actionsOnTop
       >
         <Typography variant="caption"></Typography>
         <div style={{ height: "50vh" }}>
@@ -123,7 +108,6 @@ export const CreditorsTable = () => {
             <DataGrid rows={tableRows} columns={columns} loading={isLoading} />
           </div>
         </div>
-        <SucceededTransactionSection transactionId={transactionId} />
       </MainCard>
 
       <RegisterCreditorDialog
@@ -134,13 +118,3 @@ export const CreditorsTable = () => {
     </>
   );
 };
-
-const Title = () => (
-  <>
-    <Typography variant="h3">Creditors</Typography>
-    <Typography variant="caption">
-      Creditors are accounts who are permitted to register payouts for requested
-      withdrawals.
-    </Typography>
-  </>
-);

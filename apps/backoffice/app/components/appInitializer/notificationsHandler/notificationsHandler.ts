@@ -9,11 +9,14 @@ import { getMasterContractNotifications } from "./helper/getMasterContractNotifi
 import { getPoolContractNotifications } from "./helper/getPoolContractNotifications";
 import { getPendingCustomerNotification } from "./helper/getPendingCustomerNotification";
 import { getPendingPaymentNotification } from "./helper/getPendingPaymentNotification";
+import { useBurnContract } from "@/app/hooks/useBurnContract";
+import { getWithdrawalRequestNotifications } from "@/app/components/appInitializer/notificationsHandler/helper/getWithdrawalRequestNotifications";
 
 const Minutes = 1000 * 60;
 
 export const NotificationsHandler = () => {
   const masterContract = useMasterContract();
+  const burnContract = useBurnContract();
   const pools = useAppSelector((rootState) => rootState.poolsState.pools);
   const dispatch = useAppDispatch();
 
@@ -63,6 +66,20 @@ export const NotificationsHandler = () => {
       notifications.push(...getMasterContractNotifications(masterContract));
     }
 
+    if (burnContract) {
+      const pendingRequests = burnContract.tokenAccountCredits.reduce(
+        (acc, curr) => acc + curr.accountCredits.length,
+        0
+      );
+      dispatch(
+        actions.setMenuBadge({
+          itemId: "manage-withdrawals-requests",
+          value: pendingRequests ? String(pendingRequests) : "",
+        })
+      );
+      notifications.push(...getWithdrawalRequestNotifications(burnContract));
+    }
+
     if (pools) {
       notifications.push(
         // @ts-ignore
@@ -81,7 +98,14 @@ export const NotificationsHandler = () => {
     }
 
     dispatch(actions.setNotifications(notifications));
-  }, [dispatch, masterContract, pools, pendingCustomers, pendingPayments]);
+  }, [
+    dispatch,
+    masterContract,
+    pools,
+    pendingCustomers,
+    pendingPayments,
+    burnContract,
+  ]);
 
   return null;
 };

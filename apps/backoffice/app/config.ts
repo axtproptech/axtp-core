@@ -1,4 +1,5 @@
 import { Amount } from "@signumjs/util";
+import * as process from "process";
 
 const toNumber = (v: any): number => {
   const n = parseFloat(v);
@@ -29,6 +30,11 @@ export const Config = {
   },
   Platform: {
     Name: process.env.NEXT_PUBLIC_PLATFORM_NAME || "AXT PropTech Backoffice",
+    Market: {
+      PriceAdjustment: toNumber(
+        process.env.NEXT_PUBLIC_BRLUSD_ADJUSTMENT || "0.08"
+      ),
+    },
   },
   MasterContract: {
     LowBalanceThreshold: Amount.fromSigna(2),

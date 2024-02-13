@@ -21,6 +21,9 @@ export const BurnContractInitializer = () => {
 
   useEffect(() => {
     if (!data) return;
+
+    // add Mock here
+
     dispatch(actions.setBurnContractData(data));
   }, [data, dispatch]);
 
