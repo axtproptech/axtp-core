@@ -52,7 +52,6 @@ const getCurrency = (paymentType: string): "brl" | "usd" =>
 
 export const RegisterPaymentCard = () => {
   const router = useRouter();
-  const { Ledger } = useAppContext();
   const { token } = useMasterContract();
   const { showError, showSuccess } = useSnackbar();
   const pools = useAppSelector(selectAllPools);

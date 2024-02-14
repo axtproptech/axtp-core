@@ -1,31 +1,31 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  InputAdornment,
   Typography,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "@/app/components/inputs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ActionButton } from "@/app/components/buttons/actionButton";
-import { useLedgerService } from "@/app/hooks/useLedgerService";
-import debounce from "lodash/debounce";
-import { Account, Address } from "@signumjs/core";
-import { SingleWithdrawalRequestInfo } from "@/features/withdrawals/singleRequest/singleWithdrawalRequestInfo";
+import { SingleWithdrawalRequestInfo } from "../singleWithdrawalRequestInfo";
 import { ChainValue } from "@signumjs/util";
-import IconButton from "@mui/material/IconButton";
-import { Check as CheckIcon } from "@mui/icons-material";
-import CloseIcon from "@mui/icons-material/Close";
+import { useSelector } from "react-redux";
+import { selectUsdBrlMarketState } from "@/app/states/marketDataState";
+import { Config } from "@/app/config";
 
-export interface ConfirmationArgs {
+interface FormArgs {
   paymentReference: string;
-  paidTokenQuantity: string;
-  paidFiatAmount: string;
+  payableTokenAmount: string;
   currency: "BRL" | "USD";
+}
+
+export interface ConfirmationArgs extends FormArgs {
+  paidFiatAmount: string;
 }
 
 interface Props {
@@ -35,6 +35,8 @@ interface Props {
   withdrawalRequestInfo: SingleWithdrawalRequestInfo;
 }
 
+const DefaultFiatCurrency = "BRL";
+
 export const ConfirmPayoutDialog = ({
   open,
   onClose,
@@ -42,21 +44,35 @@ export const ConfirmPayoutDialog = ({
   withdrawalRequestInfo,
 }: Props) => {
   const mountedRef = useRef<boolean>(false);
-
+  const usdBrlMarket = useSelector(selectUsdBrlMarketState);
+  const tokenName = withdrawalRequestInfo.tokenInfo.name;
   const tokenAmount = ChainValue.create(
     withdrawalRequestInfo.tokenInfo.decimals
   ).setAtomic(withdrawalRequestInfo.creditQuantity);
 
   const [isClosing, setIsClosing] = useState(false);
-  const [resolvedAddress, setResolvedAddress] = useState("");
-  const { control, reset, getValues, watch } = useForm<ConfirmationArgs>({
-    defaultValues: {
-      paymentReference: "",
-      paidFiatAmount: "",
-      paidTokenQuantity: tokenAmount.getCompound(),
-      currency: "BRL", // only pix allowed atm
-    },
-  });
+  const { control, reset, getValues, watch, setValue, setError } =
+    useForm<FormArgs>({
+      defaultValues: {
+        paymentReference: "",
+        payableTokenAmount: tokenAmount.getCompound(),
+        currency: DefaultFiatCurrency,
+      },
+    });
+  const payableTokenAmount = watch("payableTokenAmount");
+  const paymentReference = watch("paymentReference");
+
+  const calcFiatAmount = useCallback(() => {
+    let paidFiatAmount = "0";
+    const amount = parseFloat(payableTokenAmount);
+    if (!Number.isNaN(amount)) {
+      paidFiatAmount = (
+        (usdBrlMarket.current_price - Config.Platform.Market.PriceAdjustment) *
+        amount
+      ).toFixed(2);
+    }
+    return paidFiatAmount;
+  }, [payableTokenAmount, usdBrlMarket.current_price]);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -68,7 +84,7 @@ export const ConfirmPayoutDialog = ({
   const handleConfirm = async () => {
     try {
       setIsClosing(true);
-      await onClose(getValues());
+      await onClose({ ...getValues(), paidFiatAmount: calcFiatAmount() });
       reset();
     } finally {
       setIsClosing(false);
@@ -79,6 +95,23 @@ export const ConfirmPayoutDialog = ({
     reset();
     onCancel();
   };
+
+  useEffect(() => {
+    setError("payableTokenAmount", { type: "manual", message: "" });
+
+    const amount = parseFloat(payableTokenAmount);
+    if (Number.isNaN(amount)) {
+      return;
+    }
+
+    if (amount <= 0 || amount > Number(tokenAmount.getCompound())) {
+      setError("payableTokenAmount", {
+        type: "manual",
+        message: `Amount must be between 0 and ${tokenAmount.getCompound()}`,
+      });
+      return;
+    }
+  }, [tokenAmount, payableTokenAmount, setError, setValue]);
 
   return (
     <Dialog
@@ -98,29 +131,37 @@ export const ConfirmPayoutDialog = ({
           </Typography>
         </DialogContentText>
         <Controller
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <TextInput
               {...field}
-              label={`${withdrawalRequestInfo.tokenInfo.name} Amount`}
-              placeholder="Enter the amount of paid "
+              label={`${tokenName} Amount`}
+              placeholder={`Enter the payable amount of ${tokenName}`}
               aria-autocomplete="none"
+              error={error ? error.message : ""}
+              hint={`Max  ${tokenAmount.getCompound()} ${tokenName}`}
             />
           )}
-          name="paidTokenQuantity"
+          name="payableTokenAmount"
           control={control}
+          rules={{ required: true }}
           // @ts-ignore
           variant="outlined"
-          rules={{
-            required: true,
-          }}
         />
+        <Box my={2} borderRadius={2} textAlign="center">
+          <Typography variant="caption">Payable Amount</Typography>
+          <Typography variant="h3">
+            {calcFiatAmount()} {getValues("currency")}
+          </Typography>
+        </Box>
+
         <Controller
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <TextInput
               {...field}
               label="Payment Reference"
               placeholder="Enter the payment reference, i.e. identifier of Pix, or other"
               aria-autocomplete="none"
+              error={error ? error.message : ""}
             />
           )}
           name="paymentReference"
@@ -129,6 +170,7 @@ export const ConfirmPayoutDialog = ({
           variant="outlined"
           rules={{
             required: true,
+            minLength: 1,
           }}
         />
       </DialogContent>
@@ -138,6 +180,7 @@ export const ConfirmPayoutDialog = ({
           actionLabel="Confirm"
           onClick={handleConfirm}
           isLoading={isClosing}
+          disabled={!payableTokenAmount || !paymentReference}
         />
       </DialogActions>
     </Dialog>

@@ -26,3 +26,5 @@ export class WithdrawalService {
     return response as TransactionId;
   }
 }
+
+export const withdrawalService = new WithdrawalService();

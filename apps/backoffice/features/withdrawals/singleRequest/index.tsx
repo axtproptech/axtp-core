@@ -1,19 +1,23 @@
+import useSWR from "swr";
 import { Box, Button } from "@mui/material";
 import { useBurnContract } from "@/app/hooks/useBurnContract";
 import { useMemo, useState } from "react";
 import { MainCard } from "@/app/components/cards";
 import { RequestView } from "./components/requestView";
 import router, { useRouter } from "next/router";
+import { customerService } from "@/app/services/customerService/customerService";
 import {
   SingleRequestActions,
   SingleRequestActionType,
-} from "@/features/withdrawals/singleRequest/components/singleRequestActions";
-import useSWR from "swr";
-import { customerService } from "@/app/services/customerService/customerService";
+} from "./components/singleRequestActions";
 import {
   ConfirmationArgs,
   ConfirmPayoutDialog,
-} from "@/features/withdrawals/singleRequest/components/confirmPayoutDialog";
+} from "./components/confirmPayoutDialog";
+import { withdrawalService } from "@/app/services/withdrawalService/withdrawalService";
+import { useLedgerService } from "@/app/hooks/useLedgerService";
+import { useSnackbar } from "@/app/hooks/useSnackbar";
+import { ChainValue } from "@signumjs/util";
 
 interface Props {
   accountId: string;
@@ -23,6 +27,8 @@ interface Props {
 export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
   const { back } = useRouter();
   const { tokenAccountCredits } = useBurnContract();
+  const { ledgerService } = useLedgerService();
+  const { showError, showSuccess } = useSnackbar();
   const [isExecuting, setIsExecuting] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
@@ -69,18 +75,59 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
   }
 
   function handleActions(action: SingleRequestActionType) {
-    console.log("action: ", action);
     if (action === "confirm-payout") {
       setConfirmDialogOpen(true);
-      // todo
     } else if (action === "view-customer") {
       router.push(`/admin/customers/${customerData?.cuid}`);
     }
   }
 
-  async function handleConfirmPayout(args: ConfirmationArgs) {
-    console.log("handleConfirmPayout", args);
-  }
+  const handleConfirmPayout = async (args: ConfirmationArgs) => {
+    if (!request || !customerData || !ledgerService) return;
+    // create a registry on chain
+    // send transaction to smart contract
+    try {
+      const { cuid, blockchainAccounts } = customerData;
+      if (!blockchainAccounts) return;
+
+      const account = blockchainAccounts.length
+        ? customerData.blockchainAccounts[0]
+        : null;
+      if (!account) {
+        throw new Error(`Customer has no blockchain account`);
+      }
+
+      if (account.accountId !== accountId) {
+        throw new Error(
+          `Account Id mismatch: ${account.accountId} vs. ${accountId}`
+        );
+      }
+
+      const paidTokenQnt = ChainValue.create(
+        request.tokenInfo.decimals
+      ).setCompound(args.payableTokenAmount);
+      await withdrawalService.registerWithdrawal({
+        accountPk: account.publicKey,
+        customerId: cuid,
+        amount: args.paidFiatAmount,
+        currency: args.currency.toLowerCase(),
+        tokenId: request.tokenInfo.id,
+        tokenName: request.tokenInfo.name,
+        tokenQnt: paidTokenQnt.getAtomic(),
+        usd: args.payableTokenAmount,
+        paymentType: "Pix",
+        txId: args.paymentReference,
+      });
+
+      // await ledgerService.burnContract.creditToken(request.tokenInfo.id, paidTokenQnt, accountId);
+      showSuccess("Successfully registered payment");
+    } catch (e: any) {
+      showError(`Something failed: ${e.message}`);
+      throw e;
+    } finally {
+      setIsExecuting(false);
+    }
+  };
 
   return (
     <MainCard
