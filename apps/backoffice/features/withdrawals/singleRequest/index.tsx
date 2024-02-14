@@ -106,6 +106,11 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
       const paidTokenQnt = ChainValue.create(
         request.tokenInfo.decimals
       ).setCompound(args.payableTokenAmount);
+      await ledgerService.burnContract.creditToken(
+        request.tokenInfo.id,
+        paidTokenQnt,
+        accountId
+      );
       await withdrawalService.registerWithdrawal({
         accountPk: account.publicKey,
         customerId: cuid,
@@ -118,9 +123,8 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
         paymentType: "Pix",
         txId: args.paymentReference,
       });
-
-      // await ledgerService.burnContract.creditToken(request.tokenInfo.id, paidTokenQnt, accountId);
       showSuccess("Successfully registered payment");
+      setConfirmDialogOpen(false);
     } catch (e: any) {
       showError(`Something failed: ${e.message}`);
       throw e;
