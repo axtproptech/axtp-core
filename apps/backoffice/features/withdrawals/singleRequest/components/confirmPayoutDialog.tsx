@@ -43,7 +43,6 @@ export const ConfirmPayoutDialog = ({
   onCancel,
   withdrawalRequestInfo,
 }: Props) => {
-  const mountedRef = useRef<boolean>(false);
   const usdBrlMarket = useSelector(selectUsdBrlMarketState);
   const tokenName = withdrawalRequestInfo.tokenInfo.name;
   const tokenAmount = ChainValue.create(
@@ -73,13 +72,6 @@ export const ConfirmPayoutDialog = ({
     }
     return paidFiatAmount;
   }, [payableTokenAmount, usdBrlMarket.current_price]);
-
-  useEffect(() => {
-    mountedRef.current = true;
-    return () => {
-      mountedRef.current = false;
-    };
-  }, []);
 
   const handleConfirm = async () => {
     try {

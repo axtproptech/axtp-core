@@ -29,9 +29,9 @@ export const chartData = (series: number[], labels: string[]) => ({
         bottom: -80,
       },
     },
-    colors: ["#673ab7", "#b39ddb"],
+    colors: ["#673ab7", "#b39ddb", "#dbbe9d"],
     fill: {
-      colors: ["#673ab7", "#b39ddb"],
+      colors: ["#673ab7", "#b39ddb", "#dbbe9d"],
     },
   },
 });

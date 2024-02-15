@@ -13,9 +13,11 @@ import {
   WalletConnection,
 } from "@signumjs/wallets";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
+import { useInitRef } from "@/app/components/appInitializer/useInitRef";
 
 export const WalletInitializer = () => {
   const { Ledger, Wallet, Platform } = useAppContext();
+  const { setInitialized, isInitialized } = useInitRef();
   const { showWarning } = useSnackbar();
   const dispatch = useAppDispatch();
   const listenerRef = useRef<any>(null);
@@ -23,6 +25,7 @@ export const WalletInitializer = () => {
   const rememberConnection = useAppSelector(selectRememberWalletConnection);
 
   useEffect(() => {
+    if (isInitialized()) return;
     function handleDisconnectWallet() {
       listenerRef.current?.unlisten();
       connectionRef.current = null;
@@ -110,6 +113,8 @@ export const WalletInitializer = () => {
     if (rememberConnection) {
       requestWalletConnection();
     }
+
+    setInitialized();
 
     return () => {
       listenerRef.current?.unlisten();

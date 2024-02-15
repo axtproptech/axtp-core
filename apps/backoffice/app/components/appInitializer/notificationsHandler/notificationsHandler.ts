@@ -5,12 +5,12 @@ import { actions } from "@/app/states/notificationsState";
 import useSWR from "swr";
 import { customerService } from "@/app/services/customerService/customerService";
 import { paymentsService } from "@/app/services/paymentService/paymentService";
+import { useBurnContract } from "@/app/hooks/useBurnContract";
 import { getMasterContractNotifications } from "./helper/getMasterContractNotifications";
 import { getPoolContractNotifications } from "./helper/getPoolContractNotifications";
 import { getPendingCustomerNotification } from "./helper/getPendingCustomerNotification";
 import { getPendingPaymentNotification } from "./helper/getPendingPaymentNotification";
-import { useBurnContract } from "@/app/hooks/useBurnContract";
-import { getWithdrawalRequestNotifications } from "@/app/components/appInitializer/notificationsHandler/helper/getWithdrawalRequestNotifications";
+import { getWithdrawalRequestNotifications } from "./helper/getWithdrawalRequestNotifications";
 
 const Minutes = 1000 * 60;
 

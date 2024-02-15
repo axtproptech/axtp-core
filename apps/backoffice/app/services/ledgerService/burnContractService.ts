@@ -4,9 +4,8 @@ import { Config } from "@/app/config";
 import { Amount, ChainValue } from "@signumjs/util";
 import { ConfirmedTransaction } from "@signumjs/wallets";
 import { withError } from "@axtp/core/common/withError";
-import { MasterContractData } from "@/types/masterContractData";
-import { MasterContractDataView } from "@/app/services/ledgerService/masterContractDataView";
 import { BurnContractData } from "@/types/burnContractData";
+import { BasicTokenInfo } from "@/types/basicTokenInfo";
 
 export class BurnContractService extends BurnContractViewerService {
   constructor(private context: ServiceContext) {
@@ -22,12 +21,17 @@ export class BurnContractService extends BurnContractViewerService {
           this.getCreditorAccounts(),
         ]
       );
-      const trackableTokens = await Promise.all(
+      const trackableTokensList = await Promise.all(
         trackedTokenIds.map((id) => this.getTokenData(id, true))
       );
       const tokenAccountCredits = await Promise.all(
         trackedTokenIds.map((id) => this.getTokenAccountCredits(id))
       );
+
+      const trackableTokens = trackableTokensList.reduce((acc, t) => {
+        acc[t.id] = t;
+        return acc;
+      }, {} as Record<string, BasicTokenInfo>);
 
       return {
         id: contract.at,

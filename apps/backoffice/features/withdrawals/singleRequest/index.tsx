@@ -26,25 +26,26 @@ interface Props {
 
 export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
   const { back } = useRouter();
-  const { tokenAccountCredits } = useBurnContract();
+  const { tokenAccountCredits, trackableTokens } = useBurnContract();
   const { ledgerService } = useLedgerService();
   const { showError, showSuccess } = useSnackbar();
   const [isExecuting, setIsExecuting] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
   const request = useMemo(() => {
-    const tac = tokenAccountCredits.find((t) => t.tokenInfo.id === tokenId);
-    if (tac) {
+    const tac = tokenAccountCredits.find((t) => t.tokenId === tokenId);
+    const tt = trackableTokens[tokenId];
+    if (tac && tt) {
       const ac = tac.accountCredits.find((ac) => ac.accountId === accountId);
       return ac
         ? {
-            tokenInfo: tac.tokenInfo,
+            tokenInfo: tt,
             ...ac,
           }
         : null;
     }
     return null;
-  }, [accountId, tokenAccountCredits, tokenId]);
+  }, [accountId, tokenAccountCredits, tokenId, trackableTokens]);
 
   const {
     data: customerData,
