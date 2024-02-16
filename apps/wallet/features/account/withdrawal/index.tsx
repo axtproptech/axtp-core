@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useAccount } from "@/app/hooks/useAccount";
 import { Stepper } from "@/app/components/stepper";
@@ -16,15 +16,18 @@ import {
   RiUserReceivedLine,
 } from "react-icons/ri";
 import { voidFn } from "@/app/voidFn";
+import { validatePixKey } from "@axtp/core/common/validatePixKey";
 
 const PaddingSize = 8;
 
 interface Props {
   onNavChange: (nav: BottomNavigationItem[]) => void;
 }
+
 export const Withdrawal = ({ onNavChange }: Props) => {
   const { customer } = useAccount();
   const { t } = useTranslation();
+  const [isProcessing, setIsProcessing] = useState(false);
   const hasBankInformation = customer?.hasBankInformation;
   const { currentStep, nextStep, previousStep, stepsCount } = useStepper(
     hasBankInformation ? 2 : 3
@@ -39,24 +42,32 @@ export const Withdrawal = ({ onNavChange }: Props) => {
   });
 
   const { watch } = formMethods;
-
   const pixKey = watch("pixKey");
 
+  const registerBankingInformation = useCallback(() => {
+    return new Promise<void>((resolve) => {
+      setIsProcessing(true);
+      setTimeout(() => {
+        setIsProcessing(false);
+        resolve();
+      }, 2000);
+    });
+  }, [pixKey]);
+
   useEffect(() => {
-    let canProceed = true;
-
-    if (currentStep === 0) {
-      canProceed = pixKey.length > 5;
-    }
-    // else if (currentStep === Steps.ImportSeed) {
-    //     canProceed = seed.length > 0;
-    // }
-
     const isFirstStep = currentStep === 0;
     const isLastStep = currentStep === stepsCount - 1;
+    let canProceed = false;
     let rightSideIcon = <RiArrowRightCircleLine />;
     let rightSideLabel = t("next");
     let rightSideAction = nextStep;
+
+    const isBankingOperation = !hasBankInformation && currentStep === 0;
+    if (isBankingOperation) {
+      canProceed = validatePixKey(pixKey);
+      rightSideAction = registerBankingInformation;
+    }
+
     if (isLastStep) {
       // if (Boolean(customerData)) {
       //     rightSideIcon = <RiUserReceivedLine />;
@@ -87,12 +98,12 @@ export const Withdrawal = ({ onNavChange }: Props) => {
         onClick: rightSideAction,
         disabled: !canProceed,
         color: canProceed ? "secondary" : undefined,
-        // loading: isCreating,
+        loading: isProcessing,
         icon: rightSideIcon,
       },
     ];
     onNavChange(bottomNav);
-  }, [pixKey]);
+  }, [isProcessing, pixKey]);
 
   return (
     <div className="mt-4">

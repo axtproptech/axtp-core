@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest";
 import { R2ObjectUri } from "../r2ObjectUri";
 
 describe("r2ObjectUri", () => {
