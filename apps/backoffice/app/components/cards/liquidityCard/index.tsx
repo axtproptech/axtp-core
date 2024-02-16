@@ -163,7 +163,7 @@ export const LiquidityCard: FC<Props> = ({ isLoading = false }) => {
                         title={
                           sendPool
                             ? `Pending Transfer to Pool ${sendPool.token.name}`
-                            : "No Pool Sending pending"
+                            : "No Transfer to Pool pending"
                         }
                       >
                         <Stack
