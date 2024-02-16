@@ -5,7 +5,9 @@ import { useTranslation } from "next-i18next";
 import { RiArrowLeftCircleLine, RiFileListLine } from "react-icons/ri";
 import { WithAccountOnly } from "@/app/components/withAccountOnly";
 import { Withdrawal } from "@/features/account/withdrawal";
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { useAccount } from "@/app/hooks/useAccount";
+import { useRouter } from "next/router";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -18,6 +20,8 @@ export async function getStaticProps({ locale }: { locale: string }) {
 
 export default function Page() {
   const { t } = useTranslation();
+  const { customer } = useAccount();
+  const router = useRouter();
 
   const [bottomNav, setBottomNav] = useState<BottomNavigationItem[]>([
     {
@@ -25,12 +29,13 @@ export default function Page() {
       back: true,
       icon: <RiArrowLeftCircleLine />,
     },
-    {
-      label: t("transactions"),
-      route: "/account/transactions",
-      icon: <RiFileListLine />,
-    },
   ]);
+
+  useLayoutEffect(() => {
+    // if(!customer?.hasBankInformation){
+    //   router.replace("/kyc/banking?redirect=/account/withdrawal", undefined, {shallow: true});
+    // }
+  }, [customer, router]);
 
   return (
     <WithAccountOnly>

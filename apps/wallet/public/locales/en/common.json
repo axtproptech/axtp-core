@@ -153,6 +153,8 @@
   "kyc-not-registered-next": "No registry for the imported account found. Click [Register] to navigate the registration process.",
   "kyc-registered": "Registered",
   "kyc-registered-hint": "Your personal information was recorded successfully",
+  "kyc-banking-info-saved": "Your banking information was saved successfully",
+  "kyc-banking-info-save-error": "Hmm. Unfortunately saving the banking information failed. Try again or contact support.",
   "last_name": "Last Name",
   "less_amount_feedback": "This field must be less than or equal to {{value}}",
   "less_characters_feedback": "This field must have less than or equal to {{value}} characters long",

@@ -24,15 +24,13 @@ export const PasteButton: FC<Props> = ({ onText, disabled = false }) => {
   };
 
   return (
-    <div className="w-full my-2">
-      <Button
-        color="secondary"
-        onClick={handleOnCLick}
-        disabled={disabled}
-        startIcon={<RiClipboardFill />}
-      >
-        {t("paste")}
-      </Button>
-    </div>
+    <Button
+      color="secondary"
+      onClick={handleOnCLick}
+      disabled={disabled}
+      startIcon={<RiClipboardFill />}
+    >
+      {t("paste")}
+    </Button>
   );
 };
