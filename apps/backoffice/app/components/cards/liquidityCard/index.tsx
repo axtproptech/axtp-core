@@ -146,21 +146,23 @@ export const LiquidityCard: FC<Props> = ({ isLoading = false }) => {
                       alignItems="center"
                       sx={{ mb: 1 }}
                     >
-                      <Stack
-                        justifyContent="start"
-                        direction="row"
-                        alignItems="center"
-                      >
-                        <IconSeeding />
-                        &nbsp;
-                        <Typography>
-                          <Number value={approvalStatusMinting.quantity} />
-                        </Typography>
-                      </Stack>
+                      <Tooltip title="Pending Mint Request">
+                        <Stack
+                          justifyContent="start"
+                          direction="row"
+                          alignItems="center"
+                        >
+                          <IconSeeding />
+                          &nbsp;
+                          <Typography>
+                            <Number value={approvalStatusMinting.quantity} />
+                          </Typography>
+                        </Stack>
+                      </Tooltip>
                       <Tooltip
                         title={
                           sendPool
-                            ? `Sending to Pool ${sendPool.token.name}`
+                            ? `Pending Transfer to Pool ${sendPool.token.name}`
                             : "No Pool Sending pending"
                         }
                       >
@@ -176,24 +178,26 @@ export const LiquidityCard: FC<Props> = ({ isLoading = false }) => {
                           </Typography>
                         </Stack>
                       </Tooltip>
-                      <Stack
-                        justifyContent="start"
-                        direction="row"
-                        alignItems="center"
-                      >
-                        <IconFlame />
-                        &nbsp;
-                        <Typography>
-                          <Number
-                            value={`-${approvalStatusBurning.quantity}`}
-                          />
-                        </Typography>
-                      </Stack>
+                      <Tooltip title="Pending Burn Request">
+                        <Stack
+                          justifyContent="start"
+                          direction="row"
+                          alignItems="center"
+                        >
+                          <IconFlame />
+                          &nbsp;
+                          <Typography>
+                            <Number
+                              value={`-${approvalStatusBurning.quantity}`}
+                            />
+                          </Typography>
+                        </Stack>
+                      </Tooltip>
                     </Stack>
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item sx={{ mb: 1.25 }}>
+              <Grid item>
                 <Typography
                   sx={{
                     fontSize: "1rem",

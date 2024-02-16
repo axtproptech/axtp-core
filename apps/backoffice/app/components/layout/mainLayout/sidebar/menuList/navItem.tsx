@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import { selectMenuBadge } from "@/app/states/notificationsState";
 import { WithBadge } from "@/app/components/withBadge";
 import { useAccount } from "@/app/hooks/useAccount";
-import { useAccountPermission } from "@/app/hooks/useAccountPermission";
+import { useAccountPermissions } from "@/app/hooks/useAccountPermissions";
 
 interface Props {
   item: any;
@@ -29,9 +29,12 @@ export const NavItem: FC<Props> = ({ item, level }) => {
   const router = useRouter();
   const menuBadge = useSelector(selectMenuBadge(item.id));
   const { accountId } = useAccount();
-  const { permissionRole } = useAccountPermission(accountId);
+  const { permissionRoles } = useAccountPermissions(accountId);
 
-  if (item.permissions && !item.permissions.includes(permissionRole)) {
+  if (
+    item.permissions &&
+    !item.permissions.some((p: any) => permissionRoles.includes(p))
+  ) {
     return null;
   }
 

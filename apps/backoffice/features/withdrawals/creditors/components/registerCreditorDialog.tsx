@@ -12,7 +12,6 @@ import { TextInput } from "@/app/components/inputs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ActionButton } from "@/app/components/buttons/actionButton";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
-import debounce from "lodash/debounce";
 import { Account, Address } from "@signumjs/core";
 
 export interface RegistrationArgs {

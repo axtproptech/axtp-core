@@ -7,7 +7,7 @@ import { useAppSelector } from "@/states/hooks";
 import { selectAllPools } from "@/app/states/poolsState";
 import { NavigationGroupItem } from "@/types/navigationItem";
 import { IconBuilding, IconBuildingHospital } from "@tabler/icons";
-import { useAccountPermission } from "@/app/hooks/useAccountPermission";
+import { useAccountPermissions } from "@/app/hooks/useAccountPermissions";
 interface Props {
   item: NavigationGroupItem;
 }

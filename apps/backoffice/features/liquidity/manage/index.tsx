@@ -5,8 +5,8 @@ import { BurnActionCard } from "./components/burnActionCard";
 import { MintApprovalCard } from "./components/mintApprovalCard";
 import { BurnApprovalCard } from "./components/burnApprovalCard";
 import { HistoryChart } from "./components/historyChart";
-import { PieChart } from "./components/pieChart";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
+import { LiquidityCard } from "@/app/components/cards/liquidityCard";
 import { useMemo, useState } from "react";
 import {
   IconFlame,
@@ -16,11 +16,11 @@ import {
 } from "@tabler/icons";
 import { TabContext, TabPanel, TabList } from "@mui/lab";
 import { WithBadge } from "@/app/components/withBadge";
-import { SendToPoolActionCard } from "@/features/liquidity/manage/components/sendToPoolActionCard";
-import { SendToPoolApprovalCard } from "@/features/liquidity/manage/components/sendToPoolApprovalCard";
-import { LiquidityCard } from "@/app/components/cards/liquidityCard";
-import { ChargeContractCard } from "@/features/liquidity/manage/components/chargeContractCard";
+import { SendToPoolActionCard } from "./components/sendToPoolActionCard";
+import { SendToPoolApprovalCard } from "./components/sendToPoolApprovalCard";
+import { ChargeContractCard } from "./components/chargeContractCard";
 import { Amount } from "@signumjs/util";
+import { LiquidityPieChart } from "@/app/components/liquidityPieChart";
 
 const gridSpacing = Config.Layout.GridSpacing;
 
@@ -71,7 +71,7 @@ export const ManageLiquidity = () => {
             <LiquidityCard isLoading={isLoading} />
           </Grid>
           <Grid item lg={3} md={6} sm={6} xs={12}>
-            <PieChart />
+            <LiquidityPieChart />
           </Grid>
           <Grid item lg={5} md={6} sm={6} xs={12}>
             <HistoryChart />

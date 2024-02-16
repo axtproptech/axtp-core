@@ -1,25 +1,21 @@
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { LabeledTextField } from "@/app/components/labeledTextField";
-import { useAppContext } from "@/app/hooks/useAppContext";
-import useSWR from "swr";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { ChainValue } from "@signumjs/util";
 import { Config } from "@/app/config";
 import { SingleWithdrawalRequestInfo } from "../singleWithdrawalRequestInfo";
+import { useSelector } from "react-redux";
+import { selectUsdBrlMarketState } from "@/app/states/marketDataState/selectors";
 
 interface Props {
   requestInfo?: SingleWithdrawalRequestInfo;
 }
 
 export const WithdrawalInfoSection = ({ requestInfo }: Props) => {
-  const { FiatTickerService } = useAppContext();
   const { token: axtcToken } = useMasterContract();
+  const usdBrlMarket = useSelector(selectUsdBrlMarketState);
 
-  const { isLoading: isLoadingMarketData, data } = useSWR(
-    "fetchUsdBrl",
-    () => FiatTickerService.getUsdBrlMarket(),
-    { refreshInterval: 5 * 60 * 1000 }
-  );
+  const isLoadingMarketData = !usdBrlMarket;
 
   if (!requestInfo) {
     return (
@@ -34,11 +30,13 @@ export const WithdrawalInfoSection = ({ requestInfo }: Props) => {
   const amount = ChainValue.create(requestInfo.tokenInfo.decimals).setAtomic(
     requestInfo.creditQuantity
   );
-  if (axtcToken.id === requestInfo.tokenInfo.id && data) {
+  if (axtcToken.id === requestInfo.tokenInfo.id && usdBrlMarket) {
     inUsd = amount.getCompound();
     inBrl = amount
       .clone()
-      .multiply(data.current_price - Config.Platform.Market.PriceAdjustment)
+      .multiply(
+        usdBrlMarket.current_price - Config.Platform.Market.PriceAdjustment
+      )
       .getCompound();
   }
 
@@ -58,7 +56,7 @@ export const WithdrawalInfoSection = ({ requestInfo }: Props) => {
           <Typography variant="h4">Request Info</Typography>
           <Typography variant="caption">
             Last Updated Market Data:&nbsp;
-            {isLoadingMarketData ? "Updating..." : data?.last_updated}
+            {isLoadingMarketData ? "Updating..." : usdBrlMarket?.last_updated}
           </Typography>
           <Typography variant="caption">
             1 USD =&nbsp;
@@ -66,7 +64,7 @@ export const WithdrawalInfoSection = ({ requestInfo }: Props) => {
               ? "Updating..."
               : Math.max(
                   0,
-                  (data?.current_price || 0) -
+                  (usdBrlMarket?.current_price || 0) -
                     Config.Platform.Market.PriceAdjustment
                 )}
             {" BRL"}

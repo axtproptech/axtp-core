@@ -3,16 +3,9 @@ import { BurnContractData } from "@/types/burnContractData";
 import { TokenAccountCredits } from "@axtp/core";
 
 // FIXME: remove the mock
-export const MockTACs: TokenAccountCredits[] = [
+const MockTACs: TokenAccountCredits[] = [
   {
-    tokenInfo: {
-      id: "17364735717996724982",
-      name: "TAXTC",
-      balance: "0",
-      supply: "9500000",
-      decimals: 2,
-      numHolders: 20,
-    },
+    tokenId: "17364735717996724982",
     accountCredits: [
       {
         accountId: "2402520554221019656",
@@ -26,6 +19,16 @@ export const MockTACs: TokenAccountCredits[] = [
   },
 ];
 
+const MockTT = {
+  "17364735717996724982": {
+    id: "17364735717996724982",
+    name: "TAXTC",
+    balance: "100000",
+    supply: "9500000",
+    decimals: 2,
+    numHolders: 20,
+  },
+};
 export interface BurnContractState {
   burnContract: BurnContractData;
 }
@@ -35,7 +38,7 @@ const initialState: BurnContractState = {
     id: "",
     balanceSigna: "0",
     creditorAccountIds: [],
-    trackableTokens: [],
+    trackableTokens: {},
     tokenAccountCredits: [],
   },
 };
@@ -48,6 +51,7 @@ export const burnContractSlice = createSlice({
       // FIXME: remove the mock
       state.burnContract = {
         ...action.payload,
+        trackableTokens: MockTT,
         tokenAccountCredits: MockTACs,
       };
     },

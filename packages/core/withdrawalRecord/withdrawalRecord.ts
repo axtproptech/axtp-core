@@ -1,4 +1,4 @@
-export type PaymentType =
+export type WithdrawalPaymentType =
   | "pix"
   | "usdeth"
   | "usdsol"
@@ -12,7 +12,7 @@ export interface WithdrawalRecord {
   tokenQuantity: string;
   tokenId: string;
   tokenName: string;
-  paymentType: PaymentType;
+  paymentType: WithdrawalPaymentType;
   paymentTransactionId: string;
   paymentAmount: string;
   paymentUsd: string;

@@ -4,7 +4,7 @@ import { TokenAccountCredits } from "@axtp/core";
 export interface BurnContractData {
   id: string;
   balanceSigna: string;
-  trackableTokens: BasicTokenInfo[];
+  trackableTokens: Record<string, BasicTokenInfo>;
   creditorAccountIds: string[];
   tokenAccountCredits: TokenAccountCredits[];
 }

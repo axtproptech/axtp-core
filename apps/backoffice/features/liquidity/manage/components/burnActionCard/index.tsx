@@ -65,7 +65,7 @@ export const BurnActionCard = () => {
   return (
     <ActionCard
       title="Suggest Liquidity Burning"
-      description="This action allows to lower the liquidity, e.g. when an interest holder sold his shares."
+      description="This action allows to lower the liquidity, e.g. when we need to do corrections."
       actionIcon={<IconFlame />}
       actionLabel="Suggest Burning"
       color="warning"

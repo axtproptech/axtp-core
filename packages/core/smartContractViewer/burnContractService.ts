@@ -1,6 +1,5 @@
 import { Ledger } from "@signumjs/core";
 import { withError } from "../common/withError";
-import { ChainValue } from "@signumjs/util";
 import { BaseContractViewerService } from "./baseContractViewerService";
 import { BasicTokenInfo } from "./basicTokenInfo";
 
@@ -27,7 +26,7 @@ interface AccountCredit {
 }
 
 export interface TokenAccountCredits {
-  tokenInfo: BasicTokenInfo;
+  tokenId: string;
   accountCredits: AccountCredit[];
 }
 
@@ -77,20 +76,19 @@ export class BurnContractService extends BaseContractViewerService {
    */
   async getTokenAccountCredits(tokenId: string): Promise<TokenAccountCredits> {
     return withError<TokenAccountCredits>(async () => {
-      const [tokenCredits, tokenInfo] = await Promise.all([
-        this.ledger.contract.getContractMapValuesByFirstKey({
+      const tokenCredits =
+        await this.ledger.contract.getContractMapValuesByFirstKey({
           contractId: this.contractId(),
           key1: tokenId,
-        }),
-        this.getTokenData(tokenId, false),
-      ]);
+        });
+
       const accountCredits = tokenCredits.keyValues.map(({ key2, value }) => ({
         creditQuantity: value,
         accountId: key2,
       }));
 
       return {
-        tokenInfo,
+        tokenId,
         accountCredits,
       };
     });

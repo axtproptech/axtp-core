@@ -8,6 +8,7 @@ import { Typography } from "@mui/material";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
 import { AddressCell } from "../../components/addressCell";
 import { useRouter } from "next/router";
+import { ChainValue } from "@signumjs/util";
 
 const columns: GridColDef[] = [
   {
@@ -43,14 +44,16 @@ export const WithdrawalRequestsTable = () => {
   const {
     Ledger: { ExploreBaseUrl, Prefix },
   } = useAppContext();
-  const { isLoading, tokenAccountCredits } = useBurnContract();
-  const { transactionId, execute, isExecuting } = useLedgerAction();
-  const [modalOpened, setModalOpened] = useState(false);
+  const { isLoading, tokenAccountCredits, trackableTokens } = useBurnContract();
 
   const tableRows = useMemo(() => {
     const rows: WithdrawalRequestsGridRow[] = [];
 
-    for (let { tokenInfo, accountCredits } of tokenAccountCredits) {
+    for (let { tokenId, accountCredits } of tokenAccountCredits) {
+      const tokenInfo = trackableTokens[tokenId];
+
+      if (!tokenInfo) continue;
+
       for (let { accountId, creditQuantity } of accountCredits) {
         rows.push({
           id: `${tokenInfo.id}.${accountId}`,
@@ -62,13 +65,15 @@ export const WithdrawalRequestsTable = () => {
             Prefix
           ).getReedSolomonAddress(),
           tokenName: tokenInfo.name,
-          quantity: creditQuantity,
+          quantity: ChainValue.create(tokenInfo.decimals)
+            .setAtomic(creditQuantity)
+            .getCompound(),
         });
       }
     }
 
     return rows;
-  }, [Prefix, tokenAccountCredits]);
+  }, [ExploreBaseUrl, Prefix, tokenAccountCredits, trackableTokens]);
 
   const handleRowClick = async (e: GridRowParams) => {
     const tokenId = e.row.tokenId;
