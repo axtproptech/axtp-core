@@ -21,6 +21,7 @@ type SignaPrefixType = "TSIGNA" | "SIGNA";
 export interface AppContextType {
   IsClientSide: boolean;
   IsMobile: boolean;
+  BuildId: string;
   AXTTokenId: string;
   AXTPoolTokenIds: string[];
   JotFormId: string;
@@ -78,6 +79,7 @@ const bffClient = HttpClientFactory.createHttpClient("/api", {
 const config: AppContextType = {
   IsMobile: isMobile,
   IsClientSide: isClientSide(),
+  BuildId: Config.BuildId,
   AXTTokenId: Config.Tokens.AXTC,
   AXTPoolTokenIds: Config.Tokens.AXTPs,
   JotFormId: Config.JotForm.Id,

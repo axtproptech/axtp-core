@@ -14,6 +14,7 @@ export const getCustomer: RouteHandlerFunction = async (req, res) => {
       },
       include: {
         blockchainAccounts: true,
+        bankInformation: true,
         termsOfUse: {
           where: {
             termsOfUseId: Number(

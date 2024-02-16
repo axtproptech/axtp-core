@@ -65,10 +65,10 @@ export const useAccount = () => {
       return {
         accountId,
         isActive: !!account.publicKey,
-        balanceSigna: Amount.fromPlanck(account.balanceNQT).getSigna(),
+        balanceSIGNA: Amount.fromPlanck(account.balanceNQT).getSigna(),
         name: account.name || "",
         description: account.description || "",
-        balanceAxt: axtBalance
+        balanceAXTC: axtBalance
           ? toStableCoinAmount(axtBalance.balanceQNT)
           : "0",
         balancesPools,

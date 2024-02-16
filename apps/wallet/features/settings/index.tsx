@@ -14,7 +14,7 @@ export const Settings = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { Documents } = useAppContext();
+  const { Documents, BuildId } = useAppContext();
 
   const handleOnClickDisconnect = async () => {
     dispatch(accountActions.resetAccount());
@@ -23,7 +23,7 @@ export const Settings = () => {
 
   return (
     <div className="relative">
-      <header className="h-12 mb-4">
+      <header className="h-12 mb-2 text-center">
         <a
           href="https://signum.network"
           target="_blank"
@@ -36,8 +36,11 @@ export const Settings = () => {
           />
         </a>
       </header>
+      <div className="w-full text-center">
+        <small className="text-gray-500">Build: {BuildId}</small>
+      </div>
       {accountAddress && (
-        <div className="mt-2 mx-auto">
+        <div className="mt-4 mx-auto">
           <HintBox text={t("disconnect_hint")}>
             <div className="text-center mt-2">
               <Button color="error" onClick={handleOnClickDisconnect}>

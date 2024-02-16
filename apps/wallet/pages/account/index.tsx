@@ -8,8 +8,10 @@ import {
   RiFileListLine,
   RiSettings4Line,
   RiAwardLine,
+  RiDownload2Line,
 } from "react-icons/ri";
 import { WithAccountOnly } from "@/app/components/withAccountOnly";
+import { useAccount } from "@/app/hooks/useAccount";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -22,6 +24,9 @@ export async function getStaticProps({ locale }: { locale: string }) {
 
 export default function Page() {
   const { t } = useTranslation();
+  const {
+    accountData: { balanceAXTC },
+  } = useAccount();
 
   const bottomNav: BottomNavigationItem[] = [
     {
@@ -39,12 +44,16 @@ export default function Page() {
       route: "/account/transactions",
       icon: <RiFileListLine />,
     },
-    {
-      label: t("settings"),
-      route: "/settings",
-      icon: <RiSettings4Line />,
-    },
   ];
+
+  const canWithdraw = Number(balanceAXTC) > 0;
+  if (canWithdraw) {
+    bottomNav.push({
+      label: t("withdrawal"),
+      route: "/account/withdrawal",
+      icon: <RiDownload2Line />,
+    });
+  }
 
   return (
     <WithAccountOnly>

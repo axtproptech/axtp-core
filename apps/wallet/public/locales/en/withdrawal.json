@@ -1,0 +1,6 @@
+{
+  "banking_info_title": "Banking Information",
+  "banking_info_description": "You have not set up any banking information yet. Please provide us your banking information before continue with withdrawal. Mind that for legal reasons that the bank account must be registered under your CPF. Otherwise, we cannot accept the withdrawal request!",
+  "pix_key": "Pix Key",
+  "pix_key_placeholder": "Enter your Pix Key, i.e. CPF, phone, etc"
+}

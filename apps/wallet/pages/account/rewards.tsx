@@ -4,6 +4,7 @@ import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigati
 import { useTranslation } from "next-i18next";
 import {
   RiArrowLeftCircleLine,
+  RiFileListLine,
   RiHome6Line,
   RiSettings4Line,
 } from "react-icons/ri";
@@ -29,14 +30,14 @@ export default function Page() {
       icon: <RiArrowLeftCircleLine />,
     },
     {
+      label: t("transactions"),
+      route: "/account/transactions",
+      icon: <RiFileListLine />,
+    },
+    {
       label: t("home"),
       route: "/",
       icon: <RiHome6Line />,
-    },
-    {
-      label: t("settings"),
-      route: "/settings",
-      icon: <RiSettings4Line />,
     },
   ];
 
