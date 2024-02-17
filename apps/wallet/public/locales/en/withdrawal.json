@@ -1,7 +1,9 @@
 {
-  "banking_info_title": "Banking Information",
-  "banking_info_description": "To proceed the withdrawal process, we kindly request that you provide your banking information. For legal compliance, please ensure that the bank account is registered under your CPF. This information is essential for processing your withdrawal request.",
-  "pix_key": "Pix Key",
-  "pix_key_placeholder": "CPF, Phone, Email etc.",
-  "error_unsupported_pix_key": "Unsupported Pix Key Format"
+  "amount_title": "Withdrawal Amount",
+  "amount_hint_title": "Choose the amount to withdraw",
+  "amount_available": "You have {{value}} {{token}} available",
+  "amount_estimated_fiat": "Equals about {{value}} BRL",
+  "amount": "Amount {{token}}",
+  "amount_placeholder": "Enter amount to withdraw",
+  "amount_hint": "You can withdraw at maximum {{value}} {{token}}"
 }

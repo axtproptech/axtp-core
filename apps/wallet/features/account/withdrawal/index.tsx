@@ -6,9 +6,10 @@ import { Stepper } from "@/app/components/stepper";
 import { useStepper } from "@/app/hooks/useStepper";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { FormProvider, useForm } from "react-hook-form";
-import { WithdrawalFormData } from "@/features/account/withdrawal/types/withdrawalFormData";
 import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
 import { voidFn } from "@/app/voidFn";
+import { WithdrawalFormData } from "./types/withdrawalFormData";
+import { Step1WithdrawalAmount } from "@/features/account/withdrawal/components/steps/Step1WithdrawalAmount";
 
 interface Props {
   onNavChange: (nav: BottomNavigationItem[]) => void;
@@ -32,6 +33,9 @@ export const Withdrawal = ({ onNavChange }: Props) => {
     },
   });
 
+  const { watch } = formMethods;
+  const amount = watch("amount");
+
   useEffect(() => {
     const isFirstStep = currentStep === 0;
     const isLastStep = currentStep === stepsCount - 1;
@@ -39,6 +43,17 @@ export const Withdrawal = ({ onNavChange }: Props) => {
     let rightSideIcon = <RiArrowRightCircleLine />;
     let rightSideLabel = t("next");
     let rightSideAction = nextStep;
+
+    switch (currentStep) {
+      case WithdrawalSteps.Amount: {
+        canProceed = !formMethods.getFieldState("amount").invalid;
+        break;
+      }
+      case WithdrawalSteps.Confirmed: {
+        canProceed = !formMethods.getFieldState("pinConfirmed").invalid;
+        break;
+      }
+    }
 
     if (isLastStep) {
       // if (Boolean(customerData)) {
@@ -57,7 +72,7 @@ export const Withdrawal = ({ onNavChange }: Props) => {
         label: t("back"),
         onClick: previousStep,
         icon: <RiArrowLeftCircleLine />,
-        disabled: false,
+        disabled: isFirstStep,
       },
       {
         onClick: voidFn,
@@ -75,14 +90,15 @@ export const Withdrawal = ({ onNavChange }: Props) => {
       },
     ];
     onNavChange(bottomNav);
-  }, [currentStep, isProcessing]);
+  }, [amount, currentStep, isProcessing]);
+
   return (
     <div className="mt-4">
       <Stepper currentStep={currentStep} steps={stepsCount} />
       <FormProvider {...formMethods}>
         <div className="carousel w-full overflow-x-hidden">
           <div id="step0" className="carousel-item relative w-full">
-            <h2>Step 1 - [Amount]</h2>
+            <Step1WithdrawalAmount />
           </div>
           <div id="step1" className="carousel-item relative w-full">
             <h2>Step 2 - [PIN]</h2>

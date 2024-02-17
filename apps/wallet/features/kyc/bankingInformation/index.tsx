@@ -30,12 +30,13 @@ interface Props {
 }
 
 export const BankingInformation = ({ onNavChange }: Props) => {
-  const { t } = useTranslation("withdrawal");
+  const { t } = useTranslation();
   const { customer } = useAccount();
   const { query, replace } = useRouter();
   const { showSuccess, showError } = useNotification();
   const [isSaving, setIsSaving] = useState(false);
 
+  // TODO: consider, when use has already
   const hasBankInformation = customer?.hasBankInformation;
 
   const {
@@ -82,8 +83,8 @@ export const BankingInformation = ({ onNavChange }: Props) => {
   return (
     <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm md:max-w-lg mx-auto px-4">
       <section>
-        <h3>{t("banking_info_title")}</h3>
-        <p className="text-justify">{t("banking_info_description")}</p>
+        <h3>{t("kyc-banking_info_title")}</h3>
+        <p className="text-justify">{t("kyc-banking_info_description")}</p>
       </section>
 
       <section className="flex flex-col justify-center gap-2">
@@ -93,14 +94,14 @@ export const BankingInformation = ({ onNavChange }: Props) => {
           render={({ field }) => (
             <FieldBox
               field={field}
-              label={t("pix_key")}
-              placeholder={t("pix_key_placeholder")}
+              label={t("kyc-pix_key")}
+              placeholder={t("kyc-pix_key_placeholder")}
               errorLabel={errors.pixKey?.message}
             />
           )}
           rules={{
             validate: (v) =>
-              !validatePixKey(v) ? t("unsupported_pix_key") : true,
+              !validatePixKey(v) ? t("kyc-error_unsupported_pix_key") : true,
           }}
         />
         <div className="flex flex-row justify-around items-center mt-2">
