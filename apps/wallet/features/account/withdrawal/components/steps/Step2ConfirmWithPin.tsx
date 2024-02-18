@@ -30,7 +30,6 @@ export const Step2ConfirmWithPin = () => {
   const [pin, setPin] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const {
-    customer,
     accountData: { balanceAXTC },
   } = useAccount();
   const { watch, setValue } = useFormContext<WithdrawalFormData>();
@@ -52,9 +51,11 @@ export const Step2ConfirmWithPin = () => {
       });
 
       // TODO: send email
+
       await router.replace(
-        `/account/withdrawals/success?cuid=${customer?.customerId}`
+        `/account/withdrawal/success?token=${axtcToken.name}&amount=${withdrawalAmount}&currency=BRL`
       );
+
       showSuccess(t("confirm_withdrawal_success"));
     } catch (e: any) {
       if (e instanceof KeyError) {

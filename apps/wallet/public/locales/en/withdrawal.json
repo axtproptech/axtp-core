@@ -11,5 +11,7 @@
   "confirm": "Confirm",
   "wrong_pin": "Wrong Pin entered",
   "confirm_withdrawal_success": "Successfully requested withdrawal",
-  "confirm_withdrawal_error": "Oh no, withdrawal request failed. Please try again."
+  "confirm_withdrawal_error": "Oh no, withdrawal request failed. Please try again.",
+  "success_hint": "Success",
+  "success_description": "Your withdrawal request was submitted successfully. It will take a few minutes until your {{token}} balance is being updated. Within the next 48 hours you'll get the corresponding amount of {{amount}} {{token}} credited as {{currency}} on your provided bank account."
 }
