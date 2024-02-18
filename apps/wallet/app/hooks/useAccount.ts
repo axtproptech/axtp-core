@@ -10,6 +10,7 @@ import useSWR from "swr";
 import { AccountData, DefaultAccountData } from "@/types/accountData";
 import { toQuantity, toStableCoinAmount } from "@/app/tokenQuantity";
 import { TokenMetaData } from "@/types/tokenMetaData";
+import { KeyError } from "@/types/keyError";
 
 export const useAccount = () => {
   const { Ledger, AXTTokenId, AXTPoolTokenIds } = useAppContext();
@@ -87,7 +88,7 @@ export const useAccount = () => {
         const keys = JSON.parse(jsonString);
         return keys as Keys;
       } catch (e) {
-        throw new Error("Could not decrypt keys");
+        throw new KeyError("Could not decrypt keys");
       }
     },
     [salt, securedKeys]

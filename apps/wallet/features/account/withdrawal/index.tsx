@@ -6,10 +6,16 @@ import { Stepper } from "@/app/components/stepper";
 import { useStepper } from "@/app/hooks/useStepper";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { FormProvider, useForm } from "react-hook-form";
-import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
+import {
+  RiArrowLeftCircleLine,
+  RiArrowRightCircleLine,
+  RiCloseCircleLine,
+  RiWallet3Line,
+} from "react-icons/ri";
 import { voidFn } from "@/app/voidFn";
 import { WithdrawalFormData } from "./types/withdrawalFormData";
 import { Step1WithdrawalAmount } from "@/features/account/withdrawal/components/steps/Step1WithdrawalAmount";
+import { Step2ConfirmWithPin } from "@/features/account/withdrawal/components/steps/Step2ConfirmWithPin";
 
 interface Props {
   onNavChange: (nav: BottomNavigationItem[]) => void;
@@ -23,7 +29,6 @@ enum WithdrawalSteps {
 export const Withdrawal = ({ onNavChange }: Props) => {
   const { customer } = useAccount();
   const { t } = useTranslation();
-  const [isProcessing, setIsProcessing] = useState(false);
   const { currentStep, nextStep, previousStep, stepsCount } = useStepper(2);
   const formMethods = useForm<WithdrawalFormData>({
     mode: "onChange",
@@ -38,7 +43,6 @@ export const Withdrawal = ({ onNavChange }: Props) => {
 
   useEffect(() => {
     const isFirstStep = currentStep === 0;
-    const isLastStep = currentStep === stepsCount - 1;
     let canProceed = false;
     let rightSideIcon = <RiArrowRightCircleLine />;
     let rightSideLabel = t("next");
@@ -46,25 +50,18 @@ export const Withdrawal = ({ onNavChange }: Props) => {
 
     switch (currentStep) {
       case WithdrawalSteps.Amount: {
-        canProceed = !formMethods.getFieldState("amount").invalid;
+        canProceed =
+          formMethods.getValues("amount") > 0 &&
+          !formMethods.getFieldState("amount").invalid;
         break;
       }
       case WithdrawalSteps.Confirmed: {
-        canProceed = !formMethods.getFieldState("pinConfirmed").invalid;
+        rightSideIcon = <></>;
+        rightSideLabel = "";
+        // @ts-ignore
+        rightSideAction = voidFn;
         break;
       }
-    }
-
-    if (isLastStep) {
-      // if (Boolean(customerData)) {
-      //     rightSideIcon = <RiUserReceivedLine />;
-      //     rightSideLabel = t("import_account");
-      //     rightSideAction = createAccount;
-      // } else {
-      //     rightSideIcon = <RiSurveyLine />;
-      //     rightSideLabel = t("register_customer");
-      //     rightSideAction = navigateRegisterAccount;
-      // }
     }
 
     const bottomNav: BottomNavigationItem[] = [
@@ -75,22 +72,20 @@ export const Withdrawal = ({ onNavChange }: Props) => {
         disabled: isFirstStep,
       },
       {
-        onClick: voidFn,
-        icon: <div />,
-        disabled: true,
-        label: "",
+        route: "/account",
+        label: t("cancel"),
+        icon: <RiCloseCircleLine />,
       },
       {
         label: rightSideLabel,
         onClick: rightSideAction,
         disabled: !canProceed,
         color: canProceed ? "secondary" : undefined,
-        loading: isProcessing,
         icon: rightSideIcon,
       },
     ];
     onNavChange(bottomNav);
-  }, [amount, currentStep, isProcessing]);
+  }, [amount, currentStep]);
 
   return (
     <div className="mt-4">
@@ -101,7 +96,7 @@ export const Withdrawal = ({ onNavChange }: Props) => {
             <Step1WithdrawalAmount />
           </div>
           <div id="step1" className="carousel-item relative w-full">
-            <h2>Step 2 - [PIN]</h2>
+            <Step2ConfirmWithPin />
           </div>
         </div>
       </FormProvider>

@@ -1,8 +1,8 @@
 import { ServiceContext } from "./serviceContext";
 import { PoolInstanceService } from "./poolInstanceService";
-import { withError } from "./withError";
 import { Config } from "@/app/config";
 import { PoolContractData } from "@/types/poolContractData";
+import { withError } from "@axtp/core/common/withError";
 
 export class PoolContractService {
   constructor(private context: ServiceContext) {}

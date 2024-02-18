@@ -5,5 +5,11 @@
   "amount_estimated_fiat": "Equals about {{value}} BRL",
   "amount": "Amount {{token}}",
   "amount_placeholder": "Enter amount to withdraw",
-  "amount_hint": "You can withdraw at maximum {{value}} {{token}}"
+  "amount_hint": "You can withdraw at maximum {{value}} {{token}}",
+  "confirm_withdrawal_title": "Confirm Withdrawal",
+  "confirm_withdrawal_hint": "Please confirm the withdrawal by entering your PIN",
+  "confirm": "Confirm",
+  "wrong_pin": "Wrong Pin entered",
+  "confirm_withdrawal_success": "Successfully requested withdrawal",
+  "confirm_withdrawal_error": "Oh no, withdrawal request failed. Please try again."
 }

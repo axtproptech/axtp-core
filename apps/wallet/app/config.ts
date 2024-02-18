@@ -70,6 +70,11 @@ export const Config = {
   },
   Contracts: {
     PoolContractIds: fromArray(process.env.NEXT_PUBLIC_AXTP_CONTRACT_IDS || ""),
+    BurnContract: {
+      Id: process.env.NEXT_PUBLIC_CONTRACT_BURN_ID || "",
+      ActivationFee:
+        process.env.NEXT_PUBLIC_CONTRACT_BURN_ACTIVATION_COSTS || "0.25",
+    },
   },
   Tokens: {
     AXTC: process.env.NEXT_PUBLIC_AXTC_TOKEN_ID || "",

@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { Button, Modal } from "react-daisyui";
 import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { openExternalUrl } from "@/app/openExternalUrl";
-import { Number } from "@/app/components/number";
+import { Numeric } from "@/app/components/numeric";
 import { ChildrenProps } from "@/types/childrenProps";
 import { InOutAmount } from "./inOutAmount";
 import { HintBoxEncryptedMessage } from "./hintBoxEncryptedMessage";
@@ -131,7 +131,7 @@ export const TransactionDetailsModal = ({ txData, open, onClose }: Props) => {
         {tx.feeSigna !== 0 && (
           <RowItem>
             <Label>{t("fee")}:</Label>
-            <Number value={tx.feeSigna} suffix={Ledger.SignaPrefix} />
+            <Numeric value={tx.feeSigna} suffix={Ledger.SignaPrefix} />
           </RowItem>
         )}
       </Modal.Body>

@@ -1,6 +1,6 @@
 import { FC, useMemo, useEffect } from "react";
 import { PoolContractData } from "@/types/poolContractData";
-import { Number } from "@/app/components/number";
+import { Numeric } from "@/app/components/numeric";
 import { useAppSelector } from "@/states/hooks";
 import { selectAXTToken } from "@/app/states/tokenState";
 import { useTranslation } from "next-i18next";
@@ -101,7 +101,7 @@ export const PoolCard: FC<Props> = ({
                 performance >= 0 ? "text-green-400" : "text-red-500"
               }`}
             >
-              <Number
+              <Numeric
                 value={performance}
                 prefix={performance >= 0 ? "+" : "-"}
                 suffix="%"
@@ -112,9 +112,9 @@ export const PoolCard: FC<Props> = ({
           <div>
             <div className="flex flex-col justify-between items-start lg:items-end">
               <h2 className="text-lg font-bold">
-                <Number value={poolData.grossMarketValue} suffix={name} />
+                <Numeric value={poolData.grossMarketValue} suffix={name} />
               </h2>
-              <Number
+              <Numeric
                 value={poolData.grossMarketValue - poolData.nominalLiquidity}
                 prefix="+"
                 suffix={name}

@@ -1,8 +1,8 @@
 import { FC, memo } from "react";
 import { formatNumber, FormatNumberArgs } from "@/app/formatNumber";
 
-const _Number: FC<FormatNumberArgs> = (args) => {
+const _Numeric: FC<FormatNumberArgs> = (args) => {
   return <>{formatNumber(args)}</>;
 };
 
-export const Number = memo(_Number);
+export const Numeric = memo(_Numeric);

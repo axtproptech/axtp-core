@@ -1,5 +1,4 @@
 import { ServiceContext } from "./serviceContext";
-import { withError } from "./withError";
 import {
   AssetAlias,
   AssetAliasService,
@@ -7,6 +6,7 @@ import {
   AssetAliasHistory,
 } from "@axtp/core";
 import { PoolContractService } from "./poolContractService";
+import { withError } from "@axtp/core/common/withError";
 
 export class AssetService {
   private assetAliasService: AssetAliasService;

@@ -1,5 +1,4 @@
 import { ServiceContext } from "./serviceContext";
-import { withError } from "./withError";
 import { Amount, ChainTime } from "@signumjs/util";
 import { PoolContractDataView } from "./poolContractDataView";
 import { GenericContractService } from "./genericContractService";
@@ -10,6 +9,7 @@ import {
   PoolPricing,
 } from "@/types/poolAliasData";
 import { Descriptor, DescriptorData } from "@signumjs/standards";
+import { withError } from "@axtp/core/common/withError";
 
 export class PoolInstanceService extends GenericContractService {
   constructor(context: ServiceContext, private poolId: string) {

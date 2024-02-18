@@ -4,11 +4,10 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { useTranslation } from "next-i18next";
 import {
-  RiArrowLeftCircleLine,
   RiFileListLine,
-  RiSettings4Line,
   RiAwardLine,
   RiDownload2Line,
+  RiHome6Line,
 } from "react-icons/ri";
 import { WithAccountOnly } from "@/app/components/withAccountOnly";
 import { useAccount } from "@/app/hooks/useAccount";
@@ -30,9 +29,9 @@ export default function Page() {
 
   const bottomNav: BottomNavigationItem[] = [
     {
-      label: t("back"),
-      back: true,
-      icon: <RiArrowLeftCircleLine />,
+      label: t("home"),
+      route: "/",
+      icon: <RiHome6Line />,
     },
     {
       label: t("rewards"),
