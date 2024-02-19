@@ -1,0 +1,17 @@
+{
+  "amount": "Quantidade {{token}}",
+  "amount_available": "Você tem {{value}} {{token}} disponível",
+  "amount_estimated_fiat": "Equivale a cerca de {{value}} BRL",
+  "amount_hint": "Você pode sacar no máximo {{value}} {{token}}",
+  "amount_hint_title": "Escolha o valor a sacar",
+  "amount_placeholder": "Insira o valor para sacar",
+  "amount_title": "Quantidade a Sacar",
+  "confirm": "Confirmar",
+  "confirm_withdrawal_error": "Ah, não, a solicitação de saque falhou. Por favor, tente novamente.",
+  "confirm_withdrawal_hint": "Por favor, confirme o saque inserindo seu PIN",
+  "confirm_withdrawal_success": "Saque solicitado com sucesso",
+  "confirm_withdrawal_title": "Confirmar Saque",
+  "success_description": "Sua solicitação de saque foi enviada com sucesso. Levará alguns minutos até que seu saldo de {{token}} seja atualizado. Nas próximas 48 horas, você receberá o valor correspondente de {{amount}} {{token}} creditado como {{currency}} na conta bancária fornecida.",
+  "success_hint": "Sucesso",
+  "wrong_pin": "Pin errado"
+}
