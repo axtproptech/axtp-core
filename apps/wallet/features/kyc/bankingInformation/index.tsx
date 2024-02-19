@@ -4,12 +4,7 @@ import { FieldBox } from "@/app/components/fieldBox";
 import { validatePixKey } from "@axtp/core/common/validatePixKey";
 import { PasteButton } from "@/app/components/buttons/pasteButton";
 import { useRouter } from "next/router";
-import { Button } from "react-daisyui";
-import {
-  RiArrowLeftCircleLine,
-  RiClipboardFill,
-  RiSaveLine,
-} from "react-icons/ri";
+import { RiArrowLeftCircleLine, RiSaveLine } from "react-icons/ri";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useCallback, useEffect, useState } from "react";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
@@ -17,12 +12,6 @@ import { useNotification } from "@/app/hooks/useNotification";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import useSWR, { useSWRConfig } from "swr";
 import { voidFn } from "@/app/voidFn";
-
-function mockRegisterInfo() {
-  return new Promise((resolve) => {
-    setTimeout(resolve, 2000);
-  });
-}
 
 interface BankInfoFormData {
   pixKey: string;
