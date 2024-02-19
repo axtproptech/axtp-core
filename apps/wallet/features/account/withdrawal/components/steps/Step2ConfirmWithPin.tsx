@@ -3,7 +3,7 @@ import { useTranslation } from "next-i18next";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useRouter } from "next/router";
 import { useNotification } from "@/app/hooks/useNotification";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { WithdrawalFormData } from "../../types/withdrawalFormData";
 import { useAXTCTokenInfo } from "@/app/hooks/useAXTCTokenInfo";
 import { HintBox } from "@/app/components/hintBoxes/hintBox";
@@ -17,18 +17,22 @@ import { KeyError } from "@/types/keyError";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { ChainValue } from "@signumjs/util";
 import { Numeric } from "@/app/components/numeric";
+import { useAppContext } from "@/app/hooks/useAppContext";
+import { tryCall } from "@axtp/core/common/tryCall";
+import { RequestWithdrawalRequest } from "@/bff/types/requestWithdrawalRequest";
 
 export const Step2ConfirmWithPin = () => {
   const router = useRouter();
   const { locale } = router;
   const { t } = useTranslation("withdrawal");
   const axtcToken = useAXTCTokenInfo();
-  const { getKeys } = useAccount();
+  const { getKeys, customer } = useAccount();
   const { showError, showSuccess } = useNotification();
   const { current_price } = useSelector(selectBrlUsdMarketData);
   const ledgerService = useLedgerService();
   const [pin, setPin] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const { BffClient } = useAppContext();
   const {
     accountData: { balanceAXTC },
   } = useAccount();
@@ -37,21 +41,36 @@ export const Step2ConfirmWithPin = () => {
   const perUsd = current_price - Config.Market.BrlUsdAdjustment;
   const withdrawalAmount = watch("amount");
   const fiatWithdrawal = Number(withdrawalAmount) * perUsd;
+
+  const propagateWithdrawalRequest = useCallback(
+    (payload: RequestWithdrawalRequest) => {
+      return tryCall(async () => BffClient.post("withdrawal", payload));
+    },
+    [BffClient]
+  );
+
   const handleConfirmWithdrawal = async () => {
-    if (!ledgerService) return;
+    if (!ledgerService || !customer) return;
     try {
       setIsProcessing(true);
       const keys = await getKeys(pin);
-      await ledgerService.burnContract.requestWithdrawal({
+      const amount = ChainValue.create(axtcToken.decimals).setCompound(
+        withdrawalAmount
+      );
+      const tx = await ledgerService.burnContract.requestWithdrawal({
         tokenId: axtcToken.id,
-        amount: ChainValue.create(axtcToken.decimals).setCompound(
-          withdrawalAmount
-        ),
+        amount,
         keys,
       });
 
-      // TODO: send email
-
+      await propagateWithdrawalRequest({
+        tokenId: axtcToken.id,
+        currency: "BRL",
+        customerId: customer.customerId,
+        tokenName: axtcToken.name,
+        txId: tx?.transaction ?? "",
+        tokenQnt: amount.getCompound(),
+      });
       await router.replace(
         `/account/withdrawal/success?token=${axtcToken.name}&amount=${withdrawalAmount}&currency=BRL`
       );

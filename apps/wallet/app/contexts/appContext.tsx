@@ -11,7 +11,7 @@ import {
   AccountActivationService,
   trackingEventService,
 } from "@/app/services";
-import { HttpClientFactory } from "@signumjs/http";
+import { Http, HttpClientFactory } from "@signumjs/http";
 import { FileService } from "@/app/services/fileService";
 import { RewardService } from "@/app/services/rewardService";
 
@@ -25,6 +25,7 @@ export interface AppContextType {
   AXTTokenId: string;
   AXTPoolTokenIds: string[];
   JotFormId: string;
+  BffClient: Http;
   KycService: KycService;
   PaymentService: PaymentService;
   RewardService: RewardService;
@@ -83,6 +84,7 @@ const config: AppContextType = {
   AXTTokenId: Config.Tokens.AXTC,
   AXTPoolTokenIds: Config.Tokens.AXTPs,
   JotFormId: Config.JotForm.Id,
+  BffClient: bffClient,
   KycService: new KycService(bffClient),
   PaymentService: new PaymentService(bffClient),
   RewardService: new RewardService(bffClient),

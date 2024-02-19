@@ -27,7 +27,6 @@ enum WithdrawalSteps {
 }
 
 export const Withdrawal = ({ onNavChange }: Props) => {
-  const { customer } = useAccount();
   const { t } = useTranslation();
   const { currentStep, nextStep, previousStep, stepsCount } = useStepper(2);
   const formMethods = useForm<WithdrawalFormData>({

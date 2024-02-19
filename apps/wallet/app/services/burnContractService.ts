@@ -3,7 +3,8 @@ import { Config } from "@/app/config";
 import { ServiceContext } from "./serviceContext";
 import { Amount, ChainValue } from "@signumjs/util";
 import { Keys } from "@signumjs/crypto";
-import { withError } from "@axtp/core/common/withError";
+import { tryCall } from "@axtp/core/common/tryCall";
+import { TransactionId } from "@signumjs/core";
 
 interface RequestWithdrawalArgs {
   tokenId: string;
@@ -17,8 +18,8 @@ export class BurnContractService extends BurnContractViewerService {
   }
 
   requestWithdrawal({ amount, tokenId, keys }: RequestWithdrawalArgs) {
-    return withError(() => {
-      return this.context.ledger.asset.transferAsset({
+    return tryCall<TransactionId>(async () => {
+      return (await this.context.ledger.asset.transferAsset({
         assetId: tokenId,
         amountPlanck: Amount.fromSigna(
           Config.Contracts.BurnContract.ActivationFee
@@ -28,7 +29,7 @@ export class BurnContractService extends BurnContractViewerService {
         senderPrivateKey: keys.signPrivateKey,
         quantity: amount.getAtomic(),
         recipientId: Config.Contracts.BurnContract.Id,
-      });
+      })) as TransactionId;
     });
   }
 }
