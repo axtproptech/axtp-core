@@ -33,7 +33,6 @@ export const Withdrawal = ({ onNavChange }: Props) => {
     mode: "onChange",
     defaultValues: {
       amount: 0,
-      pinConfirmed: false,
     },
   });
 

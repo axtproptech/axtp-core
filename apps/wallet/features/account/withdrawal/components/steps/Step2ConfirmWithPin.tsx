@@ -33,10 +33,7 @@ export const Step2ConfirmWithPin = () => {
   const [pin, setPin] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const { BffClient } = useAppContext();
-  const {
-    accountData: { balanceAXTC },
-  } = useAccount();
-  const { watch, setValue } = useFormContext<WithdrawalFormData>();
+  const { watch } = useFormContext<WithdrawalFormData>();
 
   const perUsd = current_price - Config.Market.BrlUsdAdjustment;
   const withdrawalAmount = watch("amount");
@@ -82,7 +79,6 @@ export const Step2ConfirmWithPin = () => {
       } else {
         showError(t("confirm_withdrawal_error"));
       }
-      setValue("pinConfirmed", false);
     } finally {
       setIsProcessing(false);
     }

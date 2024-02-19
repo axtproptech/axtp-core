@@ -1,13 +1,8 @@
-import { Controller, useForm, useFormContext } from "react-hook-form";
-import { NumericFormat, PatternFormat } from "react-number-format";
-import { FieldBox } from "@/app/components/fieldBox";
-import { validatePixKey } from "@axtp/core/common/validatePixKey";
-import { PasteButton } from "@/app/components/buttons/pasteButton";
+import { Controller, useFormContext } from "react-hook-form";
+import { NumericFormat } from "react-number-format";
 import { useTranslation } from "next-i18next";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useRouter } from "next/router";
-import { useNotification } from "@/app/hooks/useNotification";
-import { useState } from "react";
 import { WithdrawalFormData } from "../../types/withdrawalFormData";
 import { useAXTCTokenInfo } from "@/app/hooks/useAXTCTokenInfo";
 import { HintBox } from "@/app/components/hintBoxes/hintBox";
@@ -24,7 +19,6 @@ export const Step1WithdrawalAmount = () => {
   const { current_price } = useSelector(selectBrlUsdMarketData);
 
   const {
-    customer,
     accountData: { balanceAXTC },
   } = useAccount();
   const { control, watch } = useFormContext<WithdrawalFormData>();
@@ -34,7 +28,6 @@ export const Step1WithdrawalAmount = () => {
   const withdrawalAmount = watch("amount");
   const fiatWithdrawal = Number(withdrawalAmount) * perUsd;
 
-  // @ts-ignore
   return (
     <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm md:max-w-lg mx-auto px-4">
       <section>

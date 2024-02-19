@@ -32,9 +32,11 @@ export default function Page() {
   ]);
 
   useLayoutEffect(() => {
-    // if(!customer?.hasBankInformation){
-    //   router.replace("/kyc/banking?redirect=/account/withdrawal", undefined, {shallow: true});
-    // }
+    if (!customer?.hasBankInformation) {
+      router.replace("/kyc/banking?redirect=/account/withdrawal", undefined, {
+        shallow: true,
+      });
+    }
   }, [customer, router]);
 
   return (

@@ -3,7 +3,7 @@ import { Middleware } from "@/bff/withMiddleware";
 import * as process from "process";
 import { getEnvVar } from "@/bff/getEnvVar";
 
-const AcceptableReferer = getEnvVar("NEXT_PUBLIC_CANONICAL_URL");
+const AcceptableReferrer = getEnvVar("NEXT_PUBLIC_CANONICAL_URL");
 const isDev = getEnvVar("NODE_ENV") === "development";
 export const protectRoute: Middleware = async ({
   req,
@@ -11,7 +11,7 @@ export const protectRoute: Middleware = async ({
   const isReferrerAccepted = isDev
     ? true
     : req.headers["referer"] &&
-      req.headers["referer"].startsWith(AcceptableReferer);
+      req.headers["referer"].startsWith(AcceptableReferrer);
   if (
     req.headers["x-api-key"] === process.env.NEXT_PUBLIC_BFF_API_KEY &&
     isReferrerAccepted
