@@ -9,6 +9,7 @@ export enum ExternalEmailTemplates {
   PaymentCancellation = 13,
   PaymentConfirmation = 14,
   PaymentProcessing = 15,
+  WithdrawalProcessed = 22,
 }
 interface SendExclusiveAreaInvitationArgs
   extends Mail<{
@@ -30,6 +31,15 @@ interface SendExternalPaymentArgs
     poolId: string;
     reason?: string;
     txId?: string;
+  }> {}
+
+interface SendExternalWithdrawalProcessedArgs
+  extends Mail<{
+    firstName: string;
+    tokenQnt: string;
+    tokenName: string;
+    amount: string;
+    currency: string;
   }> {}
 
 export class ExternalMailService {
@@ -107,6 +117,14 @@ export class ExternalMailService {
       mail: args,
       templateId: ExternalEmailTemplates.PaymentCancellation,
       tags: ["PaymentCancellation"],
+    });
+  }
+
+  async sendWithdrawalProcessed(args: SendExternalWithdrawalProcessedArgs) {
+    return this.sendExternalMail({
+      mail: args,
+      templateId: ExternalEmailTemplates.WithdrawalProcessed,
+      tags: ["WithdrawalProcessed"],
     });
   }
 }

@@ -118,7 +118,7 @@ export class BurnContractService extends BurnContractViewerService {
         await ledger.contract.callContractMethod({
           contractId: this.contractId(),
           methodHash: Config.BurnContract.Methods.CreditTrackableToken,
-          methodArgs: [tokenId, tokenAmount.getCompound(), accountId],
+          methodArgs: [tokenId, tokenAmount.getAtomic(), accountId],
           senderPublicKey: accountPublicKey,
           amountPlanck: Amount.fromSigna(
             Config.PoolContract.ActivationCosts

@@ -43,10 +43,6 @@ interface TokenBalanceProps {
 }
 
 const TokenBalance = ({ tokenInfo }: TokenBalanceProps) => {
-  const amount = ChainValue.create(tokenInfo.decimals).setAtomic(
-    tokenInfo.balance
-  );
-
   return (
     <>
       <Stack direction="row" alignItems="baseline">
@@ -59,7 +55,7 @@ const TokenBalance = ({ tokenInfo }: TokenBalanceProps) => {
             mr: 0.5,
           }}
         >
-          <Number value={amount.getCompound()} />
+          <Number value={tokenInfo.balance} />
         </Typography>
         <Typography>{tokenInfo.name.toUpperCase()}</Typography>
       </Stack>
@@ -180,19 +176,15 @@ export const BurnContractCard: FC = () => {
                 </Grid>
               </Grid>
               <Grid item>
-                <Grid container alignItems="center">
-                  <Grid item>
-                    <Box>
-                      {Object.values(trackableTokens).map((t) => (
-                        <WithdrawalToken
-                          key={t.id}
-                          tokenInfo={t}
-                          tokenAccountCredits={tokenAccountCredits}
-                        />
-                      ))}
-                    </Box>
-                  </Grid>
-                </Grid>
+                <Box>
+                  {Object.values(trackableTokens).map((t) => (
+                    <WithdrawalToken
+                      key={t.id}
+                      tokenInfo={t}
+                      tokenAccountCredits={tokenAccountCredits}
+                    />
+                  ))}
+                </Box>
               </Grid>
               <Grid item sx={{ mt: 1.25 }}>
                 <Typography

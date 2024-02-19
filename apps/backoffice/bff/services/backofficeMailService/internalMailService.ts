@@ -13,6 +13,7 @@ enum InternalEmailTemplates {
   PaymentConfirmation = 11,
   PaymentCancellation = 12,
   PaymentProcessing = 16,
+  WithdrawalRequestProcessed = 21,
 }
 interface SendInternalCustomerUpdateArgs
   extends InternalMailArgs<{
@@ -30,6 +31,18 @@ interface SendInternalPaymentMailArgs
     amount: string;
     currency: string;
     reason?: string;
+  }> {}
+
+interface SendInternalWithdrawalProcessedMailArgs
+  extends InternalMailArgs<{
+    tokenName: string;
+    tokenQuantity: string;
+    amount: string;
+    currency: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
   }> {}
 export class InternalMailService {
   private readonly recipientFinancial: string;
@@ -151,6 +164,16 @@ export class InternalMailService {
       toEmail: this.recipientFinancial,
       templateId: InternalEmailTemplates.PaymentCancellation,
       tags: ["PaymentCancellation"],
+    });
+  }
+
+  async sendWithdrawalProcessed(args: SendInternalWithdrawalProcessedMailArgs) {
+    return this.sendInternalMail({
+      mail: args,
+      action: "Withdrawal Processed",
+      toEmail: this.recipientFinancial,
+      templateId: InternalEmailTemplates.WithdrawalRequestProcessed,
+      tags: ["WithdrawalProcessed"],
     });
   }
 }

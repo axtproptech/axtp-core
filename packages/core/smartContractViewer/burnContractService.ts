@@ -1,7 +1,6 @@
 import { Ledger } from "@signumjs/core";
 import { withError } from "../common/withError";
 import { BaseContractViewerService } from "./baseContractViewerService";
-import { BasicTokenInfo } from "./basicTokenInfo";
 
 export const BurnContractContext = {
   CodeHashId: "4258024526314495767",
@@ -50,7 +49,7 @@ export class BurnContractService extends BaseContractViewerService {
       });
       return result.keyValues
         .filter(({ value }) => value != "0")
-        .map(({ value }) => value);
+        .map(({ key2 }) => key2);
     });
   }
 

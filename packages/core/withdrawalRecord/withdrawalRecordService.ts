@@ -27,7 +27,7 @@ export class WithdrawalRecordService {
     return generateMasterKeys(this.context.senderSeed);
   }
 
-  public async sendPaymentRecord(
+  public async sendWithdrawalRecord(
     record: WithdrawalRecord,
     recipientPublicKey: string
   ) {

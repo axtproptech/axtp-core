@@ -3,45 +3,51 @@ import {
   WithdrawalRecord,
   WithdrawalRecordService,
 } from "@axtp/core/withdrawalRecord";
-import { Amount } from "@signumjs/util";
+import { Amount, ChainValue } from "@signumjs/util";
 import { getEnvVar } from "@/bff/getEnvVar";
 import { Address } from "@signumjs/core";
 import { prisma } from "@axtp/db";
 import { ApiHandler } from "@/bff/types/apiHandler";
 import { badRequest, notAcceptable, notFound } from "@hapi/boom";
 import { mixed, number, object, string, ValidationError } from "yup";
+import { mailService } from "@/bff/services/backofficeMailService";
 
-async function sendRegistrationMails(payment: any, tokenName: string) {
+async function sendWithdrawalProcessedMails(
+  withdrawal: WithdrawalRecord,
+  customer: any
+) {
   try {
-    // await Promise.all([
-    //   mailService.internal.sendPaymentRegistration({
-    //     params: {
-    //       firstName: payment.customer.firstName,
-    //       lastName: payment.customer.lastName,
-    //       email: payment.customer.email1,
-    //       phone: payment.customer.phone1,
-    //       amount: payment.amount.toString(),
-    //       currency: payment.currency || "",
-    //       paymentId: payment.id.toString(),
-    //       tokenQuantity: payment.tokenQuantity.toString(),
-    //       tokenName,
-    //     },
-    //   }),
-    //   mailService.external.sendPaymentRegistration({
-    //     to: {
-    //       firstName: payment.customer.firstName,
-    //       lastName: payment.customer.lastName,
-    //       email1: payment.customer.email1,
-    //     },
-    //     params: {
-    //       firstName: payment.customer.firstName,
-    //       lastName: payment.customer.lastName,
-    //       poolId: payment.poolId,
-    //       tokenName,
-    //       tokenQnt: payment.tokenQuantity.toString(),
-    //     },
-    //   }),
-    // ]);
+    const tokenAmount = ChainValue.create(withdrawal.tokenDecimals)
+      .setAtomic(withdrawal.tokenQuantity)
+      .getCompound();
+    await Promise.all([
+      mailService.internal.sendWithdrawalProcessed({
+        params: {
+          firstName: customer.firstName,
+          lastName: customer.lastName,
+          email: customer.email1,
+          phone: customer.phone1,
+          amount: withdrawal.paymentAmount,
+          currency: withdrawal.paymentCurrency.toUpperCase() || "",
+          tokenQuantity: tokenAmount,
+          tokenName: withdrawal.tokenName,
+        },
+      }),
+      mailService.external.sendWithdrawalProcessed({
+        to: {
+          firstName: customer.firstName,
+          lastName: customer.lastName,
+          email1: customer.email1,
+        },
+        params: {
+          firstName: customer.firstName,
+          amount: withdrawal.paymentAmount,
+          currency: withdrawal.paymentCurrency.toUpperCase(),
+          tokenName: withdrawal.tokenName,
+          tokenQnt: tokenAmount,
+        },
+      }),
+    ]);
   } catch (e) {
     console.error("Sending mails failed", e);
   }
@@ -53,6 +59,7 @@ const registerWithdrawalBodySchema = object({
   tokenId: string().required(),
   tokenQnt: number().required(),
   tokenName: string().required(),
+  tokenDecimals: number().required(),
   amount: number().required(),
   paymentType: string().required(),
   txId: string().required(),
@@ -68,6 +75,7 @@ export const registerWithdrawal: ApiHandler = async ({ req, res }) => {
       tokenId,
       tokenQnt,
       tokenName,
+      tokenDecimals,
       usd,
       amount,
       paymentType,
@@ -121,6 +129,7 @@ export const registerWithdrawal: ApiHandler = async ({ req, res }) => {
       accountId: Address.fromPublicKey(accountPk).getNumericId(),
       tokenId,
       tokenName,
+      tokenDecimals,
       tokenQuantity: tokenQnt.toString(),
       paymentUsd: usd.toString(),
       paymentAmount: amount.toString(),
@@ -132,12 +141,12 @@ export const registerWithdrawal: ApiHandler = async ({ req, res }) => {
     };
 
     const [recordTx] = await Promise.all([
-      service.sendPaymentRecord(record, withdrawalRecordAccountPubKey),
+      service.sendWithdrawalRecord(record, withdrawalRecordAccountPubKey),
       service.sendWithdrawalReceiptToCustomer(record, accountPk),
     ]);
 
-    // TODO: send emails
-    // await sendRegistrationMails(createdPayment, tokenName);
+    // send once is all fine
+    await sendWithdrawalProcessedMails(record, customer);
     res.status(201).json(recordTx);
   } catch (e: any) {
     if (e instanceof ValidationError) {

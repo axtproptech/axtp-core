@@ -7,6 +7,7 @@ interface RegisterWithdrawalArgs {
   tokenId: string;
   tokenQnt: string;
   tokenName: string;
+  tokenDecimals: number;
   amount: string;
   currency: string;
   paymentType: string;
