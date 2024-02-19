@@ -10,6 +10,7 @@ import {
   SecondStep,
   ThirdStep,
 } from "@/app/types/kycData";
+import { tryCall } from "@axtp/core/common/tryCall";
 
 export interface RegisterCustomerArgs
   extends Omit<InitialSetupStep, "code">,
@@ -29,20 +30,6 @@ export interface RegisterCustomerResponse {
 export class KycService {
   constructor(private bffClient: Http) {}
 
-  private tryCall<T>(fetchFn: Function) {
-    return retry(async () => {
-      try {
-        return (await fetchFn()) as T;
-      } catch (e: any) {
-        if (e instanceof HttpError) {
-          if (e.status >= 400 && e.status <= 500) {
-            throw new AbortError(e.data.message);
-          }
-        }
-      }
-    });
-  }
-
   /**
    * Registers a customer.
    *
@@ -50,7 +37,7 @@ export class KycService {
    * @return - A promise that resolves to the response from the registration.
    */
   registerCustomer(args: RegisterCustomerArgs) {
-    return this.tryCall<RegisterCustomerResponse>(async () => {
+    return tryCall<RegisterCustomerResponse>(async () => {
       const { response } = await this.bffClient.post("/customer", args);
       return response;
     });
@@ -81,7 +68,7 @@ export class KycService {
     publicKey: string,
     isTestnet: boolean
   ) {
-    return this.tryCall<CustomerSafeData>(async () => {
+    return tryCall<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.post(
         `/customer/${customerId}/publicKey`,
         {
@@ -94,14 +81,14 @@ export class KycService {
   }
 
   async fetchCustomerData(customerId: string) {
-    return this.tryCall<CustomerSafeData>(async () => {
+    return tryCall<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.get(`/customer/${customerId}`);
       return response as CustomerSafeData;
     });
   }
 
   async fetchCustomerDataByPublicKey(publicKey: string) {
-    return this.tryCall<CustomerSafeData>(async () => {
+    return tryCall<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.get(
         `/customer?publicKey=${publicKey}`
       );
@@ -110,21 +97,21 @@ export class KycService {
   }
 
   async fetchCustomerDataByEmail(email: string) {
-    return this.tryCall<CustomerSafeData>(async () => {
+    return tryCall<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.get(`/customer?email=${email}`);
       return response as CustomerSafeData;
     });
   }
 
   async fetchCustomerDataByCpf(cpf: string) {
-    return this.tryCall<CustomerSafeData>(async () => {
+    return tryCall<CustomerSafeData>(async () => {
       const { response } = await this.bffClient.get(`/customer?cpf=${cpf}`);
       return response as CustomerSafeData;
     });
   }
 
   async fetchCustomerPayments(customerId: string) {
-    return this.tryCall<CustomerPaymentData[]>(async () => {
+    return tryCall<CustomerPaymentData[]>(async () => {
       const { response } = await this.bffClient.get(
         `/customer/${customerId}/payments`
       );
@@ -133,7 +120,7 @@ export class KycService {
   }
 
   async sendAddressVerificationMail(emailAddress: string, firstName: string) {
-    return this.tryCall<void>(async () => {
+    return tryCall<void>(async () => {
       return this.bffClient.post(`/mail/addressVerification`, {
         emailAddress,
         name: firstName,
@@ -142,12 +129,25 @@ export class KycService {
   }
 
   async verifyEmailVerificationToken(emailAddress: string, token: string) {
-    return this.tryCall<void>(async () => {
+    return tryCall<void>(async () => {
       return this.bffClient.put(`/token`, {
         subjectId: emailAddress,
         purpose: "EmailVerification",
         token,
       });
+    });
+  }
+
+  addBankingInfo(customerId: string, identifier: string, type: "Pix" | "Iban") {
+    return tryCall<CustomerSafeData>(async () => {
+      const { response } = await this.bffClient.post(
+        `/customer/${customerId}/bankInfo`,
+        {
+          identifier,
+          type,
+        }
+      );
+      return response;
     });
   }
 }

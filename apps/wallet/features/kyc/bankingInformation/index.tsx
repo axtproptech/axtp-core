@@ -4,22 +4,14 @@ import { FieldBox } from "@/app/components/fieldBox";
 import { validatePixKey } from "@axtp/core/common/validatePixKey";
 import { PasteButton } from "@/app/components/buttons/pasteButton";
 import { useRouter } from "next/router";
-import { Button } from "react-daisyui";
-import {
-  RiArrowLeftCircleLine,
-  RiClipboardFill,
-  RiSaveLine,
-} from "react-icons/ri";
+import { RiArrowLeftCircleLine, RiSaveLine } from "react-icons/ri";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useCallback, useEffect, useState } from "react";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { useNotification } from "@/app/hooks/useNotification";
-
-function mockRegisterInfo() {
-  return new Promise((resolve) => {
-    setTimeout(resolve, 2000);
-  });
-}
+import { useAppContext } from "@/app/hooks/useAppContext";
+import useSWR, { useSWRConfig } from "swr";
+import { voidFn } from "@/app/voidFn";
 
 interface BankInfoFormData {
   pixKey: string;
@@ -34,10 +26,13 @@ export const BankingInformation = ({ onNavChange }: Props) => {
   const { customer } = useAccount();
   const { query, replace } = useRouter();
   const { showSuccess, showError } = useNotification();
+  const { KycService } = useAppContext();
   const [isSaving, setIsSaving] = useState(false);
+  const { mutate } = useSWRConfig();
 
-  // TODO: consider, when use has already
-  const hasBankInformation = customer?.hasBankInformation;
+  if (customer && customer.hasBankInformation) {
+    replace("/");
+  }
 
   const {
     trigger,
@@ -48,10 +43,12 @@ export const BankingInformation = ({ onNavChange }: Props) => {
   } = useForm<BankInfoFormData>();
 
   const updateBankingInfo = useCallback(async () => {
+    if (!customer) return;
     try {
-      const { pixKey } = getValues();
       setIsSaving(true);
-      await mockRegisterInfo();
+      const { pixKey } = getValues();
+      await KycService.addBankingInfo(customer.customerId, pixKey, "Pix");
+      await mutate(`/fetchCustomer/${customer.customerId}`);
       if (query.redirect) {
         await replace(query.redirect as string);
       }
@@ -71,8 +68,16 @@ export const BankingInformation = ({ onNavChange }: Props) => {
         icon: <RiArrowLeftCircleLine />,
       },
       {
+        label: "",
+        disabled: true,
+        hideLabel: true,
+        onClick: voidFn,
+        icon: <></>,
+      },
+      {
         label: t("save"),
         icon: <RiSaveLine />,
+        color: "secondary",
         disabled: !isValid,
         loading: isSaving,
         onClick: updateBankingInfo,
