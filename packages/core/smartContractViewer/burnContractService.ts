@@ -81,10 +81,12 @@ export class BurnContractService extends BaseContractViewerService {
           key1: tokenId,
         });
 
-      const accountCredits = tokenCredits.keyValues.map(({ key2, value }) => ({
-        creditQuantity: value,
-        accountId: key2,
-      }));
+      const accountCredits = tokenCredits.keyValues
+        .filter(({ value }) => Number(value) > 0)
+        .map(({ key2, value }) => ({
+          creditQuantity: value,
+          accountId: key2,
+        }));
 
       return {
         tokenId,
