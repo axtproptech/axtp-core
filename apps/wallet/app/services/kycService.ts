@@ -150,4 +150,17 @@ export class KycService {
       });
     });
   }
+
+  addBankingInfo(customerId: string, identifier: string, type: "Pix" | "Iban") {
+    return this.tryCall<CustomerSafeData>(async () => {
+      const { response } = await this.bffClient.post(
+        `/customer/${customerId}/bankInfo`,
+        {
+          identifier,
+          type,
+        }
+      );
+      return response;
+    });
+  }
 }

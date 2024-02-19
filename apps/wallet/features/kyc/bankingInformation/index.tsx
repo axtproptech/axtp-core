@@ -14,6 +14,9 @@ import { useAccount } from "@/app/hooks/useAccount";
 import { useCallback, useEffect, useState } from "react";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { useNotification } from "@/app/hooks/useNotification";
+import { useAppContext } from "@/app/hooks/useAppContext";
+import useSWR, { useSWRConfig } from "swr";
+import { voidFn } from "@/app/voidFn";
 
 function mockRegisterInfo() {
   return new Promise((resolve) => {
@@ -34,10 +37,13 @@ export const BankingInformation = ({ onNavChange }: Props) => {
   const { customer } = useAccount();
   const { query, replace } = useRouter();
   const { showSuccess, showError } = useNotification();
+  const { KycService } = useAppContext();
   const [isSaving, setIsSaving] = useState(false);
+  const { mutate } = useSWRConfig();
 
-  // TODO: consider, when use has already
-  const hasBankInformation = customer?.hasBankInformation;
+  if (customer && customer.hasBankInformation) {
+    replace("/");
+  }
 
   const {
     trigger,
@@ -48,10 +54,12 @@ export const BankingInformation = ({ onNavChange }: Props) => {
   } = useForm<BankInfoFormData>();
 
   const updateBankingInfo = useCallback(async () => {
+    if (!customer) return;
     try {
-      const { pixKey } = getValues();
       setIsSaving(true);
-      await mockRegisterInfo();
+      const { pixKey } = getValues();
+      await KycService.addBankingInfo(customer.customerId, pixKey, "Pix");
+      await mutate(`/fetchCustomer/${customer.customerId}`);
       if (query.redirect) {
         await replace(query.redirect as string);
       }
@@ -71,8 +79,16 @@ export const BankingInformation = ({ onNavChange }: Props) => {
         icon: <RiArrowLeftCircleLine />,
       },
       {
+        label: "",
+        disabled: true,
+        hideLabel: true,
+        onClick: voidFn,
+        icon: <></>,
+      },
+      {
         label: t("save"),
         icon: <RiSaveLine />,
+        color: "secondary",
         disabled: !isValid,
         loading: isSaving,
         onClick: updateBankingInfo,
