@@ -7,6 +7,8 @@ export const WithAccountOnly: FC<ChildrenProps> = ({ children }) => {
   const router = useRouter();
   const { accountId } = useAccount();
 
+  // TODO: consider blocked and inactive accounts!
+
   useEffect(() => {
     if (!accountId && router) {
       router.replace("/kyc");

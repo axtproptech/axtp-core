@@ -8,4 +8,5 @@ export interface CustomerSafeData {
   isBlocked: boolean;
   firstName: string;
   publicKey: string;
+  hasBankInformation: boolean;
 }

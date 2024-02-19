@@ -18,6 +18,7 @@ export const Config = {
   // we don't need fully fledged auth as the BFF returns only minimum, safe data
   BffApiKey: process.env.NEXT_PUBLIC_BFF_API_KEY || "",
   TermsOfUsefUrl: process.env.NEXT_PUBLIC_TERMS_OF_USE_URL || "",
+  BuildId: process.env.NEXT_PUBLIC_VERCEL_GIT_PULL_REQUEST_ID || "dev",
   PrivacyfUrl: process.env.NEXT_PUBLIC_PRIVACY_URL || "",
   ManualUrl: process.env.NEXT_PUBLIC_MANUAL_URL || "",
   CanonicalUrl:
@@ -69,6 +70,11 @@ export const Config = {
   },
   Contracts: {
     PoolContractIds: fromArray(process.env.NEXT_PUBLIC_AXTP_CONTRACT_IDS || ""),
+    BurnContract: {
+      Id: process.env.NEXT_PUBLIC_CONTRACT_BURN_ID || "",
+      ActivationFee:
+        process.env.NEXT_PUBLIC_CONTRACT_BURN_ACTIVATION_COSTS || "0.25",
+    },
   },
   Tokens: {
     AXTC: process.env.NEXT_PUBLIC_AXTC_TOKEN_ID || "",

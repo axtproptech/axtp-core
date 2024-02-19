@@ -14,7 +14,7 @@ export const RegisterCustomerButton = () => {
   return (
     <div>
       <div className="animate-wiggle">
-        <Link href="/kyc/registry">
+        <Link href="/kyc/setup">
           <Button
             color="primary"
             size="lg"
@@ -26,7 +26,7 @@ export const RegisterCustomerButton = () => {
         </Link>
       </div>
       <div className="text-center underline mt-2">
-        <Link href="/kyc/link">{t("kyc_i_have_a_registry")}</Link>
+        <Link href="/account/import">{t("kyc_i_have_a_registry")}</Link>
       </div>
     </div>
   );

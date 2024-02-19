@@ -6,7 +6,12 @@ import {
   BottomNavigationItem,
 } from "../navigation/bottomNavigation";
 import { Body } from "./body";
-import { RiHome6Line, RiQuestionLine, RiWallet3Line } from "react-icons/ri";
+import {
+  RiHome6Line,
+  RiQuestionLine,
+  RiSettings4Line,
+  RiWallet3Line,
+} from "react-icons/ri";
 import { Notification } from "@/app/components/notification";
 import { useTranslation } from "next-i18next";
 import dynamic from "next/dynamic";
@@ -62,14 +67,19 @@ export const Layout: FC<Props> = ({ children, bottomNav, noBody = false }) => {
       icon: <RiHome6Line />,
     },
     {
+      route: "/account",
+      label: t("account"),
+      icon: <RiWallet3Line />,
+    },
+    {
       onClick: navigateToManual,
       label: t("manual"),
       icon: <RiQuestionLine />,
     },
     {
-      route: "/account",
-      label: t("account"),
-      icon: <RiWallet3Line />,
+      label: t("settings"),
+      route: "/settings",
+      icon: <RiSettings4Line />,
     },
   ];
 

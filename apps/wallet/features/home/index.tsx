@@ -11,7 +11,6 @@ import { JoinClubButton } from "@/app/components/buttons/joinClubButton";
 import { ShowAccountButton } from "@/app/components/buttons/showAccountButton";
 import { RegisterCustomerButton } from "@/app/components/buttons/registerCustomerButton";
 import { Greeting } from "@/app/components/greeting";
-import { FileUploader } from "@/app/components/fileUploader";
 
 export const Home = () => {
   const pools = useAppSelector(selectAllPools);

@@ -1,6 +1,6 @@
 import { AssetAliasHistoryItem } from "@axtp/core";
 import { PoolAssetStatus } from "../../components/poolAssetStatus";
-import { Number } from "@/app/components/number";
+import { Numeric } from "@/app/components/numeric";
 import { useRouter } from "next/router";
 import { ChainTime } from "@signumjs/util";
 import { formatDate } from "@/app/formatDate";
@@ -43,18 +43,18 @@ export const PoolAssetHistoryItem = ({ data, txId }: Props) => {
           </div>
           <div className="text-lg mr-4 flex flex-row items-baseline gap-x-0.5">
             <RiFundsLine size={IconSize} />
-            <Number value={performance} decimals={0} />
+            <Numeric value={performance} decimals={0} />
             <small className="text-[10px]">%</small>
           </div>
           <div className="flex flex-col justify-end">
             <div className="text-md text-success flex flex-row items-baseline gap-x-0.5">
               <RiStockLine size={IconSize} />
-              <Number value={asset.estimatedMarketValue} decimals={0} />
+              <Numeric value={asset.estimatedMarketValue} decimals={0} />
               <small className="text-[10px]">USD</small>
             </div>
             <div className="text-xs text-error flex flex-row items-baseline gap-x-0.5">
               <RiRefund2Line size={IconSize} />
-              <Number value={asset.accumulatedCosts} decimals={0} />
+              <Numeric value={asset.accumulatedCosts} decimals={0} />
               <small className="text-[10px]">USD</small>
             </div>
           </div>

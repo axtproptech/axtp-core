@@ -3,7 +3,7 @@ import { FC, useMemo, useState } from "react";
 import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { useAppSelector } from "@/states/hooks";
 import { selectAXTToken } from "@/app/states/tokenState";
-import { Number } from "@/app/components/number";
+import { Numeric } from "@/app/components/numeric";
 import { usePaymentCalculator } from "@/features/pool/acquisition/steps/usePaymentCalculator";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 import { PoolHeader } from "@/features/pool/components/poolHeader";
@@ -84,14 +84,14 @@ export const StepSelectQuantity: FC<Props> = ({
           <div className="text-lg text-center">
             <h4 className="m-0 mb-1">{t("acquire_totalPrice")}</h4>
             <h4>
-              <Number value={totalAXTC} suffix={name} /> ={" "}
-              <Number value={totalAXTC} suffix="USD" /> ={" "}
-              <Number value={totalBRL} suffix="BRL" />
+              <Numeric value={totalAXTC} suffix={name} /> ={" "}
+              <Numeric value={totalAXTC} suffix="USD" /> ={" "}
+              <Numeric value={totalBRL} suffix="BRL" />
             </h4>
             <small>
               {`${t("effective_rate")} - 1 USD :`}
               &nbsp;
-              <Number value={adjustedBrlUsdPrice} suffix="BRL" />
+              <Numeric value={adjustedBrlUsdPrice} suffix="BRL" />
             </small>
           </div>
         </HintBox>

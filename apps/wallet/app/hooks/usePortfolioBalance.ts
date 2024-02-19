@@ -92,14 +92,14 @@ export const usePortfolioBalance = (): PortfolioBalance => {
   }, [accountData.balancesPools, decimals, name, pools]);
 
   const axtcBalance: BalanceType = {
-    balance: Number(accountData?.balanceAxt || "0"),
+    balance: Number(accountData?.balanceAXTC || "0"),
     ticker: name.toUpperCase(),
     formatted: "",
   };
 
   const axtcTotalBalance: BalanceType = {
     balance:
-      Number(accountData?.balanceAxt || "0") + axtcReservedBalance.balance,
+      Number(accountData?.balanceAXTC || "0") + axtcReservedBalance.balance,
     ticker: name.toUpperCase(),
     formatted: "",
   };

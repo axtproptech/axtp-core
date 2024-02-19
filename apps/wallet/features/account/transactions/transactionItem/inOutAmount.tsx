@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Number } from "@/app/components/number";
+import { Numeric } from "@/app/components/numeric";
 
 interface Props {
   amount: number;
@@ -14,7 +14,7 @@ export const InOutAmount: FC<Props> = ({ amount, symbol, className = "" }) => {
         amount >= 0 ? "text-green-400" : "text-red-400"
       } ${className}`}
     >
-      <Number
+      <Numeric
         value={Math.abs(amount)}
         suffix={symbol.toUpperCase()}
         prefix={amount >= 0 ? "+" : "-"}

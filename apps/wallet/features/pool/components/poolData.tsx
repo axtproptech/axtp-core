@@ -1,6 +1,6 @@
 import { FC, ReactNode, useMemo } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
-import { Number } from "@/app/components/number";
+import { Numeric } from "@/app/components/numeric";
 import { useRouter } from "next/router";
 import { PoolContractData } from "@/types/poolContractData";
 // @ts-ignore
@@ -44,29 +44,29 @@ export const PoolData: FC<Props> = ({ poolData }) => {
     return [
       {
         label: "details_gmv",
-        value: <Number value={poolData.grossMarketValue} suffix={axtc} />,
+        value: <Numeric value={poolData.grossMarketValue} suffix={axtc} />,
       },
       {
         label: "details_paidDistribution",
-        value: <Number value={poolData.paidDistribution} suffix={axtc} />,
+        value: <Numeric value={poolData.paidDistribution} suffix={axtc} />,
       },
       {
         label: "details_initial",
-        value: <Number value={poolData.nominalLiquidity} suffix={axtc} />,
+        value: <Numeric value={poolData.nominalLiquidity} suffix={axtc} />,
       },
       {
         label: "details_priceToken",
-        value: <Number value={poolData.tokenRate} suffix={axtc} />,
+        value: <Numeric value={poolData.tokenRate} suffix={axtc} />,
       },
       {
         label: "details_maxShares",
-        value: <Number value={poolData.maxShareQuantity} />,
+        value: <Numeric value={poolData.maxShareQuantity} />,
       },
       {
         label: "details_soldShares",
         value: (
           <div>
-            <Number value={poolData.token.supply} />
+            <Numeric value={poolData.token.supply} />
           </div>
         ),
       },
@@ -74,7 +74,7 @@ export const PoolData: FC<Props> = ({ poolData }) => {
         label: "details_numShareHolders",
         value: (
           <div>
-            <Number value={poolData.token.numHolders} />
+            <Numeric value={poolData.token.numHolders} />
           </div>
         ),
       },

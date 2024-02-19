@@ -30,7 +30,7 @@ function App({ Component, pageProps }: AppProps) {
         title="Wallet - AXT PropTech Company S/A"
         canonical={Config.CanonicalUrl}
         imgUrl={Config.CanonicalUrl + "/assets/img/seo-wallet.jpg"}
-        keywords="axt, axtp, tokenomics, real estate, blockchain, signum, sustainable, tax deed, tax lien"
+        keywords="axt, axtp, tokenomics, real estate, blockchain, signum, web3, real world assets, rwa"
         description="The AXT Wallet opens you the door to a new world of digital assets."
         siteName="AXT PropTech Wallet"
         viewport="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"

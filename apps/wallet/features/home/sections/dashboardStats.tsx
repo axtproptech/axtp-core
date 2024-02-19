@@ -3,7 +3,7 @@ import { FC, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { getCompactFormatter } from "@/app/getCompactFormatter";
-import { Number } from "@/app/components/number";
+import { Numeric } from "@/app/components/numeric";
 
 const Stat = Stats.Stat;
 
@@ -47,7 +47,7 @@ export const DashboardStats: FC<Props> = ({ stats }) => {
               stats.performancePercent >= 0 ? "text-green-400" : "text-red-500"
             }
           >
-            <Number
+            <Numeric
               value={stats.performancePercent}
               prefix={stats.performancePercent >= 0 ? "+" : "-"}
               suffix="%"

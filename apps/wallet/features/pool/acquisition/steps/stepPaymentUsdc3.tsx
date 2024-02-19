@@ -187,7 +187,12 @@ export const StepPaymentUsdc3: FC<Props> = ({
                 rows={3}
                 disabled={!!transactionHash}
               />
-              <PasteButton onText={handlePaste} disabled={!!transactionHash} />
+              <div className="my-2 w-full">
+                <PasteButton
+                  onText={handlePaste}
+                  disabled={!!transactionHash}
+                />
+              </div>
             </>
           )}
 

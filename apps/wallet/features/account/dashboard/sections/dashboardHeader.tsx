@@ -17,13 +17,11 @@ import { useAppContext } from "@/app/hooks/useAppContext";
 import { AccountHeader } from "@/features/account/components/accountHeader";
 
 interface Props {
-  accountAddress: string;
   accountData: AccountData;
   verificationLevel: VerificationLevelType;
 }
 
 export const DashboardHeader: FC<Props> = ({
-  accountAddress,
   accountData,
   verificationLevel,
 }) => {
@@ -31,7 +29,6 @@ export const DashboardHeader: FC<Props> = ({
   const { name } = useAppSelector(selectAXTToken);
   const brlUsdMarket = useAppSelector(selectBrlUsdMarketData);
   const { t } = useTranslation();
-  const { Ledger } = useAppContext();
 
   const chartData = useMemo<PieChartDatum[]>(() => {
     const balances = axtcPoolBalances.map((pb, i) => {

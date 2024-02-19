@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Number } from "@/app/components/number";
+import { Numeric } from "@/app/components/numeric";
 import { Stats } from "react-daisyui";
 import { useTranslation } from "next-i18next";
 import { AssetAlias } from "@axtp/core";
@@ -48,7 +48,7 @@ export const PoolAssetDetailsStats: FC<Props> = ({
               </Stat.Item>
               <Stat.Item variant="value">
                 <span>
-                  <Number value={estimatedMarketValue} decimals={2} />
+                  <Numeric value={estimatedMarketValue} decimals={2} />
                   <small className="ml-1 text-xs">USD</small>
                 </span>
               </Stat.Item>
@@ -62,7 +62,7 @@ export const PoolAssetDetailsStats: FC<Props> = ({
               </Stat.Item>
               <Stat.Item variant="value">
                 <span>
-                  <Number value={accumulatedCosts} decimals={2} />
+                  <Numeric value={accumulatedCosts} decimals={2} />
                   <small className="ml-1 text-xs">USD</small>
                 </span>
               </Stat.Item>
@@ -82,7 +82,7 @@ export const PoolAssetDetailsStats: FC<Props> = ({
                   `}
                 >
                   <div>{performance >= 0 ? "↗" : "↘"}</div>
-                  <Number value={performance} decimals={2} />
+                  <Numeric value={performance} decimals={2} />
                   <small className="ml-1 text-xs">%</small>
                 </span>
               </Stat.Item>

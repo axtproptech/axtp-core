@@ -4,12 +4,13 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { useTranslation } from "next-i18next";
 import {
-  RiArrowLeftCircleLine,
   RiFileListLine,
-  RiSettings4Line,
   RiAwardLine,
+  RiDownload2Line,
+  RiHome6Line,
 } from "react-icons/ri";
 import { WithAccountOnly } from "@/app/components/withAccountOnly";
+import { useAccount } from "@/app/hooks/useAccount";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -22,12 +23,15 @@ export async function getStaticProps({ locale }: { locale: string }) {
 
 export default function Page() {
   const { t } = useTranslation();
+  const {
+    accountData: { balanceAXTC },
+  } = useAccount();
 
   const bottomNav: BottomNavigationItem[] = [
     {
-      label: t("back"),
-      back: true,
-      icon: <RiArrowLeftCircleLine />,
+      label: t("home"),
+      route: "/",
+      icon: <RiHome6Line />,
     },
     {
       label: t("rewards"),
@@ -39,12 +43,16 @@ export default function Page() {
       route: "/account/transactions",
       icon: <RiFileListLine />,
     },
-    {
-      label: t("settings"),
-      route: "/settings",
-      icon: <RiSettings4Line />,
-    },
   ];
+
+  const canWithdraw = Number(balanceAXTC) > 0;
+  if (canWithdraw) {
+    bottomNav.push({
+      label: t("withdrawal"),
+      route: "/account/withdrawal",
+      icon: <RiDownload2Line />,
+    });
+  }
 
   return (
     <WithAccountOnly>

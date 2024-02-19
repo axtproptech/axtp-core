@@ -69,7 +69,6 @@ export const AccountDashboard = () => {
     <div className="overflow-hidden h-[100vh]">
       <section>
         <DashboardHeader
-          accountAddress={accountAddress || ""}
           accountData={accountData}
           verificationLevel={verificationLevel}
         />

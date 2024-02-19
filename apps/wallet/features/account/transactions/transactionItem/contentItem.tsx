@@ -1,4 +1,4 @@
-import { Number } from "@/app/components/number";
+import { Numeric } from "@/app/components/numeric";
 import { TransactionData } from "@/types/transactionData";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useTranslation } from "next-i18next";
@@ -68,7 +68,7 @@ export const ContentItem = ({ txData }: Props) => {
 
       {txData.feeSigna > 0 && (
         <div className="text-xs opacity-60">
-          <Number value={txData.feeSigna} suffix={Ledger.SignaPrefix} />
+          <Numeric value={txData.feeSigna} suffix={Ledger.SignaPrefix} />
         </div>
       )}
     </div>

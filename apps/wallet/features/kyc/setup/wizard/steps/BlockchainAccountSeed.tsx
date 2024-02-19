@@ -1,8 +1,7 @@
 import { useTranslation } from "next-i18next";
 import { Button } from "react-daisyui";
-import { RiCheckboxCircleLine, RiFileDownloadLine } from "react-icons/ri";
+import { RiFileDownloadLine } from "react-icons/ri";
 import { useFormContext } from "react-hook-form";
-import { AttentionSeeker } from "react-awesome-reveal";
 import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
 import { KycWizard } from "../validation/types";
 import { HintBox } from "@/app/components/hintBoxes/hintBox";

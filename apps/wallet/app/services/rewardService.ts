@@ -1,6 +1,6 @@
-import { withError } from "./withError";
 import { Http } from "@signumjs/http";
 import { RewardItemData } from "@/types/rewardItemData";
+import { withError } from "@axtp/core/common/withError";
 
 export class RewardService {
   constructor(private bffClient: Http) {}

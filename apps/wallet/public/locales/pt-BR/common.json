@@ -30,6 +30,7 @@
   "buy_token_not_registered": "Parece que você ainda não está registrado",
   "buy_token_not_verified": "Você ainda não foi verificado",
   "buy_you_are_not_eligible": "Você ainda não está qualificado para comprar nenhum token, pois algo está faltando em sua conta ou registro.",
+  "cancel": "Cancelar",
   "clear": "Limpar",
   "click_to_see_more": "Clique item para ver mais",
   "click_to_see_tx": "Clique item para ver na blockchain",
@@ -271,5 +272,14 @@
   "wait_time_for_token_req": "Aguarde 5 minutos antes de solicitar outro código. Por favor, confirme que você recebeu o código de e-mail em sua caixa de entrada.",
   "you_must_be_an_adult": "Você deve ter mais de 18 anos para continuar.",
   "you_recovery_phrase": "Sua Frase de Recuperação",
-  "zip_code": "CEP"
+  "zip_code": "CEP",
+  "birth_date": "Data de Nascimento",
+  "back_side": "Verso",
+  "kyc-banking-info-save-error": "Hum. Infelizmente, não foi possível salvar as informações bancárias. Tente novamente ou entre em contato com o suporte.",
+  "kyc-banking-info-saved": "Suas informações bancárias foram salvas com sucesso",
+  "kyc-banking_info_description": "Para prosseguir com o processo de saque, solicitamos que você forneça seus dados bancários. Para conformidade legal, certifique-se de que a conta bancária esteja registrada em seu CPF. Esta informação é essencial para processar o seu pedido de saque.",
+  "kyc-banking_info_title": "Informação bancária",
+  "kyc-error_unsupported_pix_key": "Formato de chave Pix não suportado",
+  "kyc-pix_key": "Chave Pix",
+  "kyc-pix_key_placeholder": "CPF, Telefone, E-mail etc."
 }

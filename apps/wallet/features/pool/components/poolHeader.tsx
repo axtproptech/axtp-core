@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
-import { Number } from "@/app/components/number";
+import { Numeric } from "@/app/components/numeric";
 import { useRouter } from "next/router";
 import { PoolContractData } from "@/types/poolContractData";
 // @ts-ignore
@@ -73,12 +73,12 @@ export const PoolHeader: FC<Props> = ({ poolData, showStats = false }) => {
                 <Stat.Item variant="title">{t("gmv")}</Stat.Item>
                 <Stat.Item variant="value">
                   <span>
-                    <Number value={stats.gmv} />
+                    <Numeric value={stats.gmv} />
                     <small className="ml-1 text-xs">{axtcToken.name}</small>
                   </span>
                 </Stat.Item>
                 <Stat.Item variant="desc">
-                  <Number value={stats.initial} suffix={axtcToken.name} />{" "}
+                  <Numeric value={stats.initial} suffix={axtcToken.name} />{" "}
                 </Stat.Item>
               </Stat>
               <Stat className="place-items-center">
@@ -100,7 +100,7 @@ export const PoolHeader: FC<Props> = ({ poolData, showStats = false }) => {
                     stats.relGmv >= 0 ? "text-green-400" : "text-red-500"
                   }
                 >
-                  <Number
+                  <Numeric
                     prefix={stats.relGmv >= 0 ? "+" : "-"}
                     value={stats.gmv - stats.initial}
                     suffix={axtcToken.name}

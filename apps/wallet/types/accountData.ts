@@ -6,8 +6,8 @@ export interface AccountData {
   name: string;
   description: string;
   isActive: boolean;
-  balanceSigna: string;
-  balanceAxt: string;
+  balanceSIGNA: string;
+  balanceAXTC: string;
   balancesPools: (TokenMetaData & { quantity: string })[];
   transactions: TransactionData[];
 }
@@ -17,8 +17,8 @@ export const DefaultAccountData: AccountData = {
   name: "",
   description: "",
   isActive: false,
-  balanceSigna: "0",
-  balanceAxt: "0",
+  balanceSIGNA: "0",
+  balanceAXTC: "0",
   balancesPools: [],
   transactions: [],
 };

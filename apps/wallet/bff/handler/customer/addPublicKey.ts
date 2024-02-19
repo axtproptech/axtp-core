@@ -32,6 +32,7 @@ export const addPublicKey: RouteHandlerFunction = async (req, res) => {
       },
       include: {
         blockchainAccounts: true,
+        bankInformation: true,
         termsOfUse: {
           where: {
             termsOfUseId: Number(process.env.ACTIVE_TERMS_OF_USE_ID || "1"),

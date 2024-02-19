@@ -5,7 +5,7 @@ import { FC, useMemo } from "react";
 // @ts-ignore
 import hashicon from "hashicon";
 import { useTranslation } from "next-i18next";
-import { Number } from "@/app/components/number";
+import { Numeric } from "@/app/components/numeric";
 import { useAppSelector } from "@/states/hooks";
 import { selectAXTToken } from "@/app/states/tokenState";
 import { Button } from "react-daisyui";
@@ -54,7 +54,7 @@ export const PoolListAquisitionCTA: FC<Props> = ({ availablePools }) => {
                       <div className="flex flex-col justify-content">
                         {p.name}
                         <small>
-                          <Number value={p.price} suffix={name} />
+                          <Numeric value={p.price} suffix={name} />
                         </small>
                       </div>
                     </div>

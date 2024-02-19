@@ -10,6 +10,7 @@ import useSWR from "swr";
 import { AccountData, DefaultAccountData } from "@/types/accountData";
 import { toQuantity, toStableCoinAmount } from "@/app/tokenQuantity";
 import { TokenMetaData } from "@/types/tokenMetaData";
+import { KeyError } from "@/types/keyError";
 
 export const useAccount = () => {
   const { Ledger, AXTTokenId, AXTPoolTokenIds } = useAppContext();
@@ -65,10 +66,10 @@ export const useAccount = () => {
       return {
         accountId,
         isActive: !!account.publicKey,
-        balanceSigna: Amount.fromPlanck(account.balanceNQT).getSigna(),
+        balanceSIGNA: Amount.fromPlanck(account.balanceNQT).getSigna(),
         name: account.name || "",
         description: account.description || "",
-        balanceAxt: axtBalance
+        balanceAXTC: axtBalance
           ? toStableCoinAmount(axtBalance.balanceQNT)
           : "0",
         balancesPools,
@@ -87,7 +88,7 @@ export const useAccount = () => {
         const keys = JSON.parse(jsonString);
         return keys as Keys;
       } catch (e) {
-        throw new Error("Could not decrypt keys");
+        throw new KeyError("Could not decrypt keys");
       }
     },
     [salt, securedKeys]
