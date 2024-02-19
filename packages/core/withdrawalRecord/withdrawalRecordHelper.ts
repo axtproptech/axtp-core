@@ -11,6 +11,7 @@ export function createSRC44WithdrawalRecord(
     .setCustomField("x-cuid", args.customerId)
     .setCustomField("x-tid", args.tokenId)
     .setCustomField("x-tqnt", args.tokenQuantity)
+    .setCustomField("x-tdec", args.tokenDecimals.toString(10))
     .setCustomField("x-tnm", args.tokenName)
     .setCustomField("x-pt", args.paymentType)
     .setCustomField("x-pa", args.paymentAmount)
@@ -30,6 +31,7 @@ export function getWithdrawalRecordFromSRC44(
     customerId: cx("x-cuid"),
     tokenId: cx("x-tid"),
     tokenQuantity: cx("x-tqnt"),
+    tokenDecimals: Number(cx("x-tdec")),
     tokenName: cx("x-tnm"),
     paymentType: cx("x-pt") as WithdrawalPaymentType,
     paymentAmount: cx("x-pa"),
