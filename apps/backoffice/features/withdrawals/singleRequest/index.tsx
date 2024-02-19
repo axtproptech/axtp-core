@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { Box, Button } from "@mui/material";
 import { useBurnContract } from "@/app/hooks/useBurnContract";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { MainCard } from "@/app/components/cards";
 import { RequestView } from "./components/requestView";
 import router, { useRouter } from "next/router";
@@ -18,6 +18,8 @@ import { withdrawalService } from "@/app/services/withdrawalService/withdrawalSe
 import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { ChainValue } from "@signumjs/util";
+import { useLedgerAction } from "@/app/hooks/useLedgerAction";
+import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
 
 interface Props {
   accountId: string;
@@ -28,9 +30,8 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
   const { back } = useRouter();
   const { tokenAccountCredits, trackableTokens } = useBurnContract();
   const { ledgerService } = useLedgerService();
-  const { showError, showSuccess } = useSnackbar();
-  const [isExecuting, setIsExecuting] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const { transactionId, isExecuting, execute } = useLedgerAction();
 
   const request = useMemo(() => {
     const tac = tokenAccountCredits.find((t) => t.tokenId === tokenId);
@@ -107,11 +108,15 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
       const paidTokenQnt = ChainValue.create(
         request.tokenInfo.decimals
       ).setCompound(args.payableTokenAmount);
-      await ledgerService.burnContract.creditToken(
-        request.tokenInfo.id,
-        paidTokenQnt,
-        accountId
+
+      await execute((ledgerService) =>
+        ledgerService.burnContract.creditToken(
+          request.tokenInfo.id,
+          paidTokenQnt,
+          accountId
+        )
       );
+
       await withdrawalService.registerWithdrawal({
         accountPk: account.publicKey,
         customerId: cuid,
@@ -119,18 +124,15 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
         currency: args.currency.toLowerCase(),
         tokenId: request.tokenInfo.id,
         tokenName: request.tokenInfo.name,
+        tokenDecimals: request.tokenInfo.decimals,
         tokenQnt: paidTokenQnt.getAtomic(),
         usd: args.payableTokenAmount,
         paymentType: "Pix",
         txId: args.paymentReference,
       });
-      showSuccess("Successfully registered payment");
       setConfirmDialogOpen(false);
     } catch (e: any) {
-      showError(`Something failed: ${e.message}`);
       throw e;
-    } finally {
-      setIsExecuting(false);
     }
   };
 
@@ -151,6 +153,7 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
         requestInfo={request}
         isLoading={isLoadingCustomer}
       />
+      <SucceededTransactionSection transactionId={transactionId} />
       <ConfirmPayoutDialog
         open={confirmDialogOpen}
         onClose={handleConfirmPayout}

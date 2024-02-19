@@ -2,33 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BurnContractData } from "@/types/burnContractData";
 import { TokenAccountCredits } from "@axtp/core";
 
-// FIXME: remove the mock
-const MockTACs: TokenAccountCredits[] = [
-  {
-    tokenId: "17364735717996724982",
-    accountCredits: [
-      {
-        accountId: "2402520554221019656",
-        creditQuantity: "1000",
-      },
-      {
-        accountId: "3744968806698214868",
-        creditQuantity: "20000",
-      },
-    ],
-  },
-];
-
-const MockTT = {
-  "17364735717996724982": {
-    id: "17364735717996724982",
-    name: "TAXTC",
-    balance: "100000",
-    supply: "9500000",
-    decimals: 2,
-    numHolders: 20,
-  },
-};
 export interface BurnContractState {
   burnContract: BurnContractData;
 }
@@ -48,11 +21,8 @@ export const burnContractSlice = createSlice({
   initialState,
   reducers: {
     setBurnContractData: (state, action: PayloadAction<BurnContractData>) => {
-      // FIXME: remove the mock
       state.burnContract = {
         ...action.payload,
-        trackableTokens: MockTT,
-        tokenAccountCredits: MockTACs,
       };
     },
     reset: () => initialState,

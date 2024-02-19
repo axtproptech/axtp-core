@@ -2,10 +2,10 @@ import { Layout } from "@/app/components/layout";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { useTranslation } from "next-i18next";
-import { RiArrowLeftCircleLine, RiFileListLine } from "react-icons/ri";
+import { RiArrowLeftCircleLine } from "react-icons/ri";
 import { WithAccountOnly } from "@/app/components/withAccountOnly";
 import { Withdrawal } from "@/features/account/withdrawal";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useRouter } from "next/router";
 

@@ -12,6 +12,7 @@ export interface WithdrawalRecord {
   tokenQuantity: string;
   tokenId: string;
   tokenName: string;
+  tokenDecimals: number;
   paymentType: WithdrawalPaymentType;
   paymentTransactionId: string;
   paymentAmount: string;
