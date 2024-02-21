@@ -3,14 +3,19 @@ import { IconNewSection } from "@tabler/icons";
 import { Box, Stack } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
-import { TextInput } from "@/app/components/inputs";
+import { SelectInput, SelectOption, TextInput } from "@/app/components/inputs";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
-import { toStableCoinQuantity } from "@/app/tokenQuantity";
 import { styled } from "@mui/material/styles";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { ChainValue } from "@signumjs/util";
+
+export const PublicOptions: SelectOption[] = [
+  { value: 0, label: "Private" },
+  { value: 1, label: "Public" },
+];
 
 const FullBox = styled(Box)(() => ({
   width: "100%",
@@ -23,6 +28,8 @@ type FormValues = {
   rate: number;
   nominalLiquidity: number;
   alias: string;
+  isPublic: 0 | 1;
+  goal: number;
 };
 
 const required = {
@@ -37,12 +44,15 @@ export const CreateActionCard = () => {
   const [numberValues, setNumberValues] = useState({
     rate: 0.0,
     tokenCount: 0,
+    goal: 0.0,
   });
   const [nominalLiquidity, setNominalLiquidity] = useState(0.0);
   const {
     control,
     reset,
     getValues,
+    setValue,
+    watch,
     formState: { isValid },
   } = useForm<FormValues>({
     mode: "onChange",
@@ -51,24 +61,45 @@ export const CreateActionCard = () => {
       description: "Write a description here...",
       rate: 0.0,
       tokenCount: 0,
+      isPublic: 0,
+      goal: 0,
       alias: "",
     },
   });
 
+  const name = watch("name");
+  const isPublic = watch("isPublic");
+
+  useEffect(() => {
+    if (!getValues("alias")) {
+      setValue("alias", name.toLowerCase());
+    }
+  }, [name]);
+
   const resetForm = () => {
     reset();
-    setNumberValues({ rate: 0, tokenCount: 0 });
+    setNumberValues({ rate: 0, tokenCount: 0, goal: 0 });
   };
 
   const handleOnCreate = async () => {
     const formValues = getValues();
     await execute((service) =>
       service.poolContract.createPoolInstance({
-        name: formValues.name,
+        isPublic: formValues.isPublic,
         alias: formValues.alias,
         description: formValues.description,
-        rate: toStableCoinQuantity(numberValues.rate),
-        quantity: numberValues.tokenCount,
+        name: formValues.name,
+        goal: Number(
+          ChainValue.create(token.decimals)
+            .setCompound(numberValues.goal)
+            .getAtomic()
+        ),
+        quantity: numberValues.tokenCount, // decimal is always 1
+        rate: Number(
+          ChainValue.create(token.decimals)
+            .setCompound(numberValues.rate)
+            .getAtomic()
+        ),
       })
     );
     resetForm();
@@ -80,7 +111,7 @@ export const CreateActionCard = () => {
   }, [transactionId]);
 
   const handleNumberChange =
-    (field: "tokenCount" | "rate") => (values: NumberFormatValues) => {
+    (field: "tokenCount" | "rate" | "goal") => (values: NumberFormatValues) => {
       setNumberValues({ ...numberValues, [field]: values.floatValue });
     };
 
@@ -185,6 +216,53 @@ export const CreateActionCard = () => {
             customInput={TextInput}
             value={nominalLiquidity}
             disabled
+          />
+        </FullBox>
+      </Stack>
+      <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 0, md: 2 }}>
+        <FullBox>
+          <Controller
+            render={({ field }) => (
+              <NumericFormat
+                label="Goal"
+                color="primary"
+                decimalScale={2}
+                fixedDecimalScale
+                thousandSeparator
+                // @ts-ignore
+                control={control}
+                {...field}
+                customInput={TextInput}
+                onValueChange={handleNumberChange("goal")}
+                disabled={!isPublic}
+                allowNegative={false}
+                max={nominalLiquidity}
+              />
+            )}
+            name="goal"
+            control={control}
+            // @ts-ignore
+            variant="outlined"
+            rules={{
+              required,
+            }}
+          />
+        </FullBox>
+        <FullBox>
+          <Controller
+            render={({ field }) => (
+              // @ts-ignore
+              <SelectInput
+                label="Visibility"
+                options={PublicOptions}
+                {...field}
+              />
+            )}
+            name="isPublic"
+            control={control}
+            rules={{ required: true }}
+            // @ts-ignore
+            variant="outlined"
           />
         </FullBox>
       </Stack>

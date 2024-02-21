@@ -1,6 +1,6 @@
 import { ServiceContext } from "./serviceContext";
 import { Config } from "@/app/config";
-import { Amount } from "@signumjs/util";
+import { Amount, ChainValue } from "@signumjs/util";
 import { InputValidationService } from "../inputValidationService";
 import { PoolContractDataView } from "./poolContractDataView";
 import { GenericContractService } from "./genericContractService";
@@ -69,6 +69,13 @@ export class PoolInstanceService extends GenericContractService {
 
       const approvalStatusRefund = contractDataView.getRefundApprovalStatus();
       const pendingRefund = toStableCoinAmount(approvalStatusRefund.quantity);
+      const descriptor = DescriptorData.parse(contract.description);
+      const goal = ChainValue.create(masterToken.decimals)
+        .setAtomic((descriptor.getCustomField("x-goal") as string) || "0")
+        .getCompound();
+      const isPublic =
+        ((descriptor.getCustomField("x-pub") as string) || "0") === "1";
+
       return {
         isDeactivated: contractDataView.getIsDeactivated(),
         poolId: this.poolId,
@@ -85,6 +92,8 @@ export class PoolInstanceService extends GenericContractService {
         grossMarketValue: contractDataView.getGrossMarketValue(),
         approvalStatusRefund,
         pendingRefund: Number(pendingRefund),
+        goal: Number(goal),
+        isPublic,
       };
     });
   }

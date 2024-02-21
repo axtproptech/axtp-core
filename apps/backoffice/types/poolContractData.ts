@@ -18,4 +18,6 @@ export interface PoolContractData {
   tokenRate: number;
   grossMarketValue: number;
   poolId: string;
+  isPublic: boolean;
+  goal: number;
 }

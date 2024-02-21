@@ -8,18 +8,23 @@ import {
   Undo,
 } from "@mui/icons-material";
 import { CardWrapperBlue } from "@/app/components/cards";
-import { NumericFormat } from "react-number-format";
 // @ts-ignore
 import hashicon from "hashicon";
 import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { PoolContractData } from "@/types/poolContractData";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import PriceCheckRoundedIcon from "@mui/icons-material/PriceCheckRounded";
-import { Amount } from "@signumjs/util";
+import { Amount, ChainValue } from "@signumjs/util";
 import { Config } from "@/app/config";
 import { Number } from "@/app/components/number";
 import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
-import { IconGrowth, IconRocket } from "@tabler/icons";
+import {
+  IconGrowth,
+  IconRocket,
+  IconRun,
+  IconShieldLock,
+  IconTargetArrow,
+} from "@tabler/icons";
 
 interface Props {
   data: PoolContractData;
@@ -40,6 +45,9 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
     balance,
     masterToken,
     grossMarketValue,
+    goal,
+    isPublic,
+    tokenRate,
   } = data;
 
   const iconUrl = useMemo(() => {
@@ -55,10 +63,17 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
     }
   }, [balance]);
 
+  const supply = parseInt(token?.supply || "0");
   const performanceAbsolute = grossMarketValue - nominalLiquidity;
   const performancePercent = (grossMarketValue / nominalLiquidity) * 100 - 100;
-  const occupationPercent =
-    (parseInt(token?.supply || "0") / (maxShareQuantity || 0)) * 100;
+  const goalPercent = (goal / nominalLiquidity) * 100;
+  const occupationPercent = (supply / (maxShareQuantity || 0)) * 100;
+
+  const goalReached = supply * tokenRate;
+  const goalReachedPercent = Math.min(
+    goal ? (goalReached / goal) * 100 : 0,
+    100
+  );
 
   const isBalanceLow = balanceAmount.less(
     Config.PoolContract.LowBalanceThreshold
@@ -69,7 +84,7 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
       <Box sx={{ p: 2.25 }}>
         <Grid container>
           <Grid item style={{ width: "100%" }}>
-            <Grid container justifyContent="space-between">
+            <Grid container justifyContent="space-between" alignItems="center">
               <Grid item>
                 <Tooltip
                   arrow
@@ -113,6 +128,15 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                         )
                       }
                     />
+                  </Tooltip>
+                )}
+              </Grid>
+              <Grid item>
+                {!isPublic && (
+                  <Tooltip arrow title="Private Offer">
+                    <div>
+                      <IconShieldLock />
+                    </div>
                   </Tooltip>
                 )}
               </Grid>
@@ -218,6 +242,30 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                       </Typography>
                     </Tooltip>
                   </Stack>
+
+                  {goal > 0 && (
+                    <Stack
+                      justifyContent="start"
+                      direction="row"
+                      alignItems="center"
+                    >
+                      <IconTargetArrow />
+                      &nbsp;
+                      <Tooltip arrow title="Crowdfunding Goal">
+                        <Typography>
+                          <Number
+                            value={goal}
+                            suffix={masterToken.name}
+                            decimals={masterToken.decimals}
+                          />
+                          &nbsp;(
+                          <Number value={goalPercent} decimals={2} suffix="%" />
+                          )
+                        </Typography>
+                      </Tooltip>
+                    </Stack>
+                  )}
+
                   <Stack
                     justifyContent="start"
                     direction="row"
@@ -258,6 +306,38 @@ export const PoolCard: FC<Props> = ({ data, showContractBalance = false }) => {
                       </Typography>
                     </Tooltip>
                   </Stack>
+
+                  {goal > 0 && (
+                    <Stack
+                      justifyContent="start"
+                      direction="row"
+                      alignItems="center"
+                    >
+                      {goalReachedPercent >= 100 ? (
+                        <IconTargetArrow />
+                      ) : (
+                        <IconRun />
+                      )}
+                      &nbsp;
+                      <Tooltip arrow title="Crowdfunding Goal Progress">
+                        <Typography>
+                          <Number
+                            value={goalReached}
+                            suffix={masterToken.name}
+                            decimals={masterToken.decimals}
+                          />
+                          &nbsp;(
+                          <Number
+                            value={goalReachedPercent}
+                            decimals={2}
+                            suffix="%"
+                          />
+                          )
+                        </Typography>
+                      </Tooltip>
+                    </Stack>
+                  )}
+
                   <Stack
                     justifyContent="start"
                     direction="row"
