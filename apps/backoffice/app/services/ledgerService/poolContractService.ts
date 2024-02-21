@@ -18,6 +18,8 @@ interface CreatePoolInstanceArgs {
   name: string;
   rate: number;
   quantity: number;
+  isPublic: 0 | 1;
+  goal: number;
 }
 
 export class PoolContractService {
@@ -63,6 +65,8 @@ export class PoolContractService {
       .setType("smc")
       .setDescription(args.description)
       .setAlias(args.alias)
+      .setCustomField("x-pub", args.isPublic.toString())
+      .setCustomField("x-goal", args.goal.toString())
       .build()
       .stringify();
   }

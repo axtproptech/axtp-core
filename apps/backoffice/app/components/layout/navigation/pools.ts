@@ -13,6 +13,7 @@ export const pools: NavigationItem = {
       url: "/admin/pools/new",
       icon: IconNewSection,
       breadcrumbs: false,
+      permissions: ["master"],
     },
     {
       id: "all-pools",
