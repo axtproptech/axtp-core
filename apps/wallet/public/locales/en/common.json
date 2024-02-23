@@ -245,6 +245,7 @@
   "terms_of_use": "Terms of Use",
   "to_n_holders_one": "to a single holder",
   "to_n_holders_other": "to {{count}} holders",
+  "tokens_to_reach_goal": "{{count}} sales needed to reach goal",
   "too_many_files": "You can not pick more than {{count}} files",
   "total_gmv": "Total Gross Market Value",
   "total_paid_divs": "Total Paid Dividends",

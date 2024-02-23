@@ -47,6 +47,14 @@ export class PoolInstanceService extends GenericContractService {
       ]);
       const contractDataView = new PoolContractDataView(contract);
 
+      let goalQuantity = 0;
+      try {
+        const data = DescriptorData.parse(contract.description);
+        goalQuantity = Number(data.getCustomField("x-goal") || "0");
+      } catch (e) {
+        // ignore
+      }
+
       const [token, aliasDescriptor] = await Promise.all([
         this.getTokenData(contractDataView.getPoolTokenId()),
         this.getSRC44AliasDataFromContract(contract),
@@ -65,6 +73,7 @@ export class PoolInstanceService extends GenericContractService {
         nominalLiquidity: contractDataView.getNominalLiquidity(),
         tokenRate: contractDataView.getPoolTokenRate(),
         aliasData: this.getPoolAliasData(aliasDescriptor),
+        goalQuantity,
       };
     });
   }

@@ -152,6 +152,7 @@
   "terms_of_use": "Termos de Uso",
   "to_n_holders_one": "para um cotista",
   "to_n_holders_other": "para {{count}} cotistas",
+  "tokens_to_reach_goal": "{{count}} vendas até concluiu a meta",
   "total_gmv": "Valor total dos cotistas",
   "total_paid_divs": "Total de Dividendos Pagos",
   "transaction_timedout": "Oh não. a transação não pôde ser verificada.",

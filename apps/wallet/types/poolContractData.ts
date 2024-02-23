@@ -12,4 +12,5 @@ export interface PoolContractData {
   tokenRate: number;
   poolId: string;
   aliasData: PoolAliasData;
+  goalQuantity: number;
 }

@@ -1,4 +1,4 @@
-import { FC, useMemo, useEffect } from "react";
+import { FC, useMemo, useEffect, useRef } from "react";
 import { PoolContractData } from "@/types/poolContractData";
 import { Numeric } from "@/app/components/numeric";
 import { useAppSelector } from "@/states/hooks";
@@ -12,6 +12,7 @@ import { AccountData } from "@/types/accountData";
 import { useRouter } from "next/router";
 import { TrackingEventService } from "@/app/services";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { ChainValue } from "@signumjs/util";
 
 interface Props {
   poolData: PoolContractData;
@@ -29,13 +30,13 @@ export const PoolCard: FC<Props> = ({
   const { t } = useTranslation();
   const { TrackingEventService, IsMobile } = useAppContext();
   const router = useRouter();
-  const { name } = useAppSelector(selectAXTToken);
+  const { name, decimals } = useAppSelector(selectAXTToken);
 
   useEffect(() => {
     if (poolData.poolId) {
       router.prefetch(getPoolUrl(poolData.poolId));
     }
-  }, [poolData.poolId, router]);
+  }, [poolData.poolId, router, router]);
 
   const iconUrl = useMemo(() => {
     if (!poolData) return "";
@@ -58,6 +59,12 @@ export const PoolCard: FC<Props> = ({
   const freeSeats = Math.max(poolData.maxShareQuantity - soldTokens, 0);
   const performance =
     (poolData.grossMarketValue / poolData.nominalLiquidity) * 100 - 100;
+  const goal = Number(
+    ChainValue.create(decimals)
+      .setAtomic(poolData.goalQuantity || 0)
+      .getCompound()
+  );
+  const tokensToReachGoal = Math.max(goal / poolData.tokenRate - soldTokens, 0);
 
   const randomDelay = useMemo(() => {
     return 2_000 + Math.floor(Math.random() * 3_000);
@@ -120,13 +127,24 @@ export const PoolCard: FC<Props> = ({
                 suffix={name}
               />
             </div>
-            <div className="flex flex-row justify-between items-center">
-              <progress
-                className="progress progress-info mr-1"
-                value={soldTokens}
-                max={poolData.maxShareQuantity}
-              />
-              <small>
+            <div className="flex flex-row justify-between items-center relative">
+              <span>
+                <div className="absolute top-[6px] w-[92%]">
+                  {poolData.goalQuantity > 0 && (
+                    <progress
+                      className="progress progress-warning opacity-30 absolute top-0 left-0"
+                      value={goal}
+                      max={poolData.nominalLiquidity}
+                    />
+                  )}
+                  <progress
+                    className="progress progress-info mr-1 absolute top-0 left-0"
+                    value={soldTokens}
+                    max={poolData.maxShareQuantity}
+                  />
+                </div>
+              </span>
+              <small className="text-right">
                 {soldTokens}/{poolData.maxShareQuantity}
               </small>
             </div>
@@ -135,6 +153,11 @@ export const PoolCard: FC<Props> = ({
                 ? t("free_pool_seats", { count: freeSeats })
                 : t("pool_full")}
             </small>
+            {tokensToReachGoal > 0 && (
+              <small className="ml-1">
+                {t("tokens_to_reach_goal", { count: tokensToReachGoal })}
+              </small>
+            )}
             {accountShares > 0 && (
               <Badge color="secondary" className="absolute bottom-2 right-8">
                 {t("you_own_n_shares", { count: accountShares })}
