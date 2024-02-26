@@ -127,7 +127,7 @@
   "import_account": "Import Account",
   "import_account_hint": "Choose this, if you have an account already, and you want to import using the Recovery Phrase",
   "in_n_pools_one": "in a single pool",
-  "in_n_pools_others": "in {{count}} pools",
+  "in_n_pools_other": "in {{count}} pools",
   "initial_setup_title": "Join the AXT Club!",
   "invalid_cpf": "Invalid CPF",
   "invalid_field": "Invalid Field",

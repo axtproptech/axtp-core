@@ -83,7 +83,7 @@
   "import_account": "Importar conta",
   "import_account_hint": "Escolha isso se você já tiver uma conta e quiser importar usando a Frase de Recuperação",
   "in_n_pools_one": "em um único polo",
-  "in_n_pools_others": "em {{count}} polos",
+  "in_n_pools_other": "em {{count}} polos",
   "join_club": "Junte-se ao clube!",
   "joined": "Participando",
   "kyc_account_linked_failed": "Não foi possível vincular a conta ao registro!",
