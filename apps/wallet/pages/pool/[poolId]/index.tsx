@@ -5,7 +5,6 @@ import {
   RiWallet3Line,
   RiArrowLeftCircleLine,
   RiHome6Line,
-  RiFileSettingsLine,
 } from "react-icons/ri";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { Config } from "@/app/config";

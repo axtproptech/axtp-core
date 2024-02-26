@@ -12,8 +12,10 @@ import { useAppContext } from "@/app/hooks/useAppContext";
 import { SafeExternalLink } from "@/app/components/navigation/externalLink";
 import { RiExternalLinkLine } from "react-icons/ri";
 import { Address } from "@signumjs/core";
+import { ChainValue } from "@signumjs/util";
 
 interface DetailItemProps {
+  hidden?: boolean;
   label: string;
   value: string | ReactNode;
 }
@@ -32,7 +34,6 @@ interface Props {
 }
 
 export const PoolData: FC<Props> = ({ poolData }) => {
-  const account = useAccount();
   const { Ledger } = useAppContext();
   const axtcToken = useAppSelector(selectAXTToken);
 
@@ -40,6 +41,14 @@ export const PoolData: FC<Props> = ({ poolData }) => {
     if (!poolData) return [];
 
     const axtc = axtcToken.name;
+    let goal = 0;
+    if (poolData.goalQuantity) {
+      goal = Number(
+        ChainValue.create(axtcToken.decimals)
+          .setAtomic(poolData.goalQuantity)
+          .getCompound()
+      );
+    }
 
     return [
       {
@@ -55,6 +64,15 @@ export const PoolData: FC<Props> = ({ poolData }) => {
         value: <Numeric value={poolData.nominalLiquidity} suffix={axtc} />,
       },
       {
+        hidden: goal === 0,
+        label: "details_goal",
+        value: (
+          <span>
+            <Numeric value={goal} suffix={axtc} />
+          </span>
+        ),
+      },
+      {
         label: "details_priceToken",
         value: <Numeric value={poolData.tokenRate} suffix={axtc} />,
       },
@@ -64,19 +82,11 @@ export const PoolData: FC<Props> = ({ poolData }) => {
       },
       {
         label: "details_soldShares",
-        value: (
-          <div>
-            <Numeric value={poolData.token.supply} />
-          </div>
-        ),
+        value: <Numeric value={poolData.token.supply} />,
       },
       {
         label: "details_numShareHolders",
-        value: (
-          <div>
-            <Numeric value={poolData.token.numHolders} />
-          </div>
-        ),
+        value: <Numeric value={poolData.token.numHolders} />,
       },
       {
         label: "details_token",
@@ -114,9 +124,9 @@ export const PoolData: FC<Props> = ({ poolData }) => {
 
   return (
     <div className="relative md:mx-auto md:w-2/3">
-      {detailItems.map(({ label, value }, index) => (
-        <DetailItem key={index} label={label} value={value} />
-      ))}
+      {detailItems.map(({ label, value, hidden = false }, index) =>
+        hidden ? null : <DetailItem key={index} label={label} value={value} />
+      )}
     </div>
   );
 };

@@ -78,6 +78,7 @@
   "details_contract": "Linked Smart Contract",
   "details_gmv": "Current Gross Market Value",
   "details_initial": "Initial Pool Value",
+  "details_goal": "Funding Goal",
   "details_maxShares": "Max. Available Shares",
   "details_numShareHolders": "Number of Shareholders",
   "details_paidDistribution": "Total Paid Dividends",

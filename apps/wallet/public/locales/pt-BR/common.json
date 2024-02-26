@@ -52,6 +52,7 @@
   "details_contract": "Contrato inteligente vinculado",
   "details_gmv": "Valor Bruto de Mercado atual",
   "details_initial": "Valor Inicial",
+  "details_goal": "Meta do Funding",
   "details_maxShares": "Suporte máximo de tokens ",
   "details_numShareHolders": "Número de cotistas",
   "details_paidDistribution": "Total de dividendos pagos",
