@@ -1,4 +1,4 @@
-import { FC, useMemo, useEffect, useRef } from "react";
+import { FC, useMemo, useEffect } from "react";
 import { PoolContractData } from "@/types/poolContractData";
 import { Numeric } from "@/app/components/numeric";
 import { useAppSelector } from "@/states/hooks";
@@ -10,7 +10,6 @@ import { Badge } from "react-daisyui";
 import { AttentionSeeker } from "react-awesome-reveal";
 import { AccountData } from "@/types/accountData";
 import { useRouter } from "next/router";
-import { TrackingEventService } from "@/app/services";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { ChainValue } from "@signumjs/util";
 

@@ -1,11 +1,7 @@
 import { FC, ReactNode, useMemo } from "react";
-import { useAccount } from "@/app/hooks/useAccount";
 import { Numeric } from "@/app/components/numeric";
-import { useRouter } from "next/router";
 import { PoolContractData } from "@/types/poolContractData";
-// @ts-ignore
-import hashicon from "hashicon";
-import { useTranslation, Trans as T } from "next-i18next";
+import { Trans as T } from "next-i18next";
 import { useAppSelector } from "@/states/hooks";
 import { selectAXTToken } from "@/app/states/tokenState";
 import { useAppContext } from "@/app/hooks/useAppContext";
@@ -120,12 +116,18 @@ export const PoolData: FC<Props> = ({ poolData }) => {
         ),
       },
     ];
-  }, [Ledger.AddressPrefix, Ledger.ExplorerUrl, axtcToken.name, poolData]);
+  }, [
+    Ledger.AddressPrefix,
+    Ledger.ExplorerUrl,
+    axtcToken.decimals,
+    axtcToken.name,
+    poolData,
+  ]);
 
   return (
     <div className="relative md:mx-auto md:w-2/3">
-      {detailItems.map(({ label, value, hidden = false }, index) =>
-        hidden ? null : <DetailItem key={index} label={label} value={value} />
+      {detailItems.map(({ label, value, hidden = false }) =>
+        hidden ? null : <DetailItem key={label} label={label} value={value} />
       )}
     </div>
   );
