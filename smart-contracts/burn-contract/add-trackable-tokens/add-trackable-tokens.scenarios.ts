@@ -1,7 +1,7 @@
 import {Context} from '../context';
-import {asHexMessage, UserTransactionObj} from 'signum-smartc-testbed';
+import {asHexMessage, TransactionObj} from 'signum-smartc-testbed';
 
-export const AddTrackableTokens: UserTransactionObj[] = [
+export const AddTrackableTokens: TransactionObj[] = [
     {
         blockheight: 1,
         amount: 1_0000_0000n, // charge
@@ -17,19 +17,19 @@ export const AddTrackableTokens: UserTransactionObj[] = [
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[0]]),
+        messageArr: [Context.Methods.AddTrackableToken, Context.Tokens[0]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[1]]),
+        messageArr: [Context.Methods.AddTrackableToken, Context.Tokens[1]],
         recipient: Context.ThisContract,
     },
 ]
 
-export const AddTrackableTokensNotAllowed: UserTransactionObj[] = [
+export const AddTrackableTokensNotAllowed: TransactionObj[] = [
     {
         blockheight: 1,
         amount: 1_0000_0000n, // charge
@@ -45,14 +45,14 @@ export const AddTrackableTokensNotAllowed: UserTransactionObj[] = [
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.SenderAccount1,
-        messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[0]]),
+        messageArr: [Context.Methods.AddTrackableToken, Context.Tokens[0]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.SenderAccount1,
-        messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[1]]),
+        messageArr: [Context.Methods.AddTrackableToken, Context.Tokens[1]],
         recipient: Context.ThisContract,
     },
 ]

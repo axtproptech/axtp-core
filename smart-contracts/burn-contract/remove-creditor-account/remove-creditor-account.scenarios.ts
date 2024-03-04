@@ -1,5 +1,5 @@
 import {Context} from '../context';
-import {asHexMessage, UserTransactionObj} from 'signum-smartc-testbed';
+import {asHexMessage, TransactionObj} from 'signum-smartc-testbed';
 
 
 export const InitialTransactions = [
@@ -15,7 +15,7 @@ export const InitialTransactions = [
         recipient: Context.ThisContract,
     },
 ]
-export const RemoveCreditorAccounts: UserTransactionObj[] = [
+export const RemoveCreditorAccounts: TransactionObj[] = [
     ...InitialTransactions,
     {
         blockheight: 1,
@@ -27,60 +27,60 @@ export const RemoveCreditorAccounts: UserTransactionObj[] = [
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.AddCreditor, Context.CreditorAccount[0]]),
+        messageArr: [Context.Methods.AddCreditor, Context.CreditorAccount[0]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.AddCreditor, Context.CreditorAccount[1]]),
+        messageArr: [Context.Methods.AddCreditor, Context.CreditorAccount[1]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 4,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.RemoveCreditor, Context.CreditorAccount[0]]),
+        messageArr: [Context.Methods.RemoveCreditor, Context.CreditorAccount[0]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 4,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.RemoveCreditor, Context.CreditorAccount[1]]),
+        messageArr: [Context.Methods.RemoveCreditor, Context.CreditorAccount[1]],
         recipient: Context.ThisContract,
     },
 ]
 
-export const RemoveCreditorAccontsNotAllowed: UserTransactionObj[] = [
+export const RemoveCreditorAccontsNotAllowed: TransactionObj[] = [
     ...InitialTransactions,
     {
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.AddCreditor, Context.CreditorAccount[0]]),
+        messageArr: [Context.Methods.AddCreditor, Context.CreditorAccount[0]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.AddCreditor, Context.CreditorAccount[1]]),
+        messageArr: [Context.Methods.AddCreditor, Context.CreditorAccount[1]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 4,
         amount: Context.ActivationFee,
         sender: Context.CreditorAccount[0],
-        messageHex: asHexMessage([Context.Methods.RemoveCreditor, Context.CreditorAccount[1]]),
+        messageArr: [Context.Methods.RemoveCreditor, Context.CreditorAccount[1]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 5,
         amount: Context.ActivationFee,
         sender: Context.SenderAccount1,
-        messageHex: asHexMessage([Context.Methods.RemoveCreditor, Context.CreditorAccount[0]]),
+        messageArr: [Context.Methods.RemoveCreditor, Context.CreditorAccount[0]],
         recipient: Context.ThisContract,
     },
 ]

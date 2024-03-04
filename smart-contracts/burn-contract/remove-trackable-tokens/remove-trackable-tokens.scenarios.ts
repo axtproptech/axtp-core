@@ -1,5 +1,5 @@
 import {Context} from '../context';
-import {asHexMessage, UserTransactionObj} from 'signum-smartc-testbed';
+import {asHexMessage, TransactionObj} from 'signum-smartc-testbed';
 
 
 export const InitialTransactions = [
@@ -15,7 +15,7 @@ export const InitialTransactions = [
         recipient: Context.ThisContract,
     },
 ]
-export const RemoveTrackableTokens: UserTransactionObj[] = [
+export const RemoveTrackableTokens: TransactionObj[] = [
     ...InitialTransactions,
     {
         blockheight: 1,
@@ -32,67 +32,67 @@ export const RemoveTrackableTokens: UserTransactionObj[] = [
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[0]]),
+        messageArr: [Context.Methods.AddTrackableToken, Context.Tokens[0]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[1]]),
+        messageArr: [Context.Methods.AddTrackableToken, Context.Tokens[1]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 4,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.RemoveTrackableToken, Context.Tokens[0]]),
+        messageArr: [Context.Methods.RemoveTrackableToken, Context.Tokens[0]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 4,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.RemoveTrackableToken, Context.Tokens[1]]),
+        messageArr: [Context.Methods.RemoveTrackableToken, Context.Tokens[1]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 4,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.RemoveTrackableToken, Context.Tokens[2]]),
+        messageArr: [Context.Methods.RemoveTrackableToken, Context.Tokens[2]],
         recipient: Context.ThisContract,
     },
 ]
 
-export const RemoveTrackableTokensNotAllowed: UserTransactionObj[] = [
+export const RemoveTrackableTokensNotAllowed: TransactionObj[] = [
     ...InitialTransactions,
     {
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[0]]),
+        messageArr: [Context.Methods.AddTrackableToken, Context.Tokens[0]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[1]]),
+        messageArr: [Context.Methods.AddTrackableToken, Context.Tokens[1]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 4,
         amount: Context.ActivationFee,
         sender: Context.SenderAccount1,
-        messageHex: asHexMessage([Context.Methods.RemoveTrackableToken, Context.Tokens[1]]),
+        messageArr: [Context.Methods.RemoveTrackableToken, Context.Tokens[1]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 4,
         amount: Context.ActivationFee,
         sender: Context.SenderAccount1,
-        messageHex: asHexMessage([Context.Methods.RemoveTrackableToken, Context.Tokens[0]]),
+        messageArr: [Context.Methods.RemoveTrackableToken, Context.Tokens[0]],
         recipient: Context.ThisContract,
     },
 ]
