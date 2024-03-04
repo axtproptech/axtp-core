@@ -6,10 +6,10 @@ import {RemoveCreditorAccounts, RemoveCreditorAccontsNotAllowed} from './remove-
 
 describe('Burn Contract - Remove Creditor Accounts', () => {
     test('should remove creditor accounts as expected', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed(RemoveCreditorAccounts)
             .loadContract(Context.ContractPath)
-            .runScenario(RemoveCreditorAccounts);
-        const map = testbed.getMapValuesPerSlot(Context.Maps.CreditorAccounts);
+            .runScenario();
+        const map = testbed.getContractMapValues(Context.Maps.CreditorAccounts);
         expect(map).toEqual([
             {
                 k1: Context.Maps.CreditorAccounts,
@@ -24,10 +24,10 @@ describe('Burn Contract - Remove Creditor Accounts', () => {
         ]);
     })
     test('should not to allow remove as not creator', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed(RemoveCreditorAccontsNotAllowed)
             .loadContract(Context.ContractPath)
-            .runScenario(RemoveCreditorAccontsNotAllowed);
-        const map = testbed.getMapValuesPerSlot(Context.Maps.CreditorAccounts);
+            .runScenario();
+        const map = testbed.getContractMapValues(Context.Maps.CreditorAccounts);
         expect(map).toEqual([
             {
                 k1: Context.Maps.CreditorAccounts,

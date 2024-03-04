@@ -6,10 +6,10 @@ import {AddTrackableTokens, AddTrackableTokensNotAllowed} from './add-trackable-
 
 describe('Burn Contract - Add Trackable Tokens', () => {
     test('should add trackable tokens as expected', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed(AddTrackableTokens)
             .loadContract(Context.ContractPath)
-            .runScenario(AddTrackableTokens);
-        const map = testbed.getMapValuesPerSlot(Context.Maps.TrackableTokens);
+            .runScenario();
+        const map = testbed.getContractMapValues(Context.Maps.TrackableTokens);
         expect(map).toEqual([
             {
                 k1: Context.Maps.TrackableTokens,
@@ -24,10 +24,10 @@ describe('Burn Contract - Add Trackable Tokens', () => {
         ]);
     })
     test('should not to allow add as not creator', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed(AddTrackableTokensNotAllowed)
             .loadContract(Context.ContractPath)
-            .runScenario(AddTrackableTokensNotAllowed);
-        const map = testbed.getMapValuesPerSlot(Context.Maps.TrackableTokens);
+            .runScenario();
+        const map = testbed.getContractMapValues(Context.Maps.TrackableTokens);
         expect(map.length).toEqual(0);
     })
 })
