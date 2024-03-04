@@ -80,9 +80,10 @@ export const Config = {
     Methods: {
       AddTrackableToken: "1",
       RemoveTrackableToken: "2",
-      CreditTrackableToken: "3",
-      AddCreditor: "4",
-      RemoveCreditor: "5",
+      CreditTrackedToken: "3",
+      ReturnTrackedToken: "4",
+      AddCreditor: "5",
+      RemoveCreditor: "6",
     },
   },
 

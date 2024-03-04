@@ -20,6 +20,7 @@ import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { ChainValue } from "@signumjs/util";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
+import { DenialArgs, DenyPayoutDialog } from "./components/denyPayoutDialog";
 
 interface Props {
   accountId: string;
@@ -31,6 +32,7 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
   const { tokenAccountCredits, trackableTokens } = useBurnContract();
   const { ledgerService } = useLedgerService();
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [denyDialogOpen, setDenyDialogOpen] = useState(false);
   const { transactionId, isExecuting, execute } = useLedgerAction();
 
   const request = useMemo(() => {
@@ -79,6 +81,8 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
   function handleActions(action: SingleRequestActionType) {
     if (action === "confirm-payout") {
       setConfirmDialogOpen(true);
+    } else if (action === "deny-payout") {
+      setDenyDialogOpen(true);
     } else if (action === "view-customer") {
       router.push(`/admin/customers/${customerData?.cuid}`);
     }
@@ -107,7 +111,7 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
 
       const paidTokenQnt = ChainValue.create(
         request.tokenInfo.decimals
-      ).setCompound(args.payableTokenAmount);
+      ).setCompound(args.refusedTokenAmount);
 
       await execute((ledgerService) =>
         ledgerService.burnContract.creditToken(
@@ -126,11 +130,65 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
         tokenName: request.tokenInfo.name,
         tokenDecimals: request.tokenInfo.decimals,
         tokenQnt: paidTokenQnt.getAtomic(),
-        usd: args.payableTokenAmount,
+        usd: args.refusedTokenAmount,
         paymentType: "Pix",
         txId: args.paymentReference,
       });
       setConfirmDialogOpen(false);
+    } catch (e: any) {
+      throw e;
+    }
+  };
+  const handleConfirmDenial = async (args: DenialArgs) => {
+    // TODO: refactor  - move to separate function....
+    if (!request || !customerData || !ledgerService) return;
+    // create a registry on chain
+    // send transaction to smart contract
+    try {
+      const { blockchainAccounts } = customerData;
+      if (!blockchainAccounts) return;
+
+      const account = blockchainAccounts.length
+        ? customerData.blockchainAccounts[0]
+        : null;
+      if (!account) {
+        throw new Error(`Customer has no blockchain account`);
+      }
+
+      if (account.accountId !== accountId) {
+        throw new Error(
+          `Account Id mismatch: ${account.accountId} vs. ${accountId}`
+        );
+      }
+
+      const refusedTokenQnt = ChainValue.create(
+        request.tokenInfo.decimals
+      ).setCompound(args.refusedTokenAmount);
+
+      await execute((ledgerService) =>
+        ledgerService.burnContract.returnToken(
+          request.tokenInfo.id,
+          refusedTokenQnt,
+          accountId
+        )
+      );
+
+      // send info about denial from backend
+
+      // await withdrawalService.registerWithdrawal({
+      //   accountPk: account.publicKey,
+      //   customerId: cuid,
+      //   amount: args.paidFiatAmount,
+      //   currency: args.currency.toLowerCase(),
+      //   tokenId: request.tokenInfo.id,
+      //   tokenName: request.tokenInfo.name,
+      //   tokenDecimals: request.tokenInfo.decimals,
+      //   tokenQnt: paidTokenQnt.getAtomic(),
+      //   usd: args.refusedTokenAmount,
+      //   paymentType: "Pix",
+      //   txId: args.paymentReference,
+      // });
+      setDenyDialogOpen(false);
     } catch (e: any) {
       throw e;
     }
@@ -159,6 +217,14 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
         onClose={handleConfirmPayout}
         onCancel={() => {
           setConfirmDialogOpen(false);
+        }}
+        withdrawalRequestInfo={request}
+      />
+      <DenyPayoutDialog
+        open={denyDialogOpen}
+        onClose={handleConfirmDenial}
+        onCancel={() => {
+          setDenyDialogOpen(false);
         }}
         withdrawalRequestInfo={request}
       />

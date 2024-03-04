@@ -153,7 +153,7 @@ export const ReturnTrackedTokensEvenWithZeroBalance = [
         blockheight: 4,
         amount: Context.ActivationFee,
         sender: Context.CreditorAccount[0],
-        messageArr: [Context.Methods.ReturnTrackedToken, Context.Tokens[0], Context.SenderAccount1],
+        messageArr: [Context.Methods.ReturnTrackedToken, Context.Tokens[0], 0n, Context.SenderAccount1],
         recipient: Context.ThisContract,
     },
 ]
@@ -163,8 +163,8 @@ export const ReturnTrackedTokensNotAllowed = [
     {
         blockheight: 6,
         amount: Context.ActivationFee,
-        sender: Context.SenderAccount1,
-        messageArr: [Context.Methods.ReturnTrackedToken, Context.Tokens[0], Context.SenderAccount1],
+        sender: Context.SenderAccount1, // not allowed
+        messageArr: [Context.Methods.ReturnTrackedToken, Context.Tokens[0], 5n, Context.SenderAccount1],
         recipient: Context.ThisContract,
     },
     {
@@ -177,8 +177,8 @@ export const ReturnTrackedTokensNotAllowed = [
     {
         blockheight: 8,
         amount: Context.ActivationFee,
-        sender: Context.CreditorAccount[0],
-        messageArr: [Context.Methods.ReturnTrackedToken, Context.Tokens[0], Context.SenderAccount1],
+        sender: Context.CreditorAccount[0], // not allowed
+        messageArr: [Context.Methods.ReturnTrackedToken, Context.Tokens[0], 2n, Context.SenderAccount1],
         recipient: Context.ThisContract,
     },
 ]

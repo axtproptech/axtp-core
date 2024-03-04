@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
@@ -10,40 +9,34 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "@/app/components/inputs";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ActionButton } from "@/app/components/buttons/actionButton";
 import { SingleWithdrawalRequestInfo } from "../singleWithdrawalRequestInfo";
 import { ChainValue } from "@signumjs/util";
-import { useSelector } from "react-redux";
-import { selectUsdBrlMarketState } from "@/app/states/marketDataState";
-import { Config } from "@/app/config";
 
 interface FormArgs {
-  paymentReference: string;
+  reason: string;
   refusedTokenAmount: string;
   currency: "BRL" | "USD";
 }
 
-export interface ConfirmationArgs extends FormArgs {
-  paidFiatAmount: string;
-}
+export interface DenialArgs extends FormArgs {}
 
 interface Props {
   open: boolean;
-  onClose: (args: ConfirmationArgs) => Promise<void>;
+  onClose: (args: DenialArgs) => Promise<void>;
   onCancel: () => void;
   withdrawalRequestInfo: SingleWithdrawalRequestInfo;
 }
 
 const DefaultFiatCurrency = "BRL";
 
-export const ConfirmPayoutDialog = ({
+export const DenyPayoutDialog = ({
   open,
   onClose,
   onCancel,
   withdrawalRequestInfo,
 }: Props) => {
-  const usdBrlMarket = useSelector(selectUsdBrlMarketState);
   const tokenName = withdrawalRequestInfo.tokenInfo.name;
   const tokenAmount = ChainValue.create(
     withdrawalRequestInfo.tokenInfo.decimals
@@ -53,30 +46,18 @@ export const ConfirmPayoutDialog = ({
   const { control, reset, getValues, watch, setValue, setError } =
     useForm<FormArgs>({
       defaultValues: {
-        paymentReference: "",
+        reason: "",
         refusedTokenAmount: tokenAmount.getCompound(),
         currency: DefaultFiatCurrency,
       },
     });
-  const payableTokenAmount = watch("payableTokenAmount");
-  const paymentReference = watch("paymentReference");
-
-  const calcFiatAmount = useCallback(() => {
-    let paidFiatAmount = "0";
-    const amount = parseFloat(payableTokenAmount);
-    if (!Number.isNaN(amount)) {
-      paidFiatAmount = (
-        (usdBrlMarket.current_price - Config.Platform.Market.PriceAdjustment) *
-        amount
-      ).toFixed(2);
-    }
-    return paidFiatAmount;
-  }, [payableTokenAmount, usdBrlMarket.current_price]);
+  const refusedTokenAmount = watch("refusedTokenAmount");
+  const reason = watch("reason");
 
   const handleConfirm = async () => {
     try {
       setIsClosing(true);
-      await onClose({ ...getValues(), paidFiatAmount: calcFiatAmount() });
+      await onClose({ ...getValues() });
       reset();
     } finally {
       setIsClosing(false);
@@ -89,21 +70,21 @@ export const ConfirmPayoutDialog = ({
   };
 
   useEffect(() => {
-    setError("payableTokenAmount", { type: "manual", message: "" });
+    setError("refusedTokenAmount", { type: "manual", message: "" });
 
-    const amount = parseFloat(payableTokenAmount);
+    const amount = parseFloat(refusedTokenAmount);
     if (Number.isNaN(amount)) {
       return;
     }
 
     if (amount <= 0 || amount > Number(tokenAmount.getCompound())) {
-      setError("payableTokenAmount", {
+      setError("refusedTokenAmount", {
         type: "manual",
         message: `Amount must be between 0 and ${tokenAmount.getCompound()}`,
       });
       return;
     }
-  }, [tokenAmount, payableTokenAmount, setError, setValue]);
+  }, [tokenAmount, refusedTokenAmount, setError, setValue]);
 
   return (
     <Dialog
@@ -112,14 +93,14 @@ export const ConfirmPayoutDialog = ({
       aria-labelledby="form-dialog-title"
     >
       <DialogTitle id="form-dialog-title">
-        <Typography variant="h3">Confirm Payout</Typography>
+        <Typography variant="h3">Confirm Payout Denial</Typography>
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
           <Typography variant="subtitle1">
-            Confirm that and how much {withdrawalRequestInfo.tokenInfo.name}{" "}
-            will be paid to the token holder. Once confirmed it will be
-            registered as a permanent record on the blockchain.
+            Confirm that the withdrawal request won't be executed in total or
+            partial. Once confirmed the token holder will get back his{" "}
+            {withdrawalRequestInfo.tokenInfo.name} tokens.
           </Typography>
         </DialogContentText>
         <Controller
@@ -127,36 +108,36 @@ export const ConfirmPayoutDialog = ({
             <TextInput
               {...field}
               label={`${tokenName} Amount`}
-              placeholder={`Enter the payable amount of ${tokenName}`}
+              placeholder={`Enter the refused amount of ${tokenName}`}
               aria-autocomplete="none"
               error={error ? error.message : ""}
               hint={`Max  ${tokenAmount.getCompound()} ${tokenName}`}
             />
           )}
-          name="payableTokenAmount"
+          name="refusedTokenAmount"
           control={control}
           rules={{ required: true }}
           // @ts-ignore
           variant="outlined"
         />
-        <Box my={2} borderRadius={2} textAlign="center">
-          <Typography variant="caption">Payable Amount</Typography>
-          <Typography variant="h3">
-            {calcFiatAmount()} {getValues("currency")}
-          </Typography>
-        </Box>
+        {/*<Box my={2} borderRadius={2} textAlign="center">*/}
+        {/*  <Typography variant="caption">Payable Amount</Typography>*/}
+        {/*  <Typography variant="h3">*/}
+        {/*    {calcFiatAmount()} {getValues("currency")}*/}
+        {/*  </Typography>*/}
+        {/*</Box>*/}
 
         <Controller
           render={({ field, fieldState: { error } }) => (
             <TextInput
               {...field}
-              label="Payment Reference"
-              placeholder="Enter the payment reference, i.e. identifier of Pix, or other"
+              label="Reason"
+              placeholder="Enter a brief explanation why the payment is refused."
               aria-autocomplete="none"
               error={error ? error.message : ""}
             />
           )}
-          name="paymentReference"
+          name="reason"
           control={control}
           // @ts-ignore
           variant="outlined"
@@ -172,7 +153,7 @@ export const ConfirmPayoutDialog = ({
           actionLabel="Confirm"
           onClick={handleConfirm}
           isLoading={isClosing}
-          disabled={!payableTokenAmount || !paymentReference}
+          disabled={!refusedTokenAmount || !reason}
         />
       </DialogActions>
     </Dialog>
