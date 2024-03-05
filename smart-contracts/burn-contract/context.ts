@@ -13,9 +13,10 @@ export const Context = {
     Methods: {
         AddTrackableToken: 1n,
         RemoveTrackableToken: 2n,
-        CreditTrackableToken: 3n,
-        AddCreditor: 4n,
-        RemoveCreditor: 5n,
+        CreditTrackedToken: 3n,
+        ReturnTrackedToken: 4n,
+        AddCreditor: 5n,
+        RemoveCreditor: 6n,
 
     },
     Maps: {

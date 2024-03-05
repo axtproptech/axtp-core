@@ -16,10 +16,10 @@ import {
 } from "./components/confirmPayoutDialog";
 import { withdrawalService } from "@/app/services/withdrawalService/withdrawalService";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
-import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { ChainValue } from "@signumjs/util";
 import { useLedgerAction } from "@/app/hooks/useLedgerAction";
 import { SucceededTransactionSection } from "@/app/components/sections/succeededTransactionSection";
+import { DenialArgs, DenyPayoutDialog } from "./components/denyPayoutDialog";
 
 interface Props {
   accountId: string;
@@ -31,6 +31,7 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
   const { tokenAccountCredits, trackableTokens } = useBurnContract();
   const { ledgerService } = useLedgerService();
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [denyDialogOpen, setDenyDialogOpen] = useState(false);
   const { transactionId, isExecuting, execute } = useLedgerAction();
 
   const request = useMemo(() => {
@@ -79,32 +80,42 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
   function handleActions(action: SingleRequestActionType) {
     if (action === "confirm-payout") {
       setConfirmDialogOpen(true);
+    } else if (action === "deny-payout") {
+      setDenyDialogOpen(true);
     } else if (action === "view-customer") {
       router.push(`/admin/customers/${customerData?.cuid}`);
     }
   }
+  const getNeededCustomerData = () => {
+    if (!request || !customerData || !ledgerService) return null;
+    const { cuid, blockchainAccounts } = customerData;
+    if (!blockchainAccounts) return null;
 
+    const account = blockchainAccounts.length
+      ? customerData.blockchainAccounts[0]
+      : null;
+    if (!account) {
+      throw new Error(`Customer has no blockchain account`);
+    }
+
+    if (account.accountId !== accountId) {
+      throw new Error(
+        `Account Id mismatch: ${account.accountId} vs. ${accountId}`
+      );
+    }
+
+    return {
+      account,
+      cuid,
+    };
+  };
   const handleConfirmPayout = async (args: ConfirmationArgs) => {
-    if (!request || !customerData || !ledgerService) return;
     // create a registry on chain
     // send transaction to smart contract
     try {
-      const { cuid, blockchainAccounts } = customerData;
-      if (!blockchainAccounts) return;
-
-      const account = blockchainAccounts.length
-        ? customerData.blockchainAccounts[0]
-        : null;
-      if (!account) {
-        throw new Error(`Customer has no blockchain account`);
-      }
-
-      if (account.accountId !== accountId) {
-        throw new Error(
-          `Account Id mismatch: ${account.accountId} vs. ${accountId}`
-        );
-      }
-
+      const customerData = getNeededCustomerData();
+      if (!customerData) return;
+      const { cuid, account } = customerData;
       const paidTokenQnt = ChainValue.create(
         request.tokenInfo.decimals
       ).setCompound(args.payableTokenAmount);
@@ -117,7 +128,7 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
         )
       );
 
-      await withdrawalService.registerWithdrawal({
+      await withdrawalService.registerWithdrawalConfirmation({
         accountPk: account.publicKey,
         customerId: cuid,
         amount: args.paidFiatAmount,
@@ -131,6 +142,40 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
         txId: args.paymentReference,
       });
       setConfirmDialogOpen(false);
+    } catch (e: any) {
+      throw e;
+    }
+  };
+  const handleConfirmDenial = async (args: DenialArgs) => {
+    // create a registry on chain
+    // send transaction to smart contract
+    try {
+      const customerData = getNeededCustomerData();
+      if (!customerData) return;
+      const { cuid, account } = customerData;
+      const refusedTokenQnt = ChainValue.create(
+        request.tokenInfo.decimals
+      ).setCompound(args.refusedTokenAmount);
+
+      await execute((ledgerService) =>
+        ledgerService.burnContract.returnToken(
+          request.tokenInfo.id,
+          refusedTokenQnt,
+          accountId
+        )
+      );
+
+      // send info about denial from backend
+      await withdrawalService.registerWithdrawalDenial({
+        accountPk: account.publicKey,
+        customerId: cuid,
+        tokenId: request.tokenInfo.id,
+        tokenName: request.tokenInfo.name,
+        tokenDecimals: request.tokenInfo.decimals,
+        reason: args.reason,
+        tokenQnt: refusedTokenQnt.getAtomic(),
+      });
+      setDenyDialogOpen(false);
     } catch (e: any) {
       throw e;
     }
@@ -159,6 +204,14 @@ export const SingleWithdrawalRequest = ({ accountId, tokenId }: Props) => {
         onClose={handleConfirmPayout}
         onCancel={() => {
           setConfirmDialogOpen(false);
+        }}
+        withdrawalRequestInfo={request}
+      />
+      <DenyPayoutDialog
+        open={denyDialogOpen}
+        onClose={handleConfirmDenial}
+        onCancel={() => {
+          setDenyDialogOpen(false);
         }}
         withdrawalRequestInfo={request}
       />

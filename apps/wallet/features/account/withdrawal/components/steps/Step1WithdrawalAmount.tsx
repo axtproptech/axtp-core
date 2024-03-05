@@ -80,6 +80,7 @@ export const Step1WithdrawalAmount = () => {
               suffix={` ${axtcToken.name}`}
               size="lg"
               className="font-semibold w-full"
+              autoComplete="off"
             />
           )}
           rules={{

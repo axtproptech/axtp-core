@@ -6,10 +6,10 @@ import {RemoveTrackableTokens, RemoveTrackableTokensNotAllowed} from './remove-t
 
 describe('Burn Contract - Remove Trackable Tokens', () => {
     test('should remove trackable tokens as expected', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed(RemoveTrackableTokens)
             .loadContract(Context.ContractPath)
-            .runScenario(RemoveTrackableTokens);
-        const map = testbed.getMapValuesPerSlot(Context.Maps.TrackableTokens);
+            .runScenario();
+        const map = testbed.getContractMapValues(Context.Maps.TrackableTokens);
         expect(map).toEqual([
             {
                 k1: Context.Maps.TrackableTokens,
@@ -29,10 +29,10 @@ describe('Burn Contract - Remove Trackable Tokens', () => {
         ]);
     })
     test('should not to allow remove as not creator', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed(RemoveTrackableTokensNotAllowed)
             .loadContract(Context.ContractPath)
-            .runScenario(RemoveTrackableTokensNotAllowed);
-        const map = testbed.getMapValuesPerSlot(Context.Maps.TrackableTokens);
+            .runScenario();
+        const map = testbed.getContractMapValues(Context.Maps.TrackableTokens);
         expect(map).toEqual([
             {
                 k1: Context.Maps.TrackableTokens,

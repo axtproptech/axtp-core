@@ -35,6 +35,7 @@
   },
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "smart-contracts/*"
   ]
 }

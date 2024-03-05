@@ -6,13 +6,13 @@ import {BurnTokens, BurnTokensWithSuddenlyRemovedTracking} from './burn-tokens.s
 
 describe('Burn Contract - Burn Tokens', () => {
     test('should register burned tokens as expected', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed(BurnTokens)
             .loadContract(Context.ContractPath)
-            .runScenario(BurnTokens);
-        let creditsToken0 = testbed.getMapValuePerSlot(Context.Tokens[0], Context.SenderAccount1);
-        let creditsToken1 = testbed.getMapValuePerSlot(Context.Tokens[1], Context.SenderAccount1);
-        let creditsToken2 = testbed.getMapValuePerSlot(Context.Tokens[2], Context.SenderAccount1);
-        let creditsSigna = testbed.getMapValuePerSlot(0n, Context.SenderAccount1);
+            .runScenario();
+        let creditsToken0 = testbed.getContractMapValue(Context.Tokens[0], Context.SenderAccount1);
+        let creditsToken1 = testbed.getContractMapValue(Context.Tokens[1], Context.SenderAccount1);
+        let creditsToken2 = testbed.getContractMapValue(Context.Tokens[2], Context.SenderAccount1);
+        let creditsSigna = testbed.getContractMapValue(0n, Context.SenderAccount1);
 
         const contractAccount = testbed.getAccount(Context.ThisContract);
         expect(contractAccount?.balance).toBeGreaterThan(100_0000_0000n)
@@ -28,20 +28,20 @@ describe('Burn Contract - Burn Tokens', () => {
         expect(creditsSigna).toBe(0n); // untrackable
         expect(creditsToken2).toBe(0n); // not tracked
 
-        creditsToken0 = testbed.getMapValuePerSlot(Context.Tokens[0], Context.SenderAccount2);
-        creditsToken1 = testbed.getMapValuePerSlot(Context.Tokens[1], Context.SenderAccount2);
-        creditsToken2 = testbed.getMapValuePerSlot(Context.Tokens[2], Context.SenderAccount2);
+        creditsToken0 = testbed.getContractMapValue(Context.Tokens[0], Context.SenderAccount2);
+        creditsToken1 = testbed.getContractMapValue(Context.Tokens[1], Context.SenderAccount2);
+        creditsToken2 = testbed.getContractMapValue(Context.Tokens[2], Context.SenderAccount2);
         expect(creditsToken0).toBe(50n);
         expect(creditsToken1).toBe(60n);
         expect(creditsToken2).toBe(0n); // not tracked
 
     })
     test('should register burned tokens as expected - with suddenly removed tracking ', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed(BurnTokensWithSuddenlyRemovedTracking)
             .loadContract(Context.ContractPath)
-            .runScenario(BurnTokensWithSuddenlyRemovedTracking);
-        let creditsToken0 = testbed.getMapValuePerSlot(Context.Tokens[0], Context.SenderAccount1);
-        let creditsToken1 = testbed.getMapValuePerSlot(Context.Tokens[1], Context.SenderAccount1);
+            .runScenario();
+        let creditsToken0 = testbed.getContractMapValue(Context.Tokens[0], Context.SenderAccount1);
+        let creditsToken1 = testbed.getContractMapValue(Context.Tokens[1], Context.SenderAccount1);
 
         const contractAccount = testbed.getAccount(Context.ThisContract);
         expect(contractAccount?.tokens).toEqual([
@@ -52,8 +52,8 @@ describe('Burn Contract - Burn Tokens', () => {
         expect(creditsToken0).toBe(100n);
         expect(creditsToken1).toBe(260n);
 
-        creditsToken0 = testbed.getMapValuePerSlot(Context.Tokens[0], Context.SenderAccount2);
-        creditsToken1 = testbed.getMapValuePerSlot(Context.Tokens[1], Context.SenderAccount2);
+        creditsToken0 = testbed.getContractMapValue(Context.Tokens[0], Context.SenderAccount2);
+        creditsToken1 = testbed.getContractMapValue(Context.Tokens[1], Context.SenderAccount2);
         expect(creditsToken0).toBe(0n);
         expect(creditsToken1).toBe(60n);
     })

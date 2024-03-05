@@ -5,7 +5,7 @@
 #pragma maxAuxVars 3
 #pragma verboseAssembly
 #pragma optimizationLevel 3
-#pragma version 2.1.1
+#pragma version 2.2.1
 
 #define TRUE 1
 #define FALSE 0
@@ -14,8 +14,9 @@
 #define ADD_TRACKABLE_TOKEN 1
 #define REMOVE_TRACKABLE_TOKEN 2
 #define CREDIT_TRACKED_TOKEN 3
-#define ADD_CREDITOR_PERMISSION 4
-#define REMOVE_CREDITOR_PERMISSION 5
+#define RETURN_TRACKED_TOKEN 4
+#define ADD_CREDITOR_PERMISSION 5
+#define REMOVE_CREDITOR_PERMISSION 6
 
 #define MAP_KEY_TRACKABLE_TOKENS 1
 #define MAP_KEY_CREDITOR_PERMISSIONS 2
@@ -44,6 +45,10 @@ void main () {
                 case CREDIT_TRACKED_TOKEN:
                     // void creditTrackedToken(long tokenId,long quantity,long accountId)
                     creditTrackedToken(currentTx.message[1], currentTx.message[2], currentTx.message[3]);
+                    break;
+                case RETURN_TRACKED_TOKEN:
+                    // void returnTrackedToken(long tokenId,long quantity,long accountId)
+                    returnTrackedToken(currentTx.message[1], currentTx.message[2], currentTx.message[3]);
                     break;
                 case ADD_CREDITOR_PERMISSION:
                     // void addCreditorPermission(long accountId)
@@ -117,6 +122,37 @@ void creditTrackedToken(long tokenId, long quantity, long accountId){
         newCredits = 0;
     }
     
+    setMapValue(tokenId, accountId, newCredits);
+}
+
+void returnTrackedToken(long tokenId, long quantity, long accountId){
+    if(!hasCreditorPermission()){
+        return;
+    }
+
+    // we don't check for trackable tokens, because
+    // it may happen that a trackable was removed, but still has credits
+    // it must be possible to de-credit at anytime.
+
+    long currentCredits = getMapValue(tokenId,accountId);
+    if(currentCredits == 0){
+        return;
+    }
+
+    if(quantity == 0){
+        return;
+    }
+
+    if(quantity > currentCredits){
+        quantity = currentCredits;
+    }
+
+    long newCredits = currentCredits - quantity;
+    if (newCredits < 0){
+        newCredits = 0;
+    }
+
+    sendQuantity(quantity, tokenId, accountId);
     setMapValue(tokenId, accountId, newCredits);
 }
 

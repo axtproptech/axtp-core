@@ -63,7 +63,7 @@ export class BurnContractService extends BurnContractViewerService {
           methodArgs: [tokenId],
           senderPublicKey: accountPublicKey,
           amountPlanck: Amount.fromSigna(
-            Config.PoolContract.ActivationCosts
+            Config.BurnContract.ActivationCosts
           ).getPlanck(),
           feePlanck: Amount.fromSigna(
             Config.BurnContract.InteractionFee
@@ -95,7 +95,7 @@ export class BurnContractService extends BurnContractViewerService {
           methodArgs: [accountId],
           senderPublicKey: accountPublicKey,
           amountPlanck: Amount.fromSigna(
-            Config.PoolContract.ActivationCosts
+            Config.BurnContract.ActivationCosts
           ).getPlanck(),
           feePlanck: Amount.fromSigna(
             Config.BurnContract.InteractionFee
@@ -117,11 +117,37 @@ export class BurnContractService extends BurnContractViewerService {
       const { unsignedTransactionBytes } =
         await ledger.contract.callContractMethod({
           contractId: this.contractId(),
-          methodHash: Config.BurnContract.Methods.CreditTrackableToken,
+          methodHash: Config.BurnContract.Methods.CreditTrackedToken,
           methodArgs: [tokenId, tokenAmount.getAtomic(), accountId],
           senderPublicKey: accountPublicKey,
           amountPlanck: Amount.fromSigna(
-            Config.PoolContract.ActivationCosts
+            Config.BurnContract.ActivationCosts
+          ).getPlanck(),
+          feePlanck: Amount.fromSigna(
+            Config.BurnContract.InteractionFee
+          ).getPlanck(),
+        });
+      return (await wallet.confirm(
+        unsignedTransactionBytes
+      )) as ConfirmedTransaction;
+    });
+  }
+
+  async returnToken(
+    tokenId: string,
+    tokenAmount: ChainValue,
+    accountId: string
+  ) {
+    return withError(async () => {
+      const { ledger, accountPublicKey, wallet } = this.context;
+      const { unsignedTransactionBytes } =
+        await ledger.contract.callContractMethod({
+          contractId: this.contractId(),
+          methodHash: Config.BurnContract.Methods.ReturnTrackedToken,
+          methodArgs: [tokenId, tokenAmount.getAtomic(), accountId],
+          senderPublicKey: accountPublicKey,
+          amountPlanck: Amount.fromSigna(
+            Config.BurnContract.ActivationCosts
           ).getPlanck(),
           feePlanck: Amount.fromSigna(
             Config.BurnContract.InteractionFee

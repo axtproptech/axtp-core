@@ -1,7 +1,7 @@
 import {Context} from '../context';
-import {asHexMessage, UserTransactionObj} from 'signum-smartc-testbed';
+import {asHexMessage, TransactionObj} from 'signum-smartc-testbed';
 
-export const InitialTransactions: UserTransactionObj[] = [
+export const InitialTransactions: TransactionObj[] = [
     {
         blockheight: 1,
         amount: 1_0000_0000n, // charge
@@ -12,14 +12,14 @@ export const InitialTransactions: UserTransactionObj[] = [
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[0]]),
+        messageArr: [Context.Methods.AddTrackableToken, Context.Tokens[0]],
         recipient: Context.ThisContract,
     },
     {
         blockheight: 2,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.AddTrackableToken, Context.Tokens[1]]),
+        messageArr: [Context.Methods.AddTrackableToken, Context.Tokens[1]],
         recipient: Context.ThisContract,
     },
 ]
@@ -76,7 +76,7 @@ export const BurnTokensWithSuddenlyRemovedTracking = [
         blockheight: 5,
         amount: Context.ActivationFee,
         sender: Context.CreatorAccount,
-        messageHex: asHexMessage([Context.Methods.RemoveTrackableToken, Context.Tokens[0]]),
+        messageArr: [Context.Methods.RemoveTrackableToken, Context.Tokens[0]],
         recipient: Context.ThisContract,
     },
     {

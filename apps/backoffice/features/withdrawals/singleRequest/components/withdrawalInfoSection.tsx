@@ -66,7 +66,7 @@ export const WithdrawalInfoSection = ({ requestInfo }: Props) => {
                   0,
                   (usdBrlMarket?.current_price || 0) -
                     Config.Platform.Market.PriceAdjustment
-                )}
+                ).toFixed(4)}
             {" BRL"}
             (adjusted)
           </Typography>

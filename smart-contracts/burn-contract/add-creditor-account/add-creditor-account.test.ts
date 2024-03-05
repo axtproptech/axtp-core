@@ -6,10 +6,10 @@ import {AddCreditorAccounts, AddCreditorAccountsNotAllowed} from './add-creditor
 
 describe('Burn Contract - Add Creditor Accounts', () => {
     test('should add creditor accounts as expected', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed(AddCreditorAccounts)
             .loadContract(Context.ContractPath)
-            .runScenario(AddCreditorAccounts);
-        const map = testbed.getMapValuesPerSlot(Context.Maps.CreditorAccounts);
+            .runScenario();
+        const map = testbed.getContractMapValues(Context.Maps.CreditorAccounts);
         expect(map).toEqual([
             {
                 k1: Context.Maps.CreditorAccounts,
@@ -24,10 +24,10 @@ describe('Burn Contract - Add Creditor Accounts', () => {
         ]);
     })
     test('should not to allow add as not creator', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed(AddCreditorAccountsNotAllowed)
             .loadContract(Context.ContractPath)
-            .runScenario(AddCreditorAccountsNotAllowed);
-        const map = testbed.getMapValuesPerSlot(Context.Maps.CreditorAccounts);
+            .runScenario();
+        const map = testbed.getContractMapValues(Context.Maps.CreditorAccounts);
         expect(map.length).toEqual(0);
     })
 })

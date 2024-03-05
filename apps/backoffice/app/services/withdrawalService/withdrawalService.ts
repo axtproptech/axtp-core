@@ -1,7 +1,7 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { TransactionId } from "@signumjs/core";
 
-interface RegisterWithdrawalArgs {
+interface RegisterWithdrawalConfirmationArgs {
   customerId: string;
   accountPk: string;
   tokenId: string;
@@ -15,6 +15,16 @@ interface RegisterWithdrawalArgs {
   usd: string;
 }
 
+interface RegisterWithdrawalDenialArgs {
+  customerId: string;
+  accountPk: string;
+  tokenId: string;
+  tokenQnt: string;
+  tokenName: string;
+  tokenDecimals: number;
+  reason: string;
+}
+
 export class WithdrawalService {
   private http: Http;
 
@@ -22,8 +32,17 @@ export class WithdrawalService {
     this.http = HttpClientFactory.createHttpClient("/api/admin");
   }
 
-  async registerWithdrawal(args: RegisterWithdrawalArgs) {
-    const { response } = await this.http.post("/withdrawals", args);
+  async registerWithdrawalConfirmation(
+    args: RegisterWithdrawalConfirmationArgs
+  ) {
+    const { response } = await this.http.post(
+      "/withdrawals/confirmation",
+      args
+    );
+    return response as TransactionId;
+  }
+  async registerWithdrawalDenial(args: RegisterWithdrawalDenialArgs) {
+    const { response } = await this.http.post("/withdrawals/denial", args);
     return response as TransactionId;
   }
 }

@@ -14,6 +14,7 @@ enum InternalEmailTemplates {
   PaymentCancellation = 12,
   PaymentProcessing = 16,
   WithdrawalRequestProcessed = 21,
+  WithdrawalRequestDenied = 25,
 }
 interface SendInternalCustomerUpdateArgs
   extends InternalMailArgs<{
@@ -39,6 +40,17 @@ interface SendInternalWithdrawalProcessedMailArgs
     tokenQuantity: string;
     amount: string;
     currency: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+  }> {}
+
+interface SendInternalWithdrawalCancellationMailArgs
+  extends InternalMailArgs<{
+    tokenName: string;
+    tokenQuantity: string;
+    reason: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -174,6 +186,18 @@ export class InternalMailService {
       toEmail: this.recipientFinancial,
       templateId: InternalEmailTemplates.WithdrawalRequestProcessed,
       tags: ["WithdrawalProcessed"],
+    });
+  }
+
+  async sendWithdrawalCancellation(
+    args: SendInternalWithdrawalCancellationMailArgs
+  ) {
+    return this.sendInternalMail({
+      mail: args,
+      action: "Withdrawal Denied",
+      toEmail: this.recipientFinancial,
+      templateId: InternalEmailTemplates.WithdrawalRequestDenied,
+      tags: ["WithdrawalDenied"],
     });
   }
 }

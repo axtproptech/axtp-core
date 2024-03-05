@@ -20,14 +20,14 @@ interface WithdrawalRecordServiceContext {
   sendFee: Amount;
 }
 
-export class WithdrawalRecordService {
+export class WithdrawalLedgerRecordService {
   constructor(private context: WithdrawalRecordServiceContext) {}
 
   private getKeys() {
     return generateMasterKeys(this.context.senderSeed);
   }
 
-  public async sendWithdrawalRecord(
+  public async sendWithdrawalConfirmationRecord(
     record: WithdrawalRecord,
     recipientPublicKey: string
   ) {
@@ -103,6 +103,35 @@ export class WithdrawalRecordService {
       .setAtomic(tokenQuantity)
       .getCompound();
     const message = `Withdrawal of ${tokenAmount} ${name} was confirmed. You'll receive your money on your banking account soon.`;
+
+    return (await ledger.message.sendEncryptedMessage({
+      message,
+      messageIsText: true,
+      recipientId: Address.fromPublicKey(customerPublicKey).getNumericId(),
+      recipientPublicKey: customerPublicKey,
+      deadline: 1440,
+      feePlanck: sendFee.getPlanck(),
+      senderPublicKey: publicKey,
+      senderPrivateKey: signPrivateKey,
+      senderAgreementKey: agreementPrivateKey,
+    })) as TransactionId;
+  }
+
+  public async sendWithdrawalDenialToCustomer(
+    tokenQuantity: string,
+    tokenId: string,
+    reason: string,
+    customerPublicKey: string
+  ) {
+    const { ledger, sendFee } = this.context;
+    const { publicKey, signPrivateKey, agreementPrivateKey } = this.getKeys();
+    const { name, decimals } = await ledger.asset.getAsset({
+      assetId: tokenId,
+    });
+    const tokenAmount = ChainValue.create(decimals)
+      .setAtomic(tokenQuantity)
+      .getCompound();
+    const message = `Withdrawal of ${tokenAmount} ${name} was denied. Reason: ${reason}`;
 
     return (await ledger.message.sendEncryptedMessage({
       message,

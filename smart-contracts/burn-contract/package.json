@@ -9,7 +9,7 @@
   "author": "ohager",
   "license": "Apache-2.0",
   "devDependencies": {
-    "signum-smartc-testbed": "^0.0.6",
+    "signum-smartc-testbed": "^1.0.3",
     "typescript": "^5.2.2",
     "vitest": "^0.34.6"
   }

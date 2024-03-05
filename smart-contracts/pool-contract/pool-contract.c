@@ -105,10 +105,10 @@ void main(void) {
         }
 
         readMessage(currentTX.txId, 0, currentTX.message);
-        if(currentTX.quantityAXTP > 0){
-            // burn
-            sendQuantity(currentTX.quantityAXTP, poolTokenId, 0);
-        }
+//         if(currentTX.quantityAXTP > 0){
+//             // burn
+//             sendQuantity(currentTX.quantityAXTP, poolTokenId, 0);
+//         }
         switch (currentTX.message[0]) {
             case SEND_AXTP_TO_HOLDER:
                 SendAXTPToHolder(currentTX.message[1], currentTX.message[2]);
@@ -263,7 +263,8 @@ void SendAXTPToHolder(long holderId, long quantityAXTP) {
         sendMessage(messageBuffer, currentTX.sender);
         return;
     }
-    mintAsset(quantityAXTP, poolTokenId);
+    long delta = quantityAXTP - getAssetBalance(poolTokenId);
+    mintAsset(delta, poolTokenId);
     sendQuantity(quantityAXTP, poolTokenId, holderId);
 }
 

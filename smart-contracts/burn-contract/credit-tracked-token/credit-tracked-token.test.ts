@@ -10,7 +10,7 @@ import {
 
 describe('Burn Contract - Credit Tracked Tokens', () => {
     test('should credit tokens as expected', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed()
             .loadContract(Context.ContractPath)
             .runScenario(CreditTrackedTokens);
 
@@ -23,43 +23,43 @@ describe('Burn Contract - Credit Tracked Tokens', () => {
             ],
         )
 
-        let creditsToken0 = testbed.getMapValuePerSlot(Context.Tokens[0], Context.SenderAccount1);
-        let creditsToken1 = testbed.getMapValuePerSlot(Context.Tokens[1], Context.SenderAccount1);
-        let creditsToken2 = testbed.getMapValuePerSlot(Context.Tokens[2], Context.SenderAccount1);
+        let creditsToken0 = testbed.getContractMapValue(Context.Tokens[0], Context.SenderAccount1);
+        let creditsToken1 = testbed.getContractMapValue(Context.Tokens[1], Context.SenderAccount1);
+        let creditsToken2 = testbed.getContractMapValue(Context.Tokens[2], Context.SenderAccount1);
 
         expect(creditsToken0).toBe(5n);
         expect(creditsToken1).toBe(90n);
         expect(creditsToken2).toBe(1000n);
 
-        creditsToken0 = testbed.getMapValuePerSlot(Context.Tokens[0], Context.SenderAccount2);
-        creditsToken1 = testbed.getMapValuePerSlot(Context.Tokens[1], Context.SenderAccount2);
-        creditsToken2 = testbed.getMapValuePerSlot(Context.Tokens[2], Context.SenderAccount2);
+        creditsToken0 = testbed.getContractMapValue(Context.Tokens[0], Context.SenderAccount2);
+        creditsToken1 = testbed.getContractMapValue(Context.Tokens[1], Context.SenderAccount2);
+        creditsToken2 = testbed.getContractMapValue(Context.Tokens[2], Context.SenderAccount2);
         expect(creditsToken0).toBe(20n);
         expect(creditsToken1).toBe(0n);
         expect(creditsToken2).toBe(1800n);
     })
 
     test('should credit tracked tokens as expected - even when tracking removed', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed(CreditTrackedTokensEvenWhenUntracked)
             .loadContract(Context.ContractPath)
-            .runScenario(CreditTrackedTokensEvenWhenUntracked);
-        let creditsToken0 = testbed.getMapValuePerSlot(Context.Tokens[0], Context.SenderAccount1);
+            .runScenario();
+        let creditsToken0 = testbed.getContractMapValue(Context.Tokens[0], Context.SenderAccount1);
         expect(creditsToken0).toBe(3n);
     })
 
     test('should credit tracked tokens as expected - even when no balance', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed(CreditTrackedTokensEvenWithZeroBalance)
             .loadContract(Context.ContractPath)
-            .runScenario(CreditTrackedTokensEvenWithZeroBalance);
-        let creditsToken0 = testbed.getMapValuePerSlot(Context.Tokens[0], Context.SenderAccount1);
+            .runScenario();
+        let creditsToken0 = testbed.getContractMapValue(Context.Tokens[0], Context.SenderAccount1);
         expect(creditsToken0).toBe(0n);
     })
 
     test('should not credit tracked tokens as account is not allowed', () => {
-        const testbed = SimulatorTestbed
+        const testbed = new SimulatorTestbed(CreditTrackedTokensNotAllowed)
             .loadContract(Context.ContractPath)
-            .runScenario(CreditTrackedTokensNotAllowed);
-        let creditsToken0 = testbed.getMapValuePerSlot(Context.Tokens[0], Context.SenderAccount1);
+            .runScenario();
+        let creditsToken0 = testbed.getContractMapValue(Context.Tokens[0], Context.SenderAccount1);
         expect(creditsToken0).toBe(10n);
     })
 })

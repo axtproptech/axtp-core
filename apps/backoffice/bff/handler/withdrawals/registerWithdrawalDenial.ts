@@ -1,39 +1,40 @@
 import { createLedgerClient } from "@/bff/createLedgerClient";
-import {
-  WithdrawalRecord,
-  WithdrawalRecordService,
-} from "@axtp/core/withdrawalRecord";
+import { WithdrawalLedgerRecordService } from "@axtp/core/withdrawalRecord";
 import { Amount, ChainValue } from "@signumjs/util";
 import { getEnvVar } from "@/bff/getEnvVar";
-import { Address } from "@signumjs/core";
 import { prisma } from "@axtp/db";
 import { ApiHandler } from "@/bff/types/apiHandler";
 import { badRequest, notAcceptable, notFound } from "@hapi/boom";
-import { mixed, number, object, string, ValidationError } from "yup";
+import { number, object, string, ValidationError } from "yup";
 import { mailService } from "@/bff/services/backofficeMailService";
 
-async function sendWithdrawalProcessedMails(
-  withdrawal: WithdrawalRecord,
-  customer: any
-) {
+interface DenialMailArgs {
+  tokenName: string;
+  tokenQuantity: number;
+  tokenDecimals: number;
+  reason: string;
+  customer: any;
+}
+
+async function sendWithdrawalDeniedMails(denial: DenialMailArgs) {
   try {
-    const tokenAmount = ChainValue.create(withdrawal.tokenDecimals)
-      .setAtomic(withdrawal.tokenQuantity)
+    const { customer } = denial;
+    const tokenAmount = ChainValue.create(denial.tokenDecimals)
+      .setAtomic(denial.tokenQuantity)
       .getCompound();
     await Promise.all([
-      mailService.internal.sendWithdrawalProcessed({
+      mailService.internal.sendWithdrawalCancellation({
         params: {
           firstName: customer.firstName,
           lastName: customer.lastName,
           email: customer.email1,
           phone: customer.phone1,
-          amount: withdrawal.paymentAmount,
-          currency: withdrawal.paymentCurrency.toUpperCase() || "",
           tokenQuantity: tokenAmount,
-          tokenName: withdrawal.tokenName,
+          tokenName: denial.tokenName,
+          reason: denial.reason,
         },
       }),
-      mailService.external.sendWithdrawalProcessed({
+      mailService.external.sendWithdrawalCancellation({
         to: {
           firstName: customer.firstName,
           lastName: customer.lastName,
@@ -41,9 +42,8 @@ async function sendWithdrawalProcessedMails(
         },
         params: {
           firstName: customer.firstName,
-          amount: withdrawal.paymentAmount,
-          currency: withdrawal.paymentCurrency.toUpperCase(),
-          tokenName: withdrawal.tokenName,
+          reason: denial.reason,
+          tokenName: denial.tokenName,
           tokenQnt: tokenAmount,
         },
       }),
@@ -60,14 +60,10 @@ const registerWithdrawalBodySchema = object({
   tokenQnt: number().required(),
   tokenName: string().required(),
   tokenDecimals: number().required(),
-  amount: number().required(),
-  paymentType: string().required(),
-  txId: string().required(),
-  usd: number().required(),
-  currency: mixed().required().oneOf(["brl", "usd"]),
+  reason: string().required().min(16).max(256),
 });
 
-export const registerWithdrawal: ApiHandler = async ({ req, res }) => {
+export const registerWithdrawalDenial: ApiHandler = async ({ req, res }) => {
   try {
     const {
       customerId,
@@ -76,11 +72,7 @@ export const registerWithdrawal: ApiHandler = async ({ req, res }) => {
       tokenQnt,
       tokenName,
       tokenDecimals,
-      usd,
-      amount,
-      paymentType,
-      currency,
-      txId,
+      reason,
     } = registerWithdrawalBodySchema.validateSync(req.body);
 
     const customer = await prisma.customer.findUnique({
@@ -114,40 +106,29 @@ export const registerWithdrawal: ApiHandler = async ({ req, res }) => {
 
     const ledger = createLedgerClient();
     const senderSeed = getEnvVar("NEXT_SERVER_PRINCIPAL_SIGNUM_ACCOUNT_SECRET");
-    const withdrawalRecordAccountPubKey = getEnvVar(
-      "NEXT_SERVER_WITHDRAWAL_SIGNUM_ACCOUNT_PUBKEY"
-    );
     const sendFeeSigna = parseFloat(getEnvVar("NEXT_SERVER_SIGNUM_SEND_FEE"));
 
-    const service = new WithdrawalRecordService({
+    const service = new WithdrawalLedgerRecordService({
       ledger,
       senderSeed,
       sendFee: Amount.fromSigna(sendFeeSigna),
     });
-
-    const record: WithdrawalRecord = {
-      accountId: Address.fromPublicKey(accountPk).getNumericId(),
-      tokenId,
-      tokenName,
-      tokenDecimals,
-      tokenQuantity: tokenQnt.toString(),
-      paymentUsd: usd.toString(),
-      paymentAmount: amount.toString(),
-      paymentCurrency: currency,
-      paymentTransactionId: txId,
-      // @ts-ignore
-      paymentType,
-      customerId,
-    };
-
-    const [recordTx] = await Promise.all([
-      service.sendWithdrawalRecord(record, withdrawalRecordAccountPubKey),
-      service.sendWithdrawalReceiptToCustomer(record, accountPk),
+    await Promise.all([
+      service.sendWithdrawalDenialToCustomer(
+        tokenQnt.toString(),
+        tokenId,
+        reason,
+        accountPk
+      ),
+      sendWithdrawalDeniedMails({
+        reason,
+        tokenDecimals,
+        tokenQuantity: tokenQnt,
+        tokenName,
+        customer,
+      }),
     ]);
-
-    // send once is all fine
-    await sendWithdrawalProcessedMails(record, customer);
-    res.status(201).json(recordTx);
+    res.status(204).end();
   } catch (e: any) {
     if (e instanceof ValidationError) {
       throw badRequest(e.errors.join(","));
