@@ -29,7 +29,12 @@ export const RegisterCreditorDialog = ({ open, onClose, onCancel }: Props) => {
   const [isClosing, setIsClosing] = useState(false);
   const [resolvedAddress, setResolvedAddress] = useState("");
   const { ledgerService } = useLedgerService();
-  const { control, reset, getValues, watch } = useForm<RegistrationArgs>({
+  const {
+    control,
+    reset: resetForm,
+    getValues,
+    watch,
+  } = useForm<RegistrationArgs>({
     defaultValues: {
       creditorAccountId: "",
     },
@@ -59,6 +64,11 @@ export const RegisterCreditorDialog = ({ open, onClose, onCancel }: Props) => {
         });
     }
   }, [ledgerService, accountId]);
+
+  const reset = () => {
+    resetForm();
+    setResolvedAddress("");
+  };
 
   const handleConfirm = async () => {
     const { creditorAccountId } = getValues();

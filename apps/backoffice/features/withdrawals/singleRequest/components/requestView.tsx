@@ -1,5 +1,4 @@
 import useSWR from "swr";
-import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { Grid } from "@mui/material";
 import { Config } from "@/app/config";
 import { useLedgerService } from "@/app/hooks/useLedgerService";

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { route } from "@/bff/route";
 import { requireAuth } from "@/bff/middlewares/requireAuth";
-import { registerWithdrawal } from "@/bff/handler/withdrawals/registerWithdrawal";
+import { registerWithdrawalDenial } from "@/bff/handler/withdrawals/registerWithdrawalDenial";
 
 export default function handler(
   req: NextApiRequest,
@@ -10,7 +10,7 @@ export default function handler(
   return route({
     req,
     res,
-    post: registerWithdrawal,
+    post: registerWithdrawalDenial,
     middlewares: [requireAuth],
   });
 }

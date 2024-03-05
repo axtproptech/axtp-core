@@ -1,5 +1,5 @@
 import {Context} from '../context';
-import {asHexMessage, TransactionObj} from 'signum-smartc-testbed';
+import {TransactionObj} from 'signum-smartc-testbed';
 
 export const AddTrackableTokens: TransactionObj[] = [
     {

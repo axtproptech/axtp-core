@@ -20,7 +20,7 @@ import { Config } from "@/app/config";
 
 interface FormArgs {
   paymentReference: string;
-  refusedTokenAmount: string;
+  payableTokenAmount: string;
   currency: "BRL" | "USD";
 }
 
@@ -54,7 +54,7 @@ export const ConfirmPayoutDialog = ({
     useForm<FormArgs>({
       defaultValues: {
         paymentReference: "",
-        refusedTokenAmount: tokenAmount.getCompound(),
+        payableTokenAmount: tokenAmount.getCompound(),
         currency: DefaultFiatCurrency,
       },
     });

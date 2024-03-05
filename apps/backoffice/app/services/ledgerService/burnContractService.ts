@@ -63,7 +63,7 @@ export class BurnContractService extends BurnContractViewerService {
           methodArgs: [tokenId],
           senderPublicKey: accountPublicKey,
           amountPlanck: Amount.fromSigna(
-            Config.PoolContract.ActivationCosts
+            Config.BurnContract.ActivationCosts
           ).getPlanck(),
           feePlanck: Amount.fromSigna(
             Config.BurnContract.InteractionFee
@@ -95,7 +95,7 @@ export class BurnContractService extends BurnContractViewerService {
           methodArgs: [accountId],
           senderPublicKey: accountPublicKey,
           amountPlanck: Amount.fromSigna(
-            Config.PoolContract.ActivationCosts
+            Config.BurnContract.ActivationCosts
           ).getPlanck(),
           feePlanck: Amount.fromSigna(
             Config.BurnContract.InteractionFee
@@ -121,7 +121,7 @@ export class BurnContractService extends BurnContractViewerService {
           methodArgs: [tokenId, tokenAmount.getAtomic(), accountId],
           senderPublicKey: accountPublicKey,
           amountPlanck: Amount.fromSigna(
-            Config.PoolContract.ActivationCosts
+            Config.BurnContract.ActivationCosts
           ).getPlanck(),
           feePlanck: Amount.fromSigna(
             Config.BurnContract.InteractionFee
@@ -147,7 +147,7 @@ export class BurnContractService extends BurnContractViewerService {
           methodArgs: [tokenId, tokenAmount.getAtomic(), accountId],
           senderPublicKey: accountPublicKey,
           amountPlanck: Amount.fromSigna(
-            Config.PoolContract.ActivationCosts
+            Config.BurnContract.ActivationCosts
           ).getPlanck(),
           feePlanck: Amount.fromSigna(
             Config.BurnContract.InteractionFee

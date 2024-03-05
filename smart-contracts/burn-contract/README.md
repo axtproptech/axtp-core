@@ -7,8 +7,8 @@ as a "withdrawal" request.
 
 |                    |                      |
 |--------------------|----------------------|
-| Code Hash          | 4258024526314495767  |
-| Testnet Account Id | 18251839167673491571 |
+| Code Hash          | 1219193907563690059  |
+| Testnet Account Id | 12643361733508462594 |
 | Mainnet Account Id |                      |
 
 ### Data Stack

@@ -1,6 +1,6 @@
 import { Input } from "react-daisyui";
 import { useTranslation } from "next-i18next";
-import { forwardRef, useMemo, useState } from "react";
+import { forwardRef, useState } from "react";
 
 interface Props {
   onPinChange: (pin: string) => void;
@@ -18,6 +18,8 @@ export const PinInput = forwardRef<HTMLInputElement, Props>(
             ref={ref}
             className="text-center border-base-content"
             type={"password"}
+            id="axtp-wallet-pin"
+            name="axtp-wallet-pin"
             size="lg"
             minLength={5}
             maxLength={9}

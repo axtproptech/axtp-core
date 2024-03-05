@@ -17,10 +17,11 @@ import { ChainValue } from "@signumjs/util";
 interface FormArgs {
   reason: string;
   refusedTokenAmount: string;
-  currency: "BRL" | "USD";
 }
 
 export interface DenialArgs extends FormArgs {}
+
+const MinReasonLength = 16;
 
 interface Props {
   open: boolean;
@@ -28,8 +29,6 @@ interface Props {
   onCancel: () => void;
   withdrawalRequestInfo: SingleWithdrawalRequestInfo;
 }
-
-const DefaultFiatCurrency = "BRL";
 
 export const DenyPayoutDialog = ({
   open,
@@ -48,7 +47,6 @@ export const DenyPayoutDialog = ({
       defaultValues: {
         reason: "",
         refusedTokenAmount: tokenAmount.getCompound(),
-        currency: DefaultFiatCurrency,
       },
     });
   const refusedTokenAmount = watch("refusedTokenAmount");
@@ -120,13 +118,6 @@ export const DenyPayoutDialog = ({
           // @ts-ignore
           variant="outlined"
         />
-        {/*<Box my={2} borderRadius={2} textAlign="center">*/}
-        {/*  <Typography variant="caption">Payable Amount</Typography>*/}
-        {/*  <Typography variant="h3">*/}
-        {/*    {calcFiatAmount()} {getValues("currency")}*/}
-        {/*  </Typography>*/}
-        {/*</Box>*/}
-
         <Controller
           render={({ field, fieldState: { error } }) => (
             <TextInput
@@ -135,6 +126,7 @@ export const DenyPayoutDialog = ({
               placeholder="Enter a brief explanation why the payment is refused."
               aria-autocomplete="none"
               error={error ? error.message : ""}
+              hint={`Minimum ${MinReasonLength} characters`}
             />
           )}
           name="reason"
@@ -143,7 +135,8 @@ export const DenyPayoutDialog = ({
           variant="outlined"
           rules={{
             required: true,
-            minLength: 1,
+            minLength: MinReasonLength,
+            maxLength: 256,
           }}
         />
       </DialogContent>
@@ -153,7 +146,7 @@ export const DenyPayoutDialog = ({
           actionLabel="Confirm"
           onClick={handleConfirm}
           isLoading={isClosing}
-          disabled={!refusedTokenAmount || !reason}
+          disabled={!refusedTokenAmount || reason.length < MinReasonLength}
         />
       </DialogActions>
     </Dialog>
