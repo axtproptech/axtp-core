@@ -75,7 +75,7 @@ export class PoolContractService {
     const name = convertHexStringToDecString(
       convertHexEndianess(convertStringToHexString(args.name))
     );
-    return [0, 0, 0, 0, 0, name, args.rate, args.quantity];
+    return [0, 0, 0, 0, name, args.rate, args.quantity];
   }
 
   async fetchAllContracts() {
