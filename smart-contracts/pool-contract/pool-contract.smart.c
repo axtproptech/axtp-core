@@ -22,7 +22,7 @@ This contract must be pre-configured, before being deployed:
     #define APPROVER_2 302
     #define APPROVER_3 303
     #define APPROVER_4 304
-    #define AXTC_TOKEN_ID 100001
+    #define AXTC_TOKEN_ID 101011
     #define AXTC_MASTER_CONTRACT_ID 101
 #endif
 
@@ -286,6 +286,7 @@ void RequestRefundAXTC(long quantityAXTC) {
         sendMessage(messageBuffer, currentTX.sender);
     }else{
         refundAXTC = quantityAXTC;
+        resetRefundAXTCApproved();
     }
 }
 
