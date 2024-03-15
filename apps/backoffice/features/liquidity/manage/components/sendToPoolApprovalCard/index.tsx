@@ -83,7 +83,7 @@ export const SendToPoolApprovalCard = () => {
   }, [approvalStatusSendToPool, accountId]);
 
   const handleOnApproveAction = () => {
-    execute((service) => service.masterContract.approveSendToPool());
+    execute((service) => service.axtcContract.approveSendToPool());
   };
 
   return (

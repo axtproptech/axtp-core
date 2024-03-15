@@ -2,20 +2,20 @@ import { ServiceContext } from "./serviceContext";
 import { Config } from "@/app/config";
 import { Amount, ChainValue } from "@signumjs/util";
 import { InputValidationService } from "../inputValidationService";
-import { PoolContractDataView } from "./poolContractDataView";
 import { GenericContractService } from "./genericContractService";
 import { PoolContractData } from "@/types/poolContractData";
-import { MasterContractService } from "./masterContractService";
+import { AxtcContractService } from "./axtcContractService";
 import { toStableCoinAmount } from "@/app/tokenQuantity";
 import { DescriptorData } from "@signumjs/standards";
 import { withError } from "@axtp/core/common/withError";
+import { PoolContractDataView } from "@axtp/core/smartContractViewer/poolContractDataView";
 
 // TODO: refactor to use shared core package
 
 export class PoolInstanceService extends GenericContractService {
   constructor(
     context: ServiceContext,
-    private masterContractService: MasterContractService,
+    private masterContractService: AxtcContractService,
     private poolId: string
   ) {
     super(context);

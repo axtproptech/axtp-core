@@ -76,7 +76,7 @@ export const MintApprovalCard = () => {
   }, [approvalStatusMinting, accountId]);
 
   const handleOnApproveAction = () => {
-    execute((service) => service.masterContract.approveMint());
+    execute((service) => service.axtcContract.approveMint());
   };
 
   return (

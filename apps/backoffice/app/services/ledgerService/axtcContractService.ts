@@ -1,14 +1,14 @@
 import { ServiceContext } from "./serviceContext";
 import { Config } from "@/app/config";
 import { Amount } from "@signumjs/util";
-import { MasterContractDataView } from "./masterContractDataView";
 import { InputValidationService } from "@/app/services/inputValidationService";
 import { MasterContractData } from "@/types/masterContractData";
 import { GenericContractService } from "./genericContractService";
 import { withError } from "@axtp/core/common/withError";
+import { AxtcContractDataView } from "@axtp/core/smartContractViewer/axtcContractDataView";
 
 // TODO: refactor to use shared core package
-export class MasterContractService extends GenericContractService {
+export class AxtcContractService extends GenericContractService {
   constructor(context: ServiceContext) {
     super(context);
   }
@@ -29,7 +29,7 @@ export class MasterContractService extends GenericContractService {
     return withError<MasterContractData>(async () => {
       const { ledger } = this.context;
       const contract = await ledger.contract.getContract(this.contractId());
-      const contractDataView = new MasterContractDataView(contract);
+      const contractDataView = new AxtcContractDataView(contract);
       const [token, transactions] = await Promise.all([
         this.getTokenData(contractDataView.getTokenId()),
         ledger.account.getAccountTransactions({ accountId: this.contractId() }),

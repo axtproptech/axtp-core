@@ -133,7 +133,7 @@ export const SendShareToHolderCard: FC<Props> = ({ onSend, poolId }) => {
       actionLabel="Send Asset"
       onClick={handleOnSendAction}
       isLoading={isSubmitting}
-      disabled={!address || !floatAmount}
+      disabled={!address || !floatAmount || !!transactionId}
     >
       <Box sx={{ width: "100%" }}>
         <Stack direction="row" alignItems="center">

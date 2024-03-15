@@ -36,7 +36,7 @@ export const ChargeContractCard = () => {
     try {
       const { amount } = getValues();
       const value = Amount.fromSigna(amount);
-      const tx = await ledgerService.masterContract.rechargeContract(value);
+      const tx = await ledgerService.axtcContract.rechargeContract(value);
       setTransactionId(tx.transactionId);
       reset();
       showSuccess("Successfully charged contract");

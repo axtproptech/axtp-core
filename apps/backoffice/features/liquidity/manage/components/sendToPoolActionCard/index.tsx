@@ -43,7 +43,7 @@ export const SendToPoolActionCard = () => {
     const amount = toStableCoinQuantity(floatAmount.toString(10));
     const poolId = pools[Number(pool)].poolId;
     execute((service) =>
-      service.masterContract.requestSendToPool(amount, poolId)
+      service.axtcContract.requestSendToPool(amount, poolId)
     );
   };
 
