@@ -78,7 +78,7 @@ export const BurnApprovalCard = () => {
   }, [approvalStatusBurning, accountId]);
 
   const handleOnApproveAction = () => {
-    execute((service) => service.masterContract.approveBurn());
+    execute((service) => service.axtcContract.approveBurn());
   };
 
   return (

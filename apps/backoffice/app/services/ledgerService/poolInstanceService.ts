@@ -2,20 +2,20 @@ import { ServiceContext } from "./serviceContext";
 import { Config } from "@/app/config";
 import { Amount, ChainValue } from "@signumjs/util";
 import { InputValidationService } from "../inputValidationService";
-import { PoolContractDataView } from "./poolContractDataView";
 import { GenericContractService } from "./genericContractService";
 import { PoolContractData } from "@/types/poolContractData";
-import { MasterContractService } from "./masterContractService";
+import { AxtcContractService } from "./axtcContractService";
 import { toStableCoinAmount } from "@/app/tokenQuantity";
 import { DescriptorData } from "@signumjs/standards";
 import { withError } from "@axtp/core/common/withError";
+import { PoolContractDataView } from "@axtp/core/smartContractViewer/poolContractDataView";
 
 // TODO: refactor to use shared core package
 
 export class PoolInstanceService extends GenericContractService {
   constructor(
     context: ServiceContext,
-    private masterContractService: MasterContractService,
+    private axtcContractService: AxtcContractService,
     private poolId: string
   ) {
     super(context);
@@ -45,7 +45,7 @@ export class PoolInstanceService extends GenericContractService {
     return withError<PoolContractData>(async () => {
       const { ledger } = this.context;
       const masterContractData =
-        await this.masterContractService.readContractData();
+        await this.axtcContractService.readContractData();
       const contract = await ledger.contract.getContract(this.poolId);
       const contractDataView = new PoolContractDataView(contract);
       const [token, masterToken, transactions, tokenBalances] =
@@ -145,7 +145,7 @@ export class PoolInstanceService extends GenericContractService {
           firstIndex,
           lastIndex,
         }),
-        this.masterContractService.readContractData(),
+        this.axtcContractService.readContractData(),
       ]);
       const accountRequests = accountAssets.map(({ account }) =>
         ledger.account.getAccount({

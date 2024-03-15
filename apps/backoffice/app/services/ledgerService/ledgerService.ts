@@ -1,6 +1,6 @@
 import { Ledger, LedgerClientFactory } from "@signumjs/core";
 import { Wallet } from "@signumjs/wallets";
-import { MasterContractService } from "./masterContractService";
+import { AxtcContractService } from "./axtcContractService";
 import { BurnContractService } from "./burnContractService";
 import { ServiceContext } from "./serviceContext";
 import { WalletDecorator } from "./walletDecorator";
@@ -13,7 +13,7 @@ import { AssetService } from "./assetService";
  */
 export class LedgerService {
   private readonly ledger: Ledger;
-  private readonly masterContractService: MasterContractService;
+  private readonly axtcContractService: AxtcContractService;
   private readonly burnContractService: BurnContractService;
   private readonly poolContractService: PoolContractService;
   private readonly accountService: AccountService;
@@ -37,17 +37,17 @@ export class LedgerService {
     };
 
     this.accountService = new AccountService(context);
-    this.masterContractService = new MasterContractService(context);
+    this.axtcContractService = new AxtcContractService(context);
     this.burnContractService = new BurnContractService(context);
     this.poolContractService = new PoolContractService(
       context,
-      this.masterContractService
+      this.axtcContractService
     );
     this.assetService = new AssetService(context, this.poolContractService);
   }
 
-  get masterContract(): MasterContractService {
-    return this.masterContractService;
+  get axtcContract(): AxtcContractService {
+    return this.axtcContractService;
   }
 
   get burnContract(): BurnContractService {

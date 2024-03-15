@@ -26,7 +26,7 @@ export const MintActionCard = () => {
 
   const handleOnMintAction = () => {
     const amountQuantity = toStableCoinQuantity(floatAmount.toString(10));
-    execute((service) => service.masterContract.requestMint(amountQuantity));
+    execute((service) => service.axtcContract.requestMint(amountQuantity));
   };
 
   useEffect(() => {

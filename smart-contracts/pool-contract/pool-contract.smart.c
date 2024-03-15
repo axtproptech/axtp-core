@@ -5,17 +5,26 @@ This contract must be pre-configured, before being deployed:
 2. AXTC_TOKEN_ID - i.e. the token must be issued before this contract can be deployed
 3. AXTC_MASTER_CONTRACT_ID - i.e. implicitely created with previous issuance
 4. Do not forget the SIMULATOR,TESTNET,MAINNET defines!
-
 */
-#define VERSION 1.0
-// #define SIMULATOR
-#define TESTNET
-// #define MAINNET
 
-#program name AXTPoolContract
+#program name AXTPoolContractRef
 #program activationAmount .25
 #pragma optimizationLevel 3
-#pragma maxAuxVars 4
+#pragma maxAuxVars 3
+#pragma version 2.2.1
+
+// #define SIMULATOR
+// #define TESTNET
+// #define MAINNET
+
+#ifdef TESTBED
+    #define APPROVER_1 301
+    #define APPROVER_2 302
+    #define APPROVER_3 303
+    #define APPROVER_4 304
+    #define AXTC_TOKEN_ID 101011
+    #define AXTC_MASTER_CONTRACT_ID 101
+#endif
 
 #ifdef SIMULATOR
     #define APPROVER_1 1
@@ -42,16 +51,12 @@ This contract must be pre-configured, before being deployed:
     #define AXTC_MASTER_CONTRACT_ID 16178473761798608633
 #endif
 
-// Set public functions magic numbers
-// See: https://gchq.github.io/CyberChef/#recipe=SHA2('256',64,160)Take_bytes(0,16,false)Swap_endianness('Hex',8,true)
-// Enter: MethodName(NumberOfArgs * J)V - example SendAXTPToHolder(JJ)V
-// Convert to Unsigned Longs: https://www.rapidtables.com/convert/number/hex-to-decimal.html
-#define SEND_AXTP_TO_HOLDER 0xe16029b76b056b6b
-#define REQUEST_REFUND_AXTC 0xfca21078f3f8de1d
-#define APPROVE_REFUND_AXTC 0xd4a546516affd4f2
-#define APPROVE_DISTRIBUTION 0x3b15c00ea0519a0a
-#define UPDATE_GMV 0x0d98f95a1a931bc9
-#define DEACTIVATE 0x6a20a7b2b4abec85
+#define SEND_AXTP_TO_HOLDER 1
+#define APPROVE_DISTRIBUTION 2
+#define UPDATE_GMV 3
+#define REQUEST_REFUND_AXTC 4
+#define APPROVE_REFUND_AXTC 5
+#define DEACTIVATE 99
 
 // global variables, will be available in all functions
 // external/loadable variables
@@ -62,9 +67,16 @@ long poolTokenQuantity;
 
 #ifdef SIMULATOR
     const poolName = "AXTP0001";
-    const poolRate = 5000_00; // two digits
+    const poolRate = 5000_00;
     const poolTokenQuantity = 100;
 #endif
+
+#ifdef TESTBED
+    const poolName = TESTBED_poolName;
+    const poolRate = TESTBED_poolRate;
+    const poolTokenQuantity = TESTBED_poolTokenQuantity;
+#endif
+
 
 
 // internal values, i.e. set during execution
@@ -105,10 +117,7 @@ void main(void) {
         }
 
         readMessage(currentTX.txId, 0, currentTX.message);
-//         if(currentTX.quantityAXTP > 0){
-//             // burn
-//             sendQuantity(currentTX.quantityAXTP, poolTokenId, 0);
-//         }
+
         switch (currentTX.message[0]) {
             case SEND_AXTP_TO_HOLDER:
                 SendAXTPToHolder(currentTX.message[1], currentTX.message[2]);
@@ -257,14 +266,13 @@ void SendAXTPToHolder(long holderId, long quantityAXTP) {
     if(!isAuthorized()){
         return;
     }
-
-    if(getAssetCirculating(poolTokenId) + quantityAXTP > poolTokenQuantity){
+    long toMint = quantityAXTP - getAssetBalance(poolTokenId);
+    if(getAssetCirculating(poolTokenId) + toMint > poolTokenQuantity){
         messageBuffer[]="Not enough Pool Tokens left";
         sendMessage(messageBuffer, currentTX.sender);
         return;
     }
-    long delta = quantityAXTP - getAssetBalance(poolTokenId);
-    mintAsset(delta, poolTokenId);
+    mintAsset(toMint, poolTokenId);
     sendQuantity(quantityAXTP, poolTokenId, holderId);
 }
 
@@ -278,6 +286,7 @@ void RequestRefundAXTC(long quantityAXTC) {
         sendMessage(messageBuffer, currentTX.sender);
     }else{
         refundAXTC = quantityAXTC;
+        resetRefundAXTCApproved();
     }
 }
 

@@ -30,7 +30,7 @@ export const BurnActionCard = () => {
 
   const handleOnBurnAction = () => {
     const amountQuantity = toStableCoinQuantity(floatAmount.toString(10));
-    execute((service) => service.masterContract.requestBurn(amountQuantity));
+    execute((service) => service.axtcContract.requestBurn(amountQuantity));
   };
 
   useEffect(() => {

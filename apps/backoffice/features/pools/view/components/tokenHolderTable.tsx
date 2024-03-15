@@ -7,6 +7,7 @@ import {
   CircularProgress,
   Grid,
   Stack,
+  styled,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -27,6 +28,12 @@ import { useAppContext } from "@/app/hooks/useAppContext";
 import { Number } from "@/app/components/number";
 import { Config } from "@/app/config";
 import { ExternalLink } from "@/app/components/links/externalLink";
+
+const PoolDataGrid = styled(DataGrid)(({ theme }) => ({
+  "& .is-pool-contract": {
+    backgroundColor: theme.palette.primary.light,
+  },
+}));
 
 const renderAsNumber = (params: GridRenderCellParams<string>) => (
   <Number value={parseFloat(params.value || "0")} />
@@ -241,10 +248,13 @@ export const TokenHolderTable: FC<Props> = ({ poolId }) => {
           (parseFloat(balanceAXTP || "0") / totalMintedTokens) *
           100
         ).toFixed(2);
+
+        const isPoolContract = account === poolId;
+
         return {
           id: account,
           cuid,
-          name,
+          name: isPoolContract ? "📜 Pool Contract" : name,
           isBlockedOrNotActive,
           accountRS,
           account,
@@ -252,10 +262,11 @@ export const TokenHolderTable: FC<Props> = ({ poolId }) => {
           axtc: balanceAXTC,
           axtp: balanceAXTP,
           axtpShare,
+          isPoolContract,
         };
       }
     );
-  }, [data]);
+  }, [poolId, data]);
 
   const overallTokensMinted = useMemo(
     () => tableRows.reduce((p, c) => p + parseInt(c.axtp), 0),
@@ -317,7 +328,7 @@ export const TokenHolderTable: FC<Props> = ({ poolId }) => {
       </Grid>
       <div style={{ height: "70vh" }}>
         <div style={{ display: "flex", height: "100%" }}>
-          <DataGrid
+          <PoolDataGrid
             rows={filteredRows}
             columns={columns}
             loading={loading}
@@ -327,6 +338,9 @@ export const TokenHolderTable: FC<Props> = ({ poolId }) => {
             componentsProps={{
               loadingOverlay: { variant: "determinate", value: progress },
             }}
+            getRowClassName={(params) =>
+              params.row.isPoolContract ? "is-pool-contract" : ""
+            }
           />
         </div>
       </div>

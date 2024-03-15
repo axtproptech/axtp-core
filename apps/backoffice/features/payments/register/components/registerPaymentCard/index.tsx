@@ -61,7 +61,7 @@ export const RegisterPaymentCard = () => {
   const [numberValues, setNumberValues] = useState({
     paidAmount: 0.0,
     tokenCount: 0,
-    tokenPrice: 0,
+    tokenPrice: pools.length ? pools[0].tokenRate : 0,
   });
 
   const {

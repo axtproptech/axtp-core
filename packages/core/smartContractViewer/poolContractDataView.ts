@@ -3,7 +3,7 @@ import { ApprovalStatus } from "./approvalStatus";
 import { ChainValue } from "@signumjs/util";
 
 enum PoolContractDataIndex {
-  PoolName = 5,
+  PoolName = 4,
   PoolRate,
   PoolTokenQuantity,
   NominalLiquidity,
@@ -11,7 +11,7 @@ enum PoolContractDataIndex {
   PaidAXTC,
   GrossMarketValue,
   RefundAXTC,
-  ApprovalAccount1 = 14,
+  ApprovalAccount1 = 13,
   ApprovalApprovedDistribution1,
   ApprovalApprovedRefund1,
   ApprovalAccount2,

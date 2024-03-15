@@ -12,7 +12,7 @@ export const MasterContractInitializer = () => {
     ledgerService ? "fetch/masterContractData/" : null,
     async () => {
       if (!ledgerService) return null;
-      return ledgerService.masterContract.readContractData();
+      return ledgerService.axtcContract.readContractData();
     },
     {
       refreshInterval: 30_000,

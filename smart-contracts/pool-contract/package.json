@@ -1,0 +1,16 @@
+{
+  "name": "@axtp/smart-contract-pool",
+  "version": "1.0.0",
+  "description": "The testbed for AXT Burn Smart Contract",
+  "private": true,
+  "scripts": {
+    "test": "vitest run --single-thread"
+  },
+  "author": "ohager",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "signum-smartc-testbed": "^1.0.3",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
+  }
+}

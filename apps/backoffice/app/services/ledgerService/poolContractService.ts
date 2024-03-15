@@ -9,7 +9,7 @@ import {
   convertHexStringToDecString,
   convertStringToHexString,
 } from "@signumjs/util";
-import { MasterContractService } from "./masterContractService";
+import { AxtcContractService } from "./axtcContractService";
 import { withError } from "@axtp/core/common/withError";
 
 interface CreatePoolInstanceArgs {
@@ -25,13 +25,13 @@ interface CreatePoolInstanceArgs {
 export class PoolContractService {
   constructor(
     private context: ServiceContext,
-    private masterContractService: MasterContractService
+    private axtcContractService: AxtcContractService
   ) {}
 
   with(poolId: string): PoolInstanceService {
     return new PoolInstanceService(
       this.context,
-      this.masterContractService,
+      this.axtcContractService,
       poolId
     );
   }
@@ -75,7 +75,7 @@ export class PoolContractService {
     const name = convertHexStringToDecString(
       convertHexEndianess(convertStringToHexString(args.name))
     );
-    return [0, 0, 0, 0, 0, name, args.rate, args.quantity];
+    return [0, 0, 0, 0, name, args.rate, args.quantity];
   }
 
   async fetchAllContracts() {
