@@ -25,13 +25,13 @@ interface CreatePoolInstanceArgs {
 export class PoolContractService {
   constructor(
     private context: ServiceContext,
-    private masterContractService: AxtcContractService
+    private axtcContractService: AxtcContractService
   ) {}
 
   with(poolId: string): PoolInstanceService {
     return new PoolInstanceService(
       this.context,
-      this.masterContractService,
+      this.axtcContractService,
       poolId
     );
   }

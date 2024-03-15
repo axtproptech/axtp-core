@@ -15,7 +15,7 @@ import { PoolContractDataView } from "@axtp/core/smartContractViewer/poolContrac
 export class PoolInstanceService extends GenericContractService {
   constructor(
     context: ServiceContext,
-    private masterContractService: AxtcContractService,
+    private axtcContractService: AxtcContractService,
     private poolId: string
   ) {
     super(context);
@@ -45,7 +45,7 @@ export class PoolInstanceService extends GenericContractService {
     return withError<PoolContractData>(async () => {
       const { ledger } = this.context;
       const masterContractData =
-        await this.masterContractService.readContractData();
+        await this.axtcContractService.readContractData();
       const contract = await ledger.contract.getContract(this.poolId);
       const contractDataView = new PoolContractDataView(contract);
       const [token, masterToken, transactions, tokenBalances] =
@@ -145,7 +145,7 @@ export class PoolInstanceService extends GenericContractService {
           firstIndex,
           lastIndex,
         }),
-        this.masterContractService.readContractData(),
+        this.axtcContractService.readContractData(),
       ]);
       const accountRequests = accountAssets.map(({ account }) =>
         ledger.account.getAccount({

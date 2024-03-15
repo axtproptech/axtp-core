@@ -145,17 +145,11 @@ export const RegisterPaymentCard = () => {
     if (!selectedPool) return;
 
     const formValues = getValues();
-    console.log("formValues", formValues);
     const currency = getCurrency(formValues.paymentType);
     const usd =
       currency === "usd"
         ? numberValues.paidAmount.toString()
         : (numberValues.tokenPrice * numberValues.tokenCount).toString();
-
-    console.log("currency", currency);
-    console.log("usd", usd);
-    console.log("numbervalues", numberValues);
-
     const amount = numberValues.paidAmount.toString();
     const tokenQnt = numberValues.tokenCount.toString();
     setIsExecuting(true);
