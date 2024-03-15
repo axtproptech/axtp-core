@@ -20,11 +20,12 @@ like
 |                             |                                                                  |
 |-----------------------------|------------------------------------------------------------------|
 | Multiple Instances          | Yes                                                              |
-| Code Hash                   | 1897534494109515304                                              |
+| Testnet Code Hash           | 1897534494109515304                                              |
 | Testnet Creation Account Id | 8464717289897472041                                              |
 | Testnet Reference Hash      | 293072f486b77875a3d3c7d14d350f7dc7753299882423600645f2117efa12e3 |
-| Mainnet Creation Account Id | TO DO                                                            |
-| Mainnet Reference Hash      | TO DO                                                            |
+| Mainnet Code Hash           | 4428024507500576173                                              |
+| Mainnet Creation Account Id | 1707648653536811098                                              |
+| Mainnet Reference Hash      | 5a583c2367c9b21793a1d40cce824e717e50ee3abfdd16f4131f3c6bb475f645 |
 
 ### Data Stack
 
