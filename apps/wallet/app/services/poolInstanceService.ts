@@ -1,15 +1,11 @@
 import { ServiceContext } from "./serviceContext";
 import { Amount, ChainTime } from "@signumjs/util";
-import { PoolContractDataView } from "./poolContractDataView";
 import { GenericContractService } from "./genericContractService";
 import { PoolContractData } from "@/types/poolContractData";
-import {
-  DefaultAliasData,
-  PoolAliasData,
-  PoolPricing,
-} from "@/types/poolAliasData";
+import { PoolAliasData, PoolPricing } from "@/types/poolAliasData";
 import { Descriptor, DescriptorData } from "@signumjs/standards";
 import { withError } from "@axtp/core/common/withError";
+import { PoolContractDataView } from "@axtp/core/smartContractViewer/poolContractDataView";
 
 export class PoolInstanceService extends GenericContractService {
   constructor(context: ServiceContext, private poolId: string) {
