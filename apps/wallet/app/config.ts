@@ -13,12 +13,15 @@ const isTestNet = toBoolean(
   process.env.NEXT_PUBLIC_LEDGER_IS_TESTNET || "true"
 );
 
+const isDevelopment = process.env.NODE_ENV === "development";
 export const Config = {
   // this is not "security", but at least some obstacle
   // we don't need fully fledged auth as the BFF returns only minimum, safe data
   BffApiKey: process.env.NEXT_PUBLIC_BFF_API_KEY || "",
   TermsOfUsefUrl: process.env.NEXT_PUBLIC_TERMS_OF_USE_URL || "",
-  BuildId: process.env.NEXT_PUBLIC_VERCEL_GIT_PULL_REQUEST_ID || "dev",
+  BuildId: isDevelopment
+    ? "dev"
+    : process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 8) ?? "",
   PrivacyfUrl: process.env.NEXT_PUBLIC_PRIVACY_URL || "",
   ManualUrl: process.env.NEXT_PUBLIC_MANUAL_URL || "",
   CanonicalUrl:

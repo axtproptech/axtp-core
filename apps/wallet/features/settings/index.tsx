@@ -1,5 +1,8 @@
 import { Button } from "react-daisyui";
 import { accountActions } from "@/app/states/accountState";
+import { poolActions } from "@/app/states/poolsState";
+import { tokenActions } from "@/app/states/tokenState";
+import { marketActions } from "@/app/states/marketState";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useAppDispatch } from "@/states/hooks";
 import { useTranslation } from "next-i18next";
@@ -8,7 +11,6 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SafeExternalLink } from "@/app/components/navigation/externalLink";
 import { useAppContext } from "@/app/hooks/useAppContext";
-
 export const Settings = () => {
   const { accountAddress } = useAccount();
   const router = useRouter();
@@ -19,6 +21,15 @@ export const Settings = () => {
   const handleOnClickDisconnect = async () => {
     dispatch(accountActions.resetAccount());
     await router.push("/");
+  };
+
+  const handleOnClickRefreshCache = async () => {
+    dispatch(poolActions.reset());
+    dispatch(tokenActions.reset());
+    dispatch(marketActions.reset());
+    router.push("/").then(() => {
+      window.location.reload();
+    });
   };
 
   return (
@@ -50,6 +61,17 @@ export const Settings = () => {
           </HintBox>
         </div>
       )}
+
+      <div className="mt-4 mx-auto">
+        <HintBox text={t("refresh_cache_hint")}>
+          <div className="text-center mt-2">
+            <Button color="info" onClick={handleOnClickRefreshCache}>
+              {t("refresh_cache")}
+            </Button>
+          </div>
+        </HintBox>
+      </div>
+
       <section className="mt-8 py-2 mx-auto text-center">
         <SafeExternalLink href={Documents.Manual}>
           <Button color="accent">{t("manual")}</Button>

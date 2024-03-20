@@ -24,6 +24,7 @@ export const tokenSlice = createSlice({
       const { id } = action.payload;
       state.poolTokens[id] = action.payload;
     },
+    reset: () => initialState,
   },
 });
 

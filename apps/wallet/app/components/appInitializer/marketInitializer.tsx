@@ -16,7 +16,7 @@ export const MarketInitializer = () => {
   const dispatch = useDispatch();
 
   useSWR(
-    `fetchUsdBrlMarketInformation`,
+    "fetch/usdBrlMarketInformation",
     async () => {
       const market = await marketService.getUsdBrlMarket();
       if (market)

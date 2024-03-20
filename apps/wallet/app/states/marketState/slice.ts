@@ -30,6 +30,7 @@ export const marketSlice = createSlice({
     setSelectedTickerSymbol: (state, action: PayloadAction<TickerSymbol>) => {
       state.selectedTickerSymbol = action.payload;
     },
+    reset: () => initialState,
   },
 });
 

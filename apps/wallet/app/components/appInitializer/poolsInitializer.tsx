@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { useEffect } from "react";
 import { useAppDispatch } from "@/states/hooks";
-import { actions } from "@/app/states/poolsState";
+import { poolActions } from "@/app/states/poolsState";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { PoolContractData } from "@/types/poolContractData";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
@@ -26,9 +26,9 @@ export const PoolsInitializer = () => {
   useEffect(() => {
     if (!data) return;
 
-    dispatch(actions.reset());
+    dispatch(poolActions.reset());
     data.forEach((pool: PoolContractData) => {
-      dispatch(actions.setPoolData(pool));
+      dispatch(poolActions.setPoolData(pool));
     });
   }, [data, dispatch]);
 

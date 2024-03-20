@@ -25,4 +25,4 @@ export const poolsSlice = createSlice({
   },
 });
 
-export const { actions } = poolsSlice;
+export const { actions: poolActions } = poolsSlice;

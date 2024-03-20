@@ -36,7 +36,7 @@ export const TokenInitializer = () => {
   };
 
   useSWR(
-    `/fetchPoolTokens`,
+    `fetch/poolTokens`,
     async () => {
       try {
         const promises = AXTPoolTokenIds.map((tokenId) =>
