@@ -13,7 +13,6 @@ import { Fade } from "react-awesome-reveal";
 import { useAppSelector } from "@/states/hooks";
 import { selectAXTToken } from "@/app/states/tokenState";
 import { selectBrlUsdMarketData } from "@/app/states/marketState";
-import { useAppContext } from "@/app/hooks/useAppContext";
 import { AccountHeader } from "@/features/account/components/accountHeader";
 
 interface Props {

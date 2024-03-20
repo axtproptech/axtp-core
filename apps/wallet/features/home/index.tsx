@@ -43,7 +43,7 @@ export const Home = () => {
       <section className="relative">
         <Slide direction="down">
           <Fade>
-            <TextLogo className="mx-auto w-[40%] lg:w-[33%]" />
+            <TextLogo className="mx-auto w-[20%] lg:w-[25%]" />
           </Fade>
         </Slide>
       </section>
@@ -51,11 +51,13 @@ export const Home = () => {
         <div className="absolute z-10 top-[-1px] bg-gradient-to-b from-base-100 h-4 w-full opacity-80" />
       </div>
       <div className="relative overflow-x-hidden h-[calc(100vh_-_100px_-_64px)] lg:h-[calc(100vh_-_120px_-_64px)]">
-        <section className="w-full">
+        <section className="w-full py-2">
           <DashboardStats stats={stats} />
         </section>
-        <section className="prose text-center mx-auto mt-4">
-          <Greeting />
+        <section className="prose text-center mx-auto">
+          <div className="mb-4">
+            <Greeting />
+          </div>
           {!customer ? (
             accountId ? (
               <RegisterCustomerButton />
@@ -70,7 +72,7 @@ export const Home = () => {
           )}
           {accountId && customer && <ShowAccountButton />}
         </section>
-        <section className="mt-8">
+        <section className="mt-4">
           <PoolList />
         </section>
       </div>

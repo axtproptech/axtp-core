@@ -17,7 +17,7 @@ export const ShowAccountButton = () => {
       <Link href={"/account"}>
         <Button
           color="accent"
-          size="lg"
+          size="md"
           onClick={handleOnClick}
           startIcon={<RiWallet3Line />}
         >
