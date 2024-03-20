@@ -11,6 +11,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SafeExternalLink } from "@/app/components/navigation/externalLink";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { RiBookLine } from "react-icons/ri";
+
 export const Settings = () => {
   const { accountAddress } = useAccount();
   const router = useRouter();
@@ -50,18 +52,6 @@ export const Settings = () => {
       <div className="w-full text-center">
         <small className="text-gray-500">Build: {BuildId}</small>
       </div>
-      {accountAddress && (
-        <div className="mt-4 mx-auto">
-          <HintBox text={t("disconnect_hint")}>
-            <div className="text-center mt-2">
-              <Button color="error" onClick={handleOnClickDisconnect}>
-                {t("disconnect")}
-              </Button>
-            </div>
-          </HintBox>
-        </div>
-      )}
-
       <div className="mt-4 mx-auto">
         <HintBox text={t("refresh_cache_hint")}>
           <div className="text-center mt-2">
@@ -72,12 +62,15 @@ export const Settings = () => {
         </HintBox>
       </div>
 
-      <section className="mt-8 py-2 mx-auto text-center">
+      <section className="mt-4 py-2 mx-auto text-center">
         <SafeExternalLink href={Documents.Manual}>
-          <Button color="accent">{t("manual")}</Button>
+          <Button color="accent" startIcon={<RiBookLine />}>
+            {t("manual")}
+          </Button>
         </SafeExternalLink>
       </section>
-      <section className="text-center mt-8 block">
+
+      <section className="text-center flex flex-row justify-between items-center">
         <div>
           <u>
             <Link href="/terms/usage">{t("terms_of_use")}</Link>
@@ -89,6 +82,18 @@ export const Settings = () => {
           </u>
         </div>
       </section>
+
+      {accountAddress && (
+        <div className="mt-4 mx-auto">
+          <HintBox text={t("disconnect_hint")}>
+            <div className="text-center mt-2">
+              <Button color="error" onClick={handleOnClickDisconnect}>
+                {t("disconnect")}
+              </Button>
+            </div>
+          </HintBox>
+        </div>
+      )}
     </div>
   );
 };
