@@ -6,9 +6,7 @@ import { generateMasterKeys } from "@signumjs/crypto";
 const AXTP0001 = "6199612279657926604";
 const TAXTP001 = "5885513911579683933";
 
-const SigningKeys = generateMasterKeys(
-  "throw end aerobic left face permit chalk urban rotate sample where hub"
-);
+const SigningKeys = generateMasterKeys(process.env.AXTP_MASTER_ACCOUNT || "");
 
 async function airdropToTokenHolders(
   tokenHolders: AssetAccount[],
