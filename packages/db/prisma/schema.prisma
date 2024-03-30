@@ -2,13 +2,13 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider             = "mysql"
-  url                  = env("DATABASE_URL")
-  relationMode         = "prisma"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // relationMode = "prisma"
 }
 
 enum VerificationLevel {
@@ -142,7 +142,7 @@ model Document {
   customerId Int
   type       DocumentType
   url        String
-  active     Boolean     @default(true)
+  active     Boolean      @default(true)
 }
 
 model VerificationResult {
@@ -206,24 +206,26 @@ enum TokenPurpose {
 }
 
 model SecurityToken {
-  id        Int              @id @default(autoincrement())
-  subjectId String
-  purpose   TokenPurpose
-  status    TokenStatus      @default(Active)
-  token     String
-  expiredAt DateTime
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-  refreshCounter Int         @default(0)
+  id             Int          @id @default(autoincrement())
+  subjectId      String
+  purpose        TokenPurpose
+  status         TokenStatus  @default(Active)
+  token          String
+  expiredAt      DateTime
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  refreshCounter Int          @default(0)
+
   @@unique([subjectId, purpose])
 }
 
 model Audit {
-    id Int              @id @default(autoincrement())
-    createdAt DateTime  @default(now())
-    method              String
-    url                 String
-    payload             String  @db.Text
-    user                String
-    @@index([method, url])
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  method    String
+  url       String
+  payload   String   @db.Text
+  user      String
+
+  @@index([method, url])
 }

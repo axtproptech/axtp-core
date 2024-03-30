@@ -56,13 +56,10 @@ export const PersonalInformationSection = ({ customer }: Props) => {
   return (
     <>
       <Typography variant="h4">Personal Information</Typography>
-      <EditableField
-        label="CPF"
-        initialValue={cpf.format(customer.cpfCnpj)}
-        name="cpfCnpj"
-        onSubmit={handleFieldValueChange}
-      />
       <Grid container columnSpacing={1} direction="row" alignItems="center">
+        <Grid item>
+          <LabeledTextField label="CPF" text={customer.cpfCnpj} />
+        </Grid>
         <Grid item>
           {cpfValid ? (
             <Tooltip title="Valid Format">

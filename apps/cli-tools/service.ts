@@ -39,7 +39,7 @@ export class Service {
 
 export const MainNetService = new Service({
   ledger: LedgerClientFactory.createClient({
-    nodeHost: "http://localhost:8125",
+    nodeHost: "https://brazil.signum.network",
   }),
 });
 export const TestNetService = new Service({

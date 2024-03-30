@@ -8,9 +8,8 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "push-db": "prisma db push --skip-generate",
-    "request-deploy:prod": "pscale dr create axt-core stage --deploy-to main",
-    "deploy": "pscale dr deploy axt-core",
+    "migrate": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
     "generate-db": "prisma generate",
     "prebuild": "npm run generate-db",
     "build": "tsup",
@@ -18,12 +17,12 @@
   },
   "prisma": {},
   "devDependencies": {
-    "prisma": "^5.6.0",
+    "prisma": "^5.11.0",
     "ts-node": "^10.9.1",
     "tsup": "^6.2.3",
     "typescript": "4.7.4"
   },
   "dependencies": {
-    "@prisma/client": "^5.6.0"
+    "@prisma/client": "^5.11.0"
   }
 }

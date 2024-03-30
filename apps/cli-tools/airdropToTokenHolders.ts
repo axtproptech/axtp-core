@@ -7,7 +7,7 @@ const AXTP0001 = "6199612279657926604";
 const TAXTP001 = "5885513911579683933";
 
 const SigningKeys = generateMasterKeys(
-  "gym crumble turn daring twin crawl orphan grief fury conduct cram hold"
+  "throw end aerobic left face permit chalk urban rotate sample where hub"
 );
 
 async function airdropToTokenHolders(
@@ -17,7 +17,7 @@ async function airdropToTokenHolders(
   await ledger.transaction.sendSameAmountToMultipleRecipients({
     recipientIds: tokenHolders.map((t) => t.account),
     feePlanck: Amount.fromSigna(0.06).getPlanck(),
-    amountPlanck: Amount.fromSigna(1).getPlanck(),
+    amountPlanck: Amount.fromSigna(5).getPlanck(),
     deadline: 60,
     senderPrivateKey: SigningKeys.signPrivateKey,
     senderPublicKey: SigningKeys.publicKey,
@@ -28,8 +28,8 @@ async function airdropToTokenHolders(
 
 async function run() {
   try {
-    await TestNetService.withAllTokenHolders({
-      tokenId: TAXTP001,
+    await MainNetService.withAllTokenHolders({
+      tokenId: AXTP0001,
       actionFunc: airdropToTokenHolders,
       concurrency: 128,
     });
