@@ -37,11 +37,18 @@ const ButtonStyle = styled.button`
     }
   }
 
+  &:disabled {
+    cursor: not-allowed;
+    filter: saturate(0);
+    color: ${themeGet("colors.grey", "#888")};
+  }
+
   &:focus {
     outline: none;
   }
 
-  &:hover {
+  &:hover,
+  ^&:disabled {
     filter: brightness(1.2);
   }
 

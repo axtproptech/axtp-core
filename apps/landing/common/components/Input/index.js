@@ -161,6 +161,7 @@ const Input = ({
   return (
     <InputField
       className={`${addAllClasses.join(" ")} ${getInputFocusClass()}`}
+      style={{ width: "100%" }}
     >
       {LabelPosition === "top" && LabelField}
       {inputElement}

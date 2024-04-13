@@ -60,7 +60,6 @@ const InputField = styled.div`
     color: ${themeGet("colors.labelColor", "#767676")};
     font-size: ${themeGet("fontSizes.4", "16")}px;
     font-weight: ${themeGet("fontWeights.4", "500")};
-    margin-bottom: ${themeGet("space.3", "10")}px;
     transition: 0.2s ease all;
   }
 
@@ -71,7 +70,7 @@ const InputField = styled.div`
     padding: 11px;
     display: block;
     width: 100%;
-    color: ${themeGet("colors.textColor", "#484848")};
+    color: #484848;
     box-shadow: none;
     border-radius: 4px;
     box-sizing: border-box;
