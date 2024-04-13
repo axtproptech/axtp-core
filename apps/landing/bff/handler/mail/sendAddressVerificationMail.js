@@ -1,24 +1,36 @@
 import { tooManyRequests, unauthorized } from "@hapi/boom";
-import { prisma, SecurityToken } from "@axtp/db";
-import { MailService } from "@axtp/core/mailer";
-import { RouteHandlerFunction } from "@/bff/route";
-import { handleError } from "../handleError";
-import { getEnvVar } from "@/bff/getEnvVar";
 import { object, string } from "yup";
-import { bffLoggingService } from "@/bff/bffLoggingService";
-import { EmailTemplates } from "@/bff/types/emailTemplates";
+import { prisma } from "@axtp/db";
+import { MailService } from "@axtp/core/mailer";
 import { generateRandomHexToken } from "@axtp/core/common/generateRandomHexToken";
+import { handleError } from "../handleError";
+import { EmailTemplates } from "./emailTemplates";
+
+const Minutes = 60 * 1000;
+const Env = {
+  RateLimitInMinutes:
+    Number(
+      process.env.NEXT_SERVER_MAIL_VERIFICATION_RATE_LIMIT_MINUTES || "1"
+    ) * Minutes,
+  ExpiryMinutes:
+    Number(process.env.NEXT_SERVER_MAIL_VERIFICATION_EXPIRY_MINUTES || "15") *
+    Minutes,
+  MaxRetrials:
+    Number(process.env.NEXT_SERVER_MAIL_VERIFICATION_MAX_TRIALS || "5") *
+    Minutes,
+  Mail: {
+    BrevoApiKey: process.env.NEXT_SERVER_BREVO_API_KEY || "",
+    SenderName: process.env.NEXT_SERVER_BREVO_SENDER_NAME || "",
+    SenderMail: process.env.NEXT_SERVER_BREVO_SENDER_EMAIL || "",
+  },
+};
 
 const SendAddressVerificationMailBody = object({
   emailAddress: string().required(),
   name: string().required(),
 });
 
-const Minutes = 60 * 1000;
-export const sendAddressVerificationMail: RouteHandlerFunction = async (
-  req,
-  res
-) => {
+export const sendAddressVerificationMail = async (req, res) => {
   try {
     const { emailAddress, name } = SendAddressVerificationMailBody.validateSync(
       req.body
@@ -37,10 +49,7 @@ export const sendAddressVerificationMail: RouteHandlerFunction = async (
       throw unauthorized(`Blocked`);
     }
 
-    const rateLimitWindow =
-      Number(
-        getEnvVar("NEXT_SERVER_MAIL_VERIFICATION_RATE_LIMIT_MINUTES") || "0"
-      ) * Minutes;
+    const rateLimitWindow = Env.RateLimitInMinutes;
     if (
       existingToken &&
       existingToken.updatedAt.getTime() > Date.now() - rateLimitWindow
@@ -52,11 +61,11 @@ export const sendAddressVerificationMail: RouteHandlerFunction = async (
       emailAddress,
       existingToken
     );
-    const mailService = new MailService(getEnvVar("NEXT_SERVER_BREVO_API_KEY"));
+    const mailService = new MailService(Env.Mail.BrevoApiKey);
     await mailService.sendTransactionalEmail({
       sender: {
-        name: getEnvVar("NEXT_SERVER_BREVO_SENDER_NAME"),
-        email: getEnvVar("NEXT_SERVER_BREVO_SENDER_EMAIL"),
+        name: Env.Mail.SenderName,
+        email: Env.Mail.SenderMail,
       },
       to: [
         {
@@ -71,38 +80,23 @@ export const sendAddressVerificationMail: RouteHandlerFunction = async (
         name,
       },
     });
-    bffLoggingService.info({
-      msg: `Verification Mail sent to ${emailAddress}`,
-      domain: "mail",
-    });
+    console.info(`Verification Mail sent to ${emailAddress}`);
     res.status(204).end();
-  } catch (e: any) {
+  } catch (e) {
     handleError({ e, res });
   }
 };
 
-const upsertVerificationToken = async (
-  email: string,
-  currentToken: SecurityToken | null
-) => {
+const upsertVerificationToken = async (email, currentToken) => {
   const token = generateRandomHexToken(6);
-  const expiryMinutes = Number(
-    getEnvVar("NEXT_SERVER_MAIL_VERIFICATION_EXPIRY_MINUTES")
-  );
-  const maxRetrials = Number(
-    getEnvVar("NEXT_SERVER_MAIL_VERIFICATION_MAX_TRIALS")
-  );
   const shouldBeBlocked =
-    currentToken && currentToken.refreshCounter > maxRetrials;
+    currentToken && currentToken.refreshCounter > Env.MaxRetrials;
 
   if (shouldBeBlocked) {
-    bffLoggingService.warn({
-      msg: `Mail verification is blocked for ${email}`,
-      domain: "mail",
-    });
+    console.warn(`Mail verification is blocked for ${email}`);
   }
 
-  const expiredAt = new Date(Date.now() + expiryMinutes * Minutes);
+  const expiredAt = new Date(Date.now() + Env.ExpiryMinutes);
   return prisma.securityToken.upsert({
     where: {
       subjectId_purpose: { subjectId: email, purpose: "EmailVerification" },
