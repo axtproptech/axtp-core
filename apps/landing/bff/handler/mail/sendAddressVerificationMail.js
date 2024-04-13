@@ -1,8 +1,9 @@
 import { tooManyRequests, unauthorized } from "@hapi/boom";
 import { object, string } from "yup";
 import { prisma } from "@axtp/db";
-import { MailService } from "@axtp/core/mailer";
-import { generateRandomHexToken } from "@axtp/core/common/generateRandomHexToken";
+import { MailService } from "@axtp/core";
+import { generateRandomHexToken } from "@axtp/core";
+
 import { handleError } from "../handleError";
 import { EmailTemplates } from "./emailTemplates";
 

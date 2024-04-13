@@ -1,6 +1,7 @@
-/** @type {import('next').NextConfig} */
+const withTM = require("next-transpile-modules")(["@axtp/core"]);
 
-const nextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = withTM({
   reactStrictMode: true,
   async headers() {
     return [
@@ -31,6 +32,6 @@ const nextConfig = {
   // sassOptions: {
   //   includePaths: [path.join(__dirname, "styles/scss")],
   // },
-};
+});
 
 module.exports = nextConfig;
