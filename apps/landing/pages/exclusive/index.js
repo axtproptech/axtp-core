@@ -7,16 +7,18 @@ import {
   ContentWrapper,
 } from "containers/CryptoModern/cryptoModern.style";
 import { contentService } from "bff/services/contentfulService";
-import { SmartContractViewerService } from "@axtp/core";
+import { SmartContractViewerService } from "@axtp/core/smartContractViewer";
 
 const AxtcContractId = process.env.NEXT_PUBLIC_MASTER_CONTRACT_ID || "";
+const BurnContractId = process.env.NEXT_PUBLIC_CONTRACT_BURN_ID || "";
 const SignumNodeHost = process.env.NEXT_PUBLIC_SIGNUM_NODE_HOST || "";
 const PoolContractIds = (process.env.NEXT_PUBLIC_AXTP_CONTRACT_IDS || "").split(
   ","
 );
 const contractViewerService = new SmartContractViewerService(
   SignumNodeHost,
-  AxtcContractId
+  AxtcContractId,
+  BurnContractId
 );
 
 const Minute = 60;
