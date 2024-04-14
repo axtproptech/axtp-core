@@ -7,7 +7,7 @@ import {
   ContentWrapper,
 } from "containers/CryptoModern/cryptoModern.style";
 import { contentService } from "bff/services/contentfulService";
-import { SmartContractViewerService } from "@axtp/core/smartContractViewer";
+import { SmartContractViewerService } from "@axtp/core";
 
 const AxtcContractId = process.env.NEXT_PUBLIC_MASTER_CONTRACT_ID || "";
 const BurnContractId = process.env.NEXT_PUBLIC_CONTRACT_BURN_ID || "";
