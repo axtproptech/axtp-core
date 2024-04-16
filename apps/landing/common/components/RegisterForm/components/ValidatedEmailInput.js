@@ -30,6 +30,13 @@ const FormWrapper = styled.div`
   justify-content: center;
 `;
 
+const ActionButton = styled(Button)`
+  width: 180px;
+  height: 20px;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+`;
+
 const EmailRegex = /^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b$/;
 
 export const ValidatedEmailInput = ({ onValidEmail }) => {
@@ -107,24 +114,16 @@ export const ValidatedEmailInput = ({ onValidEmail }) => {
             value={email}
             onChange={handleOnEmailChange}
             style={{
-              width: "100%",
-              borderBottomRightRadius: 0,
               borderTopRightRadius: 0,
+              borderBottomRightRadius: 0,
             }}
           />
-          <Button
+          <ActionButton
             title="Verificar"
             colors="warningWithBg"
             onClick={handleOnValidate}
             isLoading={isSubmitting}
             disabled={!EmailRegex.test(email) || isSubmitting}
-            loaderColor="white"
-            style={{
-              height: "20px",
-              width: "120px",
-              borderBottomLeftRadius: 0,
-              borderTopLeftRadius: 0,
-            }}
           />
         </FormWrapper>
       )}
@@ -140,24 +139,16 @@ export const ValidatedEmailInput = ({ onValidEmail }) => {
               value={verificationCode}
               onChange={handleOnVerificationCodeChange}
               style={{
-                width: "100%",
-                borderBottomRightRadius: 0,
                 borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
               }}
             />
-            <Button
+            <ActionButton
               title="Confirmar"
               colors="warningWithBg"
               onClick={handleOnConfirmCode}
               isLoading={isSubmitting}
               disabled={verificationCode.length < 1 || isSubmitting}
-              loaderColor="white"
-              style={{
-                height: "20px",
-                width: "120px",
-                borderBottomLeftRadius: 0,
-                borderTopLeftRadius: 0,
-              }}
             />
           </FormWrapper>
         </>

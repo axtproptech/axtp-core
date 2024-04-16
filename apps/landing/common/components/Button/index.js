@@ -1,7 +1,6 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import ButtonStyle from "./button.style";
-import Loader from "../Loader";
 
 const Button = ({
   type,
@@ -11,7 +10,6 @@ const Button = ({
   iconPosition,
   onClick,
   loader,
-  loaderColor,
   isMaterial,
   isLoading,
   className,
@@ -40,10 +38,6 @@ const Button = ({
   // set icon position
   const position = iconPosition || "left";
 
-  const loadingIcon = loader || (
-    <Loader loaderColor={loaderColor || "#A0A0A0"} />
-  );
-
   return (
     <ButtonStyle
       type={type}
@@ -55,7 +49,6 @@ const Button = ({
       {...props}
     >
       {position === "left" && buttonIcon}
-      {isLoading && loadingIcon}
       {title && <span className="btn-text">{title}</span>}
       {position === "right" && buttonIcon}
     </ButtonStyle>
@@ -80,9 +73,6 @@ Button.propTypes = {
 
   /** Button Loading state */
   isLoading: PropTypes.bool,
-
-  /** Button Loading state */
-  loaderColor: PropTypes.string,
 
   /** If true button will be disabled */
   disabled: PropTypes.bool,

@@ -3,6 +3,7 @@ import colors from "common/theme/cryptoModern/colors";
 import React from "react";
 import PropTypes from "prop-types";
 import Popup from "reactjs-popup";
+import Fade from "react-reveal/Fade";
 
 const ModalFormWrapper = styled.div`
   position: relative;
@@ -38,12 +39,14 @@ export const Modal = ({ onClose, open = false, children }) => {
       overlayStyle={{ background: "rgba(0,0,0,0.8)" }}
     >
       {(close) => (
-        <ModalFormWrapper>
-          <div className="close" onClick={close}>
-            ✕
-          </div>
-          {children}
-        </ModalFormWrapper>
+        <Fade up duration={500}>
+          <ModalFormWrapper>
+            <div className="close" onClick={close}>
+              ✕
+            </div>
+            {children}
+          </ModalFormWrapper>
+        </Fade>
       )}
     </Popup>
   );

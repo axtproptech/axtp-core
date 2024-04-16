@@ -3,6 +3,7 @@ import { variant, alignItems, boxShadow } from "styled-system";
 import { themeGet } from "@styled-system/theme-get";
 import { buttonStyle, colorStyle, sizeStyle } from "../customVariant";
 import { base } from "../base";
+import { AnimPulse } from "common/components/Animation";
 
 const ButtonStyle = styled.button`
   /* button default style */
@@ -61,8 +62,7 @@ const ButtonStyle = styled.button`
   /* When button on loading stage */
   &.is-loading {
     .btn-text {
-      padding-left: ${themeGet("space.1", "4")}px;
-      padding-right: ${themeGet("space.1", "4")}px;
+      ${AnimPulse}
     }
   }
 

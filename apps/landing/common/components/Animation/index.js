@@ -17,4 +17,16 @@ const AnimSpinner = css`
   animation: ${spinner} 1s linear infinite;
 `;
 
-export { AnimSpinner };
+const pulse = keyframes`
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const AnimPulse = css`
+  animation: ${pulse} 0.5s alternate infinite;
+`;
+export { AnimSpinner, AnimPulse };
