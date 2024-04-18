@@ -1,8 +1,10 @@
 // import JotForm from "jotform-react";
-import Input from "common/components/Input";
-import { useState } from "react";
-import { ValidatedEmailInput } from "./components/ValidatedEmailInput";
+import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
+import Button from "common/components/Button";
+import Text from "common/components/Text";
+import PreKycForm from "./PreKycForm";
+import { useSafeState } from "common/hooks/useSafeState";
 
 const Container = styled.div`
   padding: 2rem;
@@ -11,33 +13,86 @@ const Container = styled.div`
   row-gap: 1rem;
 `;
 
-const JotFormId = process.env.NEXT_PUBLIC_JOTFORM_ID;
+const Steps = {
+  Intro: 1,
+  Form: 2,
+  OutroSuccess: 3,
+  OutroFailure: 4,
+};
 
 export const RegisterForm = () => {
-  const [formState, setFormState] = useState({ email: "" });
+  const [step, setStep] = useState(Steps.Intro);
+  const [firstName, setFirstName] = useSafeState("");
 
-  const handleOnChange = (e) => {
-    setFormState((formState) => ({
-      [e.target.name]: e.target.value,
-      ...formState,
-    }));
+  const handleOnSubmit = (success, { firstName }) => {
+    if (success) {
+      setStep(Steps.OutroSuccess);
+      setFirstName(firstName);
+    } else {
+      setStep(Steps.OutroFailure);
+    }
   };
 
-  return (
-    <Container>
-      <ValidatedEmailInput onValidEmail={handleOnChange} />
+  const content = useMemo(() => {
+    switch (step) {
+      default:
+      case Steps.Intro:
+        return (
+          <>
+            <Text
+              as="p"
+              content={
+                "Olá, estamos satisfeitos por termos despertado seu interesse. Por favor, preencha o formulário a seguir e lhe enviaremos mais informações sobre a AXT Proptech Company S/A o mais rápido possível. Tratamos seus dados de acordo com as normas de proteção de dados e não transmitimos nenhum dado a terceiros."
+              }
+            />
+            <Button
+              title="Prosseguir"
+              onClick={() => setStep(Steps.Form)}
+              colors="warningWithBg"
+            />
+          </>
+        );
+      case Steps.Form:
+        return <PreKycForm onSubmit={handleOnSubmit} />;
+      case Steps.OutroSuccess:
+        return (
+          <>
+            <Text
+              as="h1"
+              content="Obrigado 🙏"
+              style={{ textAlign: "center", fontSize: "2rem" }}
+            />
+            <Text
+              as="p"
+              content={`${firstName}, Agracedemos pelo interesse na AXT PropTech Company S/A.`}
+            />
+            <Text
+              as="p"
+              content="Imediatamente enviaremos mais material informativo sobre a AXT PropTech Company S/A. Reservamo-nos o direito de contatá-lo diretamente em breve. No entanto, se preferir, pode nos contatar a qualquer momento pelo info@axtp.com.br."
+            />
+            <Text
+              as="p"
+              content="Por favor, note que tratamos seus dados com a mais alta confidencialidade e não os compartilhamos com terceiros."
+            />
+          </>
+        );
+      case Steps.OutroFailure:
+        return (
+          <>
+            <Text
+              as="h1"
+              content="Bummer 😢"
+              style={{ textAlign: "center", fontSize: "2rem" }}
+            />
+            <Text
+              as="p"
+              content="Lamentamos imensamente pelo inconveniente. Algo deu errado. Por favor, tente novamente ou entre em contato com o nosso suporte: support@axtp.com.br"
+            />
+            <Text as="p" content="Desculpe-nos pelo transtorno." />
+          </>
+        );
+    }
+  }, [step]);
 
-      <Input
-        label={"Phone Number"}
-        required={true}
-        inputType="text"
-        placeholder={"+55119876543210"}
-        onChange={handleOnChange}
-      />
-      {/*<JotForm*/}
-      {/*  formURL={`https://form.jotform.com/${JotFormId}`}*/}
-      {/*  formID={JotFormId}*/}
-      {/*/>*/}
-    </Container>
-  );
+  return <Container>{content}</Container>;
 };

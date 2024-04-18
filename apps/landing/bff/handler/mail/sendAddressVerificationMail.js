@@ -27,20 +27,20 @@ const Env = {
 };
 
 const SendAddressVerificationMailBody = object({
-  emailAddress: string().required(),
+  email: string().required(),
   name: string().required(),
 });
 
 export const sendAddressVerificationMail = async (req, res) => {
   try {
-    const { emailAddress, name } = SendAddressVerificationMailBody.validateSync(
+    const { email, name } = SendAddressVerificationMailBody.validateSync(
       req.body
     );
 
     const existingToken = await prisma.securityToken.findUnique({
       where: {
         subjectId_purpose: {
-          subjectId: emailAddress,
+          subjectId: email,
           purpose: "EmailVerification",
         },
       },
@@ -58,10 +58,7 @@ export const sendAddressVerificationMail = async (req, res) => {
       throw tooManyRequests("Too many requests");
     }
 
-    const { token } = await upsertVerificationToken(
-      emailAddress,
-      existingToken
-    );
+    const { token } = await upsertVerificationToken(email, existingToken);
     const mailService = new MailService(Env.Mail.BrevoApiKey);
     await mailService.sendTransactionalEmail({
       sender: {
@@ -71,7 +68,7 @@ export const sendAddressVerificationMail = async (req, res) => {
       to: [
         {
           name,
-          email: emailAddress,
+          email,
         },
       ],
       templateId: EmailTemplates.AddressVerification,
@@ -81,7 +78,7 @@ export const sendAddressVerificationMail = async (req, res) => {
         name,
       },
     });
-    console.info(`Verification Mail sent to ${emailAddress}`);
+    console.info(`Verification Mail sent to ${email}`);
     res.status(204).end();
   } catch (e) {
     handleError({ e, res });

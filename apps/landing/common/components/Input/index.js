@@ -14,6 +14,7 @@ const Input = ({
   iconPosition,
   passwordShowHide,
   className,
+  hint,
   ...props
 }) => {
   // use toggle hooks
@@ -106,7 +107,6 @@ const Input = ({
         <textarea
           {...props}
           id={htmlFor}
-          name={htmlFor}
           value={state.value}
           onChange={handleOnChange}
           onBlur={handleOnBlur}
@@ -121,7 +121,6 @@ const Input = ({
           <input
             {...props}
             id={htmlFor}
-            name={htmlFor}
             type={state.toggle ? "password" : "text"}
             value={state.value}
             onChange={handleOnChange}
@@ -146,7 +145,6 @@ const Input = ({
           <input
             {...props}
             id={htmlFor}
-            name={htmlFor}
             type={inputType}
             value={state.value}
             onChange={handleOnChange}
@@ -167,6 +165,7 @@ const Input = ({
       {inputElement}
       {isMaterial && <span className="highlight" />}
       {LabelPosition === "bottom" && LabelField}
+      {hint && <small>{hint}</small>}
     </InputField>
   );
 };
@@ -222,6 +221,8 @@ Input.propTypes = {
    * You can pull out the new value by accessing `event.target.value`.
    */
   onChange: PropTypes.func,
+
+  hint: PropTypes.string,
 };
 
 /** Inout default type. */

@@ -43,7 +43,7 @@ export const verifySecurityToken: RouteHandlerFunction = async (req, res) => {
       domain: "token",
     });
 
-    res.status(204);
+    res.status(204).end();
   } catch (e: any) {
     handleError({ e, res });
   }

@@ -37,7 +37,7 @@ export const verifySecurityToken = async (req, res) => {
     console.info(
       `Security Token [${subjectId}] for [${purpose}] successfully verified`
     );
-    res.status(204);
+    res.status(204).end();
   } catch (e) {
     handleError({ e, res });
   }

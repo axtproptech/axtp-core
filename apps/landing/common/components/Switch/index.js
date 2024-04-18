@@ -17,6 +17,7 @@ const Switch = ({
   onFocus,
   onBlur,
   handleOnChange,
+  disabled,
   ...props
 }) => {
   // use toggle hooks
@@ -72,6 +73,7 @@ const Switch = ({
           className="switch"
           type="checkbox"
           value={toggleValue}
+          disabled={disabled}
         />
         <div>
           <div />
@@ -124,6 +126,7 @@ Switch.propTypes = {
    * You can pull out the new value by accessing `event.target.value`.
    */
   onChange: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 Switch.defaultProps = {
@@ -132,6 +135,7 @@ Switch.defaultProps = {
   onBlur: () => {},
   onFocus: () => {},
   onChange: () => {},
+  disabled: false,
 };
 
 export default Switch;
