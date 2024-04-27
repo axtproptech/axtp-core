@@ -1,5 +1,4 @@
-// import JotForm from "jotform-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import styled from "styled-components";
 import Button from "common/components/Button";
 import Text from "common/components/Text";
@@ -17,19 +16,25 @@ const Steps = {
   Intro: 1,
   Form: 2,
   OutroSuccess: 3,
-  OutroFailure: 4,
+  OutroAlreadyRegistered: 4,
+  OutroFailure: 5,
 };
 
 export const RegisterForm = () => {
   const [step, setStep] = useState(Steps.Intro);
   const [firstName, setFirstName] = useSafeState("");
 
-  const handleOnSubmit = (success, { firstName }) => {
-    if (success) {
-      setStep(Steps.OutroSuccess);
-      setFirstName(firstName);
-    } else {
-      setStep(Steps.OutroFailure);
+  const handleOnSubmit = (status, { firstName }) => {
+    switch (status) {
+      case "registered":
+        setFirstName(firstName);
+        setStep(Steps.OutroSuccess);
+        break;
+      case "alreadyRegistered":
+        setStep(Steps.OutroAlreadyRegistered);
+        break;
+      default:
+        setStep(Steps.OutroFailure);
     }
   };
 
@@ -73,6 +78,24 @@ export const RegisterForm = () => {
             <Text
               as="p"
               content="Por favor, note que tratamos seus dados com a mais alta confidencialidade e não os compartilhamos com terceiros."
+            />
+          </>
+        );
+      case Steps.OutroAlreadyRegistered:
+        return (
+          <>
+            <Text
+              as="h1"
+              content="Já Registrado"
+              style={{ textAlign: "center", fontSize: "2rem" }}
+            />
+            <Text
+              as="p"
+              content="Um usuário com este endereço de email já foi na AXT PropTech Company S/A."
+            />
+            <Text
+              as="p"
+              content="Se você acredita que há um engano aqui, entre em contato conosco pelo support@axtp.com.br."
             />
           </>
         );

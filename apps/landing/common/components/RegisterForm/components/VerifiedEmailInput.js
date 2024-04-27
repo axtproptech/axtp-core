@@ -1,12 +1,12 @@
 import Input from "common/components/Input";
 import Button from "common/components/Button";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Text from "common/components/Text";
 import {
   sendVerificationEmail,
   verifyEmailVerificationCode,
-} from "common/services/EmailValidationService";
+} from "common/services/EmailService";
 import PropTypes from "prop-types";
 import { useSafeState } from "common/hooks/useSafeState";
 

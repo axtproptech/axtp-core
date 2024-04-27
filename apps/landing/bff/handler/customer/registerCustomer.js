@@ -1,56 +1,47 @@
 import { prisma } from "@axtp/db";
-import jotform from "jotform";
-import { JotFormSubmissionParser } from "./jotFormSubmissionParser";
 import cuid from "cuid";
-import pRetry from "p-retry";
+import { string, object } from "yup";
+import { sendNewLeadMails } from "./sendNewLeadMails";
 
-jotform.options({
-  debug: process.env.NODE_ENV !== "production",
-  apiKey: process.env.JOTFORM_API_KEY || "",
+const RegisterCustomerBody = object({
+  email: string().required(),
+  firstName: string().required(),
+  lastName: string().required(),
 });
 
-const fetchSubmissionData = async (submissionId) => {
-  const submission = await jotform.getSubmission(submissionId);
-  const answers = new JotFormSubmissionParser(submission);
-  // this might happen if jotform hasn't the answers ready yet...
-  // we force a retry, hoping that the submission object will have the answers then
-  if (!answers.email) {
-    return Promise.reject();
-  }
-  return answers;
-};
 export const registerCustomer = async (req, res) => {
   try {
-    const { submission_id } = req.body;
-    const answers = await pRetry(() => fetchSubmissionData(submission_id), {
-      retries: 3,
-    });
+    const { email, firstName, lastName, phone, isBrazilian } =
+      RegisterCustomerBody.validateSync(req.body);
 
     const existingCustomer = await prisma.customer.findFirst({
       where: {
-        email1: answers.email,
+        email1: email,
       },
     });
 
     if (existingCustomer) {
-      res.redirect(302, `/?status=existsAlready`);
+      res.status(200).json({ status: "alreadyRegistered" });
       return;
     }
 
     await prisma.customer.create({
       data: {
-        cpfCnpj: `unverified-${cuid()}`,
-        firstName: answers.fullName.first,
-        lastName: answers.fullName.last,
-        email1: answers.email,
-        phone1: answers.phone,
+        cpfCnpj: `unverified-${cuid()}`, // needs to be unique
+        firstName: firstName,
+        lastName: lastName,
+        email1: email,
+        phone1: phone,
         verificationLevel: "NotVerified",
-        isInBrazil: answers.isBrazilian,
+        isInBrazil: isBrazilian,
       },
     });
-    res.redirect(302, `/?status=success`);
+
+    await sendNewLeadMails({ email, firstName, lastName, phone, isBrazilian });
+
+    res.status(201).json({ status: "registered" });
   } catch (e) {
     console.error("registerCustomer", e.message);
-    res.redirect(302, "/?status=error");
+    res.status(500);
   }
 };

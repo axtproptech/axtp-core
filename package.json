@@ -7,6 +7,9 @@
     "prepare": "husky install",
     "pretty": "prettier --write .",
     "build": "turbo run build",
+    "build:landing": "turbo run build --filter={apps/landing}... --force",
+    "build:wallet": "turbo run build --filter={apps/wallet}... --force",
+    "build:backoffice": "turbo run build --filter={apps/backoffice}... --force",
     "test": "turbo run test",
     "db": "turbo run generate-db"
   },

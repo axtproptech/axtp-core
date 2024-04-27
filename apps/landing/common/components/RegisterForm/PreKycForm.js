@@ -1,13 +1,12 @@
-// import JotForm from "jotform-react";
 import Input from "common/components/Input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { VerifiedEmailInput } from "./components/VerifiedEmailInput";
 import styled from "styled-components";
 import Switch from "common/components/Switch";
 import { useSafeState } from "common/hooks/useSafeState";
 import Button from "common/components/Button";
-import Text from "common/components/Text";
 import PropTypes from "prop-types";
+import { registerCustomer } from "common/services/CustomerService";
 
 const NameInputWrapper = styled.span`
   display: flex;
@@ -44,16 +43,13 @@ export default function PreKycForm({ onSubmit }) {
   const handleClick = async () => {
     try {
       setIsSubmitting(true);
-
-      // TODO: store user on backend.
-
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      onSubmit(true, formState);
+      const status = await registerCustomer(formState);
+      onSubmit(status, formState);
     } catch (e) {
       console.error("Submission failed", e);
       const resetState = { ...InitialFormState };
       setFormState(resetState);
-      onSubmit(false, resetState);
+      onSubmit("error", resetState);
     } finally {
       setIsSubmitting(false);
     }
