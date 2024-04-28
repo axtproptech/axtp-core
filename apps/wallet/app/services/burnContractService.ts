@@ -3,7 +3,7 @@ import { Config } from "@/app/config";
 import { ServiceContext } from "./serviceContext";
 import { Amount, ChainValue } from "@signumjs/util";
 import { Keys } from "@signumjs/crypto";
-import { tryCall } from "@axtp/core/common/tryCall";
+import { tryCall } from "@axtp/core";
 import { TransactionId } from "@signumjs/core";
 
 interface RequestWithdrawalArgs {

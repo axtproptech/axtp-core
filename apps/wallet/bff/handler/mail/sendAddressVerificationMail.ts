@@ -7,7 +7,7 @@ import { getEnvVar } from "@/bff/getEnvVar";
 import { object, string } from "yup";
 import { bffLoggingService } from "@/bff/bffLoggingService";
 import { EmailTemplates } from "@/bff/types/emailTemplates";
-import { generateRandomHexToken } from "@axtp/core/common";
+import { generateRandomHexToken } from "@axtp/core";
 
 const SendAddressVerificationMailBody = object({
   emailAddress: string().required(),

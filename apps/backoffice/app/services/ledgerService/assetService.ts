@@ -8,7 +8,7 @@ import {
 import { Alias, TransactionId } from "@signumjs/core";
 import { PoolContractService } from "@/app/services/ledgerService/poolContractService";
 import { HttpClientFactory } from "@signumjs/http";
-import { withError } from "@axtp/core/common/withError";
+import { withError } from "@axtp/core";
 
 export class AssetService {
   private assetAliasService: AssetAliasService;

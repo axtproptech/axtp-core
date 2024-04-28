@@ -7,8 +7,8 @@ import { PoolContractData } from "@/types/poolContractData";
 import { AxtcContractService } from "./axtcContractService";
 import { toStableCoinAmount } from "@/app/tokenQuantity";
 import { DescriptorData } from "@signumjs/standards";
-import { withError } from "@axtp/core/common/withError";
-import { PoolContractDataView } from "@axtp/core/smartContractViewer/poolContractDataView";
+import { withError } from "@axtp/core";
+import { PoolContractDataView } from "@axtp/core/smartContractViewer";
 
 // TODO: refactor to use shared core package
 

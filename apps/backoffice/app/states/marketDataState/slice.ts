@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { MarketData } from "@axtp/core/markets/fiatTickerService";
+import { MarketData } from "@axtp/core/markets";
 export interface MarketDataState {
   usdBrl: MarketData;
 }
