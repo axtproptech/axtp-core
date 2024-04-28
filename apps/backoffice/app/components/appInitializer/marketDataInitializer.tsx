@@ -1,8 +1,8 @@
 import useSWR from "swr";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useAppDispatch } from "@/states/hooks";
 import { actions } from "@/app/states/marketDataState";
-import { FiatTickerService } from "@axtp/core/markets/fiatTickerService";
+import { FiatTickerService } from "@axtp/core/markets";
 
 export const MarketDataInitializer = () => {
   const dispatch = useAppDispatch();

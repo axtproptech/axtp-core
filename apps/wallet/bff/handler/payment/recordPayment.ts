@@ -1,5 +1,5 @@
 import { createLedgerClient } from "@/bff/createLedgerClient";
-import { PaymentRecordService, PaymentRecord } from "@axtp/core";
+import { PaymentRecordService, PaymentRecord } from "@axtp/core/paymentRecord";
 import { Amount } from "@signumjs/util";
 import { getEnvVar } from "@/bff/getEnvVar";
 import { Address } from "@signumjs/core";

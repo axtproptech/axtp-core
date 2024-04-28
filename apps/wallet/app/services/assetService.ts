@@ -4,9 +4,9 @@ import {
   AssetAliasService,
   type AssetAliasMap,
   AssetAliasHistory,
-} from "@axtp/core";
+} from "@axtp/core/aliases";
 import { PoolContractService } from "./poolContractService";
-import { withError } from "@axtp/core/common/withError";
+import { withError } from "@axtp/core";
 
 export class AssetService {
   private assetAliasService: AssetAliasService;

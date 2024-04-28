@@ -1,4 +1,4 @@
-import { PaymentType } from "@axtp/core";
+import { PaymentType } from "@axtp/core/paymentRecord";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { openExternalUrl } from "@/app/openExternalUrl";

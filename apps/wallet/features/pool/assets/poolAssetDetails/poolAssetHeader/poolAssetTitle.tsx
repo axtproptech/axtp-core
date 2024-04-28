@@ -2,7 +2,7 @@ import { FC, useMemo } from "react";
 import { PoolContractData } from "@/types/poolContractData";
 // @ts-ignore
 import hashicon from "hashicon";
-import { AssetAliasData, type AssetAliasHistory } from "@axtp/core";
+import { AssetAliasData, type AssetAliasHistory } from "@axtp/core/aliases";
 
 interface Props {
   poolData: PoolContractData;

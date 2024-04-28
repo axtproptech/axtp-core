@@ -1,4 +1,4 @@
-import { AssetAliasData } from "@axtp/core";
+import { AssetAliasData } from "@axtp/core/aliases";
 import React from "react";
 import { useTranslation } from "next-i18next";
 import { ProgressStep } from "./progressStep";

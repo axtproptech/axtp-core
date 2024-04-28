@@ -2,6 +2,7 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Default",
   "compilerOptions": {
+    "preserveSymlinks": true,
     "composite": false,
     "declaration": true,
     "declarationMap": true,
@@ -9,14 +10,14 @@
     "forceConsistentCasingInFileNames": true,
     "inlineSources": false,
     "isolatedModules": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
     "skipLibCheck": true,
     "strict": true,
     "lib": ["ES2021", "dom"],
-    "module": "commonjs",
+    "module": "CommonJS",
     "target": "ES2021"
   },
   "exclude": ["node_modules"]

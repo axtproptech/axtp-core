@@ -2,6 +2,7 @@ import { prisma } from "@axtp/db";
 import cuid from "cuid";
 import { string, object } from "yup";
 import { sendNewLeadMails } from "./sendNewLeadMails";
+import { createLeadContact } from "bff/handler/customer/createLeadContact";
 
 const RegisterCustomerBody = object({
   email: string().required(),
@@ -25,7 +26,7 @@ export const registerCustomer = async (req, res) => {
       return;
     }
 
-    await prisma.customer.create({
+    const customer = await prisma.customer.create({
       data: {
         cpfCnpj: `unverified-${cuid()}`, // needs to be unique
         firstName: firstName,
@@ -36,12 +37,19 @@ export const registerCustomer = async (req, res) => {
         isInBrazil: isBrazilian,
       },
     });
-
+    await createLeadContact({
+      cuid: customer.cuid,
+      firstName,
+      lastName,
+      isBrazilian,
+      phone,
+      email,
+    });
     await sendNewLeadMails({ email, firstName, lastName, phone, isBrazilian });
 
     res.status(201).json({ status: "registered" });
   } catch (e) {
     console.error("registerCustomer", e.message);
-    res.status(500);
+    res.status(500).end();
   }
 };

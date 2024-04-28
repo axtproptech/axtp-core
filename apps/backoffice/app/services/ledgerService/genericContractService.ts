@@ -5,7 +5,7 @@ import { ConfirmedTransaction } from "@signumjs/wallets";
 import { fromQuantity } from "@/app/tokenQuantity";
 import { BasicTokenInfo } from "@/types/basicTokenInfo";
 import { UnconfirmedAssetBalance } from "@signumjs/core/out/typings/unconfirmedAssetBalance";
-import { withError } from "@axtp/core/common/withError";
+import { withError } from "@axtp/core";
 
 // TODO: refactor to use shared core package
 

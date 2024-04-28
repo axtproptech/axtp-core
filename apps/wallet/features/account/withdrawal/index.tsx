@@ -10,7 +10,6 @@ import {
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
   RiCloseCircleLine,
-  RiWallet3Line,
 } from "react-icons/ri";
 import { voidFn } from "@/app/voidFn";
 import { WithdrawalFormData } from "./types/withdrawalFormData";

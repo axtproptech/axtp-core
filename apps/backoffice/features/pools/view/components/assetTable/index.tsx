@@ -28,7 +28,7 @@ import { useAppSelector } from "@/states/hooks";
 import { selectPoolContractState } from "@/app/states/poolsState";
 import { Number } from "@/app/components/number";
 import { Config } from "@/app/config";
-import { AssetAliasData } from "@axtp/core";
+import { AssetAliasData } from "@axtp/core/aliases";
 import { toDateStr } from "@/app/toDateStr";
 import { AssetTableTitle } from "@/features/pools/view/components/assetTable/assetTableTitle";
 import { Controller, useForm } from "react-hook-form";

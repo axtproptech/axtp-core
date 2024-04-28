@@ -1,8 +1,6 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 
-import { R2ObjectUri } from "@axtp/core/file/r2ObjectUri";
-import { ClientSideFileService } from "@axtp/core/file/clientSideFileService";
-import { SignedUrl } from "@axtp/core/file/signedUrl";
+import { R2ObjectUri, ClientSideFileService, SignedUrl } from "@axtp/core/file";
 
 interface UploadFileArgs {
   file: File;

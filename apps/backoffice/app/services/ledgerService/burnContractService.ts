@@ -3,7 +3,7 @@ import { ServiceContext } from "@/app/services/ledgerService/serviceContext";
 import { Config } from "@/app/config";
 import { Amount, ChainValue } from "@signumjs/util";
 import { ConfirmedTransaction } from "@signumjs/wallets";
-import { withError } from "@axtp/core/common/withError";
+import { withError } from "@axtp/core";
 import { BurnContractData } from "@/types/burnContractData";
 import { BasicTokenInfo } from "@/types/basicTokenInfo";
 

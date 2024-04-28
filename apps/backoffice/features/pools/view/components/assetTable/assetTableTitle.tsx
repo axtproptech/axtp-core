@@ -1,4 +1,4 @@
-import { AssetAliasData } from "@axtp/core";
+import { AssetAliasData } from "@axtp/core/aliases";
 import { Button, Stack, Typography } from "@mui/material";
 import { Number } from "@/app/components/number";
 import { useMemo } from "react";

@@ -1,7 +1,7 @@
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { MarketData } from "@/types/marketData";
 import { TickerSymbol } from "@/types/tickerSymbol";
-import { withError } from "@axtp/core/common/withError";
+import { withError } from "@axtp/core";
 
 interface FiatMarketData {
   ask: string;

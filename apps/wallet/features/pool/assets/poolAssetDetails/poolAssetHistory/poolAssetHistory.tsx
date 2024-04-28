@@ -1,4 +1,4 @@
-import { AssetAliasHistory } from "@axtp/core";
+import { AssetAliasHistory } from "@axtp/core/aliases";
 import { PoolAssetHistoryItem } from "./poolAssetHistoryItem";
 
 interface Props {

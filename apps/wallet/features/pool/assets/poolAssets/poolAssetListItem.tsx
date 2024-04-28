@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { AssetAliasData } from "@axtp/core";
+import { AssetAliasData } from "@axtp/core/aliases";
 import { PoolAssetStatus } from "../components/poolAssetStatus";
 import { Numeric } from "@/app/components/numeric";
 import Link from "next/link";

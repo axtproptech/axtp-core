@@ -1,6 +1,6 @@
 import { GridRenderCellParams } from "@mui/x-data-grid";
 import { Chip, Tooltip } from "@mui/material";
-import { PaymentType } from "@axtp/core";
+import { PaymentType } from "@axtp/core/paymentRecord";
 import { PaymentTypesLabelMap } from "@/features/payments/paymentTypesLabelMap";
 
 interface Props {

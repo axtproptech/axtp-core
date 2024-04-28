@@ -1,33 +1,12 @@
 import { FC, memo, useMemo } from "react";
 
 import { useTheme } from "@mui/material/styles";
-import {
-  Avatar,
-  Box,
-  Chip,
-  Grid,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Chip, Grid, Stack, Tooltip, Typography } from "@mui/material";
 
-import {
-  IconArrowBigDownLines,
-  IconCash,
-  IconFlame,
-  IconReportMoney,
-  IconSeeding,
-  IconSend,
-  IconSum,
-} from "@tabler/icons";
-import { CardWrapperDark } from "@/app/components/cards";
+import { IconArrowBigDownLines, IconSum } from "@tabler/icons";
 import { Number } from "@/app/components/number";
 import { SkeletonBurnContractCard } from "./skeletonBurnContractCard";
-import { useAppSelector } from "@/states/hooks";
-import { selectPoolContractState } from "@/app/states/poolsState";
-import { ExternalLink } from "@/app/components/links/externalLink";
 import { Config } from "@/app/config";
-import { useMasterContract } from "@/app/hooks/useMasterContract";
 import { OpenExplorerButton } from "@/app/components/buttons/openExplorerButton";
 import { Amount, ChainValue } from "@signumjs/util";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
@@ -35,8 +14,7 @@ import PriceCheckRoundedIcon from "@mui/icons-material/PriceCheckRounded";
 import { useBurnContract } from "@/app/hooks/useBurnContract";
 import { CardWrapperBlack } from "../cardWrapperBlack";
 import { BasicTokenInfo } from "@/types/basicTokenInfo";
-import Link from "next/link";
-import { TokenAccountCredits } from "@axtp/core";
+import { TokenAccountCredits } from "@axtp/core/smartContractViewer";
 
 interface TokenBalanceProps {
   tokenInfo: BasicTokenInfo;

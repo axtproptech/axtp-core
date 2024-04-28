@@ -1,4 +1,4 @@
-import { AssetAliasHistoryItem } from "@axtp/core";
+import { AssetAliasHistoryItem } from "@axtp/core/aliases";
 import { PoolAssetStatus } from "../../components/poolAssetStatus";
 import { Numeric } from "@/app/components/numeric";
 import { useRouter } from "next/router";

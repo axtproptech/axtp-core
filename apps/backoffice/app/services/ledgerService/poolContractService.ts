@@ -10,7 +10,7 @@ import {
   convertStringToHexString,
 } from "@signumjs/util";
 import { AxtcContractService } from "./axtcContractService";
-import { withError } from "@axtp/core/common/withError";
+import { withError } from "@axtp/core";
 
 interface CreatePoolInstanceArgs {
   alias: string;

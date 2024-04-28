@@ -4,8 +4,8 @@ import { Amount } from "@signumjs/util";
 import { InputValidationService } from "@/app/services/inputValidationService";
 import { MasterContractData } from "@/types/masterContractData";
 import { GenericContractService } from "./genericContractService";
-import { withError } from "@axtp/core/common/withError";
-import { AxtcContractDataView } from "@axtp/core/smartContractViewer/axtcContractDataView";
+import { withError } from "@axtp/core";
+import { AxtcContractDataView } from "@axtp/core/smartContractViewer";
 
 // TODO: refactor to use shared core package
 export class AxtcContractService extends GenericContractService {

@@ -1,5 +1,5 @@
 import { BasicTokenInfo } from "@/types/basicTokenInfo";
-import { TokenAccountCredits } from "@axtp/core";
+import { TokenAccountCredits } from "@axtp/core/smartContractViewer";
 
 export interface BurnContractData {
   id: string;

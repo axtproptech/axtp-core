@@ -2,7 +2,7 @@ import { FC, useMemo } from "react";
 import { Numeric } from "@/app/components/numeric";
 import { Stats } from "react-daisyui";
 import { useTranslation } from "next-i18next";
-import { AssetAliasMap } from "@axtp/core";
+import { AssetAliasMap } from "@axtp/core/aliases";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { RiFundsLine, RiRefund2Line, RiStockLine } from "react-icons/ri";
 

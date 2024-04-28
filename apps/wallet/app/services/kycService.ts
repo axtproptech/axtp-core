@@ -10,7 +10,7 @@ import {
   SecondStep,
   ThirdStep,
 } from "@/app/types/kycData";
-import { tryCall } from "@axtp/core/common/tryCall";
+import { tryCall } from "@axtp/core";
 
 export interface RegisterCustomerArgs
   extends Omit<InitialSetupStep, "code">,

@@ -1,6 +1,10 @@
 import { createLedgerClient } from "@/bff/createLedgerClient";
 import { getEnvVar } from "@/bff/getEnvVar";
-import { PaymentRecord, PaymentRecordService, PaymentType } from "@axtp/core";
+import {
+  PaymentRecord,
+  PaymentRecordService,
+  PaymentType,
+} from "@axtp/core/paymentRecord";
 import { Amount } from "@signumjs/util";
 import { prisma } from "@axtp/db";
 import { notFound } from "@hapi/boom";
