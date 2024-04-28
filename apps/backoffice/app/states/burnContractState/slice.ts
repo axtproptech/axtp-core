@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BurnContractData } from "@/types/burnContractData";
-import { TokenAccountCredits } from "@axtp/core";
 
 export interface BurnContractState {
   burnContract: BurnContractData;

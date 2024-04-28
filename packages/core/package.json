@@ -9,9 +9,15 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
-    "./mailer": "./dist/mailer/index.js",
+    "./aliases": "./dist/aliases/index.js",
+    "./common": "./dist/index.js",
     "./crm": "./dist/crm/index.js",
-    "./file": "./dist/file/index.js"
+    "./errors": "./dist/errors/index.js",
+    "./file": "./dist/file/index.js",
+    "./mailer": "./dist/mailer/index.js",
+    "./paymentRecord": "./dist/paymentRecord/index.js",
+    "./smartContractViewer": "./dist/smartContractViewer/index.js",
+    "./withdrawalRecord": "./dist/withdrawalRecord/index.js"
   },
   "scripts": {
     "generate-core": "yarn run build",

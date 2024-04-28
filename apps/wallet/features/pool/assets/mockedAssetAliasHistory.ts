@@ -1,4 +1,4 @@
-import { AssetAlias, type AssetAliasHistory } from "@axtp/core";
+import { AssetAlias, type AssetAliasHistory } from "@axtp/core/aliases";
 
 export const mockedAssetAliasHistory: AssetAliasHistory = [
   {

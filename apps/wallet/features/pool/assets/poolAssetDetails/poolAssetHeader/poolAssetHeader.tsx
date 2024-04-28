@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { PoolContractData } from "@/types/poolContractData";
-import { AssetAlias, type AssetAliasHistory } from "@axtp/core";
+import { AssetAlias, type AssetAliasHistory } from "@axtp/core/aliases";
 import { PoolAssetTitle } from "./poolAssetTitle";
 import { PoolAssetProgress } from "./poolAssetProgress";
 

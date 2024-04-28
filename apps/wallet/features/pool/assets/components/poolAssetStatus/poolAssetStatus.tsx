@@ -1,4 +1,4 @@
-import { AssetAliasData } from "@axtp/core";
+import { AssetAliasData } from "@axtp/core/aliases";
 import { PoolAssetStatusFull } from "./poolAssetStatusFull";
 import { PoolAssetStatusLite } from "./poolAssetStatusLite";
 

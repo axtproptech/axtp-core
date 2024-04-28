@@ -1,4 +1,4 @@
-import { AssetAlias, AssetAliasMap } from "@axtp/core";
+import { AssetAlias, AssetAliasMap } from "@axtp/core/aliases";
 
 export const mockedAssetAlias: AssetAliasMap = new Map<string, AssetAlias>([
   [

@@ -16,7 +16,7 @@ import {
 } from "@/features/pools/create/components/assetOptions";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { AssetAliasData } from "@axtp/core";
+import { AssetAliasData } from "@axtp/core/aliases";
 
 const FullBox = styled(Box)(() => ({
   width: "100%",

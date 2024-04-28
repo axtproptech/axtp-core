@@ -4,7 +4,7 @@ import {
   AssetAliasData,
   AssetAliasService,
   type AssetAliasMap,
-} from "@axtp/core";
+} from "@axtp/core/aliases";
 import { Alias, TransactionId } from "@signumjs/core";
 import { PoolContractService } from "@/app/services/ledgerService/poolContractService";
 import { HttpClientFactory } from "@signumjs/http";

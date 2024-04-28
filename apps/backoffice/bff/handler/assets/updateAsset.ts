@@ -3,7 +3,7 @@ import { getEnvVar } from "@/bff/getEnvVar";
 import { ApiHandler } from "@/bff/types/apiHandler";
 import { badRequest } from "@hapi/boom";
 import { number, object, string, ValidationError, date } from "yup";
-import { AssetAliasService } from "@axtp/core";
+import { AssetAliasService } from "@axtp/core/aliases";
 import { generateMasterKeys } from "@signumjs/crypto";
 import { TransactionId } from "@signumjs/core";
 
