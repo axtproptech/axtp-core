@@ -18,7 +18,7 @@ import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { ChainValue } from "@signumjs/util";
 import { Numeric } from "@/app/components/numeric";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import { tryCall } from "@axtp/core/common/tryCall";
+import { tryCall } from "@axtp/core";
 import { RequestWithdrawalRequest } from "@/bff/types/requestWithdrawalRequest";
 
 export const Step2ConfirmWithPin = () => {

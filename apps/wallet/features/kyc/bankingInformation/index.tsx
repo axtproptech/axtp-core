@@ -1,7 +1,7 @@
 import { useTranslation } from "next-i18next";
 import { Controller, useForm } from "react-hook-form";
 import { FieldBox } from "@/app/components/fieldBox";
-import { validatePixKey } from "@axtp/core/common/validatePixKey";
+import { validatePixKey } from "@axtp/core";
 import { PasteButton } from "@/app/components/buttons/pasteButton";
 import { useRouter } from "next/router";
 import { RiArrowLeftCircleLine, RiSaveLine } from "react-icons/ri";
