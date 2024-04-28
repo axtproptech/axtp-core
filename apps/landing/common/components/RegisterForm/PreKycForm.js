@@ -7,6 +7,7 @@ import { useSafeState } from "common/hooks/useSafeState";
 import Button from "common/components/Button";
 import PropTypes from "prop-types";
 import { registerCustomer } from "common/services/CustomerService";
+import { usePersistableSafeState } from "common/hooks/usePersistableSafeState";
 
 const NameInputWrapper = styled.span`
   display: flex;
@@ -29,15 +30,16 @@ const InitialFormState = {
 };
 
 export default function PreKycForm({ onSubmit }) {
-  const [formState, setFormState] = useState({ ...InitialFormState });
+  const [formState, setFormState, clearPersistedState] =
+    usePersistableSafeState("kyc-draft", { ...InitialFormState });
   const [isSubmitting, setIsSubmitting] = useSafeState(false);
-  const { email, isBrazilian, firstName, lastName } = formState;
+  const { email, isBrazilian, firstName, lastName, phone } = formState;
 
   const handleOnChange = (name) => (value) => {
-    setFormState((formState) => ({
+    setFormState({
       ...formState,
       [name]: value,
-    }));
+    });
   };
 
   const handleClick = async () => {
@@ -45,6 +47,7 @@ export default function PreKycForm({ onSubmit }) {
       setIsSubmitting(true);
       const status = await registerCustomer(formState);
       onSubmit(status, formState);
+      clearPersistedState();
     } catch (e) {
       console.error("Submission failed", e);
       const resetState = { ...InitialFormState };
@@ -62,6 +65,8 @@ export default function PreKycForm({ onSubmit }) {
   const disableName = canSubmit;
   const disableEmail = !hasName || canSubmit;
   const disablePhone = !hasName || !hasMail;
+
+  console.log("Formstate", formState);
   return (
     <>
       <Switch
@@ -69,7 +74,7 @@ export default function PreKycForm({ onSubmit }) {
         labelPosition="right"
         switchSize="60px"
         onChange={handleOnChange("isBrazilian")}
-        isChecked={isBrazilian}
+        checked={isBrazilian}
         disabled={disableIsBrazilian}
       />
       <NameInputWrapper>
@@ -78,6 +83,7 @@ export default function PreKycForm({ onSubmit }) {
           required={true}
           inputType="text"
           placeholder={"Jane"}
+          value={firstName}
           onChange={handleOnChange("firstName")}
           disabled={disableName}
         />
@@ -86,6 +92,7 @@ export default function PreKycForm({ onSubmit }) {
           required={true}
           inputType="text"
           placeholder={"Doe"}
+          value={lastName}
           onChange={handleOnChange("lastName")}
           disabled={disableName}
         />
@@ -103,6 +110,7 @@ export default function PreKycForm({ onSubmit }) {
         placeholder={"+5511987654321"}
         onChange={handleOnChange("phone")}
         disabled={disablePhone}
+        value={phone}
         hint="Opcional, em caso que deseje um contato pessoal"
       />
 

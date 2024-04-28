@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import PropTypes from "prop-types";
 import InputField, { EyeButton } from "./input.style";
 const Input = ({
@@ -21,7 +21,7 @@ const Input = ({
   const [state, setState] = useState({
     toggle: false,
     focus: false,
-    value: "",
+    value: value || "",
   });
 
   // toggle function
@@ -99,6 +99,15 @@ const Input = ({
 
   // Label field
   const LabelField = label && <label htmlFor={htmlFor}>{label}</label>;
+
+  console.log("input state", value, state.value);
+
+  useLayoutEffect(() => {
+    setState((s) => ({
+      ...s,
+      value,
+    }));
+  }, [value]);
 
   // Input type check
   switch (inputType) {
