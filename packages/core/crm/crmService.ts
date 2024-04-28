@@ -7,6 +7,7 @@ export class CrmServiceError extends BrevoError {}
 export enum ContactListType {
   KycCompleted = 7,
   TokenHolder = 8,
+  LandingLeads = 10,
 }
 
 export interface CreateContactArgs {
