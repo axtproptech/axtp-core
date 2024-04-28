@@ -47,6 +47,28 @@ export class CrmService {
     Brevo.ApiClient.instance.authentications["api-key"].apiKey = apiKey;
   }
 
+  public async contactExists(email: string) {
+    try {
+      await this.contactsApi.getContactInfo(email);
+      return true;
+    } catch (e: any) {
+      return false;
+    }
+  }
+
+  public async upsertContract(args: CreateContactArgs): Promise<void> {
+    try {
+      const contactExists = await this.contactExists(args.email);
+      if (contactExists) {
+        await this.updateContact(args);
+      } else {
+        await this.createNewContact(args);
+      }
+    } catch (e: any) {
+      throw new CrmServiceError(e);
+    }
+  }
+
   /**
    * Creates a new contact in CRM
    * @note by default creates inside KycCompleted list
@@ -69,7 +91,6 @@ export class CrmService {
         IS_TOKENHOLDER: false,
         IS_VERIFIED: false,
       };
-
       await this.contactsApi.createContact(contact);
     } catch (e: any) {
       throw new CrmServiceError(e);

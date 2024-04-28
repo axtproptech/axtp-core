@@ -50,6 +50,6 @@ export const registerCustomer = async (req, res) => {
     res.status(201).json({ status: "registered" });
   } catch (e) {
     console.error("registerCustomer", e.message);
-    res.status(500);
+    res.status(500).end();
   }
 };

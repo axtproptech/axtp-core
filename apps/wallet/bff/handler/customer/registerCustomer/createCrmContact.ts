@@ -21,7 +21,7 @@ export async function createCrmContact(newCustomer: Customer) {
       detail: { cpfCnpj: newCustomer.cpfCnpj, cuid: newCustomer.cuid },
     });
     const client = new CrmService(getEnvVar("NEXT_SERVER_BREVO_API_KEY"));
-    await client.createNewContact(data);
+    await client.upsertContract(data);
   } catch (e: any) {
     bffLoggingService.error({
       msg: "Error creating new contact in CRM: " + e.message,
