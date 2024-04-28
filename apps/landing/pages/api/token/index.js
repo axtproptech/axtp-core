@@ -1,10 +1,10 @@
 import { route } from "bff/route";
-import { registerCustomer } from "bff/handler/customer/registerCustomer";
+import { verifySecurityToken } from "bff/handler/token/verifySecurityToken";
 
 export default function handler(req, res) {
   return route({
     req,
     res,
-    post: registerCustomer,
+    put: verifySecurityToken,
   });
 }

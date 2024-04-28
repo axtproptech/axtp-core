@@ -69,11 +69,17 @@ const SwitchStyle = styled.div`
       left: 0;
       pointer-events: none;
 
+      &:disabled + div {
+        cursor: not-allowed;
+        filter: saturate(0);
+        color: ${themeGet("colors.grey", "#888")};
+      }
+
       &:checked + div {
         width: ${(props) => (props.switchSize ? props.switchSize : "80px")};
         background-position: 0 0;
         background-color: ${(props) =>
-          props.switchColor ? props.switchColor : "#028489"};
+          props.switchColor ? props.switchColor : "#ffb343"};
         > div {
           background-color: ${themeGet("colors.white", "#ffffff")};
           left: calc(
@@ -93,7 +99,7 @@ const SwitchStyle = styled.div`
       border-width: 2px;
       border-style: solid;
       border-color: ${(props) =>
-        props.switchColor ? props.switchColor : "#028489"};
+        props.switchColor ? props.switchColor : "#ffb343"};
       transition-duration: 0.4s;
       transition-property: background-color, box-shadow;
       cursor: pointer;
@@ -114,7 +120,7 @@ const SwitchStyle = styled.div`
         left: 2px;
         position: absolute;
         background-color: ${(props) =>
-          props.switchColor ? props.switchColor : "#028489"};
+          props.switchColor ? props.switchColor : "#ffb343"};
         transition-timing-function: cubic-bezier(1, 0, 0, 1);
         transition-duration: 0.4s;
         transition-property: left, background-color;

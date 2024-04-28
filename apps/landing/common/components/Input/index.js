@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import PropTypes from "prop-types";
 import InputField, { EyeButton } from "./input.style";
 const Input = ({
@@ -14,13 +14,14 @@ const Input = ({
   iconPosition,
   passwordShowHide,
   className,
+  hint,
   ...props
 }) => {
   // use toggle hooks
   const [state, setState] = useState({
     toggle: false,
     focus: false,
-    value: "",
+    value: value || "",
   });
 
   // toggle function
@@ -99,6 +100,15 @@ const Input = ({
   // Label field
   const LabelField = label && <label htmlFor={htmlFor}>{label}</label>;
 
+  console.log("input state", value, state.value);
+
+  useLayoutEffect(() => {
+    setState((s) => ({
+      ...s,
+      value,
+    }));
+  }, [value]);
+
   // Input type check
   switch (inputType) {
     case "textarea":
@@ -106,7 +116,6 @@ const Input = ({
         <textarea
           {...props}
           id={htmlFor}
-          name={htmlFor}
           value={state.value}
           onChange={handleOnChange}
           onBlur={handleOnBlur}
@@ -121,7 +130,6 @@ const Input = ({
           <input
             {...props}
             id={htmlFor}
-            name={htmlFor}
             type={state.toggle ? "password" : "text"}
             value={state.value}
             onChange={handleOnChange}
@@ -146,7 +154,6 @@ const Input = ({
           <input
             {...props}
             id={htmlFor}
-            name={htmlFor}
             type={inputType}
             value={state.value}
             onChange={handleOnChange}
@@ -161,11 +168,13 @@ const Input = ({
   return (
     <InputField
       className={`${addAllClasses.join(" ")} ${getInputFocusClass()}`}
+      style={{ width: "100%" }}
     >
       {LabelPosition === "top" && LabelField}
       {inputElement}
       {isMaterial && <span className="highlight" />}
       {LabelPosition === "bottom" && LabelField}
+      {hint && <small>{hint}</small>}
     </InputField>
   );
 };
@@ -221,6 +230,8 @@ Input.propTypes = {
    * You can pull out the new value by accessing `event.target.value`.
    */
   onChange: PropTypes.func,
+
+  hint: PropTypes.string,
 };
 
 /** Inout default type. */

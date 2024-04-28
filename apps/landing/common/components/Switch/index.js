@@ -1,13 +1,12 @@
 /* eslint-disable */
-import React from "react";
+import React, { useLayoutEffect, useState } from "react";
 import PropTypes from "prop-types";
-import useToggle from "../useToggle";
 import SwitchStyle from "./switch.style";
 
 const Switch = ({
   className,
   switchColor,
-  isChecked,
+  checked,
   labelText,
   labelPosition,
   switchSize,
@@ -17,10 +16,10 @@ const Switch = ({
   onFocus,
   onBlur,
   handleOnChange,
+  disabled,
   ...props
 }) => {
-  // use toggle hooks
-  const [toggleValue, toggleHandler] = useToggle(isChecked);
+  const [isChecked, setIsChecked] = useState(checked);
 
   // Add all classs to an array
   const addAllClasses = ["reusecore__switch"];
@@ -41,9 +40,13 @@ const Switch = ({
   }
 
   handleOnChange = (event) => {
-    toggleHandler();
-    onChange(!toggleValue);
+    setIsChecked(!isChecked);
+    onChange(!isChecked);
   };
+
+  useLayoutEffect(() => {
+    setIsChecked(checked);
+  }, [checked]);
 
   const LabelField = labelText && (
     <span className="reusecore__field-label">{labelText}</span>
@@ -65,13 +68,14 @@ const Switch = ({
           : ""}
 
         <input
-          checked={toggleValue}
+          checked={isChecked}
           onChange={handleOnChange}
           onBlur={onBlur}
           onFocus={onFocus}
           className="switch"
           type="checkbox"
-          value={toggleValue}
+          value={isChecked}
+          disabled={disabled}
         />
         <div>
           <div />
@@ -99,7 +103,7 @@ Switch.propTypes = {
   labelPosition: PropTypes.oneOf(["top", "bottom", "left", "right"]),
 
   /** Switch toggle state based on isChecked prop */
-  isChecked: PropTypes.bool,
+  checked: PropTypes.bool,
 
   /** Set color for Switch */
   SwitchColor: PropTypes.string,
@@ -124,14 +128,16 @@ Switch.propTypes = {
    * You can pull out the new value by accessing `event.target.value`.
    */
   onChange: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 Switch.defaultProps = {
-  isChecked: false,
+  checked: false,
   labelPosition: "top",
   onBlur: () => {},
   onFocus: () => {},
   onChange: () => {},
+  disabled: false,
 };
 
 export default Switch;
