@@ -1,4 +1,4 @@
-import { MailService } from "@axtp/core";
+import { MailService } from "@axtp/core/mailer";
 import { EmailTemplates } from "../mail/emailTemplates";
 
 const Env = {

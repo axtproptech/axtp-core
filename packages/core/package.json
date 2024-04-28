@@ -7,6 +7,12 @@
   "private": true,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./mailer": "./dist/mailer/index.js",
+    "./crm": "./dist/crm/index.js",
+    "./file": "./dist/file/index.js"
+  },
   "scripts": {
     "generate-core": "yarn run build",
     "build": "tsup",

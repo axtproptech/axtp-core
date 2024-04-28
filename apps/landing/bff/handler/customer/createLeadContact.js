@@ -1,4 +1,4 @@
-import { ContactListType, CrmService } from "@axtp/core";
+import { ContactListType, CrmService } from "@axtp/core/crm";
 
 const Env = {
   BrevoApiKey: process.env.NEXT_SERVER_BREVO_API_KEY || "",
