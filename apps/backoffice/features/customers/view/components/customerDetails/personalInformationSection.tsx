@@ -14,9 +14,23 @@ import { useMemo } from "react";
 import { customerService } from "@/app/services/customerService/customerService";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { useSWRConfig } from "swr";
+import { EditableSelectField } from "@/features/customers/view/components/editableSelectField";
 
 interface Props {
   customer: CustomerFullResponse;
+}
+
+const BoolOptions = [
+  { label: "Yes", value: "1" },
+  { label: "No", value: "0" },
+];
+
+function booleanToValue(b: boolean) {
+  return b ? "1" : "0";
+}
+
+function valueToBoolean(v: string) {
+  return v === "1";
 }
 
 export const PersonalInformationSection = ({ customer }: Props) => {
@@ -111,10 +125,17 @@ export const PersonalInformationSection = ({ customer }: Props) => {
         name="nationality"
         onSubmit={handleFieldValueChange}
       />
-      <LabeledTextField
-        label="Brazilian Resident"
-        text={customer.isInBrazil ? "YES" : "NO"}
-      />
+      <Stack direction="row">
+        <EditableSelectField
+          label="Brazilian Resident"
+          initialValue={booleanToValue(customer.isInBrazil)}
+          name="isInBrazil"
+          options={BoolOptions}
+          onSubmit={(name, value) => {
+            handleFieldValueChange(name, valueToBoolean(value));
+          }}
+        />
+      </Stack>
       <EditableFirstNameLastName
         label="Mother's Name"
         name={{

@@ -17,6 +17,7 @@ interface Props extends HTMLAttributes<HTMLInputElement> {
   error?: string;
   label: string;
   value?: string;
+  name?: string;
   options: SelectOption[];
 }
 
