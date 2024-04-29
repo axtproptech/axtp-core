@@ -67,6 +67,7 @@
   "country": "Country",
   "cpf": "CPF",
   "cpf_input_placeholder": "Enter your CPF",
+  "cpf_already_exists": "CPF is already registered",
   "create_account": "Create Account",
   "create_account_hint": "Choose this if you have no Signum account and you want to create one",
   "creation_of_blockchain_account": "Wallet Creation",

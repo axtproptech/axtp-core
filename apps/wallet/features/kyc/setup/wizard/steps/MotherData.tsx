@@ -3,6 +3,7 @@ import { useFormContext, Controller } from "react-hook-form";
 import { FieldBox } from "@/app/components/fieldBox";
 import { mapValidationError } from "@/app/mapValidationError";
 import { KycWizard } from "../validation/types";
+import { StepLayout } from "../../components/StepLayout";
 
 export const MotherData = () => {
   const { t } = useTranslation();
@@ -22,7 +23,7 @@ export const MotherData = () => {
   }
 
   return (
-    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
+    <StepLayout>
       <section>
         <h3>{t("mothers_full_name")}</h3>
         <p className="text-justify">{t("mothers_full_name_description")}</p>
@@ -55,6 +56,6 @@ export const MotherData = () => {
           )}
         />
       </section>
-    </div>
+    </StepLayout>
   );
 };

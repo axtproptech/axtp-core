@@ -6,6 +6,7 @@ import { KycWizard } from "../validation/types";
 import Link from "next/link";
 import { useAppSelector } from "@/states/hooks";
 import { selectInitialSetupStep } from "@/features/kyc/state";
+import { StepLayout } from "../../components/StepLayout";
 
 interface Props {
   firstName: string;
@@ -17,7 +18,7 @@ export const AgreeTerms = ({ firstName }: Props) => {
   const { control } = useFormContext<KycWizard>();
 
   return (
-    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
+    <StepLayout>
       <section>
         <h3>{t("sign_up_for_axt")}</h3>
         <p className="text-justify">
@@ -51,7 +52,7 @@ export const AgreeTerms = ({ firstName }: Props) => {
                 className="text-left font-bold"
               >
                 {/* @ts-ignore */}
-                <Checkbox {...field} size="lg" />
+                <Checkbox {...field} size="lg" className="ml-2" />
               </Form.Label>
             </div>
           )}
@@ -59,6 +60,6 @@ export const AgreeTerms = ({ firstName }: Props) => {
       </section>
 
       <section />
-    </div>
+    </StepLayout>
   );
 };
