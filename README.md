@@ -23,6 +23,8 @@ Reusable and commonly shared units among the apps
 
 Signum SmartC Contracts
 
+To run the unit tests for the smart contracts run `yarn test` within the `./smart-contracts/<contract>` folder
+
 # Development
 
 ## Before executing commands
