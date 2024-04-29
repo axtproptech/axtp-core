@@ -22,6 +22,7 @@ export const KycWizardSchema = yup
     // Complementary data step
     phone: requiredStringField,
     profession: requiredStringField,
+    pep: booleanField,
 
     // Residency data step
     streetAddress: requiredStringField,

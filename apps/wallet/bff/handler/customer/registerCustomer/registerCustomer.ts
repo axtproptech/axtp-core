@@ -34,6 +34,7 @@ const CustomerSchema = object({
   birthPlace: string().required(),
   phone: string().required(),
   profession: string().required(),
+  pep: boolean().required(),
   streetAddress: string().required(),
   complementaryStreetAddress: string(),
   state: string().required(),
@@ -128,6 +129,7 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
           nationality: "",
           phone1: data.phone,
           profession: data.profession,
+          isPoliticallyExposed: data.pep,
           documents: {
             createMany: {
               // @ts-ignore
@@ -167,6 +169,7 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
           nationality: "",
           phone1: data.phone,
           profession: data.profession,
+          isPoliticallyExposed: data.pep,
           documents: {
             createMany: {
               // @ts-ignore
@@ -193,6 +196,7 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
       });
     }
 
+    // TODO: mark reference on blockchain as digital signature.
     const termsOfUseId = Number(getEnvVar("ACTIVE_TERMS_OF_USE_ID") || "1");
     await prisma.termsOfUseOnCustomer.upsert({
       where: {

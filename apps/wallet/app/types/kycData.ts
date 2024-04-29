@@ -14,6 +14,7 @@ export interface SecondStep {
 export interface ThirdStep {
   phone: string;
   profession: string;
+  pep: boolean;
 }
 
 export interface FourthStep {

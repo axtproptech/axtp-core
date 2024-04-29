@@ -3,6 +3,7 @@ import { useFormContext, Controller } from "react-hook-form";
 import { FieldBox } from "@/app/components/fieldBox";
 import { mapValidationError } from "@/app/mapValidationError";
 import { KycWizard } from "../validation/types";
+import { Checkbox, Form } from "react-daisyui";
 
 export const ComplementaryData = () => {
   const { t } = useTranslation();
@@ -53,6 +54,22 @@ export const ComplementaryData = () => {
               placeholder={t("profession_placeholder")}
               errorLabel={phoneFieldError}
             />
+          )}
+        />
+
+        <Controller
+          name="pep"
+          control={control}
+          render={({ field }) => (
+            <div className="shadow bg-base-200 w-xl rounded-lg p-4">
+              <Form.Label
+                title={t("politically_exposed_person")}
+                className="text-left font-bold"
+              >
+                {/* @ts-ignore */}
+                <Checkbox {...field} size="lg" />
+              </Form.Label>
+            </div>
           )}
         />
       </section>

@@ -70,6 +70,7 @@ export const WizardLayout = ({ children, isSubmitting }: Props) => {
   const birthPlace = watch("birthPlace");
   const phone = watch("phone");
   const profession = watch("profession");
+  const pep = watch("pep");
   const streetAddress = watch("streetAddress");
   const complementaryStreetAddress = watch("complementaryStreetAddress");
   const zipCode = watch("zipCode");
@@ -282,7 +283,7 @@ export const WizardLayout = ({ children, isSubmitting }: Props) => {
         break;
 
       case Steps.ComplementaryData:
-        dispatch(setThirdStep({ phone, profession }));
+        dispatch(setThirdStep({ phone, profession, pep }));
         stepMovement(Steps.ResidencyData);
         break;
 
@@ -343,6 +344,7 @@ export const WizardLayout = ({ children, isSubmitting }: Props) => {
     birthPlace,
     phone,
     profession,
+    pep,
     streetAddress,
     complementaryStreetAddress,
     zipCode,
