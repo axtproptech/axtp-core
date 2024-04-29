@@ -10,9 +10,9 @@
   "scripts": {
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
+    "push-db": "prisma db push --skip-generate",
     "generate-db": "prisma generate",
-    "prebuild": "npm run generate-db",
-    "build": "tsup",
+    "compile": "tsup",
     "predev": "npm run generate-db"
   },
   "prisma": {},

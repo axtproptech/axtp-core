@@ -21,8 +21,8 @@
     "./withdrawalRecord": "./dist/withdrawalRecord/index.js"
   },
   "scripts": {
-    "generate-core": "yarn run build",
-    "build": "tsup",
+    "generate-core": "yarn run compile",
+    "compile": "tsup",
     "dev": "tsup --dev",
     "test": "vitest run"
   },

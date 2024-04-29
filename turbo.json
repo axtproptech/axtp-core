@@ -8,11 +8,11 @@
       "cache": false
     },
     "generate-core": {
-      "cache": false
+      "cache": true
     },
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**"]
+      "dependsOn": ["^generate-db", "^generate-core"],
+      "outputs": [".next/**", ".next/cache/**"]
     },
     "test": {
       "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"]
