@@ -21,6 +21,8 @@ let customerUpdateBodySchema = object({
   isBlocked: boolean().optional(),
   isActive: boolean().optional(),
   isInvited: boolean().optional(),
+  isBrazilian: boolean().optional(),
+  isPep: boolean().optional(),
 });
 
 export const updateCustomer: ApiHandler = async ({ req, res }) => {
@@ -28,6 +30,8 @@ export const updateCustomer: ApiHandler = async ({ req, res }) => {
     const { cuid } = customerRequestSchema.validateSync(req.query);
     const {
       verificationLevel,
+      isBrazilian,
+      isPep,
       isBlocked,
       isActive,
       isInvited,
@@ -56,6 +60,8 @@ export const updateCustomer: ApiHandler = async ({ req, res }) => {
         isInvited,
         firstNameMother,
         lastNameMother,
+        isInBrazil: isBrazilian,
+        isPoliticallyExposed: isPep,
       },
       include: {
         termsOfUse: true,
