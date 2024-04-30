@@ -12,5 +12,9 @@ export function asFullCustomerResponse(customer: any): CustomerFullResponse {
     }
   });
 
+  // remap
+  customer.isPep = customer.isPoliticallyExposed;
+  delete customer.isPoliticallyExposed;
+
   return customer as CustomerFullResponse;
 }

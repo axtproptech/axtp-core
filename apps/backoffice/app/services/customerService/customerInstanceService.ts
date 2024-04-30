@@ -86,7 +86,7 @@ export class CustomerInstanceService {
     placeOfBirth?: string;
     firstNameMother?: string;
     lastNameMother?: string;
-    isBrazilian?: boolean;
+    isInBrazil?: boolean;
     isPep?: boolean;
   }) {
     const { response } = await this.http.put("", args);

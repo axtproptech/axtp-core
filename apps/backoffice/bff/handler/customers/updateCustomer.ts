@@ -1,4 +1,4 @@
-import { prisma, Customer } from "@axtp/db";
+import { prisma } from "@axtp/db";
 import { ApiHandler } from "@/bff/types/apiHandler";
 import { notFound, badRequest } from "@hapi/boom";
 
@@ -21,7 +21,7 @@ let customerUpdateBodySchema = object({
   isBlocked: boolean().optional(),
   isActive: boolean().optional(),
   isInvited: boolean().optional(),
-  isBrazilian: boolean().optional(),
+  isInBrazil: boolean().optional(),
   isPep: boolean().optional(),
 });
 
@@ -30,7 +30,7 @@ export const updateCustomer: ApiHandler = async ({ req, res }) => {
     const { cuid } = customerRequestSchema.validateSync(req.query);
     const {
       verificationLevel,
-      isBrazilian,
+      isInBrazil,
       isPep,
       isBlocked,
       isActive,
@@ -60,7 +60,7 @@ export const updateCustomer: ApiHandler = async ({ req, res }) => {
         isInvited,
         firstNameMother,
         lastNameMother,
-        isInBrazil: isBrazilian,
+        isInBrazil,
         isPoliticallyExposed: isPep,
       },
       include: {

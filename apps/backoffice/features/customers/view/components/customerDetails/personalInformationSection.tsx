@@ -8,13 +8,13 @@ import { ExternalLink } from "@/app/components/links/externalLink";
 import { LabeledTextField } from "@/app/components/labeledTextField";
 import { EditableField } from "../editableField";
 import { EditableFirstNameLastName, Name } from "../editableFirstNameLastName";
+import { EditableSelectField } from "../editableSelectField";
 import { toDateStr } from "@/app/toDateStr";
 import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
 import { useMemo } from "react";
 import { customerService } from "@/app/services/customerService/customerService";
 import { useSnackbar } from "@/app/hooks/useSnackbar";
 import { useSWRConfig } from "swr";
-import { EditableSelectField } from "@/features/customers/view/components/editableSelectField";
 
 interface Props {
   customer: CustomerFullResponse;
@@ -125,17 +125,24 @@ export const PersonalInformationSection = ({ customer }: Props) => {
         name="nationality"
         onSubmit={handleFieldValueChange}
       />
-      <Stack direction="row">
-        <EditableSelectField
-          label="Brazilian Resident"
-          initialValue={booleanToValue(customer.isInBrazil)}
-          name="isInBrazil"
-          options={BoolOptions}
-          onSubmit={(name, value) => {
-            handleFieldValueChange(name, valueToBoolean(value));
-          }}
-        />
-      </Stack>
+      <EditableSelectField
+        label="Brazilian Resident"
+        initialValue={booleanToValue(customer.isInBrazil)}
+        name="isInBrazil"
+        options={BoolOptions}
+        onSubmit={(name, value) => {
+          handleFieldValueChange(name, valueToBoolean(value));
+        }}
+      />
+      <EditableSelectField
+        label="Politically Exposed Person"
+        initialValue={booleanToValue(customer.isPep)}
+        name="isPep"
+        options={BoolOptions}
+        onSubmit={(name, value) => {
+          handleFieldValueChange(name, valueToBoolean(value));
+        }}
+      />
       <EditableFirstNameLastName
         label="Mother's Name"
         name={{
