@@ -5,6 +5,7 @@ import { useFormContext } from "react-hook-form";
 import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
 import { KycWizard } from "../validation/types";
 import { HintBox } from "@/app/components/hintBoxes/hintBox";
+import { StepLayout } from "../../components/StepLayout";
 
 export const BlockchainAccountSeed = () => {
   const { t } = useTranslation();
@@ -17,7 +18,7 @@ export const BlockchainAccountSeed = () => {
   };
 
   return (
-    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
+    <StepLayout>
       <section>
         <h3>{t("you_recovery_phrase")}</h3>
         <p className="text-justify">{t("save_seed_phrase_hint")}</p>
@@ -45,6 +46,6 @@ export const BlockchainAccountSeed = () => {
           </Button>
         </div>
       </section>
-    </div>
+    </StepLayout>
   );
 };

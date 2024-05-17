@@ -19,6 +19,8 @@ export const mapValidationError = (message: any, getValue?: boolean): any => {
     case "positive":
       return "field_must_have_positive_value";
 
+    case "customer_already_exists":
+      return "customer_already_exists";
     default:
       return "invalid_field";
   }

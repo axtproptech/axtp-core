@@ -3,6 +3,8 @@ import { useFormContext, Controller } from "react-hook-form";
 import { FieldBox } from "@/app/components/fieldBox";
 import { mapValidationError } from "@/app/mapValidationError";
 import { KycWizard } from "../validation/types";
+import { Checkbox, Form } from "react-daisyui";
+import { StepLayout } from "../../components/StepLayout";
 
 export const ComplementaryData = () => {
   const { t } = useTranslation();
@@ -23,12 +25,28 @@ export const ComplementaryData = () => {
   }
 
   return (
-    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
+    <StepLayout>
       <section>
         <h3>{t("sign_up_for_axt")}</h3>
       </section>
 
       <section className="flex flex-col justify-center items-center gap-2">
+        <Controller
+          name="pep"
+          control={control}
+          render={({ field }) => (
+            <div className="shadow bg-base-200 w-xl rounded-lg p-4 w-full mb-4">
+              <Form.Label
+                title={t("politically_exposed_person")}
+                className="text-left font-bold"
+              >
+                {/* @ts-ignore */}
+                <Checkbox {...field} size="lg" className="ml-2" />
+              </Form.Label>
+            </div>
+          )}
+        />
+
         <Controller
           name="phone"
           control={control}
@@ -58,6 +76,6 @@ export const ComplementaryData = () => {
       </section>
 
       <section />
-    </div>
+    </StepLayout>
   );
 };

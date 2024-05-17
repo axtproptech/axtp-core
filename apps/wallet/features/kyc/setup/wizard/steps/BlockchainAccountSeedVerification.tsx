@@ -4,6 +4,7 @@ import { useFormContext, Controller } from "react-hook-form";
 import { FieldBox } from "@/app/components/fieldBox";
 import { KycWizard } from "../validation/types";
 import { RiCheckboxCircleLine } from "react-icons/ri";
+import { StepLayout } from "../../components/StepLayout";
 
 export const BlockchainAccountSeedVerification = () => {
   const { t } = useTranslation();
@@ -23,7 +24,7 @@ export const BlockchainAccountSeedVerification = () => {
       .at(seedPhraseVerificationIndex - 1);
 
   return (
-    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
+    <StepLayout>
       <section>
         <h3>{t("verification")}</h3>
         <p className="text-justify font-bold">
@@ -71,6 +72,6 @@ export const BlockchainAccountSeedVerification = () => {
           )}
         />
       </section>
-    </div>
+    </StepLayout>
   );
 };

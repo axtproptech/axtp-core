@@ -51,4 +51,5 @@ export interface CustomerFullResponse {
   documents: Document[];
   isInvited: boolean;
   isInBrazil: boolean;
+  isPep: boolean;
 }

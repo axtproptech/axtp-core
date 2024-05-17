@@ -8,6 +8,7 @@ import { ExternalLink } from "@/app/components/links/externalLink";
 import { LabeledTextField } from "@/app/components/labeledTextField";
 import { EditableField } from "../editableField";
 import { EditableFirstNameLastName, Name } from "../editableFirstNameLastName";
+import { EditableSelectField } from "../editableSelectField";
 import { toDateStr } from "@/app/toDateStr";
 import { CustomerFullResponse } from "@/bff/types/customerFullResponse";
 import { useMemo } from "react";
@@ -17,6 +18,19 @@ import { useSWRConfig } from "swr";
 
 interface Props {
   customer: CustomerFullResponse;
+}
+
+const BoolOptions = [
+  { label: "Yes", value: "1" },
+  { label: "No", value: "0" },
+];
+
+function booleanToValue(b: boolean) {
+  return b ? "1" : "0";
+}
+
+function valueToBoolean(v: string) {
+  return v === "1";
 }
 
 export const PersonalInformationSection = ({ customer }: Props) => {
@@ -111,9 +125,23 @@ export const PersonalInformationSection = ({ customer }: Props) => {
         name="nationality"
         onSubmit={handleFieldValueChange}
       />
-      <LabeledTextField
+      <EditableSelectField
         label="Brazilian Resident"
-        text={customer.isInBrazil ? "YES" : "NO"}
+        initialValue={booleanToValue(customer.isInBrazil)}
+        name="isInBrazil"
+        options={BoolOptions}
+        onSubmit={(name, value) => {
+          handleFieldValueChange(name, valueToBoolean(value));
+        }}
+      />
+      <EditableSelectField
+        label="Politically Exposed Person"
+        initialValue={booleanToValue(customer.isPep)}
+        name="isPep"
+        options={BoolOptions}
+        onSubmit={(name, value) => {
+          handleFieldValueChange(name, valueToBoolean(value));
+        }}
       />
       <EditableFirstNameLastName
         label="Mother's Name"

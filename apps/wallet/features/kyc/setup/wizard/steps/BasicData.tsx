@@ -8,17 +8,33 @@ import { mapValidationError } from "@/app/mapValidationError";
 import { KycWizard } from "../validation/types";
 
 import differenceInYears from "date-fns/differenceInYears";
+import { StepLayout } from "../../components/StepLayout";
+import { useEffect } from "react";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 export const BasicData = () => {
   const { t } = useTranslation();
+  const { KycService } = useAppContext();
   const {
     control,
     watch,
     formState: { errors },
+    setError,
   } = useFormContext<KycWizard>();
 
   const customerCpf = watch("cpf");
   const birthDate = watch("birthDate");
+
+  useEffect(() => {
+    if (cpf.isValid(customerCpf)) {
+      setError("cpf", { message: "" });
+      KycService.fetchCustomerDataByCpf(customerCpf)
+        .then((c) => {
+          setError("cpf", { message: "customer_already_exists" });
+        })
+        .catch(() => {});
+    }
+  }, [KycService, customerCpf, setError]);
 
   let cpfFieldError = "";
   if (errors.cpf?.message) {
@@ -51,7 +67,7 @@ export const BasicData = () => {
   }
 
   return (
-    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
+    <StepLayout>
       <section>
         <h3>{t("sign_up_for_axt")}</h3>
       </section>
@@ -126,6 +142,6 @@ export const BasicData = () => {
       </section>
 
       <section />
-    </div>
+    </StepLayout>
   );
 };

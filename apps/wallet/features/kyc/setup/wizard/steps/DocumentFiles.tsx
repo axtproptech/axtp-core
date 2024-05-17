@@ -4,6 +4,7 @@ import { Form, Checkbox, Alert } from "react-daisyui";
 import { RiCheckboxCircleLine } from "react-icons/ri";
 import { FileUploader } from "@/app/components/fileUploader";
 import { KycWizard } from "../validation/types";
+import { StepLayout } from "../../components/StepLayout";
 
 export const DocumentFiles = () => {
   const { t } = useTranslation();
@@ -22,7 +23,7 @@ export const DocumentFiles = () => {
     setValue("backSide", value);
 
   return (
-    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
+    <StepLayout>
       <section>
         <h3>{t("document")}</h3>
         <p className="text-justify">{t("document_upload_description")}</p>
@@ -102,6 +103,6 @@ export const DocumentFiles = () => {
           </div>
         </section>
       </section>
-    </div>
+    </StepLayout>
   );
 };

@@ -25,7 +25,7 @@ export const initialState: KycState = {
   initialSetupStep: { firstName: "", lastName: "", email: "", code: "" },
   agreeTerms: false,
   secondStep: { cpf: "", birthDate: "", birthPlace: "" },
-  thirdStep: { phone: "", profession: "" },
+  thirdStep: { phone: "", profession: "", pep: false },
   fourthStep: {
     streetAddress: "",
     complementaryStreetAddress: "",

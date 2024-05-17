@@ -9,6 +9,7 @@ import { voidFn } from "@/app/voidFn";
 import { PinInput } from "@/app/components/pinInput";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 import { KycWizard } from "../validation/types";
+import { StepLayout } from "../../components/StepLayout";
 
 export const BlockchainAccountSetup = () => {
   const { t } = useTranslation();
@@ -65,7 +66,7 @@ export const BlockchainAccountSetup = () => {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
+    <StepLayout>
       <section>
         <h2>{t("creation_of_blockchain_account")}</h2>
         <div className="text-justify">{t("your_account_hint")}</div>
@@ -99,6 +100,6 @@ export const BlockchainAccountSetup = () => {
       </section>
 
       <section />
-    </div>
+    </StepLayout>
   );
 };

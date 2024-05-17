@@ -1,13 +1,13 @@
 import { useTranslation } from "next-i18next";
 import { Button } from "react-daisyui";
 import { useFormContext, Controller } from "react-hook-form";
-import { AttentionSeeker } from "react-awesome-reveal";
 import { RiClipboardLine } from "react-icons/ri";
 import { FieldBox } from "@/app/components/fieldBox";
 import { useNotification } from "@/app/hooks/useNotification";
 import { mapValidationError } from "@/app/mapValidationError";
 import { InitialSetupStep } from "@/app/types/kycData";
 import { AnimatedIconMailSend } from "@/app/components/animatedIcons/animatedIconMailSend";
+import { StepLayout } from "../../components/StepLayout";
 
 export const EmailValidation = () => {
   const { t } = useTranslation();
@@ -41,7 +41,7 @@ export const EmailValidation = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
+    <StepLayout>
       <section>
         <h2>{t("verify_your_email")}</h2>
       </section>
@@ -80,6 +80,6 @@ export const EmailValidation = () => {
       </section>
 
       <section />
-    </div>
+    </StepLayout>
   );
 };
