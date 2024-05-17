@@ -30,17 +30,8 @@ const Days = 1000 * 60 * 60 * 24;
 const renderCreatedAt = (params: GridRenderCellParams<string>) => {
   const createdAt = params.value;
   if (!createdAt) return null;
-
-  const createdAtDate = new Date(createdAt);
-  const overdue = Date.now() - createdAtDate.getTime() > 10 * Days;
   const applied = toDateStr(new Date(createdAt));
-
-  let style = {};
-  if (overdue) {
-    style = { color: "red", fontWeight: 700 };
-  }
-
-  return <div style={style}>{applied}</div>;
+  return <div>{applied}</div>;
 };
 
 const renderVerificationLevel = (params: GridRenderCellParams<string>) => {
