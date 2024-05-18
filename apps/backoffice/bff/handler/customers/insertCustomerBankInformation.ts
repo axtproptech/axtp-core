@@ -48,7 +48,7 @@ export const insertCustomerBankInformation: ApiHandler = async ({
     customer = await prisma.customer.findUnique({
       where: { cuid },
       include: {
-        termsOfUse: true,
+        signedDocuments: true,
         blockchainAccounts: true,
         documents: {
           where: {

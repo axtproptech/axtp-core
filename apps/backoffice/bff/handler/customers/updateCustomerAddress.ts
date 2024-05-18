@@ -44,7 +44,7 @@ export const updateCustomerAddress: ApiHandler = async ({ req, res }) => {
     const customer = await prisma.customer.findUnique({
       where: { cuid },
       include: {
-        termsOfUse: true,
+        signedDocuments: true,
         blockchainAccounts: true,
         documents: {
           where: {

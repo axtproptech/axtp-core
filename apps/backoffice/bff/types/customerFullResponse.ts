@@ -1,12 +1,17 @@
 import { BlockchainAccountResponse } from "@/bff/types/blockchainAccountResponse";
 import { Address } from "@/bff/types/address";
 
-export interface TermsOfUseResponse {
-  customerId: number;
-  termsOfUseId: number;
+export interface SignedDocumentsResponse {
+  id: number;
   createdAt: string;
   updatedAt: string;
-  accepted: boolean;
+  expiryAt: string;
+  customerId: number;
+  poolId: string;
+  documentHash: string;
+  url: string;
+  type: string;
+  transactionId: string;
 }
 
 export interface Document {
@@ -44,7 +49,7 @@ export interface CustomerFullResponse {
   profession: string;
   updatedAt: string;
   verificationLevel: string;
-  termsOfUse: TermsOfUseResponse[];
+  signedDocuments: SignedDocumentsResponse[];
   blockchainAccounts: BlockchainAccountResponse[];
   bankInformation: BankInformation[];
   addresses: Address[];
