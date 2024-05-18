@@ -70,6 +70,8 @@ export const Config = {
   Accounts: {
     Principal:
       process.env.NEXT_PUBLIC_ACCOUNT_PRINCIPAL || "13819828207269214005",
+    Signature:
+      process.env.NEXT_PUBLIC_ACCOUNT_SIGNATURE || "3340583417981886932",
   },
   Contracts: {
     PoolContractIds: fromArray(process.env.NEXT_PUBLIC_AXTP_CONTRACT_IDS || ""),

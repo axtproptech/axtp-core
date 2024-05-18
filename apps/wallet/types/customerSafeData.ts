@@ -1,8 +1,9 @@
 import { VerificationLevelType } from "./verificationLevelType";
+import { SignedDocumentSafeData } from "./signedDocumentSafeData";
 
 export interface CustomerSafeData {
   customerId: string;
-  acceptedTerms: boolean;
+  signedDocuments: SignedDocumentSafeData[];
   verificationLevel: VerificationLevelType;
   isActive: boolean;
   isBlocked: boolean;

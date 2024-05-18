@@ -11,6 +11,9 @@ import {
   ThirdStep,
 } from "@/app/types/kycData";
 import { tryCall } from "@axtp/core";
+import { date, mixed, string } from "yup";
+import { SignedDocumentType } from "@/types/signedDocumentType";
+import { DateTimeConstants } from "@/app/dateTimeConstants";
 
 export interface RegisterCustomerArgs
   extends Omit<InitialSetupStep, "code">,
@@ -21,6 +24,16 @@ export interface RegisterCustomerArgs
     DocumentStep {
   publicKey: string;
   agreeTerms: boolean;
+}
+
+export interface StoreSignedDocumentArgs {
+  transactionId: string;
+  customerId: string;
+  expires: boolean;
+  poolId?: string;
+  documentHash: string;
+  url: string;
+  type: SignedDocumentType;
 }
 
 export interface RegisterCustomerResponse {
@@ -43,15 +56,33 @@ export class KycService {
     });
   }
 
-  /**
-   * @deprecated Will be done on registerCustomer
-   * @param customerId
-   */
-  acceptTermsOfUse(customerId: string) {
+  storeSignedDocument(args: StoreSignedDocumentArgs) {
     return retry(async () => {
-      const { response } = await this.bffClient.put("/termsOfUse", {
+      const {
+        documentHash,
+        url,
+        type,
+        poolId,
+        expires,
+        transactionId,
         customerId,
-      });
+      } = args;
+      const exiryAt = args.expires
+        ? new Date(
+            Date.now() + 365 * DateTimeConstants.InMillies.Day
+          ).toISOString()
+        : undefined;
+      const { response } = await this.bffClient.post(
+        `/customer/${customerId}/signedDocument`,
+        {
+          exiryAt,
+          url,
+          type,
+          poolId,
+          transactionId,
+          documentHash,
+        }
+      );
       return response;
     });
   }
@@ -62,7 +93,6 @@ export class KycService {
    * @param publicKey
    * @param isTestnet
    */
-
   assignPublicKeyToCustomer(
     customerId: string,
     publicKey: string,

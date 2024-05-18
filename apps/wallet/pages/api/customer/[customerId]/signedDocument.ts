@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { protectedRoute } from "@/bff/route";
-import { acceptTermsOfUse, getTermsOfUse } from "@/bff/handler/termsOfUse";
+import { storeSignedDocument } from "@/bff/handler/customer";
 
 export default function handler(
   req: NextApiRequest,
@@ -9,7 +9,6 @@ export default function handler(
   return protectedRoute({
     req,
     res,
-    put: acceptTermsOfUse,
-    get: getTermsOfUse,
+    post: storeSignedDocument,
   });
 }
