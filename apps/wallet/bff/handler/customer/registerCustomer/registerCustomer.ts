@@ -196,25 +196,6 @@ export const registerCustomer: RouteHandlerFunction = async (req, res) => {
       });
     }
 
-    // TODO: mark reference on blockchain as digital signature.
-    const termsOfUseId = Number(getEnvVar("ACTIVE_TERMS_OF_USE_ID") || "1");
-    await prisma.termsOfUseOnCustomer.upsert({
-      where: {
-        customerId_termsOfUseId: {
-          termsOfUseId,
-          customerId: newCustomer.id,
-        },
-      },
-      update: {
-        accepted: true,
-      },
-      create: {
-        accepted: true,
-        termsOfUseId,
-        customerId: newCustomer.id,
-      },
-    });
-
     await Promise.all([
       sendSuccessfulRegistrationMails(newCustomer),
       createCrmContact(newCustomer),

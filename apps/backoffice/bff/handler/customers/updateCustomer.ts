@@ -64,7 +64,7 @@ export const updateCustomer: ApiHandler = async ({ req, res }) => {
         isPoliticallyExposed: isPep,
       },
       include: {
-        termsOfUse: true,
+        signedDocuments: true,
         blockchainAccounts: true,
         documents: true,
         verificationResult: true,

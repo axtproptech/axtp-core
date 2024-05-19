@@ -3,7 +3,6 @@ import { prisma } from "@axtp/db";
 import { notFound } from "@hapi/boom";
 import { handleError } from "@/bff/handler/handleError";
 import { toSafeCustomerResponse } from "./toSafeCustomerResponse";
-import { object, string } from "yup";
 
 function formatCpfCnpj(cpfCnpj: string) {
   const pruned = cpfCnpj.replace(/\D/g, "");
@@ -28,9 +27,9 @@ async function fetchCustomerByPublicKey(publicKey: string) {
     },
     include: {
       blockchainAccounts: true,
-      termsOfUse: {
-        where: {
-          termsOfUseId: Number(process.env.ACTIVE_TERMS_OF_USE_ID || "1"),
+      signedDocuments: {
+        orderBy: {
+          createdAt: "desc",
         },
       },
     },
@@ -45,9 +44,9 @@ async function fetchCustomerByCpf(cpf: string) {
     },
     include: {
       blockchainAccounts: true,
-      termsOfUse: {
-        where: {
-          termsOfUseId: Number(process.env.ACTIVE_TERMS_OF_USE_ID || "1"),
+      signedDocuments: {
+        orderBy: {
+          createdAt: "desc",
         },
       },
     },
@@ -62,9 +61,9 @@ async function fetchCustomerByEmail(email: string) {
     include: {
       blockchainAccounts: true,
       bankInformation: true,
-      termsOfUse: {
-        where: {
-          termsOfUseId: Number(process.env.ACTIVE_TERMS_OF_USE_ID || "1"),
+      signedDocuments: {
+        orderBy: {
+          createdAt: "desc",
         },
       },
     },

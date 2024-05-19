@@ -20,36 +20,36 @@ enum VerificationLevel {
 }
 
 model Customer {
-  id                   Int                    @id @default(autoincrement())
-  cuid                 String                 @unique @default(cuid())
-  createdAt            DateTime               @default(now())
-  updatedAt            DateTime               @updatedAt
+  id                   Int                 @id @default(autoincrement())
+  cuid                 String              @unique @default(cuid())
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
   firstName            String
   lastName             String
-  firstNameMother      String                 @default("")
-  lastNameMother       String                 @default("")
+  firstNameMother      String              @default("")
+  lastNameMother       String              @default("")
   dateOfBirth          DateTime?
   placeOfBirth         String?
   nationality          String?
   profession           String?
-  cpfCnpj              String                 @unique
+  cpfCnpj              String              @unique
   phone1               String
   phone2               String?
   email1               String
   email2               String?
-  isActive             Boolean                @default(true)
-  isBlocked            Boolean                @default(false)
+  isActive             Boolean             @default(true)
+  isBlocked            Boolean             @default(false)
   documents            Document[]
   addresses            Address[]
   bankInformation      BankInformation[]
   blockchainAccounts   BlockchainAccount[]
-  verificationLevel    VerificationLevel      @default(NotVerified)
+  verificationLevel    VerificationLevel   @default(NotVerified)
   verificationResult   VerificationResult?
-  termsOfUse           TermsOfUseOnCustomer[]
+  signedDocuments      SignedDocuments[]
   payments             Payment[]
-  isInvited            Boolean                @default(false)
-  isInBrazil           Boolean                @default(true)
-  isPoliticallyExposed Boolean                @default(false)
+  isInvited            Boolean             @default(false)
+  isInBrazil           Boolean             @default(true)
+  isPoliticallyExposed Boolean             @default(false)
 
   @@index([cuid, lastName, email1, cpfCnpj])
 }
@@ -72,23 +72,27 @@ model BankInformation {
   @@index([identifier])
 }
 
-model TermsOfUseOnCustomer {
-  customer     Customer   @relation(fields: [customerId], references: [id])
-  customerId   Int
-  termsOfUse   TermsOfUse @relation(fields: [termsOfUseId], references: [id])
-  termsOfUseId Int
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  accepted     Boolean    @default(false)
-
-  @@id([customerId, termsOfUseId])
+enum SignedDocumentType {
+  TermsOfRisk
+  SelfDeclaration10K
+  SelfDeclaration100K
+  SelfDeclaration1M
 }
 
-model TermsOfUse {
-  id        Int                    @id @default(autoincrement()) // this also reflects the version
-  createdAt DateTime               @default(now())
-  url       String
-  customer  TermsOfUseOnCustomer[]
+model SignedDocuments {
+  id            Int                @id @default(autoincrement())
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  expiryAt      DateTime?
+  customer      Customer           @relation(fields: [customerId], references: [id])
+  customerId    Int
+  poolId        String?
+  documentHash  String
+  url           String
+  type          SignedDocumentType
+  transactionId String             @unique
+
+  @@index([transactionId])
 }
 
 model BlockchainAccount {
