@@ -30,6 +30,8 @@
   "buy_token_not_registered": "Parece que você ainda não está registrado",
   "buy_token_not_verified": "Você ainda não foi verificado",
   "buy_you_are_not_eligible": "Você ainda não está qualificado para comprar nenhum token, pois algo está faltando em sua conta ou registro.",
+  "buy_terms_not_signed": "Você ainda não assinou o Termo de Risco. De acordo com a resolução CVM nº 88, somos obrigados a informá-lo sobre os riscos associados ao investimento de seu interesse.",
+  "buy_signed_terms_expired": "Você já concordou com os Termos de Risco, mas seu consentimento precisa ser renovado, pois já se passou algum tempo desde a sua concordância inicial.",
   "cancel": "Cancelar",
   "clear": "Limpar",
   "click_to_see_more": "Clique item para ver mais",
@@ -265,6 +267,8 @@
   "second_street_address_placeholder": "Digite o complemento",
   "send_files": "Enviar arquivos",
   "sign_up_for_axt": "Inscreva-se na AXT",
+  "sign_terms": "Assinar Termos",
+  "sign_terms_update": "Atualizar Concordância",
   "state": "Estado",
   "street_address": "Logradouro",
   "street_address_placeholder": "Digite o endereço",
@@ -286,5 +290,7 @@
   "kyc-banking_info_title": "Informação bancária",
   "kyc-error_unsupported_pix_key": "Formato de chave Pix não suportado",
   "kyc-pix_key": "Chave Pix",
-  "kyc-pix_key_placeholder": "CPF, Telefone, E-mail etc."
+  "kyc-pix_key_placeholder": "CPF, Telefone, E-mail etc.",
+  "kyc-sign-document-title": "Assinar Termos Legais",
+  "kyc-sign-document-intro": "{{name}}, de acordo com a resolução CVM nº 88, somos obrigados a obter seu consentimento conforme descrito no documento em seguida. Por favor, leia o documento atentamente e, se concordar com os termos, prossiga para assiná-lo digitalmente."
 }

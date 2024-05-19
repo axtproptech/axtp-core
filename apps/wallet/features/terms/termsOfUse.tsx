@@ -9,7 +9,7 @@ export const TermsOfUse = () => {
     fetch(Documents.Use)
       .then((response) => response.text())
       .then(setPolicyText);
-  }, []);
+  }, [Documents]);
   return (
     <>
       <article className="prose text-justify mx-auto">

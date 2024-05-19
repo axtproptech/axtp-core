@@ -10,7 +10,7 @@ import { useCallback, useEffect, useState } from "react";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { useNotification } from "@/app/hooks/useNotification";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import useSWR, { useSWRConfig } from "swr";
+import { useSWRConfig } from "swr";
 import { voidFn } from "@/app/voidFn";
 
 interface BankInfoFormData {

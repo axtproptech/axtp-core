@@ -36,12 +36,12 @@ interface Props {
 }
 
 export const AccountImport: FC<Props> = ({ onStepChange }) => {
-  const StepCount = 3;
   const router = useRouter();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { Ledger, KycService } = useAppContext();
   const { showSuccess, showError } = useNotification();
+  const StepCount = 3;
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [seed, setSeed] = useState<string>("");
   const [pin, setPin] = useState<string>("");

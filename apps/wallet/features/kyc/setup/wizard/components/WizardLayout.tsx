@@ -416,7 +416,7 @@ export const WizardLayout = ({ children, isSubmitting }: Props) => {
 
       <Layout bottomNav={bottomNav}>
         <div className="print:hidden mt-4">
-          <Stepper currentStep={currentStep} steps={StepsCount}></Stepper>
+          <Stepper currentStep={currentStep} steps={StepsCount} />
           {children}
         </div>
       </Layout>
