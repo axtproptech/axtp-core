@@ -1,6 +1,6 @@
 import { Input } from "react-daisyui";
 import { useTranslation } from "next-i18next";
-import { forwardRef, useState } from "react";
+import {forwardRef, useImperativeHandle, useState} from "react";
 
 interface Props {
   onPinChange: (pin: string) => void;
@@ -10,6 +10,13 @@ export const PinInput = forwardRef<HTMLInputElement, Props>(
   ({ onPinChange }, ref) => {
     const { t } = useTranslation();
     const [pin, setPin] = useState("");
+      // @ts-ignore
+      useImperativeHandle(ref, () => {
+        return  {
+            reset: () => setPin("")
+        }
+    }, []);
+
 
     return (
       <div>

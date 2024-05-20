@@ -29,6 +29,7 @@ import { StepCheckForRegistry } from "@/features/account/components/steps/stepCh
 import { StepIntro } from "@/features/kyc/documentSigning/steps/stepIntro";
 import { StepDocument } from "@/features/kyc/documentSigning/steps/stepDocument";
 import { B } from "@axtp/core/dist/brevoError-ea1f0b6e";
+import {StepSign} from "@/features/kyc/documentSigning/steps/stepSign";
 
 interface Props {
   onNavChange: (bottomNav: BottomNavigationItem[]) => void;
@@ -58,6 +59,7 @@ export const DocumentSigning = ({ onNavChange }: Props) => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [isSaving, setIsSaving] = useState(false);
   const [hasReadDocument, setHasReadDocument] = useState(false);
+  const [hasSigned, setHasSigned] = useState(false);
 
   const { mutate } = useSWRConfig();
 
@@ -154,12 +156,14 @@ export const DocumentSigning = ({ onNavChange }: Props) => {
           label: t("next"),
           icon: <RiCheckboxCircleLine />,
           color: "secondary",
-          disabled: true, // TODO: when signed
+          disabled: !hasSigned,
           onClick: nextStep,
         },
       ]);
     }
-  }, [currentStep, isSaving, hasReadDocument, onNavChange, t]);
+  }, [currentStep, isSaving, hasReadDocument, hasSigned, onNavChange, t]);
+
+
 
   return (
     <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm md:max-w-lg mx-auto px-4">
@@ -173,7 +177,7 @@ export const DocumentSigning = ({ onNavChange }: Props) => {
             <StepDocument onReading={setHasReadDocument} />
           </div>
           <div id="step2" className="carousel-item relative w-full">
-            {/*<StepCheckForRegistry customer={customerData}/>*/}
+            <StepSign onSign={() => setHasSigned(true)} />
           </div>
         </div>
       </div>

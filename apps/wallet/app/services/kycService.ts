@@ -1,5 +1,5 @@
-import { Http, HttpError } from "@signumjs/http";
-import retry, { AbortError } from "p-retry";
+import { Http } from "@signumjs/http";
+import retry from "p-retry";
 import { CustomerSafeData } from "@/types/customerSafeData";
 import { CustomerPaymentData } from "@/types/customerPaymentData";
 import {
@@ -11,7 +11,6 @@ import {
   ThirdStep,
 } from "@/app/types/kycData";
 import { tryCall } from "@axtp/core";
-import { date, mixed, string } from "yup";
 import { SignedDocumentType } from "@/types/signedDocumentType";
 import { DateTimeConstants } from "@/app/dateTimeConstants";
 
