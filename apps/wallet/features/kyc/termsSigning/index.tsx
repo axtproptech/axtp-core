@@ -19,17 +19,17 @@ import { useAppContext } from "@/app/hooks/useAppContext";
 import useSWR, { useSWRConfig } from "swr";
 import { voidFn } from "@/app/voidFn";
 import { mixed, object, string } from "yup";
-import { TermsOfRisk } from "@/features/kyc/documentSigning/docs/termsOfRisk";
 import { Stepper } from "@/app/components/stepper";
 import {
   StepDefinePin,
   StepImportSeed,
 } from "@/features/account/components/steps";
 import { StepCheckForRegistry } from "@/features/account/components/steps/stepCheckForRegistry";
-import { StepIntro } from "@/features/kyc/documentSigning/steps/stepIntro";
-import { StepDocument } from "@/features/kyc/documentSigning/steps/stepDocument";
-import { B } from "@axtp/core/dist/brevoError-ea1f0b6e";
-import {StepSign} from "@/features/kyc/documentSigning/steps/stepSign";
+import { StepIntro } from "./steps/stepIntro";
+import { StepDocument } from "./steps/stepDocument";
+import { StepSign } from "./steps/stepSign";
+import { SignableDocument } from "../types/signableDocument";
+import { SignedDocumentType } from "@/types/signedDocumentType";
 
 interface Props {
   onNavChange: (bottomNav: BottomNavigationItem[]) => void;
@@ -37,14 +37,7 @@ interface Props {
 
 const querySchema = object({
   reason: string().required(),
-  type: mixed()
-    .oneOf([
-      "TermsOfRisk",
-      "SelfDeclaration10K",
-      "SelfDeclaration100K",
-      "SelfDeclaration1M",
-    ])
-    .required(),
+  type: mixed().oneOf(Object.values(SignedDocumentType)).required(),
   redirect: string().required(),
   poolId: string().optional(),
 });
@@ -58,7 +51,9 @@ export const DocumentSigning = ({ onNavChange }: Props) => {
   const StepCount = 3;
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [isSaving, setIsSaving] = useState(false);
-  const [hasReadDocument, setHasReadDocument] = useState(false);
+  const [readDocument, setReadDocument] = useState<SignableDocument | null>(
+    null
+  );
   const [hasSigned, setHasSigned] = useState(false);
 
   const { mutate } = useSWRConfig();
@@ -87,6 +82,7 @@ export const DocumentSigning = ({ onNavChange }: Props) => {
     if (!customer) return;
     try {
       setIsSaving(true);
+      // TODO:....
       // const { pixKey } = getValues();
       // await KycService.storeSignedDocument(customer.customerId, pixKey, "Pix");
       // await mutate(`/fetchCustomer/${customer.customerId}`);
@@ -139,7 +135,7 @@ export const DocumentSigning = ({ onNavChange }: Props) => {
           label: t("next"),
           icon: <RiArrowRightCircleLine />,
           color: "secondary",
-          disabled: !hasReadDocument,
+          disabled: !readDocument,
           onClick: nextStep,
         },
       ]);
@@ -161,9 +157,7 @@ export const DocumentSigning = ({ onNavChange }: Props) => {
         },
       ]);
     }
-  }, [currentStep, isSaving, hasReadDocument, hasSigned, onNavChange, t]);
-
-
+  }, [currentStep, isSaving, readDocument, hasSigned, onNavChange, t]);
 
   return (
     <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm md:max-w-lg mx-auto px-4">
@@ -174,10 +168,16 @@ export const DocumentSigning = ({ onNavChange }: Props) => {
             <StepIntro />
           </div>
           <div id="step1" className="carousel-item relative w-full">
-            <StepDocument onReading={setHasReadDocument} />
+            <StepDocument
+              onRead={setReadDocument}
+              documentType={params?.type}
+            />
           </div>
           <div id="step2" className="carousel-item relative w-full">
-            <StepSign onSign={() => setHasSigned(true)} />
+            <StepSign
+              document={readDocument}
+              onSigned={() => setHasSigned(true)}
+            />
           </div>
         </div>
       </div>

@@ -66,7 +66,7 @@ export class KycService {
         transactionId,
         customerId,
       } = args;
-      const exiryAt = args.expires
+      const expiryAt = args.expires
         ? new Date(
             Date.now() + 365 * DateTimeConstants.InMillies.Day
           ).toISOString()
@@ -74,7 +74,7 @@ export class KycService {
       const { response } = await this.bffClient.post(
         `/customer/${customerId}/signedDocument`,
         {
-          exiryAt,
+          expiryAt,
           url,
           type,
           poolId,

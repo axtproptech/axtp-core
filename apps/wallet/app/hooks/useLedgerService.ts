@@ -6,9 +6,13 @@ export const useLedgerService = () => {
   const { Ledger, Accounts } = useAppContext();
 
   return useMemo(() => {
-    if (Ledger.Client && Accounts.Principal) {
-      return new LedgerService(Ledger.Client, Accounts.Principal);
+    if (Ledger.Client && Accounts.Principal && Accounts.Signature) {
+      return new LedgerService(
+        Ledger.Client,
+        Accounts.Principal,
+        Accounts.Signature
+      );
     }
     return null;
-  }, [Ledger.Client, Accounts.Principal]);
+  }, [Ledger.Client, Accounts]);
 };

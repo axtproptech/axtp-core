@@ -1,18 +1,11 @@
-import { FC, useMemo } from "react";
 import { ChildrenProps } from "@/types/childrenProps";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useRouter } from "next/router";
-import { HintBox } from "@/app/components/hintBoxes/hintBox";
-import { Button } from "react-daisyui";
-import { RegisterCustomerButton } from "@/app/components/buttons/registerCustomerButton";
-import { VerificationStatus } from "@/app/components/verificationStatus";
 import { useTranslation } from "next-i18next";
-import { RiWallet3Line } from "react-icons/ri";
-import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
 import { HintNotSigned } from "@/features/pool/acquisition/hasSignedTermsOfRisk/hintNotSigned";
 import { HintExpired } from "@/features/pool/acquisition/hasSignedTermsOfRisk/hintExpired";
-import { SignedDocumentSafeData } from "@/types/signedDocumentSafeData";
+import { SignedDocumentType } from "@/types/signedDocumentType";
 
 interface Props extends ChildrenProps {
   poolId: string;
@@ -35,7 +28,8 @@ export const HasSignedTermsOfRisk = ({ children, poolId }: Props) => {
 
   // docs are ordered by date desc...so most recent is on top!
   const foundSignedDocument = customer?.signedDocuments.find(
-    (doc) => doc.type === "TermsOfRisk" && doc.poolId === poolId
+    (doc) =>
+      doc.type === SignedDocumentType.TermsOfRisk && doc.poolId === poolId
   );
 
   if (!foundSignedDocument) {

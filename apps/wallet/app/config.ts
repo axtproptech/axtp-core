@@ -1,4 +1,6 @@
 import * as process from "process";
+import { AccountIdentifier } from "@/types/accountIdentifier";
+import { Address } from "@signumjs/core";
 
 const toNumber = (v: any): number => {
   const n = parseFloat(v);
@@ -9,11 +11,17 @@ const toBoolean = (v: string): boolean => v.toLowerCase() === "true";
 
 const fromArray = (csv: string): string[] => csv.split(",");
 
+const toAccountIdentifier = (pk: string): AccountIdentifier => ({
+  id: Address.fromPublicKey(pk).getNumericId(),
+  publicKey: pk,
+});
+
 const isTestNet = toBoolean(
   process.env.NEXT_PUBLIC_LEDGER_IS_TESTNET || "true"
 );
 
 const isDevelopment = process.env.NODE_ENV === "development";
+
 export const Config = {
   // this is not "security", but at least some obstacle
   // we don't need fully fledged auth as the BFF returns only minimum, safe data
@@ -68,10 +76,12 @@ export const Config = {
       "https://signum-account-activator-ohager.vercel.app",
   },
   Accounts: {
-    Principal:
-      process.env.NEXT_PUBLIC_ACCOUNT_PRINCIPAL || "13819828207269214005",
-    Signature:
-      process.env.NEXT_PUBLIC_ACCOUNT_SIGNATURE || "3340583417981886932",
+    Principal: toAccountIdentifier(
+      process.env.NEXT_PUBLIC_ACCOUNT_PRINCIPAL_PK || ""
+    ),
+    Signature: toAccountIdentifier(
+      process.env.NEXT_PUBLIC_ACCOUNT_SIGNATURE_PK || ""
+    ),
   },
   Contracts: {
     PoolContractIds: fromArray(process.env.NEXT_PUBLIC_AXTP_CONTRACT_IDS || ""),
