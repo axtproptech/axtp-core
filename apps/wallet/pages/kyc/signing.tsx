@@ -5,7 +5,7 @@ import { Layout } from "@/app/components/layout";
 import { WithAccountOnly } from "@/app/components/withAccountOnly";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { useState } from "react";
-import { DocumentSigning } from "@/features/kyc/documentSigning";
+import { TermsSigning } from "@/features/kyc/termsSigning";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -34,7 +34,7 @@ export default function Signing() {
   return (
     <WithAccountOnly>
       <Layout bottomNav={bottomNav}>
-        <DocumentSigning onNavChange={setBottomNav} />
+        <TermsSigning onNavChange={setBottomNav} />
       </Layout>
     </WithAccountOnly>
   );

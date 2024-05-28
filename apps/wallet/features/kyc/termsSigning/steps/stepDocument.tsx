@@ -44,7 +44,7 @@ export const StepDocument = ({ onRead, documentType }: Props) => {
         });
         setText(text);
       });
-  }, [Documents, documentType, router, showError]);
+  }, []);
 
   useEffect(() => {
     readDocument && onRead(readDocument);
@@ -68,9 +68,8 @@ export const StepDocument = ({ onRead, documentType }: Props) => {
         observer.unobserve(ref.current);
       }
     };
-  }, []);
+  }, [ref.current]);
 
-  // TOOD: render when is still loading
   const isLoading = readDocument === null;
 
   return (

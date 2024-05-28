@@ -42,7 +42,7 @@ const querySchema = object({
   poolId: string().optional(),
 });
 
-export const DocumentSigning = ({ onNavChange }: Props) => {
+export const TermsSigning = ({ onNavChange }: Props) => {
   const { t } = useTranslation();
   const { customer } = useAccount();
   const router = useRouter();
@@ -95,7 +95,7 @@ export const DocumentSigning = ({ onNavChange }: Props) => {
     } finally {
       setIsSaving(false);
     }
-  }, [router.query.redirect, router.replace]);
+  }, [customer, showError, showSuccess, t]);
 
   useEffect(() => {
     const middleButton: BottomNavigationItem = {
@@ -135,7 +135,7 @@ export const DocumentSigning = ({ onNavChange }: Props) => {
           label: t("next"),
           icon: <RiArrowRightCircleLine />,
           color: "secondary",
-          disabled: !readDocument,
+          disabled: !readDocument?.hasRead,
           onClick: nextStep,
         },
       ]);
@@ -157,7 +157,7 @@ export const DocumentSigning = ({ onNavChange }: Props) => {
         },
       ]);
     }
-  }, [currentStep, isSaving, readDocument, hasSigned, onNavChange, t]);
+  }, [currentStep, isSaving, readDocument, hasSigned, onNavChange]);
 
   return (
     <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm md:max-w-lg mx-auto px-4">

@@ -74,7 +74,7 @@ export const StepSign = ({ onSigned, document, poolId }: Props) => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <section>
         <h3>Sign Terms</h3>
       </section>
@@ -100,10 +100,12 @@ export const StepSign = ({ onSigned, document, poolId }: Props) => {
           </div>
         </section>
       ) : (
-        <ErrorBox
-          title="Read "
-          text="Looks like you haven't read the document "
-        />
+        <section>
+          <ErrorBox
+            title="Document not read yet"
+            text="Looks like you haven't read the document "
+          />
+        </section>
       )}
     </div>
   );
