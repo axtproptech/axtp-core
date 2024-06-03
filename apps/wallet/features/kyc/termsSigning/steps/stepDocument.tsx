@@ -8,6 +8,7 @@ import { useNotification } from "@/app/hooks/useNotification";
 import { hashSHA256 } from "@signumjs/crypto";
 import { doc } from "prettier";
 import { LoadingBox } from "@/app/components/hintBoxes/loadingBox";
+import { useTranslation } from "next-i18next";
 
 interface Props {
   onRead: (document: SignableDocument) => void;
@@ -16,6 +17,7 @@ interface Props {
 
 export const StepDocument = ({ onRead, documentType }: Props) => {
   const ref = useRef(null);
+  const { t } = useTranslation();
   const router = useRouter();
   const { showError } = useNotification();
   const { Documents } = useAppContext();
@@ -81,6 +83,7 @@ export const StepDocument = ({ onRead, documentType }: Props) => {
         />
       ) : (
         <article className="prose text-justify mx-auto !h-[80vh] overflow-y-auto">
+          <small className="text-center">{t("kyc-sign-scroll-down")}</small>
           <ReactMarkdown>{text}</ReactMarkdown>
           <div ref={ref} className="h-1" />
         </article>

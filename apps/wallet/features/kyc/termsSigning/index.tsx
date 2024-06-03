@@ -8,6 +8,7 @@ import {
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
   RiCheckboxCircleLine,
+  RiCloseCircleLine,
   RiHome6Line,
   RiSaveLine,
 } from "react-icons/ri";
@@ -30,6 +31,7 @@ import { StepDocument } from "./steps/stepDocument";
 import { StepSign } from "./steps/stepSign";
 import { SignableDocument } from "../types/signableDocument";
 import { SignedDocumentType } from "@/types/signedDocumentType";
+import { redirect } from "next/dist/server/api-utils";
 
 interface Props {
   onNavChange: (bottomNav: BottomNavigationItem[]) => void;
@@ -44,19 +46,13 @@ const querySchema = object({
 
 export const TermsSigning = ({ onNavChange }: Props) => {
   const { t } = useTranslation();
-  const { customer } = useAccount();
   const router = useRouter();
-  const { showSuccess, showError } = useNotification();
-  const { KycService } = useAppContext();
   const StepCount = 3;
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [isSaving, setIsSaving] = useState(false);
   const [readDocument, setReadDocument] = useState<SignableDocument | null>(
     null
   );
-  const [hasSigned, setHasSigned] = useState(false);
-
-  const { mutate } = useSWRConfig();
 
   let params;
   try {
@@ -78,32 +74,19 @@ export const TermsSigning = ({ onNavChange }: Props) => {
     await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
   };
 
-  const signDocument = useCallback(async () => {
-    if (!customer) return;
-    try {
-      setIsSaving(true);
-      // TODO:....
-      // const { pixKey } = getValues();
-      // await KycService.storeSignedDocument(customer.customerId, pixKey, "Pix");
-      // await mutate(`/fetchCustomer/${customer.customerId}`);
-      // if (query.redirect) {
-      //   await replace(query.redirect as string);
-      // }
-      showSuccess(t("kyc-banking-info-saved"));
-    } catch (e: any) {
-      showError(t("kyc-banking-info-save-error"));
-    } finally {
-      setIsSaving(false);
-    }
-  }, [customer, showError, showSuccess, t]);
-
   useEffect(() => {
-    const middleButton: BottomNavigationItem = {
+    const emptyButton: BottomNavigationItem = {
       label: "",
       disabled: true,
       hideLabel: true,
       onClick: voidFn,
       icon: <></>,
+    };
+
+    const cancelButton: BottomNavigationItem = {
+      route: "/",
+      label: t("cancel"),
+      icon: <RiCloseCircleLine />,
     };
 
     if (currentStep === 0) {
@@ -113,7 +96,7 @@ export const TermsSigning = ({ onNavChange }: Props) => {
           label: t("home"),
           icon: <RiHome6Line />,
         },
-        middleButton,
+        emptyButton,
         {
           label: t("next"),
           icon: <RiArrowRightCircleLine />,
@@ -130,7 +113,7 @@ export const TermsSigning = ({ onNavChange }: Props) => {
           back: false,
           onClick: previousStep,
         },
-        middleButton,
+        cancelButton,
         {
           label: t("next"),
           icon: <RiArrowRightCircleLine />,
@@ -147,17 +130,11 @@ export const TermsSigning = ({ onNavChange }: Props) => {
           back: false,
           onClick: previousStep,
         },
-        middleButton,
-        {
-          label: t("next"),
-          icon: <RiCheckboxCircleLine />,
-          color: "secondary",
-          disabled: !hasSigned,
-          onClick: nextStep,
-        },
+        cancelButton,
+        emptyButton,
       ]);
     }
-  }, [currentStep, isSaving, readDocument, hasSigned, onNavChange]);
+  }, [currentStep, isSaving, readDocument, onNavChange]);
 
   return (
     <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm md:max-w-lg mx-auto px-4">
@@ -176,7 +153,7 @@ export const TermsSigning = ({ onNavChange }: Props) => {
           <div id="step2" className="carousel-item relative w-full">
             <StepSign
               document={readDocument}
-              onSigned={() => setHasSigned(true)}
+              redirectUrl={params?.redirect || ""}
             />
           </div>
         </div>
