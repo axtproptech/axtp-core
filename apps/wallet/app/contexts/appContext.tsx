@@ -100,13 +100,14 @@ const config: AppContextType = {
   TrackingEventService: trackingEventService,
   Documents: {
     Use: Config.TermsOfUsefUrl,
-    Privacy: Config.PrivacyfUrl,
+    Privacy: Config.PrivacyUrl,
     Manual: Config.ManualUrl,
     // FIXME: correct document texts...
-    TermsOfRisk: Config.PrivacyfUrl,
-    SelfDeclaration10K: Config.PrivacyfUrl,
-    SelfDeclaration100K: Config.PrivacyfUrl,
-    SelfDeclaration1M: Config.PrivacyfUrl,
+
+    TermsOfRisk: Config.PrivacyUrl,
+    SelfDeclaration10K: Config.PrivacyUrl,
+    SelfDeclaration100K: Config.PrivacyUrl,
+    SelfDeclaration1M: Config.PrivacyUrl,
   },
   Market: {
     BrlUsdAdjustment: Config.Market.BrlUsdAdjustment,

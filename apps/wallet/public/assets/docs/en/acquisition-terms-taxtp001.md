@@ -1,4 +1,4 @@
-### Terms of use for purchasing the TAXTP001 token
+### Terms of Risks for purchasing the TAXTP001 token
 
 By purchasing the TAXTP001 token, you acknowledge that you are aware of and agree to the following terms:
 

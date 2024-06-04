@@ -12,10 +12,9 @@ interface Props extends ChildrenProps {
 }
 
 export const HasSignedTermsOfRisk = ({ children, poolId }: Props) => {
-  const { accountPublicKey, customer } = useAccount();
+  const { customer } = useAccount();
   const { TrackingEventService } = useAppContext();
   const router = useRouter();
-  const { t } = useTranslation();
 
   const navigateToSigning = (reason: string) => async () => {
     TrackingEventService.track({ msg: "Click Navigate Signing" });

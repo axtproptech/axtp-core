@@ -141,10 +141,8 @@ export const StepSign = ({ redirectUrl, document, poolId }: Props) => {
               />
             </AttentionSeeker>
             <div className="prosa text-center">
-              <h3 className="my-1">
-                {t("kyc-sign-error-signing-success-title")}
-              </h3>
-              <p>{t("kyc-sign-error-signing-success")}</p>
+              <h3 className="my-1">{t("kyc-sign-signing-success-title")}</h3>
+              <p>{t("kyc-sign-signing-success")}</p>
             </div>
           </HintBox>
         )}

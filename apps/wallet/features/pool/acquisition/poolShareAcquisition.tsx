@@ -30,6 +30,7 @@ import { IfEligibleForAcquisition } from "./ifEligibleForAcquisition";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
 import { StepConfirmTerms } from "@/features/pool/acquisition/steps/stepConfirmTerms";
 import { HasSignedTermsOfRisk } from "@/features/pool/acquisition/hasSignedTermsOfRisk";
+import { useStepper } from "@/app/hooks/useStepper";
 
 const StepRoutes = {
   pix: ["terms", "quantity", "paymentPix"],
@@ -52,37 +53,20 @@ export const PoolShareAcquisition: FC<Props> = ({ poolId, onStepChange }) => {
   const router = useRouter();
   const { accountData } = useAccount();
   const pool = useAppSelector(selectPoolContractState(poolId));
+  const { currentStep, nextStep, previousStep } = useStepper(
+    StepRoutes["pix"].length
+  );
   const [stepCount, setStepCount] = useState<number>(StepRoutes["pix"].length);
-  const [currentStep, setCurrentStep] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(1);
   const [termsConfirmed, setTermsConfirmed] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("pix");
-
   const [usdcProtocol, setUsdcProtocol] =
     useState<BlockchainProtocolType>("eth");
   const [paid, setPaid] = useState<boolean>(false);
 
   const routeBack = async () => router.back();
-
   const routeHome = async () => router.replace("/");
   const routeAccount = async () => router.replace("/account");
-
-  const routeStep = async (step: number) => {
-    let newRoute = StepRoutes[paymentMethod][step];
-    await router.push(`#${newRoute}`, `#${newRoute}`, { shallow: true });
-  };
-
-  const nextStep = async () => {
-    const newStep = Math.min(currentStep + 1, stepCount - 1);
-    setCurrentStep(newStep);
-    await routeStep(newStep);
-  };
-
-  const previousStep = async () => {
-    const newStep = Math.max(0, currentStep - 1);
-    setCurrentStep(newStep);
-    await routeStep(newStep);
-  };
 
   const soldTokens = parseFloat(pool.token.supply);
   const availableShares = Math.max(pool.maxShareQuantity - soldTokens, 0);

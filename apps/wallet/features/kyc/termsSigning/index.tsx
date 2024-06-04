@@ -1,37 +1,22 @@
+import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
-import { Controller, useForm } from "react-hook-form";
-import { FieldBox } from "@/app/components/fieldBox";
-import { validatePixKey } from "@axtp/core";
-import { PasteButton } from "@/app/components/buttons/pasteButton";
 import { useRouter } from "next/router";
 import {
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
-  RiCheckboxCircleLine,
   RiCloseCircleLine,
   RiHome6Line,
-  RiSaveLine,
 } from "react-icons/ri";
-import { useAccount } from "@/app/hooks/useAccount";
-import { useCallback, useEffect, useRef, useState } from "react";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
-import { useNotification } from "@/app/hooks/useNotification";
-import { useAppContext } from "@/app/hooks/useAppContext";
-import useSWR, { useSWRConfig } from "swr";
 import { voidFn } from "@/app/voidFn";
 import { mixed, object, string } from "yup";
 import { Stepper } from "@/app/components/stepper";
-import {
-  StepDefinePin,
-  StepImportSeed,
-} from "@/features/account/components/steps";
-import { StepCheckForRegistry } from "@/features/account/components/steps/stepCheckForRegistry";
 import { StepIntro } from "./steps/stepIntro";
 import { StepDocument } from "./steps/stepDocument";
 import { StepSign } from "./steps/stepSign";
 import { SignableDocument } from "../types/signableDocument";
 import { SignedDocumentType } from "@/types/signedDocumentType";
-import { redirect } from "next/dist/server/api-utils";
+import { useStepper } from "@/app/hooks/useStepper";
 
 interface Props {
   onNavChange: (bottomNav: BottomNavigationItem[]) => void;
@@ -47,32 +32,11 @@ const querySchema = object({
 export const TermsSigning = ({ onNavChange }: Props) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const StepCount = 3;
-  const [currentStep, setCurrentStep] = useState<number>(0);
+  const { previousStep, nextStep, currentStep, stepsCount } = useStepper(3);
   const [isSaving, setIsSaving] = useState(false);
   const [readDocument, setReadDocument] = useState<SignableDocument | null>(
     null
   );
-
-  let params;
-  try {
-    params = querySchema.validateSync(router.query);
-  } catch (e: any) {
-    console.error("Invalid query params", e.message);
-    router.replace("/");
-  }
-
-  const nextStep = async () => {
-    const newStep = Math.min(currentStep + 1, StepCount - 1);
-    setCurrentStep(newStep);
-    await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
-  };
-
-  const previousStep = async () => {
-    const newStep = Math.max(0, currentStep - 1);
-    setCurrentStep(newStep);
-    await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
-  };
 
   useEffect(() => {
     const emptyButton: BottomNavigationItem = {
@@ -136,10 +100,19 @@ export const TermsSigning = ({ onNavChange }: Props) => {
     }
   }, [currentStep, isSaving, readDocument, onNavChange]);
 
+  let params;
+  try {
+    params = querySchema.validateSync(router.query);
+  } catch (e: any) {
+    console.error("Invalid query params", e.message);
+    router.replace("/");
+    return null;
+  }
+
   return (
     <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm md:max-w-lg mx-auto px-4">
       <div className="mt-4">
-        <Stepper currentStep={currentStep} steps={StepCount}></Stepper>
+        <Stepper currentStep={currentStep} steps={stepsCount} />
         <div className="carousel w-full overflow-x-hidden">
           <div id="step0" className="carousel-item relative w-full">
             <StepIntro />
@@ -154,6 +127,7 @@ export const TermsSigning = ({ onNavChange }: Props) => {
             <StepSign
               document={readDocument}
               redirectUrl={params?.redirect || ""}
+              poolId={params?.poolId}
             />
           </div>
         </div>

@@ -30,7 +30,7 @@ export const Config = {
   BuildId: isDevelopment
     ? "dev"
     : process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.slice(0, 8) ?? "",
-  PrivacyfUrl: process.env.NEXT_PUBLIC_PRIVACY_URL || "",
+  PrivacyUrl: process.env.NEXT_PUBLIC_PRIVACY_URL || "",
   ManualUrl: process.env.NEXT_PUBLIC_MANUAL_URL || "",
   CanonicalUrl:
     process.env.NEXT_PUBLIC_CANONICAL_URL || "https://wallet.axtp.com.br",
