@@ -19,7 +19,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^28.1.4",
-    "@types/node": "^16.11.47",
+    "@types/node": "^18.19.42",
     "eslint": "8.19.0",
     "eslint-config-next": "12.2.0",
     "husky": "^8.0.0",

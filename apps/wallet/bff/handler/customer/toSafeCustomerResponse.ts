@@ -10,6 +10,7 @@ export const toSafeCustomerResponse = (customer: any): CustomerSafeData => {
     isBlocked,
     blockchainAccounts,
     bankInformation,
+    cpfCnpj,
   } = customer;
   const acceptedTerms =
     termsOfUse.length === 0
@@ -20,12 +21,15 @@ export const toSafeCustomerResponse = (customer: any): CustomerSafeData => {
     blockchainAccounts.length > 0 ? blockchainAccounts[0].publicKey : "";
 
   const hasBankInformation = bankInformation?.length > 0;
+  const isRegisteredAlready =
+    verificationLevel === "NotVerified" && cpfCnpj.startsWith("unverified");
   return {
     firstName,
     verificationLevel,
     customerId: cuid,
     acceptedTerms,
     isActive,
+    isRegisteredAlready,
     isBlocked,
     publicKey,
     hasBankInformation,

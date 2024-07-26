@@ -1,6 +1,6 @@
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
@@ -79,7 +79,7 @@ export const InitialSetup = () => {
       case Steps.Form:
         try {
           const response = await KycService.fetchCustomerDataByEmail(email);
-          if (response) {
+          if (response?.isRegisteredAlready) {
             await router.replace("/account/import");
             return showInfo(t("account_already_created"));
           }
@@ -119,14 +119,10 @@ export const InitialSetup = () => {
 
           await router.push("/kyc/setup/wizard");
         } catch (e: any) {
-          switch (e.message) {
-            case "invalid":
-              showError(t("invalid_token"));
-              break;
-
-            default:
-              showError(e);
-              break;
+          if (e.message === "invalid") {
+            showError(t("invalid_token"));
+          } else {
+            showError(e);
           }
         } finally {
           setIsSendingRequest(false);
