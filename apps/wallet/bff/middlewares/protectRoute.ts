@@ -3,18 +3,20 @@ import { Middleware } from "@/bff/withMiddleware";
 import * as process from "process";
 import { getEnvVar } from "@/bff/getEnvVar";
 
+// FIXME: Referer not always sent by NextJS... we need another mechanism
 const AcceptableReferrer = getEnvVar("NEXT_PUBLIC_CANONICAL_URL");
 const isDev = getEnvVar("NODE_ENV") === "development";
 export const protectRoute: Middleware = async ({
   req,
 }): Promise<boolean | undefined> => {
-  const isReferrerAccepted = isDev
-    ? true
-    : req.headers["referer"] &&
-      req.headers["referer"].startsWith(AcceptableReferrer);
+  // const isReferrerAccepted = isDev
+  //   ? true
+  //   : req.headers["referer"] &&
+  //     req.headers["referer"].startsWith(AcceptableReferrer);
+
   if (
-    req.headers["x-api-key"] === process.env.NEXT_PUBLIC_BFF_API_KEY &&
-    isReferrerAccepted
+    req.headers["x-api-key"] === process.env.NEXT_PUBLIC_BFF_API_KEY
+    // && isReferrerAccepted
   ) {
     return true;
   }
