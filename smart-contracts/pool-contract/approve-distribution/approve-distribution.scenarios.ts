@@ -100,13 +100,6 @@ export const ApproveInSingleBlockAndDistribute100AXTC = [
         messageArr: [Context.Methods.ApproveDistribution],
         recipient: Context.ThisContract,
     },
-    {
-        blockheight: 4,
-        amount: Context.ActivationFee,
-        sender: Context.ApproverAccount[3],
-        messageArr: [Context.Methods.ApproveDistribution],
-        recipient: Context.ThisContract,
-    }
 ]
 
 export const NotFullyApproved = [
