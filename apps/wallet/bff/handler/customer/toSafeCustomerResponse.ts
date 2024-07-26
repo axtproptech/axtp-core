@@ -22,7 +22,7 @@ export const toSafeCustomerResponse = (customer: any): CustomerSafeData => {
 
   const hasBankInformation = bankInformation?.length > 0;
   const isRegisteredAlready =
-    verificationLevel === "NotVerified" && cpfCnpj.startsWith("unverified");
+    verificationLevel !== "NotVerified" && !cpfCnpj.startsWith("unverified");
   return {
     firstName,
     verificationLevel,
