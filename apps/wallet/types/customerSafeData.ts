@@ -6,6 +6,7 @@ export interface CustomerSafeData {
   verificationLevel: VerificationLevelType;
   isActive: boolean;
   isBlocked: boolean;
+  isRegisteredAlready: boolean;
   firstName: string;
   publicKey: string;
   hasBankInformation: boolean;
