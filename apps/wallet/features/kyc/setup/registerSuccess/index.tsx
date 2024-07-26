@@ -15,13 +15,16 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
   const { t } = useTranslation();
   const { firstName, publicKey } = customer;
   const dispatch = useAppDispatch();
-  const { Ledger } = useAppContext();
+  const { ActivationService } = useAppContext();
 
   useEffect(() => {
     if (!customer) return;
-
+    if (customer.publicKey) {
+      // fire and forget!
+      ActivationService.activate(customer.publicKey);
+    }
     dispatch(accountActions.setCustomer(customer));
-  }, [dispatch, customer]);
+  }, [dispatch, customer, ActivationService]);
 
   return (
     <div className="flex flex-col text-center h-[80vh] justify-center items-center relative prose w-full mx-auto">
