@@ -7,7 +7,7 @@ import {
   MotherDataStep,
   DocumentStep,
 } from "@/app/types/kycData";
-import { Steps } from "../types/steps";
+import { Steps } from "../../types/steps";
 
 export interface KycState {
   step: Steps;

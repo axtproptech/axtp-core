@@ -5,7 +5,7 @@ import { KycWizard } from "../validation/types";
 
 import Link from "next/link";
 import { useAppSelector } from "@/states/hooks";
-import { selectInitialSetupStep } from "@/features/kyc/state";
+import { selectInitialSetupStep } from "features/kyc/setup/state";
 import { StepLayout } from "../../components/StepLayout";
 
 interface Props {

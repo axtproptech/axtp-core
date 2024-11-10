@@ -65,7 +65,6 @@ export const TermsSigning = ({ onNavChange }: Props) => {
           label: t("next"),
           icon: <RiArrowRightCircleLine />,
           color: "secondary",
-          disabled: false,
           onClick: nextStep,
         },
       ]);
@@ -82,7 +81,6 @@ export const TermsSigning = ({ onNavChange }: Props) => {
           label: t("next"),
           icon: <RiArrowRightCircleLine />,
           color: "secondary",
-          disabled: !readDocument?.hasRead,
           onClick: nextStep,
         },
       ]);
@@ -98,7 +96,7 @@ export const TermsSigning = ({ onNavChange }: Props) => {
         emptyButton,
       ]);
     }
-  }, [currentStep, isSaving, readDocument, onNavChange]);
+  }, [currentStep, readDocument, onNavChange]);
 
   let params;
   try {
@@ -110,7 +108,7 @@ export const TermsSigning = ({ onNavChange }: Props) => {
   }
 
   return (
-    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm md:max-w-lg mx-auto px-4">
+    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm md:max-w-lg mx-auto px-4">
       <div className="mt-4">
         <Stepper currentStep={currentStep} steps={stepsCount} />
         <div className="carousel w-full overflow-x-hidden">
@@ -119,8 +117,8 @@ export const TermsSigning = ({ onNavChange }: Props) => {
           </div>
           <div id="step1" className="carousel-item relative w-full">
             <StepDocument
-              onRead={setReadDocument}
               documentType={params?.type}
+              onDocumentLoad={setReadDocument}
             />
           </div>
           <div id="step2" className="carousel-item relative w-full">

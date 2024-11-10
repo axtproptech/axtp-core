@@ -16,10 +16,10 @@ import { Layout } from "@/app/components/layout";
 import { Stepper } from "@/app/components/stepper";
 import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { PrintableSeedDocument } from "@/features/account/components/printableSeedDocument";
-import { selectCurrentStep, selectInitialSetupStep } from "../../../state";
+import { selectCurrentStep, selectInitialSetupStep } from "../../state";
 import { KycWizard } from "../validation/types";
 import { Steps, StepsCount } from "../../../types/steps";
-import { kycActions } from "../../../state";
+import { kycActions } from "../../state";
 import { FormProgressTracker } from "../../components/FormProgressTracker";
 
 import differenceInYears from "date-fns/differenceInYears";
@@ -270,21 +270,21 @@ export const WizardLayout = ({ children, isSubmitting }: Props) => {
     }
   }, [currentStep, router, stepMovement]);
 
-  const handleNextButton = useCallback(() => {
+  const handleNextButton = useCallback(async () => {
     switch (currentStep) {
       case Steps.AgreeTerms:
         dispatch(setAgreeTerms(agreeTerms));
-        stepMovement(Steps.BasicData);
+        await stepMovement(Steps.BasicData);
         break;
 
       case Steps.BasicData:
         dispatch(setSecondStep({ cpf: customerCpf, birthDate, birthPlace }));
-        stepMovement(Steps.ComplementaryData);
+        await stepMovement(Steps.ComplementaryData);
         break;
 
       case Steps.ComplementaryData:
         dispatch(setThirdStep({ phone, profession, pep }));
-        stepMovement(Steps.ResidencyData);
+        await stepMovement(Steps.ResidencyData);
         break;
 
       case Steps.ResidencyData:
@@ -299,7 +299,7 @@ export const WizardLayout = ({ children, isSubmitting }: Props) => {
             proofOfAddress,
           })
         );
-        stepMovement(Steps.MotherData);
+        await stepMovement(Steps.MotherData);
         break;
 
       case Steps.MotherData:
@@ -309,20 +309,20 @@ export const WizardLayout = ({ children, isSubmitting }: Props) => {
             lastNameMother: lastNameMother,
           })
         );
-        stepMovement(Steps.DocumentFiles);
+        await stepMovement(Steps.DocumentFiles);
         break;
 
       case Steps.DocumentFiles:
         dispatch(setDocumentStep({ documentType, frontSide, backSide }));
-        stepMovement(Steps.BlockchainAccountSetup);
+        await stepMovement(Steps.BlockchainAccountSetup);
         break;
 
       case Steps.BlockchainAccountSetup:
-        stepMovement(Steps.BlockchainAccountSeed);
+        await stepMovement(Steps.BlockchainAccountSeed);
         break;
 
       case Steps.BlockchainAccountSeed:
-        stepMovement(Steps.BlockchainAccountSeedVerification);
+        await stepMovement(Steps.BlockchainAccountSeedVerification);
         break;
 
       default:

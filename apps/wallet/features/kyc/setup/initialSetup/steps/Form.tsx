@@ -29,7 +29,7 @@ export const Form = () => {
   }
 
   return (
-    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
+    <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm mx-auto px-4">
       <Slide direction="down" triggerOnce>
         <section>
           <AttentionSeeker effect="heartBeat" delay={1000} triggerOnce>

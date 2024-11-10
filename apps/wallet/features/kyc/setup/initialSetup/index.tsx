@@ -15,7 +15,7 @@ import { initialSetupFormSchema } from "./validation/schemas";
 import { EmailValidation } from "./steps/EmailValidation";
 import { Steps } from "./types/steps";
 import { Form } from "./steps/Form";
-import { kycActions } from "../../state";
+import { kycActions } from "../state";
 import { FormProgressTracker } from "../components/FormProgressTracker";
 
 export const InitialSetup = () => {

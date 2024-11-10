@@ -11,20 +11,17 @@ import { LoadingBox } from "@/app/components/hintBoxes/loadingBox";
 import { useTranslation } from "next-i18next";
 
 interface Props {
-  onRead: (document: SignableDocument) => void;
   documentType: SignedDocumentType;
+  onDocumentLoad: (document: SignableDocument) => void;
 }
 
-export const StepDocument = ({ onRead, documentType }: Props) => {
+export const StepDocument = ({ documentType, onDocumentLoad }: Props) => {
   const ref = useRef(null);
   const { t } = useTranslation();
   const router = useRouter();
   const { showError } = useNotification();
   const { Documents } = useAppContext();
-  const [readDocument, setReadDocument] = useState<SignableDocument | null>(
-    null
-  );
-  const [text, setText] = useState("Loading...");
+  const [text, setText] = useState("");
 
   useEffect(() => {
     const url = Documents[documentType];
@@ -38,48 +35,21 @@ export const StepDocument = ({ onRead, documentType }: Props) => {
       .then((response) => response.text())
       .then((text) => {
         const documentHash = hashSHA256(text);
-        setReadDocument({
+        onDocumentLoad({
+          documentHash,
           type: documentType,
           url,
-          documentHash,
-          hasRead: false,
         });
         setText(text);
       });
   }, []);
 
-  useEffect(() => {
-    readDocument && onRead(readDocument);
-  }, [onRead, readDocument]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      setReadDocument((readDocument) =>
-        readDocument
-          ? { ...readDocument, hasRead: entry.isIntersecting }
-          : readDocument
-      );
-    });
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
-  }, [ref.current]);
-
-  const isLoading = readDocument === null;
-
   return (
     <section className="relative flex flex-col justify-center gap-2 mt-4">
-      {isLoading ? (
+      {!text ? (
         <LoadingBox
-          title={"Loading Terms..."}
-          text={"Wait, while the document is being loaded..."}
+          title={t("loading_document")}
+          text={t("loading_document_text")}
         />
       ) : (
         <article className="prose text-justify mx-auto !h-[80vh] overflow-y-auto">

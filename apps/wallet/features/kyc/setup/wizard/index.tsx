@@ -22,7 +22,7 @@ import { DocumentFiles } from "./steps/DocumentFiles";
 import { BlockchainAccountSetup } from "./steps/BlockchainAccountSetup";
 import { BlockchainAccountSeed } from "./steps/BlockchainAccountSeed";
 import { BlockchainAccountSeedVerification } from "./steps/BlockchainAccountSeedVerification";
-import { selectInitialSetupStep, kycActions } from "../../state";
+import { selectInitialSetupStep, kycActions } from "../state";
 
 export const Wizard = () => {
   const { t } = useTranslation();

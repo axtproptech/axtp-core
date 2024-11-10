@@ -47,7 +47,7 @@ export const StepSign = ({ redirectUrl, document, poolId }: Props) => {
   const sign = async () => {
     if (!ledgerService || !customer) return;
 
-    if (!document || !document.hasRead) {
+    if (!document) {
       showError(t("kyc-sign-error-not-read"));
       return;
     }
@@ -94,27 +94,23 @@ export const StepSign = ({ redirectUrl, document, poolId }: Props) => {
         <h3>Sign Terms</h3>
       </section>
       <section>
-        {signingStatus === SigningStatus.NotSigned &&
-          document &&
-          document.hasRead && (
-            <>
-              <p>
-                {t("kyc-sign-hereby-declare", { name: customer?.firstName })}
-              </p>
-              <div className="flex flex-col justify-center gap-2">
-                <PinInput onPinChange={setPin} ref={ref} />
-                <div className={"mt-4"}>
-                  <Button
-                    color="secondary"
-                    onClick={sign}
-                    startIcon={<RiEdit2Line />}
-                  >
-                    {t("sign")}
-                  </Button>
-                </div>
+        {signingStatus === SigningStatus.NotSigned && document && (
+          <>
+            <p>{t("kyc-sign-hereby-declare", { name: customer?.firstName })}</p>
+            <div className="flex flex-col justify-center gap-2">
+              <PinInput onPinChange={setPin} ref={ref} />
+              <div className={"mt-4"}>
+                <Button
+                  color="secondary"
+                  onClick={sign}
+                  startIcon={<RiEdit2Line />}
+                >
+                  {t("sign")}
+                </Button>
               </div>
-            </>
-          )}
+            </div>
+          </>
+        )}
 
         {signingStatus === SigningStatus.ProcessingSigning && (
           <HintBox>
@@ -147,17 +143,17 @@ export const StepSign = ({ redirectUrl, document, poolId }: Props) => {
           </HintBox>
         )}
 
-        {signingStatus === SigningStatus.NotSigned &&
-          document &&
-          !document.hasRead && (
-            <ErrorBox
-              title={t("kyc-sign-error-not-read-title")}
-              text={t("kyc-sign-error-not-read")}
-            />
-          )}
-
         {signingStatus === SigningStatus.SigningFailure && (
-          <ErrorBox title={t("kyc-sign-error-signing-failed")} text={error} />
+          <>
+            <ErrorBox title={t("kyc-sign-error-signing-failed")} text={error} />
+            <Button
+              color="primary"
+              className="mt-2"
+              onClick={() => setSigningStatus(SigningStatus.NotSigned)}
+            >
+              {t("try_again")}
+            </Button>
+          </>
         )}
       </section>
     </div>

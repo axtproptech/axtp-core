@@ -18,7 +18,7 @@ import {
   selectMotherDataStep,
   selectDocumentStep,
   KycState,
-} from "../../state";
+} from "../state";
 import { KycWizard } from "../wizard/validation/types";
 import { Steps } from "../../types/steps";
 
