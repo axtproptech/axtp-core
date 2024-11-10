@@ -91,7 +91,7 @@ export const StepSign = ({ redirectUrl, document, poolId }: Props) => {
   return (
     <div className="flex flex-col w-full">
       <section>
-        <h3>Sign Terms</h3>
+        <h3>{t("sign_terms")}</h3>
       </section>
       <section>
         {signingStatus === SigningStatus.NotSigned && document && (
