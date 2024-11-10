@@ -37,7 +37,7 @@ export const StepSign = ({ redirectUrl, document, poolId }: Props) => {
   const router = useRouter();
   const { customer, getKeys } = useAccount();
   const { KycService } = useAppContext();
-  const ledgerService = useLedgerService();
+  const LedgerService = useLedgerService();
   const { showError } = useNotification();
   const [pin, setPin] = useState("");
   const [signingStatus, setSigningStatus] = useState(SigningStatus.NotSigned);
@@ -45,7 +45,7 @@ export const StepSign = ({ redirectUrl, document, poolId }: Props) => {
   const { mutate } = useSWRConfig();
 
   const sign = async () => {
-    if (!ledgerService || !customer) return;
+    if (!LedgerService || !customer) return;
 
     if (!document) {
       showError(t("kyc-sign-error-not-read"));
@@ -56,7 +56,7 @@ export const StepSign = ({ redirectUrl, document, poolId }: Props) => {
       setSigningStatus(SigningStatus.ProcessingSigning);
       const keys = await getKeys(pin);
       const { documentHash, url, type } = document;
-      const { transaction } = await ledgerService.termsSigner.sign({
+      const { transaction } = await LedgerService.termsSigner.sign({
         documentHash,
         type,
         senderKeys: keys,
