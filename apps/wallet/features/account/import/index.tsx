@@ -1,6 +1,5 @@
 import { Stepper } from "@/app/components/stepper";
 import { FC, useEffect, useState } from "react";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import {
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
@@ -24,6 +23,7 @@ import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { StepCheckForRegistry } from "@/features/account/components/steps/stepCheckForRegistry";
 import useSWR from "swr";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 enum Steps {
   DefinePin,

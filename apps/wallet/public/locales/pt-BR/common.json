@@ -303,5 +303,7 @@
   "kyc-sign-document-title": "Assinar Termos Legais",
   "kyc-sign-document-intro": "{{name}}, de acordo com a resolução CVM nº 88, somos obrigados a obter seu consentimento conforme descrito no documento em seguida. Por favor, leia o documento atentamente e, se concordar com os termos, prossiga para assiná-lo digitalmente.",
   "loading_document": "Carregando Documento",
-  "loading_document_text": "Aguarde, enquanto o documento está sendo carregado..."
+  "loading_document_text": "Aguarde, enquanto o documento está sendo carregado...",
+  "loading_document_failed": "Carregamento falhou",
+  "loading_document_failed_text": "Hmm, por algum motivo o carregamento do documento falhou. Desculpe pelo transtorno. Por favor, tente novamente!"
 }

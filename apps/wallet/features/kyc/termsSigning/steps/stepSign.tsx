@@ -1,22 +1,30 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useTranslation } from "next-i18next";
 import { useAccount } from "@/app/hooks/useAccount";
 import { PinInput } from "@/app/components/pinInput";
 import { Button, Checkbox } from "react-daisyui";
-import { RiCheckboxCircleLine, RiEdit2Line } from "react-icons/ri";
+import {
+  RiArrowLeftCircleLine,
+  RiArrowRightCircleLine,
+  RiCheckboxCircleLine,
+  RiCloseCircleLine,
+  RiEdit2Line,
+} from "react-icons/ri";
 import { useNotification } from "@/app/hooks/useNotification";
 import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { KeyError } from "@/types/keyError";
 import { HttpError } from "@signumjs/http";
-import { SignableDocument } from "../../types/signableDocument";
 import { ErrorBox } from "@/app/components/hintBoxes/errorBox";
 import { useSWRConfig } from "swr";
 import { useRouter } from "next/router";
 import { HintBox } from "@/app/components/hintBoxes/hintBox";
-import { AttentionSeeker } from "react-awesome-reveal";
+import { AttentionSeeker, Fade } from "react-awesome-reveal";
 import * as React from "react";
 import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
+import { StepProps } from "./stepProps";
+import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
+import { voidFn } from "@/app/voidFn";
 
 enum SigningStatus {
   NotSigned,
@@ -25,13 +33,7 @@ enum SigningStatus {
   SigningFailure,
 }
 
-interface Props {
-  redirectUrl: string;
-  document: SignableDocument | null;
-  poolId?: string;
-}
-
-export const StepSign = ({ redirectUrl, document, poolId }: Props) => {
+export const StepSign = ({ data, previousStep }: StepProps) => {
   const ref = useRef(null);
   const { t } = useTranslation();
   const router = useRouter();
@@ -43,11 +45,37 @@ export const StepSign = ({ redirectUrl, document, poolId }: Props) => {
   const [signingStatus, setSigningStatus] = useState(SigningStatus.NotSigned);
   const [error, setError] = useState("");
   const { mutate } = useSWRConfig();
+  const { setNavItems } = useBottomNavigation();
+
+  console.log("data", data);
+
+  useEffect(() => {
+    setNavItems([
+      {
+        label: t("back"),
+        icon: <RiArrowLeftCircleLine />,
+        back: false,
+        onClick: previousStep,
+      },
+      {
+        route: "/",
+        label: t("cancel"),
+        icon: <RiCloseCircleLine />,
+      },
+      {
+        label: "",
+        disabled: true,
+        hideLabel: true,
+        onClick: voidFn,
+        icon: <></>,
+      },
+    ]);
+  }, []);
 
   const sign = async () => {
     if (!LedgerService || !customer) return;
 
-    if (!document) {
+    if (!data.document) {
       showError(t("kyc-sign-error-not-read"));
       return;
     }
@@ -55,13 +83,14 @@ export const StepSign = ({ redirectUrl, document, poolId }: Props) => {
     try {
       setSigningStatus(SigningStatus.ProcessingSigning);
       const keys = await getKeys(pin);
-      const { documentHash, url, type } = document;
+      const { documentHash, url, type } = data.document;
       const { transaction } = await LedgerService.termsSigner.sign({
         documentHash,
         type,
         senderKeys: keys,
       });
 
+      const { poolId, redirect } = data.queryParams!;
       await KycService.storeSignedDocument({
         documentHash,
         type,
@@ -74,7 +103,7 @@ export const StepSign = ({ redirectUrl, document, poolId }: Props) => {
       await mutate(`/fetchCustomer/${customer.customerId}`);
       setSigningStatus(SigningStatus.SigningSuccess);
 
-      setTimeout(() => router.replace(redirectUrl), 2_000);
+      setTimeout(() => router.replace(redirect), 2_000);
     } catch (e: any) {
       setSigningStatus(SigningStatus.SigningFailure);
       if (e instanceof KeyError) {
@@ -89,73 +118,80 @@ export const StepSign = ({ redirectUrl, document, poolId }: Props) => {
   };
 
   return (
-    <div className="flex flex-col w-full">
-      <section>
-        <h3>{t("sign_terms")}</h3>
-      </section>
-      <section>
-        {signingStatus === SigningStatus.NotSigned && document && (
-          <>
-            <p>{t("kyc-sign-hereby-declare", { name: customer?.firstName })}</p>
-            <div className="flex flex-col justify-center gap-2">
-              <PinInput onPinChange={setPin} ref={ref} />
-              <div className={"mt-4"}>
-                <Button
-                  color="secondary"
-                  onClick={sign}
-                  startIcon={<RiEdit2Line />}
-                >
-                  {t("sign")}
-                </Button>
+    <Fade className="opacity-0">
+      <div className="flex flex-col w-full">
+        <section>
+          <h3>{t("sign_terms")}</h3>
+        </section>
+        <section>
+          {signingStatus === SigningStatus.NotSigned && document && (
+            <>
+              <p>
+                {t("kyc-sign-hereby-declare", { name: customer?.firstName })}
+              </p>
+              <div className="flex flex-col justify-center gap-2">
+                <PinInput onPinChange={setPin} ref={ref} />
+                <div className={"mt-4"}>
+                  <Button
+                    color="secondary"
+                    onClick={sign}
+                    startIcon={<RiEdit2Line />}
+                  >
+                    {t("sign")}
+                  </Button>
+                </div>
               </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
 
-        {signingStatus === SigningStatus.ProcessingSigning && (
-          <HintBox>
-            <AttentionSeeker
-              effect="tada"
-              className="text-center w-[128px] mx-auto"
-            >
-              <AnimatedIconContract loopDelay={1_000} />
-            </AttentionSeeker>
-            <div className="text-center">
-              <h3 className="my-1">{t("kyc-sign-signing-progress-title")}</h3>
-              <small>{t("kyc-sign-signing-progress")}</small>
-            </div>
-          </HintBox>
-        )}
+          {signingStatus === SigningStatus.ProcessingSigning && (
+            <HintBox>
+              <AttentionSeeker
+                effect="tada"
+                className="text-center w-[128px] mx-auto"
+              >
+                <AnimatedIconContract loopDelay={1_000} />
+              </AttentionSeeker>
+              <div className="text-center">
+                <h3 className="my-1">{t("kyc-sign-signing-progress-title")}</h3>
+                <small>{t("kyc-sign-signing-progress")}</small>
+              </div>
+            </HintBox>
+          )}
 
-        {signingStatus === SigningStatus.SigningSuccess && (
-          <HintBox>
-            <AttentionSeeker effect="tada" className="text-center">
-              <RiCheckboxCircleLine
-                size={92}
-                className="w-full"
-                color="success"
+          {signingStatus === SigningStatus.SigningSuccess && (
+            <HintBox>
+              <AttentionSeeker effect="tada" className="text-center">
+                <RiCheckboxCircleLine
+                  size={92}
+                  className="w-full"
+                  color="success"
+                />
+              </AttentionSeeker>
+              <div className="prosa text-center">
+                <h3 className="my-1">{t("kyc-sign-signing-success-title")}</h3>
+                <p>{t("kyc-sign-signing-success")}</p>
+              </div>
+            </HintBox>
+          )}
+
+          {signingStatus === SigningStatus.SigningFailure && (
+            <>
+              <ErrorBox
+                title={t("kyc-sign-error-signing-failed")}
+                text={error}
               />
-            </AttentionSeeker>
-            <div className="prosa text-center">
-              <h3 className="my-1">{t("kyc-sign-signing-success-title")}</h3>
-              <p>{t("kyc-sign-signing-success")}</p>
-            </div>
-          </HintBox>
-        )}
-
-        {signingStatus === SigningStatus.SigningFailure && (
-          <>
-            <ErrorBox title={t("kyc-sign-error-signing-failed")} text={error} />
-            <Button
-              color="primary"
-              className="mt-2"
-              onClick={() => setSigningStatus(SigningStatus.NotSigned)}
-            >
-              {t("try_again")}
-            </Button>
-          </>
-        )}
-      </section>
-    </div>
+              <Button
+                color="primary"
+                className="mt-2"
+                onClick={() => setSigningStatus(SigningStatus.NotSigned)}
+              >
+                {t("try_again")}
+              </Button>
+            </>
+          )}
+        </section>
+      </div>
+    </Fade>
   );
 };

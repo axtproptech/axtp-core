@@ -6,13 +6,13 @@ import {
   RiArrowLeftCircleLine,
   RiHome6Line,
 } from "react-icons/ri";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { Config } from "@/app/config";
 import { useMemo } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
 import { PoolAssetDetails } from "@/features/pool";
 import { useRouter } from "next/router";
 import { GetServerSidePropsContext } from "next";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 export async function getServerSideProps({
   locale,

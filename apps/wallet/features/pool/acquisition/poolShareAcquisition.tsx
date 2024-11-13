@@ -14,7 +14,6 @@ import {
   StepSelectPaymentMethod,
   StepSelectQuantity,
 } from "./steps";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import {
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
@@ -31,6 +30,7 @@ import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCo
 import { StepConfirmTerms } from "@/features/pool/acquisition/steps/stepConfirmTerms";
 import { HasSignedTermsOfRisk } from "@/features/pool/acquisition/hasSignedTermsOfRisk";
 import { useStepper } from "@/app/hooks/useStepper";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 const StepRoutes = {
   pix: ["terms", "quantity", "paymentPix"],

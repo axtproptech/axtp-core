@@ -1,63 +1,102 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import ReactMarkdown from "react-markdown";
-import { SignableDocument } from "@/features/kyc/types/signableDocument";
-import { SignedDocumentType } from "@/types/signedDocumentType";
 import { useRouter } from "next/router";
-import { useNotification } from "@/app/hooks/useNotification";
 import { hashSHA256 } from "@signumjs/crypto";
-import { doc } from "prettier";
 import { LoadingBox } from "@/app/components/hintBoxes/loadingBox";
 import { useTranslation } from "next-i18next";
+import { StepProps } from "./stepProps";
+import useSWR from "swr";
+import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
+import {
+  RiArrowLeftCircleLine,
+  RiArrowRightCircleLine,
+  RiCloseCircleLine,
+} from "react-icons/ri";
+import { ErrorBox } from "@/app/components/hintBoxes/errorBox";
+import { Fade } from "react-awesome-reveal";
 
-interface Props {
-  documentType: SignedDocumentType;
-  onDocumentLoad: (document: SignableDocument) => void;
-}
-
-export const StepDocument = ({ documentType, onDocumentLoad }: Props) => {
-  const ref = useRef(null);
+export const StepDocument = ({
+  updateData,
+  nextStep,
+  previousStep,
+}: StepProps) => {
   const { t } = useTranslation();
-  const router = useRouter();
-  const { showError } = useNotification();
+  const { query } = useRouter();
   const { Documents } = useAppContext();
-  const [text, setText] = useState("");
+  const { setNavItems } = useBottomNavigation();
 
   useEffect(() => {
-    const url = Documents[documentType];
-    if (!url) {
-      showError("Unknown document type");
-      router.replace("/");
-      return;
-    }
-
-    fetch(url)
-      .then((response) => response.text())
-      .then((text) => {
-        const documentHash = hashSHA256(text);
-        onDocumentLoad({
-          documentHash,
-          type: documentType,
-          url,
-        });
-        setText(text);
-      });
+    setNavItems([
+      {
+        label: t("back"),
+        icon: <RiArrowLeftCircleLine />,
+        back: false,
+        onClick: previousStep,
+      },
+      {
+        route: "/",
+        label: t("cancel"),
+        icon: <RiCloseCircleLine />,
+      },
+      {
+        label: t("next"),
+        icon: <RiArrowRightCircleLine />,
+        color: "secondary",
+        onClick: nextStep,
+      },
+    ]);
   }, []);
 
+  const {
+    data: text,
+    isLoading,
+    error,
+  } = useSWR(
+    query.type ? `fetchSigningDocument/${query.type}` : null,
+    async () => {
+      const { type } = query;
+
+      // @ts-ignore
+      const url = Documents[type];
+      if (!url) {
+        console.error("error", query);
+        throw new Error("Unknown document type");
+      }
+
+      const response = await fetch(url);
+      const text = await response.text();
+      const documentHash = hashSHA256(text);
+      updateData("document", {
+        documentHash,
+        type,
+        url,
+      });
+      return text;
+    }
+  );
+
   return (
-    <section className="relative flex flex-col justify-center gap-2 mt-4">
-      {!text ? (
-        <LoadingBox
-          title={t("loading_document")}
-          text={t("loading_document_text")}
-        />
-      ) : (
-        <article className="prose text-justify mx-auto !h-[80vh] overflow-y-auto">
-          <small className="text-center">{t("kyc-sign-scroll-down")}</small>
-          <ReactMarkdown>{text}</ReactMarkdown>
-          <div ref={ref} className="h-1" />
-        </article>
-      )}
-    </section>
+    <Fade className="opacity-0">
+      <section className="relative flex flex-col justify-center gap-2 mt-4">
+        {!isLoading && error && (
+          <ErrorBox
+            title={t("loading_document_failed")}
+            text={t("loading_document_failed_text")}
+          />
+        )}
+        {isLoading ? (
+          <LoadingBox
+            title={t("loading_document")}
+            text={t("loading_document_text")}
+          />
+        ) : (
+          <article className="prose text-justify mx-auto !h-[80vh] overflow-y-auto">
+            <small className="text-center">{t("kyc-sign-scroll-down")}</small>
+            <ReactMarkdown>{text ?? ""}</ReactMarkdown>
+          </article>
+        )}
+      </section>
+    </Fade>
   );
 };

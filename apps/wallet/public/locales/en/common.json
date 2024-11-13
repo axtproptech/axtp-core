@@ -304,5 +304,7 @@
   "your_seed_signum_hint": "This account is part of the Signum Network, an advanced blockchain platform. You can use this Recovery Phrase throughout the entire Signum eco-system, e.g. trade crypto tokens, create/buy NFTs and much more.",
   "zip_code": "ZIP Code",
   "loading_document": "Loading Document",
-  "loading_document_text": "Wait, while the document is being loaded..."
+  "loading_document_text": "Wait, while the document is being loaded...",
+  "loading_document_failed": "Loading Failed",
+  "loading_document_failed_text": "Hmm, for some reason loading the document failed. Sorry, for the inconvenience. Please retry!"
 }

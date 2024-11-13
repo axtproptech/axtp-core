@@ -14,7 +14,6 @@ import { voidFn } from "@/app/voidFn";
 import { useAppDispatch, useAppSelector } from "@/states/hooks";
 import { Layout } from "@/app/components/layout";
 import { Stepper } from "@/app/components/stepper";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { PrintableSeedDocument } from "@/features/account/components/printableSeedDocument";
 import { selectCurrentStep, selectInitialSetupStep } from "../../state";
 import { KycWizard } from "../validation/types";
@@ -23,6 +22,7 @@ import { kycActions } from "../../state";
 import { FormProgressTracker } from "../../components/FormProgressTracker";
 
 import differenceInYears from "date-fns/differenceInYears";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 interface Props {
   children: ReactNode;

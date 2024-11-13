@@ -1,10 +1,6 @@
 import { FC, useEffect } from "react";
 import { ChildrenProps } from "@/types/childrenProps";
 import { Container } from "./container";
-import {
-  BottomNavigation,
-  BottomNavigationItem,
-} from "../navigation/bottomNavigation";
 import { Body } from "./body";
 import {
   RiHome6Line,
@@ -21,6 +17,10 @@ import { useRouter } from "next/router";
 
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import {
+  BottomNavigationItem,
+  BottomNavigation,
+} from "@/app/components/navigation/bottomNavigation";
 
 NProgress.configure({ showSpinner: false, easing: "ease", speed: 400 });
 

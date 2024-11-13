@@ -1,10 +1,10 @@
 import { Layout } from "@/app/components/layout";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { Config } from "@/app/config";
 import { PoolShareAcquisition } from "@/features/pool";
 import { useState } from "react";
 import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 export async function getStaticPaths({ locales }: any) {
   const paths = Config.Contracts.PoolContractIds.flatMap((poolId) =>

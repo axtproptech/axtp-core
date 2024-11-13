@@ -1,7 +1,6 @@
 import { Layout } from "@/app/components/layout";
 import { AccountDashboard } from "@/features/account/dashboard";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { useTranslation } from "next-i18next";
 import {
   RiFileListLine,
@@ -11,6 +10,7 @@ import {
 } from "react-icons/ri";
 import { WithAccountOnly } from "@/app/components/withAccountOnly";
 import { useAccount } from "@/app/hooks/useAccount";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {

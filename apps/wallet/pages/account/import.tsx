@@ -3,9 +3,9 @@ import { Layout } from "@/app/components/layout";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useState } from "react";
 
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { AccountImport } from "@/features/account";
 import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {

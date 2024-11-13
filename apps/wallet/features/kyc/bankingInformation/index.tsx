@@ -7,11 +7,11 @@ import { useRouter } from "next/router";
 import { RiArrowLeftCircleLine, RiSaveLine } from "react-icons/ri";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useCallback, useEffect, useState } from "react";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { useNotification } from "@/app/hooks/useNotification";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useSWRConfig } from "swr";
 import { voidFn } from "@/app/voidFn";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 interface BankInfoFormData {
   pixKey: string;

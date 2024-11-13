@@ -4,8 +4,8 @@ import { useTranslation } from "next-i18next";
 import { Layout } from "@/app/components/layout";
 import { BankingInformation } from "@/features/kyc/bankingInformation";
 import { WithAccountOnly } from "@/app/components/withAccountOnly";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { useState } from "react";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {

@@ -9,7 +9,6 @@ import { useAppContext } from "@/app/hooks/useAppContext";
 import { useNotification } from "@/app/hooks/useNotification";
 import { Layout } from "@/app/components/layout";
 import { voidFn } from "@/app/voidFn";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { InitialSetupStep } from "@/app/types/kycData";
 import { initialSetupFormSchema } from "./validation/schemas";
 import { EmailValidation } from "./steps/EmailValidation";
@@ -17,6 +16,7 @@ import { Steps } from "./types/steps";
 import { Form } from "./steps/Form";
 import { kycActions } from "../state";
 import { FormProgressTracker } from "../components/FormProgressTracker";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 export const InitialSetup = () => {
   const { t } = useTranslation();

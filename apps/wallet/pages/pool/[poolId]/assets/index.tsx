@@ -6,11 +6,11 @@ import {
   RiArrowLeftCircleLine,
   RiHome6Line,
 } from "react-icons/ri";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { Config } from "@/app/config";
 import { PoolAssets } from "@/features/pool";
 import { useMemo } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 export async function getStaticPaths({ locales }: any) {
   const paths = Config.Contracts.PoolContractIds.flatMap((poolId) =>
