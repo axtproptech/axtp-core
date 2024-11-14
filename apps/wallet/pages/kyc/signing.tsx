@@ -42,7 +42,6 @@ export const LayoutTest = ({ children }: ChildrenProps) => {
         <Body>{children}</Body>
         <BottomNavigation />
       </BottomNavigationProvider>
-
       <Notification />
     </Container>
   );

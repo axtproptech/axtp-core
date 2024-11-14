@@ -14,7 +14,6 @@ export interface FormWizardProps<T, V = any> {
   stepCount: number;
   initialState: T;
   children: (props: FormWizardStepProps<T, V>) => ReactNode;
-  // onFinish: (formData: T) => void;
 }
 
 export function FormWizard<T, V>({

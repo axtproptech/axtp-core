@@ -7,8 +7,8 @@ interface IndicatorProps {
 const StepIndicator: FC<IndicatorProps> = ({ isActive = false }) => {
   return (
     <div
-      className={`rounded-full h-2 w-2 ${
-        isActive ? "bg-primary" : "border border-base-content"
+      className={`rounded-full h-2 w-2 transition-colors border border-base-content duration-500 ${
+        isActive ? "bg-amber-400" : "bg-none"
       }`}
     />
   );
