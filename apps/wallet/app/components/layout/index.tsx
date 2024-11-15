@@ -20,6 +20,7 @@ import "nprogress/nprogress.css";
 import {
   BottomNavigationItem,
   BottomNavigation,
+  BottomNavigationProvider,
 } from "@/app/components/navigation/bottomNavigation";
 
 NProgress.configure({ showSpinner: false, easing: "ease", speed: 400 });
@@ -82,23 +83,24 @@ export const Layout: FC<Props> = ({ children, bottomNav, noBody = false }) => {
       icon: <RiSettings4Line />,
     },
   ];
-
   return (
     <Container>
-      {noBody ? children : <Body>{children}</Body>}
-      <BottomNavigation nav={bottomNav || DefaultNav} />
-      <Notification />
-      {/* @ts-ignore */}
-      <PWAPrompt
-        /* @ts-ignore */
-        copyTitle={t("pwa-ios-copy-title")}
-        copyBody={t("pwa-ios-copy-body")}
-        copyAddHomeButtonLabel={t("pwa-ios-add-button-label")}
-        copyShareButtonLabel={t("pwa-ios-share-button-label")}
-        copyClosePrompt={t("close")}
-        permanentlyHideOnDismiss={false}
-        timesToShow={3}
-      />
+      <BottomNavigationProvider navItems={bottomNav ?? DefaultNav}>
+        {noBody ? children : <Body>{children}</Body>}
+        <BottomNavigation />
+        <Notification />
+        {/* @ts-ignore */}
+        <PWAPrompt
+          /* @ts-ignore */
+          copyTitle={t("pwa-ios-copy-title")}
+          copyBody={t("pwa-ios-copy-body")}
+          copyAddHomeButtonLabel={t("pwa-ios-add-button-label")}
+          copyShareButtonLabel={t("pwa-ios-share-button-label")}
+          copyClosePrompt={t("close")}
+          permanentlyHideOnDismiss={false}
+          timesToShow={3}
+        />
+      </BottomNavigationProvider>
     </Container>
   );
 };

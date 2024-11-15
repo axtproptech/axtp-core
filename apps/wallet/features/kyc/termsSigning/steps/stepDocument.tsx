@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-import { useAppContext } from "@/app/hooks/useAppContext";
 import ReactMarkdown from "react-markdown";
 import { useRouter } from "next/router";
-import { hashSHA256 } from "@signumjs/crypto";
 import { LoadingBox } from "@/app/components/hintBoxes/loadingBox";
 import { useTranslation } from "next-i18next";
 import { StepProps } from "./stepProps";
@@ -89,7 +87,7 @@ export const StepDocument = ({
             text={t("loading_document_text")}
           />
         ) : (
-          <article className="prose text-justify mx-auto !h-[77vh] overflow-y-auto md:px-2 fancy-scrollbar">
+          <article className="prose text-justify mx-auto !h-[77vh] overflow-y-auto px-2 fancy-scrollbar">
             <ReactMarkdown>{data?.text ?? ""}</ReactMarkdown>
           </article>
         )}

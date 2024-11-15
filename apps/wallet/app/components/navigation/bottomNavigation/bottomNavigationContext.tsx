@@ -27,7 +27,7 @@ export const BottomNavigationProvider = ({
   children,
   navItems: _navItems,
 }: Props) => {
-  const [navItems, setNavItems] = useState<BottomNavigationItem[]>([]);
+  const [navItems, setNavItems] = useState<BottomNavigationItem[]>(_navItems);
 
   return (
     <BottomNavigationContext.Provider value={{ navItems, setNavItems }}>

@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
-import { useFormWizard } from "@/app/hooks/useFormWizard";
+import { useState } from "react";
 import { FormWizardProgress } from "./formWizardProgress";
 
 export interface FormWizardStepProps<T, V = any> {
   step: number;
   data: T;
+  updateStepCount: (count: number) => void;
   updateData: (key: keyof T, value: V) => void;
   nextStep: () => void;
   previousStep: () => void;
@@ -12,21 +12,56 @@ export interface FormWizardStepProps<T, V = any> {
 
 export interface FormWizardProps<T, V = any> {
   stepCount: number;
-  initialState: T;
-  children: (props: FormWizardStepProps<T, V>) => ReactNode;
+  initialData: T;
+  children: (props: {
+    updateStepCount: (count: number) => void;
+    data: T;
+    previousStep: () => void;
+    updateData: (key: keyof T, value: V) => void;
+    nextStep: () => void;
+    step: number;
+    stepCount: number;
+  }) => React.ReactNode;
 }
 
-export function FormWizard<T, V>({
+export function FormWizard<T, V = any>({
   children,
-  stepCount,
-  initialState,
+  stepCount: _stepCount,
+  initialData,
 }: FormWizardProps<T, V>) {
-  const props = useFormWizard<T, V>(initialState, stepCount);
+  const [step, setStep] = useState(1);
+  const [data, setData] = useState<T>(initialData);
+  const [stepCount, setStepCount] = useState(_stepCount);
+
+  const updateData = (key: keyof T, value: V) => {
+    setData((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const nextStep = () => setStep((prev) => Math.min(prev + 1, stepCount));
+  const previousStep = () => setStep((prev) => Math.max(prev - 1, 0));
+  const updateStepCount = (count: number) => {
+    if (count < 0 || count > 10) {
+      console.error("Trying to set invalid step count - ignored", count);
+      return;
+    }
+    setStepCount(count);
+    setStep((prev) => Math.min(prev, count));
+  };
 
   return (
     <div>
-      <FormWizardProgress currentStep={props.step} steps={stepCount} />
-      <div>{children(props)}</div>
+      <FormWizardProgress currentStep={step} steps={stepCount} />
+      <div>
+        {children({
+          step,
+          stepCount,
+          updateStepCount,
+          nextStep,
+          previousStep,
+          data,
+          updateData,
+        })}
+      </div>
     </div>
   );
 }

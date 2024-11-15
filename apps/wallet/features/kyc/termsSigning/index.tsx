@@ -26,10 +26,8 @@ export const TermsSigning = () => {
   }
 
   return (
-    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm md:max-w-lg mx-auto px-4">
-      <div className="mt-4">
-        <TermsSigningForm {...params} />
-      </div>
+    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full mx-auto px-4 mt-4">
+      <TermsSigningForm {...params} />
     </div>
   );
 };
@@ -44,7 +42,7 @@ const TermsSigningForm = (queryParams: SigningQuerySchemaType) => {
   return (
     <FormWizard<SigningFormData, any>
       stepCount={SigningSteps.length}
-      initialState={initialState}
+      initialData={initialState}
     >
       {(props) => {
         const Step = SigningSteps[props.step - 1];
