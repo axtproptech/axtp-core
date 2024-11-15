@@ -133,7 +133,7 @@ export class CustomerInstanceService {
     return this.http.delete(`documents/${documentId}`);
   }
 
-  async activeLedgerAccount() {
+  async activateLedgerAccount() {
     return this.http.post("ledger", {});
   }
 }

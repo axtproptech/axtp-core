@@ -54,6 +54,12 @@ a {
   @apply rounded-lg;
 }
 
+@layer utilities {
+  .fancy-scrollbar {
+    @apply scrollbar-thin scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent;
+  }
+}
+
 .glance-effect {
   animation: glance 4s infinite alternate-reverse;
   background: linear-gradient(

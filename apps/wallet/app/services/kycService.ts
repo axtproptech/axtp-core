@@ -11,7 +11,7 @@ import {
   ThirdStep,
 } from "@/app/types/kycData";
 import { tryCall } from "@axtp/core";
-import { SignedDocumentType } from "@/types/signedDocumentType";
+import { SignableDocumentType } from "@/types/signableDocumentType";
 import { DateTimeConstants } from "@/app/dateTimeConstants";
 
 export interface RegisterCustomerArgs
@@ -32,7 +32,7 @@ export interface StoreSignedDocumentArgs {
   poolId?: string;
   documentHash: string;
   url: string;
-  type: SignedDocumentType;
+  type: SignableDocumentType;
 }
 
 export interface RegisterCustomerResponse {
@@ -55,6 +55,10 @@ export class KycService {
     });
   }
 
+  /**
+   * Registers the information of the signed document
+   * @param args
+   */
   storeSignedDocument(args: StoreSignedDocumentArgs) {
     return retry(async () => {
       const {
@@ -66,7 +70,7 @@ export class KycService {
         transactionId,
         customerId,
       } = args;
-      const expiryAt = args.expires
+      const expiryAt = expires
         ? new Date(
             Date.now() + 365 * DateTimeConstants.InMillies.Day
           ).toISOString()

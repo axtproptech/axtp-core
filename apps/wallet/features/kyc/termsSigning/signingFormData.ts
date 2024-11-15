@@ -1,4 +1,4 @@
-import { SignableDocument } from "@/features/kyc/types/signableDocument";
+import { SignableDocument } from "@/types/signableDocument";
 import { SigningQuerySchemaType } from "./signingQuerySchema";
 
 export interface SigningFormData {

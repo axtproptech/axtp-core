@@ -41,7 +41,7 @@ export const SingleCustomer = ({ cuid }: { cuid: string }) => {
       const service = customerService.with(cuid);
       await Promise.all([
         service.verifyCustomer("Level1"),
-        service.activeLedgerAccount(),
+        service.activateLedgerAccount(),
       ]);
       await auth0Service.createUser(cuid);
       await Promise.all([

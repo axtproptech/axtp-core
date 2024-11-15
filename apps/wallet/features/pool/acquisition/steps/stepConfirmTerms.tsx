@@ -52,7 +52,7 @@ export const StepConfirmTerms: FC<Props> = ({ poolName, onConfirmChange }) => {
       <div className="relative">
         <div className="absolute z-10 top-0 bg-gradient-to-b from-base-100 h-10 w-full opacity-80" />
       </div>
-      <section className="px-4 mt-2 overflow-x-auto text-justify scrollbar-thin scroll scrollbar-thumb-accent scrollbar-thumb-rounded-full scrollbar-track-transparent h-[calc(100vh-372px)]">
+      <section className="px-4 mt-2 overflow-x-auto text-justify fancy-scrollbar h-[calc(100vh-372px)]">
         {terms && <ReactMarkdown>{terms}</ReactMarkdown>}
       </section>
     </div>

@@ -48,20 +48,6 @@ export const LayoutTest = ({ children }: ChildrenProps) => {
 };
 
 export default function Signing() {
-  const { t } = useTranslation();
-  const [bottomNav, setBottomNav] = useState<BottomNavigationItem[]>([
-    {
-      label: t("back"),
-      back: true,
-      icon: <RiArrowLeftCircleLine />,
-    },
-    {
-      label: t("save"),
-      icon: <RiSaveLine />,
-      disabled: true,
-    },
-  ]);
-
   return (
     <WithAccountOnly>
       <LayoutTest>

@@ -1,10 +1,7 @@
 import { useTranslation } from "next-i18next";
 import { useAccount } from "@/app/hooks/useAccount";
 import { StepProps } from "@/features/kyc/termsSigning/steps/stepProps";
-import {
-  BottomNavigationItem,
-  useBottomNavigation,
-} from "@/app/components/navigation/bottomNavigation";
+import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
 import { useEffect } from "react";
 import { RiArrowRightCircleLine, RiHome6Line } from "react-icons/ri";
 import { voidFn } from "@/app/voidFn";

@@ -3,10 +3,9 @@ import { useAppContext } from "@/app/hooks/useAppContext";
 import { useTranslation } from "next-i18next";
 import { useAccount } from "@/app/hooks/useAccount";
 import { PinInput } from "@/app/components/pinInput";
-import { Button, Checkbox } from "react-daisyui";
+import { Button } from "react-daisyui";
 import {
   RiArrowLeftCircleLine,
-  RiArrowRightCircleLine,
   RiCheckboxCircleLine,
   RiCloseCircleLine,
   RiEdit2Line,
@@ -38,7 +37,7 @@ export const StepSign = ({ data, previousStep }: StepProps) => {
   const { t } = useTranslation();
   const router = useRouter();
   const { customer, getKeys } = useAccount();
-  const { KycService } = useAppContext();
+  const { KycService, TrackingEventService } = useAppContext();
   const LedgerService = useLedgerService();
   const { showError } = useNotification();
   const [pin, setPin] = useState("");
@@ -46,8 +45,6 @@ export const StepSign = ({ data, previousStep }: StepProps) => {
   const [error, setError] = useState("");
   const { mutate } = useSWRConfig();
   const { setNavItems } = useBottomNavigation();
-
-  console.log("data", data);
 
   useEffect(() => {
     setNavItems([
@@ -81,10 +78,20 @@ export const StepSign = ({ data, previousStep }: StepProps) => {
     }
 
     try {
+      const { documentHash, url, type } = data.document;
+      TrackingEventService.track({
+        msg: "Signing Terms",
+        detail: {
+          cuid: customer.customerId,
+          url,
+          documentHash,
+          type,
+        },
+      });
       setSigningStatus(SigningStatus.ProcessingSigning);
       const keys = await getKeys(pin);
-      const { documentHash, url, type } = data.document;
       const { transaction } = await LedgerService.termsSigner.sign({
+        cuid: customer.customerId,
         documentHash,
         type,
         senderKeys: keys,

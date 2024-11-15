@@ -1,9 +1,9 @@
 import { InferType, mixed, object, string } from "yup";
-import { SignedDocumentType } from "@/types/signedDocumentType";
+import { SignableDocumentType } from "@/types/signableDocumentType";
 
 export const SigningQuerySchema = object({
   reason: string().required(),
-  type: mixed().oneOf(Object.values(SignedDocumentType)).required(),
+  type: mixed().oneOf(Object.values(SignableDocumentType)).required(),
   redirect: string().required(),
   poolId: string().optional(),
 });

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import ReactMarkdown from "react-markdown";
 import { useRouter } from "next/router";
@@ -15,6 +15,8 @@ import {
 } from "react-icons/ri";
 import { ErrorBox } from "@/app/components/hintBoxes/errorBox";
 import { Fade } from "react-awesome-reveal";
+import { useLedgerService } from "@/app/hooks/useLedgerService";
+import { SignableDocumentType } from "@/types/signableDocumentType";
 
 export const StepDocument = ({
   updateData,
@@ -22,8 +24,8 @@ export const StepDocument = ({
   previousStep,
 }: StepProps) => {
   const { t } = useTranslation();
-  const { query } = useRouter();
-  const { Documents } = useAppContext();
+  const { query, locale } = useRouter();
+  const LedgerService = useLedgerService();
   const { setNavItems } = useBottomNavigation();
 
   useEffect(() => {
@@ -48,31 +50,27 @@ export const StepDocument = ({
     ]);
   }, []);
 
-  const {
-    data: text,
-    isLoading,
-    error,
-  } = useSWR(
-    query.type ? `fetchSigningDocument/${query.type}` : null,
+  const { data, isLoading, error } = useSWR(
+    query.type && LedgerService ? `fetchSigningDocument/${query.type}` : null,
     async () => {
-      const { type } = query;
-
-      // @ts-ignore
-      const url = Documents[type];
-      if (!url) {
-        console.error("error", query);
-        throw new Error("Unknown document type");
+      if (!LedgerService) {
+        return null;
       }
 
-      const response = await fetch(url);
-      const text = await response.text();
-      const documentHash = hashSHA256(text);
-      updateData("document", {
-        documentHash,
-        type,
-        url,
+      const { type, poolId } = query;
+
+      const document = await LedgerService.termsSigner.fetchSignableDocument({
+        type: type as SignableDocumentType,
+        poolId: poolId as string,
+        locale: locale ?? "en",
       });
-      return text;
+      if (!document) {
+        throw new Error("Loading document failed");
+      }
+      updateData("document", document);
+
+      console.log(document);
+      return document;
     }
   );
 
@@ -91,9 +89,8 @@ export const StepDocument = ({
             text={t("loading_document_text")}
           />
         ) : (
-          <article className="prose text-justify mx-auto !h-[80vh] overflow-y-auto">
-            <small className="text-center">{t("kyc-sign-scroll-down")}</small>
-            <ReactMarkdown>{text ?? ""}</ReactMarkdown>
+          <article className="prose text-justify mx-auto !h-[77vh] overflow-y-auto md:px-2 fancy-scrollbar">
+            <ReactMarkdown>{data?.text ?? ""}</ReactMarkdown>
           </article>
         )}
       </section>

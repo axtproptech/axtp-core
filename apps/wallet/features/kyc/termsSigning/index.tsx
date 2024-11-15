@@ -42,19 +42,15 @@ const TermsSigningForm = (queryParams: SigningQuerySchemaType) => {
   };
 
   return (
-    <div className="flex flex-col justify-between text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm md:max-w-lg mx-auto px-4">
-      <div className="mt-4">
-        <FormWizard<SigningFormData, any>
-          stepCount={SigningSteps.length}
-          initialState={initialState}
-        >
-          {(props) => {
-            const Step = SigningSteps[props.step - 1];
-            if (!Step) return null;
-            return <Step {...props} />;
-          }}
-        </FormWizard>
-      </div>
-    </div>
+    <FormWizard<SigningFormData, any>
+      stepCount={SigningSteps.length}
+      initialState={initialState}
+    >
+      {(props) => {
+        const Step = SigningSteps[props.step - 1];
+        if (!Step) return null;
+        return <Step {...props} />;
+      }}
+    </FormWizard>
   );
 };

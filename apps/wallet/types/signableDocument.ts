@@ -1,9 +1,8 @@
 import { SignableDocumentType } from "@/types/signableDocumentType";
 
-export interface SignedDocumentSafeData {
+export interface SignableDocument {
   documentHash: string;
-  isExpired: boolean;
+  url: string;
+  text: string;
   type: SignableDocumentType;
-  transactionId: string;
-  poolId?: string;
 }

@@ -2,10 +2,9 @@ import { ChildrenProps } from "@/types/childrenProps";
 import { useAccount } from "@/app/hooks/useAccount";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
 import { HintNotSigned } from "@/features/pool/acquisition/hasSignedTermsOfRisk/hintNotSigned";
 import { HintExpired } from "@/features/pool/acquisition/hasSignedTermsOfRisk/hintExpired";
-import { SignedDocumentType } from "@/types/signedDocumentType";
+import { SignableDocumentType } from "@/types/signableDocumentType";
 
 interface Props extends ChildrenProps {
   poolId: string;
@@ -28,7 +27,7 @@ export const HasSignedTermsOfRisk = ({ children, poolId }: Props) => {
   // docs are ordered by date desc...so most recent is on top!
   const foundSignedDocument = customer?.signedDocuments.find(
     (doc) =>
-      doc.type === SignedDocumentType.TermsOfRisk && doc.poolId === poolId
+      doc.type === SignableDocumentType.TermsOfRisk && doc.poolId === poolId
   );
 
   if (!foundSignedDocument) {
