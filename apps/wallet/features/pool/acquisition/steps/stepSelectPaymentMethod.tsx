@@ -10,22 +10,21 @@ import {
   RiArrowRightCircleLine,
   RiHome6Line,
 } from "react-icons/ri";
-import { useRouter } from "next/router";
 import { AcquisitionFormData } from "../acquisitionFormData";
 
 export const StepSelectPaymentMethod = ({
   nextStep,
+  previousStep,
   data,
   updateData,
 }: FormWizardStepProps<AcquisitionFormData>) => {
   const { t } = useTranslation();
   const { setNavItems } = useBottomNavigation();
-  const router = useRouter();
   useEffect(() => {
     setNavItems([
       {
         label: t("back"),
-        onClick: () => router.back(),
+        onClick: previousStep,
         icon: <RiArrowLeftCircleLine />,
       },
       {
