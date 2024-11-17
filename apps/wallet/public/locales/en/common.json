@@ -174,7 +174,7 @@
   "kyc-sign-error-not-read": "Looks like you haven't read the document yet",
   "kyc-sign-error-signing-failed": "Signing Failed",
   "kyc-sign-hereby-declare": "I, {{name}}, hereby declare that I have carefully read and understood the document presented to me.",
-  "kyc-sign-signing-success": "Document signed successfully. You'll be redirected in a moment.",
+  "kyc-sign-signing-success": "Document signed successfully. We have sent you a copy of the document via email. You'll be redirected in a moment.",
   "kyc-sign-signing-success-title": "Signed Successfully",
   "kyc-sign-signing-progress": "Signing document. Just a moment...",
   "kyc-sign-signing-progress-title": "Signing",

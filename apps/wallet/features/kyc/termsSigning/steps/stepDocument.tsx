@@ -66,8 +66,6 @@ export const StepDocument = ({
         throw new Error("Loading document failed");
       }
       updateData("document", document);
-
-      console.log(document);
       return document;
     }
   );

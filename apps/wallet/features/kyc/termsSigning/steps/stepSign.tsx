@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useTranslation } from "next-i18next";
@@ -19,7 +20,6 @@ import { useSWRConfig } from "swr";
 import { useRouter } from "next/router";
 import { HintBox } from "@/app/components/hintBoxes/hintBox";
 import { AttentionSeeker, Fade } from "react-awesome-reveal";
-import * as React from "react";
 import { AnimatedIconContract } from "@/app/components/animatedIcons/animatedIconContract";
 import { StepProps } from "./stepProps";
 import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
@@ -107,9 +107,13 @@ export const StepSign = ({ data, previousStep }: StepProps) => {
         transactionId: transaction,
         customerId: customer?.customerId,
       });
+      // TODO: add attachment
+      await KycService.sendTermsOfRiskSignedConfirmationMail(
+        customer?.customerId,
+        transaction
+      );
       await mutate(`/fetchCustomer/${customer.customerId}`);
       setSigningStatus(SigningStatus.SigningSuccess);
-
       setTimeout(() => router.replace(redirect), 2_000);
     } catch (e: any) {
       setSigningStatus(SigningStatus.SigningFailure);

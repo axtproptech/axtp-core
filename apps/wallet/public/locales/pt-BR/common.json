@@ -116,7 +116,7 @@
   "kyc-sign-error-signing-failed": "Assinatura falhou",
   "kyc-sign-hereby-declare": "Eu, {{name}}, declaro que li cuidadosamente e compreendi o documento que me foi apresentado.",
   "kyc-sign-signing-success-title": "Assinatura bem-sucedida",
-  "kyc-sign-signing-success": "Documento assinado com sucesso. Você será redirecionado em instantes.",
+  "kyc-sign-signing-success": "Documento assinado com sucesso. Enviamos uma cópia do documento assinado para seu email. Você será redirecionado em instantes.",
   "kyc-sign-signing-progress": "Assinando o documento. Só um instante...",
   "kyc-sign-signing-progress-title": "Assinando",
   "manual": "Manual",

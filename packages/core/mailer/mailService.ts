@@ -1,12 +1,19 @@
 // @ts-ignore
 import * as Brevo from "@getbrevo/brevo";
-import { BrevoError } from "../errors/brevoError";
+import { BrevoError } from "../errors";
 
 export class MailServiceError extends BrevoError {}
 
 export interface Mailer {
   name: string;
   email: string;
+}
+
+export interface MailAttachment {
+  absoluteUrl?: string;
+  // when using base64, name is required also
+  base64?: string;
+  name?: string;
 }
 
 export interface SendTransactionMailArgs {
@@ -20,6 +27,7 @@ export interface SendTransactionMailArgs {
   subject?: string;
   params?: any;
   tags?: string[];
+  attachments?: MailAttachment[];
 }
 
 /**
@@ -48,6 +56,7 @@ export class MailService {
       email.templateId = args.templateId;
       email.params = args.params ?? null;
       email.tags = args.tags ?? [];
+      email.attachment = args.attachments ?? undefined;
       await this.transactionMailApi.sendTransacEmail(email);
     } catch (e: any) {
       throw new MailServiceError(e);

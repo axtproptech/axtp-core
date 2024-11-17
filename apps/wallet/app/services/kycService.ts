@@ -75,6 +75,9 @@ export class KycService {
             Date.now() + 365 * DateTimeConstants.InMillies.Day
           ).toISOString()
         : undefined;
+
+      // TODO: store signed document in R2
+
       const { response } = await this.bffClient.post(
         `/customer/${customerId}/signedDocument`,
         {
@@ -157,6 +160,18 @@ export class KycService {
       return this.bffClient.post(`/mail/addressVerification`, {
         emailAddress,
         name: firstName,
+      });
+    });
+  }
+
+  async sendTermsOfRiskSignedConfirmationMail(
+    customerId: string,
+    transactionId: string
+  ) {
+    return tryCall<void>(async () => {
+      return this.bffClient.post(`/mail/signedDocuments/termsOfRisk`, {
+        cuid: customerId,
+        transactionId,
       });
     });
   }

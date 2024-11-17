@@ -64,6 +64,7 @@ export function FileUploader({
         uploadRequests.push(
           FileService.uploadFile({
             file,
+            documentCategory: "kyc",
             onProgress: (progress) => {
               setUploadProgress((prev) => ({ ...prev, [file.name]: progress }));
             },

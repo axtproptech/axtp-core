@@ -41,13 +41,21 @@ export const HintBoxEncryptedMessage = ({ tx }: { tx: TransactionData }) => {
     const revealMessage = async () => {
       try {
         setDecrypting(true);
-        let publicKey = accountPublicKey;
+        let publicKey = "";
         if (tx.direction === "in") {
           const sender = await Ledger.Client.account.getAccount({
             accountId: tx.sender,
           });
           publicKey = sender.publicKey;
+        } else if (tx.direction === "out") {
+          const receiver = await Ledger.Client.account.getAccount({
+            accountId: tx.receiver,
+          });
+          publicKey = receiver.publicKey;
+        } else {
+          throw new Error("No P2P message");
         }
+
         const message = decryptMessage(
           tx.encryptedMessage!,
           publicKey,
