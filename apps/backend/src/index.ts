@@ -1,41 +1,24 @@
-interface HealthResponse {
-  status: string;
-  timestamp: string;
-  version: string;
-  uptime: number;
-}
+import { Hono } from "hono";
+import { logger } from "hono/logger";
+import { prettyJSON } from "hono/pretty-json";
+import health from "./routes/health";
 
-const startTime = Date.now();
+const app = new Hono();
 
-const server = Bun.serve({
-  port: process.env.PORT || 3000,
-  fetch(req): Response | Promise<Response> {
-    const url = new URL(req.url);
+// Middlewares
+app.use("*", logger());
+app.use("*", prettyJSON());
 
-    // Health check endpoint
-    if (url.pathname === "/health") {
-      const healthData: HealthResponse = {
-        status: "healthy",
-        timestamp: new Date().toISOString(),
-        version: "1.0.0",
-        uptime: Math.floor((Date.now() - startTime) / 1000), // uptime in seconds
-      };
-
-      return new Response(JSON.stringify(healthData), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    }
-
-    // Root endpoint
-    if (url.pathname === "/") {
-      return new Response("Welcome to Bun Web Service!");
-    }
-
-    // Handle 404
-    return new Response("Not Found", { status: 404 });
-  },
+// Root endpoint
+app.get("/", (c) => {
+  return c.text("Welcome to Bun Web Service!");
 });
 
-console.log(`Server running at http://localhost:${server.port}`);
+// Health check endpoint
+app.get("/health", health);
+
+// Start the server
+export default {
+  port: process.env["PORT"] || 3000,
+  fetch: app.fetch,
+};

@@ -10,6 +10,7 @@
     "build:landing": "turbo run build --filter={apps/landing}... --force",
     "build:wallet": "turbo run build --filter={apps/wallet}... --force",
     "build:backoffice": "turbo run build --filter={apps/backoffice}... --force",
+    "build:backend": "turbo run build --filter={apps/backend}... --force",
     "test": "turbo run test",
     "db": "turbo run generate-db"
   },
