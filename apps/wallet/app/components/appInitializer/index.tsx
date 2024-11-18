@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/states/hooks";
 import { selectAgreementKey, appSlice } from "@/app/states/appState";
 
 export const AppInitializer = () => {
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<any>();
   const { TrackingEventService } = useAppContext();
   const agreementKey = useAppSelector(selectAgreementKey);
   const dispatch = useAppDispatch();
