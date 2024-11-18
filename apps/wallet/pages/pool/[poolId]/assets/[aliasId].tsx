@@ -6,7 +6,6 @@ import {
   RiArrowLeftCircleLine,
   RiHome6Line,
 } from "react-icons/ri";
-import { Config } from "@/app/config";
 import { useMemo } from "react";
 import { useAccount } from "@/app/hooks/useAccount";
 import { PoolAssetDetails } from "@/features/pool";

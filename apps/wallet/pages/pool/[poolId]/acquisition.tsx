@@ -34,13 +34,7 @@ export async function getStaticProps({ locale, params }: any) {
 }
 
 export default function Page({ poolId }: any) {
-  // const [bottomNav, setBottomNav] = useState<BottomNavigationItem[]>([]);
   const { t } = useTranslation();
-
-  const handleStepChange = (args: OnStepChangeArgs) => {
-    // setBottomNav(args.bottomNav);
-  };
-
   return (
     <Layout
       noBody
