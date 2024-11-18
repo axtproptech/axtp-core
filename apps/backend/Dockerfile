@@ -1,29 +1,53 @@
-# Use the official Bun image
-FROM oven/bun:latest
-# Disable Husky
-ENV HUSKY=0
-# Install Yarn for turbo
 
-RUN apt-get update && apt-get install -y yarn
-# Set working directory
+# prepare repo
+FROM node:18-alpine AS builder
+
 WORKDIR /app
 
-COPY ./package.json ./bun.lockb ./yarn.lock ./turbo.json ./
-COPY ./packages ./packages
-COPY ./ ./
+RUN yarn global add turbo@2 
+COPY . .
+RUN turbo prune @axtp/backend --docker
 
-# Install dependencies
-# RUN yarn
+# Install deps
+# FROM oven/bun:latest AS installer
+FROM node:18-slim AS installer
 
-# Build all dependencies using turbo
-# RUN bunx turbo run build --filter={apps/backend}... --force
-# RUN bun build:backend
+# Install required tools
+RUN apt-get update && apt-get install -y curl bash unzip
+# Install Bun
+RUN curl -fsSL https://bun.sh/install | bash -s
 
-# Set working directory to backend
-# WORKDIR /app/backend
+# Add Bun to PATH
+ENV BUN_INSTALL="/root/.bun"
+ENV PATH="${BUN_INSTALL}/bin:${PATH}"
 
-# # Expose the port your app runs on
-# EXPOSE 3000
+# Verify installation
+RUN bun --version
 
-# # Start the application
-# CMD ["bun", "run", "src/index.ts"] 
+# Debug to check if Bun is installed
+RUN echo $PATH && which bun && ls -l /root/.bun/bin && bun --version
+
+# Verify installation
+RUN bun --version
+
+WORKDIR /app
+ENV HUSKY=0
+
+COPY --from=builder /app/out/json/ .
+RUN bun install 
+
+# Build the project
+COPY --from=builder /app/out/full/ .
+RUN bun run build:backend
+
+FROM oven/bun:1 AS runner
+
+WORKDIR /app
+
+COPY --from=installer /app/ .
+
+WORKDIR /app/apps/backend
+
+EXPOSE 3000
+
+CMD ["bun", "run", "src/index.ts"] 
