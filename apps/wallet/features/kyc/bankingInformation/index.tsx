@@ -11,23 +11,20 @@ import { useNotification } from "@/app/hooks/useNotification";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { useSWRConfig } from "swr";
 import { voidFn } from "@/app/voidFn";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
+import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
 
 interface BankInfoFormData {
   pixKey: string;
 }
 
-interface Props {
-  onNavChange: (bottomNav: BottomNavigationItem[]) => void;
-}
-
-export const BankingInformation = ({ onNavChange }: Props) => {
+export const BankingInformation = () => {
   const { t } = useTranslation();
   const { customer } = useAccount();
   const { query, replace } = useRouter();
   const { showSuccess, showError } = useNotification();
   const { KycService } = useAppContext();
   const [isSaving, setIsSaving] = useState(false);
+  const { setNavItems } = useBottomNavigation();
   const { mutate } = useSWRConfig();
 
   if (customer && customer.hasBankInformation) {
@@ -61,7 +58,7 @@ export const BankingInformation = ({ onNavChange }: Props) => {
   }, [getValues, query.redirect, replace]);
 
   useEffect(() => {
-    onNavChange([
+    setNavItems([
       {
         label: t("back"),
         back: true,
@@ -83,7 +80,7 @@ export const BankingInformation = ({ onNavChange }: Props) => {
         onClick: updateBankingInfo,
       },
     ]);
-  }, [isSaving, isValid, onNavChange, t]);
+  }, [isSaving, isValid, t]);
 
   return (
     <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm md:max-w-lg mx-auto px-4">

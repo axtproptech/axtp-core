@@ -14,10 +14,10 @@ import { useBottomNavigation } from "@/app/components/navigation/bottomNavigatio
 import { Fade } from "react-awesome-reveal";
 
 export const StepPaymentUsdc1 = ({
-  data: { usdcProtocol },
+  formData: { usdcProtocol },
   nextStep,
   previousStep,
-  updateData,
+  updateFormData,
 }: FormWizardStepProps<AcquisitionFormData>) => {
   const { t } = useTranslation();
   const { setNavItems } = useBottomNavigation();
@@ -43,7 +43,7 @@ export const StepPaymentUsdc1 = ({
   }, []);
 
   const handleProtocolChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateData("usdcProtocol", e.target.name);
+    updateFormData("usdcProtocol", e.target.name);
   };
 
   return (

@@ -21,9 +21,9 @@ import { Fade } from "react-awesome-reveal";
 import { AcquisitionFormData } from "../acquisitionFormData";
 
 export const StepSelectQuantity = ({
-  data: { poolId, quantity },
+  formData: { poolId, quantity },
   nextStep,
-  updateData,
+  updateFormData,
 }: FormWizardStepProps<AcquisitionFormData>) => {
   const { t } = useTranslation();
   const { accountData } = useAccount();
@@ -113,7 +113,7 @@ export const StepSelectQuantity = ({
                   <button
                     key={`btn-${q}}`}
                     className={`btn ${q === quantity ? "btn-active" : ""}`}
-                    onClick={() => updateData("quantity", q)}
+                    onClick={() => updateFormData("quantity", q)}
                   >
                     {q}
                   </button>

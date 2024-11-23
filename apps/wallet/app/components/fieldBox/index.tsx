@@ -1,13 +1,13 @@
 import { Input } from "react-daisyui";
+import { InputHTMLAttributes } from "react";
 
-interface Props {
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   type?: "text" | "email" | "date";
   placeholder?: string;
   helperText?: string;
   className?: string;
   errorLabel?: string;
-  field: any;
 }
 
 export const FieldBox = ({
@@ -17,7 +17,7 @@ export const FieldBox = ({
   helperText,
   className = "",
   errorLabel,
-  field,
+  ...inputProps
 }: Props) => {
   return (
     <div className="form-control w-full">
@@ -27,8 +27,9 @@ export const FieldBox = ({
         </label>
       )}
 
+      {/*@ts-ignore*/}
       <Input
-        {...field}
+        {...inputProps}
         type={type}
         placeholder={placeholder}
         size="lg"

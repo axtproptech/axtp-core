@@ -51,7 +51,7 @@ export const PoolShareAcquisition = ({ poolId }: Props) => {
             initialData={initialState}
           >
             {(props) => {
-              const steps = AcquisitionSteps[props.data.paymentMethod];
+              const steps = AcquisitionSteps[props.formData.paymentMethod];
               if (props.stepCount !== steps.length) {
                 props.updateStepCount(steps.length);
               }
