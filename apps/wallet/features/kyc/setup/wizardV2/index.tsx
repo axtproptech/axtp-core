@@ -10,10 +10,7 @@ import { useAppSelector, useAppDispatch } from "@/states/hooks";
 import { useNotification } from "@/app/hooks/useNotification";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { accountActions } from "@/app/states/accountState";
-import { KycFormData } from "./steps/kycFormData";
 import { WizardLayout } from "./components/WizardLayout";
-import { BasicData } from "./steps/BasicData";
-import { ComplementaryData } from "./steps/ComplementaryData";
 import { ResidencyData } from "./steps/ResidencyData";
 import { MotherData } from "./steps/MotherData";
 import { DocumentFiles } from "./steps/DocumentFiles";
@@ -25,8 +22,9 @@ import { Layout } from "@/app/components/layout";
 import { FormWizard } from "@/app/components/formWizard";
 import { InitialSetupStep } from "@/app/types/kycData";
 import { validate } from "@/features/kyc/setup/initialSetup/steps";
+import { BasicData, ComplementaryData, KycFormData } from "./steps";
 
-const KycFormSteps = [BasicData];
+const KycFormSteps = [BasicData, ComplementaryData];
 
 const InitialKycFormData: KycFormData = {
   // Basic data step

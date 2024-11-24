@@ -16,12 +16,20 @@ import { FieldBox } from "@/app/components/fieldBox";
 
 export const BasicData = ({
   updateFormData,
+  formData,
   validation,
   nextStep,
 }: KycFormDataStepProps) => {
   const { t } = useTranslation();
   const { KycService } = useAppContext();
   const { setNavItems } = useBottomNavigation();
+
+  const canProceed = Boolean(
+    formData.cpf &&
+      formData.birthDate &&
+      formData.birthPlace &&
+      !validation.hasError
+  );
 
   useEffect(() => {
     setNavItems([
@@ -40,11 +48,11 @@ export const BasicData = ({
         onClick: nextStep,
         label: t("next"),
         icon: <RiArrowRightCircleLine />,
-        disabled: validation.hasError,
+        disabled: !canProceed,
         color: "secondary",
       },
     ]);
-  }, [validation.hasError]);
+  }, [canProceed]);
 
   const handleCpf = (cpf: string) => {
     updateFormData("cpf", cpf);
@@ -105,6 +113,7 @@ export const BasicData = ({
             mask="_"
             size="lg"
             className="font-semibold"
+            value={formData.cpf}
           />
 
           <label className="label">
@@ -124,6 +133,7 @@ export const BasicData = ({
           type="date"
           label={t("birth_date")}
           onChange={handleBirthdate}
+          value={formData.birthDate}
           errorLabel={
             validation.errors?.birthDate ? t(validation.errors.birthDate) : ""
           }
@@ -132,6 +142,7 @@ export const BasicData = ({
         <FieldBox
           label={t("birth_place")}
           onChange={handleBirthplace}
+          value={formData.birthPlace}
           errorLabel={
             validation.errors?.birthPlace ? t(validation.errors.birthPlace) : ""
           }
