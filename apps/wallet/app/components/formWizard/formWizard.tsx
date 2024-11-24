@@ -9,7 +9,8 @@ export interface FormWizardValidation<T> {
   errors?: FormErrorType<T>;
   hasError: boolean;
   setError: (key: keyof T, message: string) => void;
-  clearErrors: () => void;
+  clearError: (key: keyof T) => void;
+  clearAllErrors: () => void;
 }
 
 export interface FormWizardStepProps<T, V = any> {
@@ -37,7 +38,7 @@ export function FormWizard<T, V = any>({
   validate,
 }: FormWizardProps<T, V>) {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState<T>(initialData);
+  const [formData, setFormData] = useState<T>({ ...initialData });
   const [errors, _setError] = useState<FormErrorType<T>>(
     {} as FormErrorType<T>
   );
@@ -45,8 +46,16 @@ export function FormWizard<T, V = any>({
   const [isDirty, setIsDirty] = useState(false);
   const hasError = errors && Object.keys(errors).length > 0;
 
-  const clearErrors = () => {
+  const clearAllErrors = () => {
     _setError({} as FormErrorType<T>);
+  };
+
+  const clearError = (key: keyof T) => {
+    _setError((e) => {
+      const ne = { ...e };
+      delete ne[key];
+      return ne;
+    });
   };
 
   const setError = (key: keyof T, message: string) => {
@@ -73,12 +82,13 @@ export function FormWizard<T, V = any>({
     errors,
     hasError,
     setError,
-    clearErrors,
+    clearAllErrors,
+    clearError,
   };
 
   useEffect(() => {
     if (validate && isDirty) {
-      clearErrors();
+      clearAllErrors();
       validate(formData, validation);
       setIsDirty(false);
     }
