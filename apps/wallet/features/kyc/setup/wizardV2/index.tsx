@@ -24,7 +24,7 @@ import { InitialSetupStep } from "@/app/types/kycData";
 import { validate } from "@/features/kyc/setup/initialSetup/steps";
 import { BasicData, ComplementaryData, KycFormData } from "./steps";
 
-const KycFormSteps = [BasicData, ComplementaryData];
+const KycFormSteps = [BasicData, ComplementaryData, ResidencyData];
 
 const InitialKycFormData: KycFormData = {
   // Basic data step

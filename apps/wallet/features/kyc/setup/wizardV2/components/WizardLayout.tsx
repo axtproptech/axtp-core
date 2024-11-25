@@ -64,7 +64,6 @@ export const WizardLayout = ({ children, isSubmitting }: Props) => {
     [dispatch, router, setCurrentStep]
   );
 
-  const agreeTerms = watch("agreeTerms");
   const customerCpf = watch("cpf");
   const birthDate = watch("birthDate");
   const birthPlace = watch("birthPlace");
@@ -117,13 +116,7 @@ export const WizardLayout = ({ children, isSubmitting }: Props) => {
 
   switch (currentStep) {
     case Steps.AgreeTerms:
-      canMoveToNextStep = !!(
-        agreeTerms &&
-        firstName &&
-        lastName &&
-        email &&
-        code
-      );
+      canMoveToNextStep = !!(firstName && lastName && email && code);
       break;
 
     case Steps.BasicData:
@@ -273,7 +266,6 @@ export const WizardLayout = ({ children, isSubmitting }: Props) => {
   const handleNextButton = useCallback(async () => {
     switch (currentStep) {
       case Steps.AgreeTerms:
-        dispatch(setAgreeTerms(agreeTerms));
         await stepMovement(Steps.BasicData);
         break;
 
@@ -338,7 +330,6 @@ export const WizardLayout = ({ children, isSubmitting }: Props) => {
     setMotherDataStep,
     setDocumentStep,
     currentStep,
-    agreeTerms,
     customerCpf,
     birthDate,
     birthPlace,
