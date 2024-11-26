@@ -1,26 +1,61 @@
 import { useTranslation } from "next-i18next";
-import { useFormContext, Controller } from "react-hook-form";
 import { FieldBox } from "@/app/components/fieldBox";
-import { mapValidationError } from "@/app/mapValidationError";
 import { KycFormData } from "./kycFormData";
 import { StepLayout } from "../../components/StepLayout";
+import { useEffect } from "react";
+import { KycFormDataStepProps } from "./kycFormDataStepProps";
+import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
+import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
+import { voidFn } from "@/app/voidFn";
+import * as React from "react";
 
-export const MotherData = () => {
+export const MotherData = ({
+  formData,
+  updateFormData,
+  nextStep,
+  previousStep,
+  validation,
+}: KycFormDataStepProps) => {
   const { t } = useTranslation();
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext<KycFormData>();
+  const { setNavItems } = useBottomNavigation();
 
-  let firstNameFieldError = "";
-  if (errors.firstNameMother?.message) {
-    firstNameFieldError = t(mapValidationError(errors.firstNameMother.message));
-  }
+  const canProceed = Boolean(
+    formData.firstNameMother && formData.lastNameMother && !validation.hasError
+  );
 
-  let lastNameFieldError = "";
-  if (errors.lastNameMother?.message) {
-    lastNameFieldError = t(mapValidationError(errors.lastNameMother.message));
-  }
+  useEffect(() => {
+    setNavItems([
+      {
+        onClick: previousStep,
+        label: t("back"),
+        icon: <RiArrowLeftCircleLine />,
+        type: "button",
+      },
+      {
+        onClick: voidFn,
+        label: "",
+        icon: <div />,
+      },
+      {
+        onClick: nextStep,
+        label: t("next"),
+        icon: <RiArrowRightCircleLine />,
+        disabled: !canProceed,
+        color: "secondary",
+      },
+    ]);
+  }, [canProceed]);
+
+  const handleValueChange =
+    (field: keyof KycFormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const v = e.target.value;
+      if (!v) {
+        validation.setError(field, "required");
+      } else {
+        validation.clearError(field);
+      }
+      updateFormData(field, v);
+    };
 
   return (
     <StepLayout>
@@ -30,30 +65,27 @@ export const MotherData = () => {
       </section>
 
       <section className="flex flex-col justify-center items-center gap-2">
-        <Controller
-          name="firstNameMother"
-          control={control}
-          render={({ field }) => (
-            <FieldBox
-              field={field}
-              label={t("mothers_first_name")}
-              placeholder={t("enter_first_name_placeholder")}
-              errorLabel={firstNameFieldError}
-            />
-          )}
+        <FieldBox
+          value={formData.firstNameMother}
+          onChange={handleValueChange("firstNameMother")}
+          label={t("mothers_first_name")}
+          placeholder={t("enter_first_name_placeholder")}
+          errorLabel={
+            validation.errors?.firstNameMother
+              ? t(validation.errors.firstNameMother)
+              : ""
+          }
         />
-
-        <Controller
-          name="lastNameMother"
-          control={control}
-          render={({ field }) => (
-            <FieldBox
-              field={field}
-              label={t("mothers_last_name")}
-              placeholder={t("enter_last_name_placeholder")}
-              errorLabel={lastNameFieldError}
-            />
-          )}
+        <FieldBox
+          value={formData.lastNameMother}
+          onChange={handleValueChange("lastNameMother")}
+          label={t("mothers_last_name")}
+          placeholder={t("enter_last_name_placeholder")}
+          errorLabel={
+            validation.errors?.lastNameMother
+              ? t(validation.errors.lastNameMother)
+              : ""
+          }
         />
       </section>
     </StepLayout>

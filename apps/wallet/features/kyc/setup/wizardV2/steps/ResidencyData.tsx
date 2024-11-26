@@ -1,5 +1,4 @@
 import { useTranslation } from "next-i18next";
-import { useFormContext, Controller } from "react-hook-form";
 import { Alert, Input } from "react-daisyui";
 import {
   RiArrowLeftCircleLine,
@@ -8,12 +7,11 @@ import {
 } from "react-icons/ri";
 import { PatternFormat } from "react-number-format";
 import { FieldBox } from "@/app/components/fieldBox";
-import { mapValidationError } from "@/app/mapValidationError";
 import { FileUploader } from "@/app/components/fileUploader";
 import { KycFormData } from "./kycFormData";
 import { StepLayout } from "../../components/StepLayout";
 import { ChangeEvent, useEffect } from "react";
-import { KycFormDataStepProps } from "@/features/kyc/setup/wizardV2/steps/kycFormDataStepProps";
+import { KycFormDataStepProps } from "./kycFormDataStepProps";
 import { voidFn } from "@/app/voidFn";
 import * as React from "react";
 import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
@@ -26,12 +24,6 @@ export const ResidencyData = ({
   previousStep,
 }: KycFormDataStepProps) => {
   const { t } = useTranslation();
-  // const {
-  //   control,
-  //   watch,
-  //   formState: { errors },
-  //   setValue,
-  // } = useFormContext<KycFormData>();
   const { setNavItems } = useBottomNavigation();
 
   const canProceed =

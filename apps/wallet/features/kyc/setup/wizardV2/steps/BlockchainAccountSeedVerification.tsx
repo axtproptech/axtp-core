@@ -1,27 +1,173 @@
 import { useTranslation } from "next-i18next";
 import { Form, Checkbox } from "react-daisyui";
-import { useFormContext, Controller } from "react-hook-form";
 import { FieldBox } from "@/app/components/fieldBox";
-import { KycFormData } from "./kycFormData";
-import { RiCheckboxCircleLine } from "react-icons/ri";
+import {
+  RiArrowLeftCircleLine,
+  RiCheckboxCircleLine,
+  RiProfileFill,
+} from "react-icons/ri";
 import { StepLayout } from "../../components/StepLayout";
+import { KycFormDataStepProps } from "./kycFormDataStepProps";
+import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
+import { useCallback, useEffect, useState } from "react";
+import { voidFn } from "@/app/voidFn";
+import * as React from "react";
+import { cpf as CpfFormatter } from "cpf-cnpj-validator";
+import { generateMasterKeys } from "@signumjs/crypto";
+import { encrypt, stretchKey } from "@/app/sec";
+import { useAppContext } from "@/app/hooks/useAppContext";
+import { accountActions } from "@/app/states/accountState";
+import { useAppDispatch } from "@/states/hooks";
+import { useNotification } from "@/app/hooks/useNotification";
+import { useRouter } from "next/router";
 
-export const BlockchainAccountSeedVerification = () => {
+export const BlockchainAccountSeedVerification = ({
+  previousStep,
+  updateFormData,
+  formData,
+  validation,
+}: KycFormDataStepProps) => {
   const { t } = useTranslation();
-  const { control, watch, getValues } = useFormContext<KycFormData>();
+  const { setNavItems } = useBottomNavigation();
+  const { showError } = useNotification();
+  const { KycService } = useAppContext();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const seedPhraseVerificationIndex = watch("seedPhraseVerificationIndex");
-  const enteredWord = watch("seedPhraseVerification");
+  const {
+    accountSeedPhrase,
+    seedPhraseVerificationIndex,
+    seedPhraseVerification,
+  } = formData;
+
+  const isCorrectWord = accountSeedPhrase
+    .split(" ")
+    .at(seedPhraseVerificationIndex - 1);
+
+  const canSubmit =
+    isCorrectWord && formData.agreeSafetyTerms && !validation.hasError;
+
+  const submitFormData = useCallback(async () => {
+    if (!canSubmit) {
+      console.error("Cannot submit data...something is wrong");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const { firstName, email, lastName } = formData;
+      const {
+        firstNameMother,
+        lastNameMother,
+        cpf: customerCpf,
+        birthDate,
+        birthPlace,
+        phone,
+        profession,
+        pep,
+        streetAddress,
+        complementaryStreetAddress,
+        state,
+        city,
+        zipCode,
+        country,
+        proofOfAddress,
+        documentType,
+        frontSide,
+        backSide,
+        accountPublicKey,
+        agreeSafetyTerms,
+        devicePin,
+        accountSeedPhrase,
+      } = formData;
+
+      const payload = {
+        firstName,
+        lastName,
+        firstNameMother,
+        lastNameMother,
+        email,
+        cpf: CpfFormatter.format(customerCpf),
+        birthDate,
+        birthPlace,
+        phone,
+        profession,
+        pep,
+        streetAddress,
+        complementaryStreetAddress,
+        state,
+        city,
+        zipCode,
+        country,
+        proofOfAddress,
+        documentType,
+        frontSide,
+        backSide,
+        publicKey: accountPublicKey,
+        agreeSafetyTerms,
+      };
+
+      const response = await KycService.registerCustomer(payload);
+
+      if (response!.customerId) {
+        // dispatch(kycActions.reset());
+
+        const keys = generateMasterKeys(accountSeedPhrase);
+        const { salt, key } = await stretchKey(devicePin);
+        const securedKeys = await encrypt(key, JSON.stringify(keys));
+
+        dispatch(
+          accountActions.setAccount({
+            publicKey: keys.publicKey,
+            securedKeys,
+            salt,
+          })
+        );
+
+        await router.replace(`/kyc/setup/success?cuid=${response!.customerId}`);
+      }
+    } catch (e: any) {
+      switch (e.message) {
+        case "Customer already exists":
+          showError(t("customer_already_exists"));
+          break;
+        default:
+          showError(e);
+          break;
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [router, showError, canSubmit, formData, KycService, dispatch, t]);
+
+  useEffect(() => {
+    setNavItems([
+      {
+        onClick: previousStep,
+        label: t("back"),
+        icon: <RiArrowLeftCircleLine />,
+        type: "button",
+      },
+      {
+        onClick: voidFn,
+        label: "",
+        icon: <div />,
+      },
+      {
+        onClick: submitFormData,
+        label: t("submit"),
+        icon: <RiProfileFill />,
+        disabled: !canSubmit,
+        loading: isSubmitting,
+        color: "accent",
+      },
+    ]);
+  }, [submitFormData, canSubmit, isSubmitting]);
 
   const defaultFieldText = t("enter_word_number", {
     number: seedPhraseVerificationIndex,
   });
-
-  const isCorrectWord =
-    enteredWord ===
-    getValues("accountSeedPhrase")
-      .split(" ")
-      .at(seedPhraseVerificationIndex - 1);
 
   return (
     <StepLayout>
@@ -35,23 +181,20 @@ export const BlockchainAccountSeedVerification = () => {
       </section>
 
       <section>
-        <Controller
-          name="seedPhraseVerification"
-          control={control}
-          render={({ field }) => (
-            <div className="relative">
-              <FieldBox
-                field={field}
-                label={defaultFieldText}
-                placeholder={defaultFieldText}
-                className="text-center font-bold text-white"
-              />
-              {isCorrectWord && (
-                <RiCheckboxCircleLine className="absolute top-[48px] right-2" />
-              )}
-            </div>
+        <div className="relative">
+          <FieldBox
+            onChange={(e) =>
+              updateFormData("seedPhraseVerification", e.target.value)
+            }
+            value={seedPhraseVerification}
+            label={defaultFieldText}
+            placeholder={defaultFieldText}
+            className="text-center font-bold text-white"
+          />
+          {isCorrectWord && (
+            <RiCheckboxCircleLine className="absolute top-[48px] right-2" />
           )}
-        />
+        </div>
       </section>
 
       <section className="flex flex-col justify-start items-center gap-2 mt-10">
@@ -59,18 +202,17 @@ export const BlockchainAccountSeedVerification = () => {
         <div className="text-justify mb-2">
           {t("confirm_saved_seed_phrase_paragraph")}
         </div>
-        <Controller
-          name="agreeSafetyTerms"
-          control={control}
-          render={({ field }) => (
-            <div className="shadow bg-base-200 rounded-lg p-4">
-              <Form.Label className="text-left" title={t("accept_terms")}>
-                {/* @ts-ignore */}
-                <Checkbox {...field} size="lg" />
-              </Form.Label>
-            </div>
-          )}
-        />
+        <div className="shadow bg-base-200 rounded-lg p-4">
+          <Form.Label className="text-left" title={t("accept_terms")}>
+            <Checkbox
+              checked={formData.agreeSafetyTerms}
+              onChange={(e) =>
+                updateFormData("agreeSafetyTerms", e.target.checked)
+              }
+              size="lg"
+            />
+          </Form.Label>
+        </div>
       </section>
     </StepLayout>
   );

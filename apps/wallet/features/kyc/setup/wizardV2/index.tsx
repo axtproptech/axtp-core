@@ -11,10 +11,6 @@ import { useNotification } from "@/app/hooks/useNotification";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { accountActions } from "@/app/states/accountState";
 import { WizardLayout } from "./components/WizardLayout";
-import { ResidencyData } from "./steps/ResidencyData";
-import { MotherData } from "./steps/MotherData";
-import { DocumentFiles } from "./steps/DocumentFiles";
-import { BlockchainAccountSetup } from "./steps/BlockchainAccountSetup";
 import { BlockchainAccountSeed } from "./steps/BlockchainAccountSeed";
 import { BlockchainAccountSeedVerification } from "./steps/BlockchainAccountSeedVerification";
 import { selectInitialSetupStep, kycActions } from "../state";
@@ -22,11 +18,31 @@ import { Layout } from "@/app/components/layout";
 import { FormWizard } from "@/app/components/formWizard";
 import { InitialSetupStep } from "@/app/types/kycData";
 import { validate } from "@/features/kyc/setup/initialSetup/steps";
-import { BasicData, ComplementaryData, KycFormData } from "./steps";
+import {
+  BasicData,
+  ComplementaryData,
+  KycFormData,
+  MotherData,
+  ResidencyData,
+  DocumentFiles,
+  BlockchainAccountSetup,
+} from "./steps";
 
-const KycFormSteps = [BasicData, ComplementaryData, ResidencyData];
+const KycFormSteps = [
+  BasicData,
+  ComplementaryData,
+  ResidencyData,
+  MotherData,
+  DocumentFiles,
+  BlockchainAccountSetup,
+];
 
 const InitialKycFormData: KycFormData = {
+  // pre-kyc data
+  firstName: "",
+  lastName: "",
+  email: "",
+
   // Basic data step
   cpf: "",
   birthDate: "",
@@ -70,7 +86,7 @@ export const WizardV2 = () => {
   const { showError } = useNotification();
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const currentInitialSetupStep = useAppSelector(selectInitialSetupStep);
+  const { firstName, lastName, email } = useAppSelector(selectInitialSetupStep);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -210,7 +226,7 @@ export const WizardV2 = () => {
     <Layout bottomNav={[]}>
       <FormWizard<KycFormData>
         stepCount={KycFormSteps.length}
-        initialData={InitialKycFormData}
+        initialData={{ ...InitialKycFormData, firstName, lastName, email }}
       >
         {(props) => {
           const Step = KycFormSteps[props.step - 1];

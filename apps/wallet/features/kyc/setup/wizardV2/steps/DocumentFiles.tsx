@@ -1,26 +1,61 @@
 import { useTranslation } from "next-i18next";
-import { useFormContext } from "react-hook-form";
 import { Form, Checkbox, Alert } from "react-daisyui";
-import { RiCheckboxCircleLine } from "react-icons/ri";
+import {
+  RiArrowLeftCircleLine,
+  RiArrowRightCircleLine,
+  RiCheckboxCircleLine,
+} from "react-icons/ri";
 import { FileUploader } from "@/app/components/fileUploader";
-import { KycFormData } from "./kycFormData";
 import { StepLayout } from "../../components/StepLayout";
+import { KycFormDataStepProps } from "./kycFormDataStepProps";
+import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
+import { useEffect } from "react";
+import { voidFn } from "@/app/voidFn";
+import * as React from "react";
 
-export const DocumentFiles = () => {
+export const DocumentFiles = ({
+  updateFormData,
+  formData,
+  validation,
+  previousStep,
+  nextStep,
+}: KycFormDataStepProps) => {
   const { t } = useTranslation();
-  const { watch, setValue } = useFormContext<KycFormData>();
+  const { setNavItems } = useBottomNavigation();
 
-  const documentType = watch("documentType");
-  const frontSide = watch("frontSide");
-  const backSide = watch("backSide");
+  const canProceed = Boolean(
+    formData.documentType && formData.frontSide && !validation.hasError
+  );
 
-  const pickCnh = () => setValue("documentType", "cnh");
-  const pickRne = () => setValue("documentType", "rne");
+  useEffect(() => {
+    setNavItems([
+      {
+        onClick: previousStep,
+        label: t("back"),
+        icon: <RiArrowLeftCircleLine />,
+        type: "button",
+      },
+      {
+        onClick: voidFn,
+        label: "",
+        icon: <div />,
+      },
+      {
+        onClick: nextStep,
+        label: t("next"),
+        icon: <RiArrowRightCircleLine />,
+        disabled: !canProceed,
+        color: "secondary",
+      },
+    ]);
+  }, [canProceed]);
 
+  const pickCnh = () => updateFormData("documentType", "cnh");
+  const pickRne = () => updateFormData("documentType", "rne");
   const setDocumentFrontSideImageValue = (value: string) =>
-    setValue("frontSide", value);
+    updateFormData("frontSide", value);
   const setDocumentBackSideImageValue = (value: string) =>
-    setValue("backSide", value);
+    updateFormData("backSide", value);
 
   return (
     <StepLayout>
@@ -39,8 +74,8 @@ export const DocumentFiles = () => {
             <Form.Label title={t("cnh")} className="font-bold">
               <Checkbox
                 size="lg"
-                checked={documentType === "cnh"}
-                color={documentType === "cnh" ? "success" : undefined}
+                checked={formData.documentType === "cnh"}
+                color={formData.documentType === "cnh" ? "success" : undefined}
               />
             </Form.Label>
           </div>
@@ -52,8 +87,8 @@ export const DocumentFiles = () => {
             <Form.Label title={t("rg_or_RNE")} className="font-bold">
               <Checkbox
                 size="lg"
-                checked={documentType === "rne"}
-                color={documentType === "rne" ? "success" : undefined}
+                checked={formData.documentType === "rne"}
+                color={formData.documentType === "rne" ? "success" : undefined}
               />
             </Form.Label>
           </div>
@@ -65,7 +100,7 @@ export const DocumentFiles = () => {
           <h3 className="my-0 mb-4 text-left">{t("front_side")}</h3>
           <div className="card glass w-full bg-base-100 shadow-xl">
             <div className="card-body flex-col justify-center items-center">
-              {!!frontSide && (
+              {!!formData.frontSide && (
                 <Alert
                   status="success"
                   className="text-sm text-center font-bold"
@@ -86,7 +121,7 @@ export const DocumentFiles = () => {
           <h3 className="my-0 mb-4 text-left">{t("back_side")}</h3>
           <div className="card glass w-full bg-base-100 shadow-xl">
             <div className="card-body flex-col justify-center items-center">
-              {!!backSide && (
+              {!!formData.backSide && (
                 <Alert
                   status="success"
                   className="text-sm text-center font-bold"

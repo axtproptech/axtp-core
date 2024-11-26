@@ -4,6 +4,7 @@ import {
   FourthStep,
   MotherDataStep,
   DocumentStep,
+  InitialSetupStep,
 } from "@/app/types/kycData";
 
 interface BlockchainAccountStep {
@@ -16,7 +17,8 @@ interface BlockchainAccountStep {
 }
 
 export interface KycFormData
-  extends SecondStep,
+  extends Omit<InitialSetupStep, "code">,
+    SecondStep,
     ThirdStep,
     FourthStep,
     MotherDataStep,
