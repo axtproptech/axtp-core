@@ -35,24 +35,12 @@ export async function getStaticProps({ locale }: { locale: string }) {
   };
 }
 
-export const LayoutTest = ({ children }: ChildrenProps) => {
-  return (
-    <Container>
-      <BottomNavigationProvider navItems={[]}>
-        <Body>{children}</Body>
-        <BottomNavigation />
-      </BottomNavigationProvider>
-      <Notification />
-    </Container>
-  );
-};
-
 export default function Signing() {
   return (
     <WithAccountOnly>
-      <LayoutTest>
+      <Layout bottomNav={[]}>
         <TermsSigning />
-      </LayoutTest>
+      </Layout>
     </WithAccountOnly>
   );
 }

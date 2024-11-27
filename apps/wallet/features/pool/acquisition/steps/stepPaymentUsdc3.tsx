@@ -31,9 +31,9 @@ const MaxRetrials = 5;
 const PollingInterval = 5_000;
 
 export const StepPaymentUsdc3 = ({
-  data: { quantity, poolId, usdcProtocol, paid },
+  formData: { quantity, poolId, usdcProtocol, paid },
   previousStep,
-  updateData,
+  updateFormData,
 }: FormWizardStepProps<AcquisitionFormData>) => {
   const { t } = useTranslation();
   const timer = useRef<any>(null);
@@ -129,7 +129,7 @@ export const StepPaymentUsdc3 = ({
           tokenName: token.name,
         });
         setTxStatus("confirmed");
-        updateData("paid", true);
+        updateFormData("paid", true);
       } catch (e: any) {
         timer.current = setTimeout(checkPaymentStatus, PollingInterval);
       }

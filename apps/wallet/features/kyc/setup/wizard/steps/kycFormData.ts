@@ -4,6 +4,7 @@ import {
   FourthStep,
   MotherDataStep,
   DocumentStep,
+  InitialSetupStep,
 } from "@/app/types/kycData";
 
 interface BlockchainAccountStep {
@@ -15,12 +16,11 @@ interface BlockchainAccountStep {
   seedPhraseVerificationIndex: number;
 }
 
-export interface KycWizard
-  extends SecondStep,
+export interface KycFormData
+  extends Omit<InitialSetupStep, "code">,
+    SecondStep,
     ThirdStep,
     FourthStep,
     MotherDataStep,
     DocumentStep,
-    BlockchainAccountStep {
-  agreeTerms: boolean;
-}
+    BlockchainAccountStep {}

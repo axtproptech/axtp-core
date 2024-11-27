@@ -22,7 +22,6 @@ export interface RegisterCustomerArgs
     MotherDataStep,
     DocumentStep {
   publicKey: string;
-  agreeTerms: boolean;
 }
 
 export interface StoreSignedDocumentArgs {

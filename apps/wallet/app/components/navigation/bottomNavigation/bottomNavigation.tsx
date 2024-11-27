@@ -35,21 +35,19 @@ export const BottomNavigation = ({ nav }: Props) => {
 
           const loading = n.loading ? "animate-pulse" : "";
           return (
-            <>
-              <button
-                key={"nav-" + n.label}
-                type={n.type || "submit"}
-                onClick={() => handleOnClick(n)}
-                className={`flex flex-col items-center flex-shrink btn h-full ${btnColor} ${active} ${loading}`}
-                disabled={n.disabled || n.loading || false}
-                aria-label={n.label}
-              >
-                {React.cloneElement(n.icon, { size: 28 })}
-                {!n.hideLabel && (
-                  <small className="text-[10px]">{n.label.toUpperCase()}</small>
-                )}
-              </button>
-            </>
+            <button
+              key={"nav-" + n.label}
+              type={n.type || "submit"}
+              onClick={() => handleOnClick(n)}
+              className={`flex flex-col items-center flex-shrink btn h-full ${btnColor} ${active} ${loading}`}
+              disabled={n.disabled || n.loading || false}
+              aria-label={n.label}
+            >
+              {React.cloneElement(n.icon, { size: 28 })}
+              {!n.hideLabel && (
+                <small className="text-[10px]">{n.label.toUpperCase()}</small>
+              )}
+            </button>
           );
         })}
       </div>

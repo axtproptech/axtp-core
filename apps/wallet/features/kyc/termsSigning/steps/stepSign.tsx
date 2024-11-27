@@ -32,7 +32,7 @@ enum SigningStatus {
   SigningFailure,
 }
 
-export const StepSign = ({ data, previousStep }: StepProps) => {
+export const StepSign = ({ formData, previousStep }: StepProps) => {
   const ref = useRef(null);
   const { t } = useTranslation();
   const router = useRouter();
@@ -72,13 +72,13 @@ export const StepSign = ({ data, previousStep }: StepProps) => {
   const sign = async () => {
     if (!LedgerService || !customer) return;
 
-    if (!data.document) {
+    if (!formData.document) {
       showError(t("kyc-sign-error-not-read"));
       return;
     }
 
     try {
-      const { documentHash, url, type } = data.document;
+      const { documentHash, url, type } = formData.document;
       TrackingEventService.track({
         msg: "Signing Terms",
         detail: {
@@ -97,7 +97,7 @@ export const StepSign = ({ data, previousStep }: StepProps) => {
         senderKeys: keys,
       });
 
-      const { poolId, redirect } = data.queryParams!;
+      const { poolId, redirect } = formData.queryParams!;
       await KycService.storeSignedDocument({
         documentHash,
         type,

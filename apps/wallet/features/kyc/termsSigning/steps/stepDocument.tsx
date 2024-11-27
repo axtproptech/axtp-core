@@ -17,7 +17,7 @@ import { useLedgerService } from "@/app/hooks/useLedgerService";
 import { SignableDocumentType } from "@/types/signableDocumentType";
 
 export const StepDocument = ({
-  updateData,
+  updateFormData,
   nextStep,
   previousStep,
 }: StepProps) => {
@@ -65,7 +65,7 @@ export const StepDocument = ({
       if (!document) {
         throw new Error("Loading document failed");
       }
-      updateData("document", document);
+      updateFormData("document", document);
       return document;
     }
   );

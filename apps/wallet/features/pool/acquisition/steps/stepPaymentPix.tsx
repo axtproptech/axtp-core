@@ -27,9 +27,9 @@ import { AcquisitionFormData } from "../acquisitionFormData";
 import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
 
 export const StepPaymentPix = ({
-  data: { poolId, quantity, paid },
+  formData: { poolId, quantity, paid },
   previousStep,
-  updateData,
+  updateFormData,
 }: FormWizardStepProps<AcquisitionFormData>) => {
   const { t } = useTranslation();
   const { PaymentService, Payment, TrackingEventService } = useAppContext();
@@ -91,7 +91,7 @@ export const StepPaymentPix = ({
       });
       await PaymentService.createPaymentRecord(payment);
       showSuccess(t("pix_success"));
-      updateData("paid", true);
+      updateFormData("paid", true);
     } catch (e: any) {
       console.error("Problems while payment", e.message);
       showError(t("pix_error_create_record"));

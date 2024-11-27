@@ -15,8 +15,8 @@ import { AcquisitionFormData } from "../acquisitionFormData";
 export const StepSelectPaymentMethod = ({
   nextStep,
   previousStep,
-  data,
-  updateData,
+  formData,
+  updateFormData,
 }: FormWizardStepProps<AcquisitionFormData>) => {
   const { t } = useTranslation();
   const { setNavItems } = useBottomNavigation();
@@ -41,11 +41,11 @@ export const StepSelectPaymentMethod = ({
   }, []);
 
   const handleMethodChange = (e: ChangeEvent<HTMLInputElement>) => {
-    updateData("paymentMethod", e.target.name);
+    updateFormData("paymentMethod", e.target.name);
   };
 
   const icon = useMemo(() => {
-    switch (data.paymentMethod) {
+    switch (formData.paymentMethod) {
       case "usdc":
         return (
           <img
@@ -64,7 +64,7 @@ export const StepSelectPaymentMethod = ({
         );
       default:
     }
-  }, [data.paymentMethod]);
+  }, [formData.paymentMethod]);
 
   return (
     <Fade className="opacity-0">
@@ -81,7 +81,7 @@ export const StepSelectPaymentMethod = ({
                   type="radio"
                   className="radio"
                   name="pix"
-                  checked={data.paymentMethod === "pix"}
+                  checked={formData.paymentMethod === "pix"}
                   onChange={handleMethodChange}
                 />
               </label>
@@ -93,13 +93,13 @@ export const StepSelectPaymentMethod = ({
                   type="radio"
                   className="radio"
                   name="usdc"
-                  checked={data.paymentMethod === "usdc"}
+                  checked={formData.paymentMethod === "usdc"}
                   onChange={handleMethodChange}
                 />
               </label>
             </div>
           </div>
-          <HintBox text={t(`acquire_method_${data.paymentMethod}`)}>
+          <HintBox text={t(`acquire_method_${formData.paymentMethod}`)}>
             <div className="absolute top-[-24px] bg-base-100">
               <AttentionSeeker effect="heartBeat" delay={2000}>
                 {icon}

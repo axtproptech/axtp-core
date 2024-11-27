@@ -39,7 +39,7 @@ const NetworkResourceMap = {
 };
 
 export const StepPaymentUsdc2 = ({
-  data: { quantity, poolId, usdcProtocol },
+  formData: { quantity, poolId, usdcProtocol },
   nextStep,
   previousStep,
 }: FormWizardStepProps<AcquisitionFormData>) => {

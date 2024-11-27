@@ -1,40 +1,70 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FormWizardProgress } from "./formWizardProgress";
+import { ValidationError } from "yup";
+import { voidFn } from "@/app/voidFn";
+
+export type FormErrorType<T> = Record<Partial<keyof T>, string>;
+
+export interface FormWizardValidation<T> {
+  errors?: FormErrorType<T>;
+  hasError: boolean;
+  setError: (key: keyof T, message: string) => void;
+  clearError: (key: keyof T) => void;
+  clearAllErrors: () => void;
+}
 
 export interface FormWizardStepProps<T, V = any> {
   step: number;
-  data: T;
+  stepCount: number;
+  formData: T;
   updateStepCount: (count: number) => void;
-  updateData: (key: keyof T, value: V) => void;
+  updateFormData: (key: keyof T, value: V) => void;
   nextStep: () => void;
   previousStep: () => void;
+  validation: FormWizardValidation<T>;
 }
 
 export interface FormWizardProps<T, V = any> {
   stepCount: number;
   initialData: T;
-  children: (props: {
-    updateStepCount: (count: number) => void;
-    data: T;
-    previousStep: () => void;
-    updateData: (key: keyof T, value: V) => void;
-    nextStep: () => void;
-    step: number;
-    stepCount: number;
-  }) => React.ReactNode;
+  children: (props: FormWizardStepProps<T, V>) => React.ReactNode;
+  validate?: (data: T, validation: FormWizardValidation<T>) => void;
 }
 
 export function FormWizard<T, V = any>({
   children,
   stepCount: _stepCount,
   initialData,
+  validate,
 }: FormWizardProps<T, V>) {
   const [step, setStep] = useState(1);
-  const [data, setData] = useState<T>(initialData);
+  const [formData, setFormData] = useState<T>({ ...initialData });
+  const [errors, _setError] = useState<FormErrorType<T>>(
+    {} as FormErrorType<T>
+  );
   const [stepCount, setStepCount] = useState(_stepCount);
+  const [isDirty, setIsDirty] = useState(false);
+  const hasError = errors && Object.keys(errors).length > 0;
 
-  const updateData = (key: keyof T, value: V) => {
-    setData((prev) => ({ ...prev, [key]: value }));
+  const clearAllErrors = () => {
+    _setError({} as FormErrorType<T>);
+  };
+
+  const clearError = (key: keyof T) => {
+    _setError((e) => {
+      const ne = { ...e };
+      delete ne[key];
+      return ne;
+    });
+  };
+
+  const setError = (key: keyof T, message: string) => {
+    _setError((e) => ({ ...e, [key]: message }));
+  };
+
+  const updateFormData = (key: keyof T, value: V) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+    setIsDirty(true);
   };
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, stepCount));
@@ -48,6 +78,22 @@ export function FormWizard<T, V = any>({
     setStep((prev) => Math.min(prev, count));
   };
 
+  const validation = {
+    errors,
+    hasError,
+    setError,
+    clearAllErrors,
+    clearError,
+  };
+
+  useEffect(() => {
+    if (validate && isDirty) {
+      clearAllErrors();
+      validate(formData, validation);
+      setIsDirty(false);
+    }
+  }, [validate, isDirty]);
+
   return (
     <div>
       <FormWizardProgress currentStep={step} steps={stepCount} />
@@ -58,8 +104,9 @@ export function FormWizard<T, V = any>({
           updateStepCount,
           nextStep,
           previousStep,
-          data,
-          updateData,
+          formData,
+          validation,
+          updateFormData,
         })}
       </div>
     </div>
