@@ -12,7 +12,7 @@ import { InitialSetupStep } from "@/app/types/kycData";
 import { FormWizardValidation } from "@/app/components/formWizard";
 import { ValidationError } from "yup";
 import { mapValidationError } from "@/app/mapValidationError";
-import { KycFormData } from "@/features/kyc/setup/wizardV2/steps/kycFormData";
+import { KycFormData } from "@/features/kyc/setup/wizard/steps/kycFormData";
 
 export const kycFormDataSchema = yup
   .object({

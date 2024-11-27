@@ -1,6 +1,5 @@
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Wizard } from "@/features/kyc/setup/wizard";
-import { WizardV2 } from "@/features/kyc/setup/wizardV2";
+import { KycWizard } from "features/kyc/setup/wizard";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -12,5 +11,5 @@ export async function getStaticProps({ locale }: { locale: string }) {
 }
 
 export default function WizardPage() {
-  return <WizardV2 />;
+  return <KycWizard />;
 }

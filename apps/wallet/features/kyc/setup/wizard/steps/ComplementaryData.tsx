@@ -1,28 +1,61 @@
 import { useTranslation } from "next-i18next";
-import { useFormContext, Controller } from "react-hook-form";
 import { FieldBox } from "@/app/components/fieldBox";
-import { mapValidationError } from "@/app/mapValidationError";
-import { KycWizard } from "../validation/types";
+import { KycFormData } from "./kycFormData";
 import { Checkbox, Form } from "react-daisyui";
 import { StepLayout } from "../../components/StepLayout";
+import { KycFormDataStepProps } from "./kycFormDataStepProps";
+import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
+import { useEffect } from "react";
+import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
+import { voidFn } from "@/app/voidFn";
+import * as React from "react";
 
-export const ComplementaryData = () => {
+export const ComplementaryData = ({
+  validation,
+  nextStep,
+  previousStep,
+  updateFormData,
+  formData,
+}: KycFormDataStepProps) => {
   const { t } = useTranslation();
-  const {
-    control,
-    watch,
-    formState: { errors },
-  } = useFormContext<KycWizard>();
+  const { setNavItems } = useBottomNavigation();
 
-  let phoneFieldError = "";
-  if (errors.phone?.message) {
-    phoneFieldError = t(mapValidationError(errors.phone.message));
-  }
+  const canProceed = Boolean(
+    formData.phone && formData.profession && !validation.hasError
+  );
+  useEffect(() => {
+    setNavItems([
+      {
+        onClick: previousStep,
+        label: t("back"),
+        icon: <RiArrowLeftCircleLine />,
+        type: "button",
+      },
+      {
+        onClick: voidFn,
+        label: "",
+        icon: <div />,
+      },
+      {
+        onClick: nextStep,
+        label: t("next"),
+        icon: <RiArrowRightCircleLine />,
+        disabled: !canProceed,
+        color: "secondary",
+      },
+    ]);
+  }, [canProceed]);
 
-  let professionFieldError = "";
-  if (errors.profession?.message) {
-    professionFieldError = t(mapValidationError(errors.profession.message));
-  }
+  const handleValueChange =
+    (field: keyof KycFormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const v = e.target.value;
+      if (!v) {
+        validation.setError(field, "required");
+      } else {
+        validation.clearError(field);
+      }
+      updateFormData(field, v);
+    };
 
   return (
     <StepLayout>
@@ -31,47 +64,33 @@ export const ComplementaryData = () => {
       </section>
 
       <section className="flex flex-col justify-center items-center gap-2">
-        <Controller
-          name="pep"
-          control={control}
-          render={({ field }) => (
-            <div className="shadow bg-base-200 w-xl rounded-lg p-4 w-full mb-4">
-              <Form.Label
-                title={t("politically_exposed_person")}
-                className="text-left font-bold"
-              >
-                {/* @ts-ignore */}
-                <Checkbox {...field} size="lg" className="ml-2" />
-              </Form.Label>
-            </div>
-          )}
+        <div className="shadow bg-base-200 w-xl rounded-lg p-4 w-full mb-4">
+          <Form.Label
+            title={t("politically_exposed_person")}
+            className="text-left font-bold"
+          >
+            <Checkbox
+              onChange={(e) => updateFormData("pep", e.target.checked)}
+              checked={formData.pep}
+              size="lg"
+              className="ml-2"
+            />
+          </Form.Label>
+        </div>
+
+        <FieldBox
+          label={t("phone_number")}
+          placeholder={t("phone_number_placeholder")}
+          onChange={handleValueChange("phone")}
+          helperText="E.g. +5511912341234"
+          errorLabel={validation.errors?.phone}
         />
 
-        <Controller
-          name="phone"
-          control={control}
-          render={({ field }) => (
-            <FieldBox
-              field={field}
-              label={t("phone_number")}
-              placeholder={t("phone_number_placeholder")}
-              helperText="E.g. +5511912341234"
-              errorLabel={phoneFieldError}
-            />
-          )}
-        />
-
-        <Controller
-          name="profession"
-          control={control}
-          render={({ field }) => (
-            <FieldBox
-              field={field}
-              label={t("profession")}
-              placeholder={t("profession_placeholder")}
-              errorLabel={phoneFieldError}
-            />
-          )}
+        <FieldBox
+          label={t("profession")}
+          placeholder={t("profession_placeholder")}
+          onChange={handleValueChange("profession")}
+          errorLabel={validation.errors?.profession}
         />
       </section>
 
