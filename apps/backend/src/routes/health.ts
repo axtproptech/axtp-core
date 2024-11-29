@@ -1,10 +1,10 @@
-import type { Context } from "hono";
+import { Hono } from "hono";
 import { version } from "../../package.json";
 import { generateRandomHexToken } from "@axtp/core";
 
 const startTime = Date.now();
 
-export default function health(c: Context) {
+export const health = new Hono().get("/", (c) => {
   const healthData = {
     status: "healthy",
     timestamp: new Date().toISOString(),
@@ -14,4 +14,4 @@ export default function health(c: Context) {
   };
 
   return c.json(healthData);
-}
+});
