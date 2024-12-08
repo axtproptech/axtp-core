@@ -4,6 +4,7 @@ import { prettyJSON } from "hono/pretty-json";
 import { health } from "./routes/health";
 import { documents } from "./routes/documents";
 import { requireApikey } from "./middlewares/apikey";
+import { customLogger } from "./utils/logger/customHonoLogger";
 const app = new Hono();
 
 // Middlewares
@@ -11,7 +12,7 @@ const app = new Hono();
 //   origin: "*",
 //   allowMethods: ["POST", "GET"]
 // }));
-app.use(logger());
+app.use(logger(customLogger));
 app.use(requireApikey());
 app.use("*", prettyJSON());
 
