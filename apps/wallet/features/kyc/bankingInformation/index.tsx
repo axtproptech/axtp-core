@@ -1,52 +1,33 @@
 import { useTranslation } from "next-i18next";
-import { Controller, useForm } from "react-hook-form";
 import { FieldBox } from "@/app/components/fieldBox";
 import { validatePixKey } from "@axtp/core";
 import { PasteButton } from "@/app/components/buttons/pasteButton";
 import { useRouter } from "next/router";
 import { RiArrowLeftCircleLine, RiSaveLine } from "react-icons/ri";
 import { useAccount } from "@/app/hooks/useAccount";
-import { useCallback, useEffect, useState } from "react";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useNotification } from "@/app/hooks/useNotification";
 import { useAppContext } from "@/app/hooks/useAppContext";
-import useSWR, { useSWRConfig } from "swr";
+import { useSWRConfig } from "swr";
 import { voidFn } from "@/app/voidFn";
+import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
 
-interface BankInfoFormData {
-  pixKey: string;
-}
-
-interface Props {
-  onNavChange: (bottomNav: BottomNavigationItem[]) => void;
-}
-
-export const BankingInformation = ({ onNavChange }: Props) => {
+export const BankingInformation = () => {
   const { t } = useTranslation();
   const { customer } = useAccount();
   const { query, replace } = useRouter();
   const { showSuccess, showError } = useNotification();
   const { KycService } = useAppContext();
   const [isSaving, setIsSaving] = useState(false);
+  const { setNavItems } = useBottomNavigation();
   const { mutate } = useSWRConfig();
-
-  if (customer && customer.hasBankInformation) {
-    replace("/");
-  }
-
-  const {
-    trigger,
-    setValue,
-    getValues,
-    control,
-    formState: { errors, isValid },
-  } = useForm<BankInfoFormData>();
+  const [pixKey, setPixKey] = useState("");
+  const [error, setError] = useState("");
 
   const updateBankingInfo = useCallback(async () => {
     if (!customer) return;
     try {
       setIsSaving(true);
-      const { pixKey } = getValues();
       await KycService.addBankingInfo(customer.customerId, pixKey, "Pix");
       await mutate(`/fetchCustomer/${customer.customerId}`);
       if (query.redirect) {
@@ -58,10 +39,10 @@ export const BankingInformation = ({ onNavChange }: Props) => {
     } finally {
       setIsSaving(false);
     }
-  }, [getValues, query.redirect, replace]);
+  }, [query.redirect, replace, pixKey]);
 
   useEffect(() => {
-    onNavChange([
+    setNavItems([
       {
         label: t("back"),
         back: true,
@@ -78,12 +59,28 @@ export const BankingInformation = ({ onNavChange }: Props) => {
         label: t("save"),
         icon: <RiSaveLine />,
         color: "secondary",
-        disabled: !isValid,
+        disabled: Boolean(error),
         loading: isSaving,
         onClick: updateBankingInfo,
       },
     ]);
-  }, [isSaving, isValid, onNavChange, t]);
+  }, [isSaving, error, updateBankingInfo]);
+
+  useEffect(() => {
+    setError("");
+    if (!validatePixKey(pixKey)) {
+      setError(t("kyc-error_unsupported_pix_key"));
+    }
+  }, [pixKey]);
+
+  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const key = event.target.value;
+  };
+
+  if (customer && customer.hasBankInformation) {
+    replace("/");
+    return null;
+  }
 
   return (
     <div className="flex flex-col justify-start text-center h-[80vh] relative prose w-full xs:max-w-xs sm:max-w-sm md:max-w-lg mx-auto px-4">
@@ -93,29 +90,14 @@ export const BankingInformation = ({ onNavChange }: Props) => {
       </section>
 
       <section className="flex flex-col justify-center gap-2">
-        <Controller
-          name="pixKey"
-          control={control}
-          render={({ field }) => (
-            <FieldBox
-              field={field}
-              label={t("kyc-pix_key")}
-              placeholder={t("kyc-pix_key_placeholder")}
-              errorLabel={errors.pixKey?.message}
-            />
-          )}
-          rules={{
-            validate: (v) =>
-              !validatePixKey(v) ? t("kyc-error_unsupported_pix_key") : true,
-          }}
+        <FieldBox
+          onChange={handleOnChange}
+          label={t("kyc-pix_key")}
+          placeholder={t("kyc-pix_key_placeholder")}
+          errorLabel={error}
         />
         <div className="flex flex-row justify-around items-center mt-2">
-          <PasteButton
-            onText={(text) => {
-              setValue("pixKey", text);
-              trigger("pixKey");
-            }}
-          />
+          <PasteButton onText={setPixKey} />
         </div>
       </section>
     </div>

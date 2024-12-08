@@ -1,4 +1,4 @@
-### Terms of use for purchasing the AXTP0001 token
+### Terms of Risks for purchasing the AXTP0001 token
 
 By purchasing the AXTP0001 token, you acknowledge that you are aware of and agree to the following terms:
 

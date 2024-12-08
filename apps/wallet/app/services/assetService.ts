@@ -32,7 +32,7 @@ export class AssetService {
     return withError<AssetAliasMap>(async () => {
       const { ledger, principalAccount } = this.context;
       return this.assetAliasService.fetchAllAssetAliases(
-        principalAccount,
+        principalAccount.id,
         poolId
       );
     });

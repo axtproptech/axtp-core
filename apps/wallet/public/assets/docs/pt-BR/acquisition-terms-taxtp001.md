@@ -1,4 +1,4 @@
-### Termo de uso para aquisição do token TAXTP001
+### Termo de Risco para Aquisição do Token TAXTP001
 
 Ao comprar o token TAXTP001, o usuário declara estar ciente e concordar com os seguintes termos:
 

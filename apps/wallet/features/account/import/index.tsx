@@ -1,6 +1,5 @@
 import { Stepper } from "@/app/components/stepper";
 import { FC, useEffect, useState } from "react";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import {
   RiArrowLeftCircleLine,
   RiArrowRightCircleLine,
@@ -24,6 +23,7 @@ import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
 import { useAppContext } from "@/app/hooks/useAppContext";
 import { StepCheckForRegistry } from "@/features/account/components/steps/stepCheckForRegistry";
 import useSWR from "swr";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 enum Steps {
   DefinePin,
@@ -36,12 +36,12 @@ interface Props {
 }
 
 export const AccountImport: FC<Props> = ({ onStepChange }) => {
-  const StepCount = 3;
   const router = useRouter();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { Ledger, KycService } = useAppContext();
   const { showSuccess, showError } = useNotification();
+  const StepCount = 3;
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [seed, setSeed] = useState<string>("");
   const [pin, setPin] = useState<string>("");

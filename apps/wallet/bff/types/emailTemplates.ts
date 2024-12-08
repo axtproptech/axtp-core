@@ -4,7 +4,9 @@ export const EmailTemplates = {
   SuccessfulRegistration: 4, // For Customer
   PaymentRegistration: 10, // For Customer
   WithdrawalRequest: 20, // For Customer
+  DocumentSigned: 36,
   InternalWithdrawalRequest: 23, // For AXT Team
   InternalPaymentRegistration: 9, // for AXT Team
   InternalNewRegistration: 5, // for AXT Team
+  InternalDocumentSigned: 35, // For ACT Team
 };

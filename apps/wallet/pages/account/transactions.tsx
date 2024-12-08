@@ -1,6 +1,5 @@
 import { Layout } from "@/app/components/layout";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { useTranslation } from "next-i18next";
 import {
   RiArrowLeftCircleLine,
@@ -10,6 +9,7 @@ import {
 } from "react-icons/ri";
 import { AccountTransactions } from "@/features/account/transactions";
 import { WithAccountOnly } from "@/app/components/withAccountOnly";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {

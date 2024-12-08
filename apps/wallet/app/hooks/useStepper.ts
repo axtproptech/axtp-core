@@ -8,13 +8,13 @@ export function useStepper(_stepCount: number) {
   const nextStep = async () => {
     const newStep = Math.min(currentStep + 1, stepCount - 1);
     setCurrentStep(newStep);
-    await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
+    // await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
   };
 
   const previousStep = async () => {
     const newStep = Math.max(0, currentStep - 1);
     setCurrentStep(newStep);
-    await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
+    // await router.push(`#step${newStep}`, `#step${newStep}`, { shallow: true });
   };
 
   return {

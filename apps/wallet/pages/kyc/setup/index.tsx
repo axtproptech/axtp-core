@@ -1,5 +1,5 @@
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { InitialSetup } from "@/features/kyc/setup/initialSetup";
+import { InitialCustomerDataWizard } from "features/kyc/setup/initialSetup";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
@@ -11,5 +11,5 @@ export async function getStaticProps({ locale }: { locale: string }) {
 }
 
 export default function SetupPage() {
-  return <InitialSetup />;
+  return <InitialCustomerDataWizard />;
 }

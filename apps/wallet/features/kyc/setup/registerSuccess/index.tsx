@@ -3,7 +3,6 @@ import { useTranslation } from "next-i18next";
 import { useAppDispatch } from "@/states/hooks";
 import { accountActions } from "@/app/states/accountState";
 import { CustomerSafeData } from "@/types/customerSafeData";
-import { useAppContext } from "@/app/hooks/useAppContext";
 import { Address } from "@signumjs/core";
 import { Slide, Zoom } from "react-awesome-reveal";
 
@@ -15,7 +14,6 @@ export const RegisterSuccess: FC<Props> = ({ customer }) => {
   const { t } = useTranslation();
   const { firstName, publicKey } = customer;
   const dispatch = useAppDispatch();
-  const { Ledger } = useAppContext();
 
   useEffect(() => {
     if (!customer) return;

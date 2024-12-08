@@ -20,7 +20,7 @@ import { accountSlice } from "@/app/states/accountState";
 import { tokenSlice } from "@/app/states/tokenState";
 import { marketSlice } from "@/app/states/marketState";
 import { poolsSlice } from "@/app/states/poolsState";
-import { kycSlice } from "@/features/kyc/state";
+import { kycSlice } from "@/features/kyc/setup/state";
 
 function persist<T = any>(config: any, reducer: Reducer) {
   return isClientSide()

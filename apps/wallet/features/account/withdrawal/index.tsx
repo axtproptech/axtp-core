@@ -4,7 +4,6 @@ import { useTranslation } from "next-i18next";
 import { useAccount } from "@/app/hooks/useAccount";
 import { Stepper } from "@/app/components/stepper";
 import { useStepper } from "@/app/hooks/useStepper";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   RiArrowLeftCircleLine,
@@ -15,6 +14,7 @@ import { voidFn } from "@/app/voidFn";
 import { WithdrawalFormData } from "./types/withdrawalFormData";
 import { Step1WithdrawalAmount } from "@/features/account/withdrawal/components/steps/Step1WithdrawalAmount";
 import { Step2ConfirmWithPin } from "@/features/account/withdrawal/components/steps/Step2ConfirmWithPin";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 interface Props {
   onNavChange: (nav: BottomNavigationItem[]) => void;

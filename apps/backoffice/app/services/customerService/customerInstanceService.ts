@@ -132,4 +132,8 @@ export class CustomerInstanceService {
   async deleteDocument(documentId: number) {
     return this.http.delete(`documents/${documentId}`);
   }
+
+  async activateLedgerAccount() {
+    return this.http.post("ledger", {});
+  }
 }

@@ -1,70 +1,97 @@
 import { useTranslation } from "next-i18next";
 import { Input } from "react-daisyui";
-import { cpf } from "cpf-cnpj-validator";
-import { useFormContext, Controller } from "react-hook-form";
+import { cpf as CpfValidator } from "cpf-cnpj-validator";
 import { PatternFormat } from "react-number-format";
-import { FieldBox } from "@/app/components/fieldBox";
-import { mapValidationError } from "@/app/mapValidationError";
-import { KycWizard } from "../validation/types";
 
 import differenceInYears from "date-fns/differenceInYears";
 import { StepLayout } from "../../components/StepLayout";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { useAppContext } from "@/app/hooks/useAppContext";
+import { KycFormDataStepProps } from "@/features/kyc/setup/wizard/steps/kycFormDataStepProps";
+import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
+import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
+import { voidFn } from "@/app/voidFn";
+import * as React from "react";
+import { FieldBox } from "@/app/components/fieldBox";
 
-export const BasicData = () => {
+export const BasicData = ({
+  updateFormData,
+  formData,
+  validation,
+  nextStep,
+}: KycFormDataStepProps) => {
   const { t } = useTranslation();
   const { KycService } = useAppContext();
-  const {
-    control,
-    watch,
-    formState: { errors },
-    setError,
-  } = useFormContext<KycWizard>();
+  const { setNavItems } = useBottomNavigation();
 
-  const customerCpf = watch("cpf");
-  const birthDate = watch("birthDate");
+  const canProceed = Boolean(
+    formData.cpf &&
+      formData.birthDate &&
+      formData.birthPlace &&
+      !validation.hasError
+  );
 
   useEffect(() => {
-    if (cpf.isValid(customerCpf)) {
-      setError("cpf", { message: "" });
-      KycService.fetchCustomerDataByCpf(customerCpf)
+    setNavItems([
+      {
+        route: "/",
+        label: t("back"),
+        icon: <RiArrowLeftCircleLine />,
+        type: "button",
+      },
+      {
+        onClick: voidFn,
+        label: "",
+        icon: <div />,
+      },
+      {
+        onClick: nextStep,
+        label: t("next"),
+        icon: <RiArrowRightCircleLine />,
+        disabled: !canProceed,
+        color: "secondary",
+      },
+    ]);
+  }, [canProceed]);
+
+  const handleCpf = (cpf: string) => {
+    updateFormData("cpf", cpf);
+    validation.clearError("cpf");
+    if (CpfValidator.isValid(cpf)) {
+      KycService.fetchCustomerDataByCpf(cpf)
         .then((c) => {
-          setError("cpf", { message: "customer_already_exists" });
+          validation.setError("cpf", "customer_already_exists");
         })
         .catch(() => {});
+    } else {
+      validation.setError("cpf", "invalid_cpf");
     }
-  }, [KycService, customerCpf, setError]);
+  };
 
-  let cpfFieldError = "";
-  if (errors.cpf?.message) {
-    cpfFieldError = t(mapValidationError(errors.cpf.message));
-  }
-
-  // Custom CPF Validation
-  if (!cpfFieldError && customerCpf && !cpf.isValid(`${customerCpf}`)) {
-    cpfFieldError = t("invalid_cpf");
-  }
-
-  let birthDateFieldError = "";
-  if (errors.birthDate?.message) {
-    birthDateFieldError = t(mapValidationError(errors.birthDate.message));
-  }
-
-  // Custom Birth Date Validation
-  if (!birthDateFieldError && birthDate) {
-    const currentDate = new Date();
-    const formattedBirthDate = new Date(birthDate);
-
-    if (differenceInYears(currentDate, formattedBirthDate) < 18) {
-      birthDateFieldError = t("you_must_be_an_adult");
+  const handleBirthdate = (e: ChangeEvent<HTMLInputElement>) => {
+    const birthDate = e.target.value;
+    updateFormData("birthDate", birthDate);
+    validation.clearError("birthDate");
+    if (birthDate) {
+      const currentDate = new Date();
+      const formattedBirthDate = new Date(birthDate);
+      if (differenceInYears(currentDate, formattedBirthDate) < 18) {
+        validation.setError("birthDate", "you_must_be_an_adult");
+      }
+    } else {
+      validation.setError("birthDate", "required");
     }
-  }
+  };
 
-  let birthPlaceFieldError = "";
-  if (errors.birthPlace?.message) {
-    birthPlaceFieldError = t(mapValidationError(errors.birthPlace.message));
-  }
+  const handleBirthplace = (e: ChangeEvent<HTMLInputElement>) => {
+    const birthPlace = e.target.value;
+    updateFormData("birthPlace", birthPlace);
+    if (birthPlace) {
+      validation.clearError("birthPlace");
+    } else {
+      validation.setError("birthPlace", "required");
+    }
+  };
 
   return (
     <StepLayout>
@@ -77,33 +104,22 @@ export const BasicData = () => {
           <label className="label">
             <span className="label-text font-bold text-base">{t("cpf")}</span>
           </label>
-          <Controller
-            name="cpf"
-            control={control}
-            render={({ field }) => (
-              <PatternFormat
-                {...field}
-                format="###.###.###-##"
-                customInput={Input}
-                // @ts-ignore
-                ref={undefined}
-                inputRef={field.ref}
-                allowEmptyFormatting
-                onChange={undefined}
-                onValueChange={(values) => {
-                  field.onChange(values.value);
-                }}
-                mask="_"
-                size="lg"
-                className="font-semibold"
-              />
-            )}
+          <PatternFormat
+            format="###.###.###-##"
+            customInput={Input}
+            allowEmptyFormatting
+            onChange={undefined}
+            onValueChange={(values) => handleCpf(values.value)}
+            mask="_"
+            size="lg"
+            className="font-semibold"
+            value={formData.cpf}
           />
 
           <label className="label">
-            {cpfFieldError ? (
+            {validation.errors?.cpf ? (
               <span className="label-text-alt font-bold text-red-700">
-                {cpfFieldError}
+                {t(validation.errors.cpf)}
               </span>
             ) : (
               <span className="label-text-alt opacity-70">
@@ -113,31 +129,23 @@ export const BasicData = () => {
           </label>
         </div>
 
-        <Controller
-          name="birthDate"
-          control={control}
-          render={({ field }) => (
-            <FieldBox
-              field={field}
-              type="date"
-              label={t("birth_date")}
-              errorLabel={birthDateFieldError}
-            />
-          )}
+        <FieldBox
+          type="date"
+          label={t("birth_date")}
+          onChange={handleBirthdate}
+          value={formData.birthDate}
+          errorLabel={
+            validation.errors?.birthDate ? t(validation.errors.birthDate) : ""
+          }
         />
 
-        <Controller
-          name="birthPlace"
-          control={control}
-          render={({ field }) => (
-            <FieldBox
-              field={field}
-              label={t("birth_place")}
-              placeholder={t("birth_place_placeholder")}
-              errorLabel={birthPlaceFieldError}
-              helperText={t("birth_place_helper_text")}
-            />
-          )}
+        <FieldBox
+          label={t("birth_place")}
+          onChange={handleBirthplace}
+          value={formData.birthPlace}
+          errorLabel={
+            validation.errors?.birthPlace ? t(validation.errors.birthPlace) : ""
+          }
         />
       </section>
 

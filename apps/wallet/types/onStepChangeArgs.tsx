@@ -1,4 +1,4 @@
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 export interface OnStepChangeArgs {
   steps: number;

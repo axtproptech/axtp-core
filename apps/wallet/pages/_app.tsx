@@ -38,7 +38,7 @@ function App({ Component, pageProps }: AppProps) {
       <ReduxProvider store={store}>
         {/* @ts-ignore */}
 
-        <ErrorBoundary FallbackComponent={ErrorFallback} onError={handleError}>
+        <ErrorBoundary fallback={ErrorFallback} onError={handleError}>
           {/* @ts-ignore */}
 
           <PersistGate loading={null} persistor={persistor}>
