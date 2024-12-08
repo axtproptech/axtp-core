@@ -1,6 +1,6 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "pipeline": {
+  "tasks": {
     "generate-db": {
       "cache": false
     },
@@ -8,18 +8,23 @@
       "cache": false
     },
     "generate-core": {
-      "cache": true
+      "cache": true,
+      "outputs": ["dist/**", "build/**"]
     },
     "build": {
       "dependsOn": ["^generate-db", "^generate-core"],
-      "outputs": [".next/**", ".next/cache/**"]
+      "outputs": [".next/**", ".next/cache/**", "dist/**", "build/**"]
     },
     "test": {
-      "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"]
+      "inputs": [
+        "src/**/*.tsx",
+        "src/**/*.ts",
+        "test/**/*.ts",
+        "test/**/*.tsx"
+      ],
+      "outputs": ["dist/**", "build/**"]
     },
-    "pretty": {
-      "outputs": []
-    },
+    "pretty": {},
     "dev": {
       "cache": false
     }

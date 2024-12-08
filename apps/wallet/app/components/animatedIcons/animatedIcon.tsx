@@ -14,7 +14,7 @@ export const AnimatedIcon: FC<AnimatedIconProps> = ({
   touchable = false,
   ...rest
 }) => {
-  let timeoutRef = useRef<NodeJS.Timeout>();
+  let timeoutRef = useRef<any>();
   let ref = useRef<LottieRefCurrentProps | null>(null);
 
   function cancelTimeout() {

@@ -3,7 +3,7 @@ import { actions } from "@/app//states/appState";
 import { useRef } from "react";
 
 export const useNotification = () => {
-  const closeTimer = useRef<NodeJS.Timeout>();
+  const closeTimer = useRef<any>();
   const dispatch = useAppDispatch();
 
   function hide() {
