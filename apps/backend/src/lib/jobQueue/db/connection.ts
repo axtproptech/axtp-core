@@ -6,8 +6,9 @@ import * as schema from "./schema";
 const sqlite = new Database("job_queue.db");
 export const db = drizzle(sqlite, { schema });
 
-(async () => {
-  await db.run(sql`
+(() => {
+  db.run(sql`PRAGMA journal_mode = WAL;`);
+  db.run(sql`
         CREATE TABLE IF NOT EXISTS jobs (
           id TEXT PRIMARY KEY,
           type TEXT NOT NULL,

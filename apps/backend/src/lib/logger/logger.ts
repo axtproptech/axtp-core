@@ -1,7 +1,7 @@
 import pino, { type Logger } from "pino";
 import pretty from "pino-pretty";
 let logger: Logger;
-if (Bun.env.NODE_ENV !== "production") {
+if (Bun.env.NODE_ENV === "production") {
   logger = pino(
     { level: "info" },
     pino.transport({
