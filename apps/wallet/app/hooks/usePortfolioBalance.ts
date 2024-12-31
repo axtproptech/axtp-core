@@ -2,12 +2,14 @@ import { useAppSelector } from "@/states/hooks";
 import {
   selectActiveMarketData,
   selectBrlUsdMarketData,
+  selectSignaUsdMarketData,
 } from "@/app/states/marketState";
 import { useAccount } from "@/app/hooks/useAccount";
 import { selectAXTToken } from "@/app/states/tokenState";
 import { useMemo } from "react";
 import { selectAllPools } from "@/app/states/poolsState";
 import { ChainValue } from "@signumjs/util";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 interface BalanceType {
   ticker: string;
@@ -26,7 +28,7 @@ export interface PortfolioBalance {
   axtcPoolBalances: PoolBalanceType[];
   axtcTotalBalance: BalanceType;
   fiatBalance: BalanceType;
-  // signaBalance: BalanceType;
+  signaBalance: BalanceType;
 }
 
 const numberFormat = new Intl.NumberFormat("pt-BR");
@@ -38,9 +40,13 @@ function format(balance: BalanceType) {
 export const usePortfolioBalance = (): PortfolioBalance => {
   const activeMarket = useAppSelector(selectActiveMarketData);
   const brlUsdMarket = useAppSelector(selectBrlUsdMarketData);
+  const signaUsdMarket = useAppSelector(selectSignaUsdMarketData);
   const { name, decimals } = useAppSelector(selectAXTToken);
   const pools = useAppSelector(selectAllPools);
   const { accountData } = useAccount();
+  const {
+    Ledger: { SignaPrefix },
+  } = useAppContext();
 
   const [axtcReservedBalance, axtcPoolBalances] = useMemo(() => {
     let reservedAXTC = ChainValue.create(decimals);
@@ -104,16 +110,17 @@ export const usePortfolioBalance = (): PortfolioBalance => {
     formatted: "",
   };
 
-  // const signaBalance: BalanceType = {
-  //   balance: Number(accountData?.balanceSigna || "0"),
-  //   ticker: SignaPrefix.toUpperCase(),
-  //   formatted: "",
-  // };
+  const signaBalance: BalanceType = {
+    balance: Number(accountData?.balanceSIGNA || "0"),
+    ticker: SignaPrefix.toUpperCase(),
+    formatted: "",
+  };
 
   const fiatBalance: BalanceType = {
     balance:
-      // TODO: signa is not of importance here...
-      // signaBalance.balance * signaMarket.current_price +
+      signaBalance.balance *
+        signaUsdMarket.current_price *
+        brlUsdMarket.current_price +
       axtcTotalBalance.balance * brlUsdMarket.current_price,
     ticker: activeMarket.ticker.toUpperCase(),
     formatted: "",
@@ -121,7 +128,7 @@ export const usePortfolioBalance = (): PortfolioBalance => {
 
   axtcBalance.formatted = format(axtcBalance);
   axtcTotalBalance.formatted = format(axtcTotalBalance);
-  // signaBalance.formatted = format(signaBalance);
+  signaBalance.formatted = format(signaBalance);
   fiatBalance.formatted = format(fiatBalance);
 
   return {
@@ -130,6 +137,6 @@ export const usePortfolioBalance = (): PortfolioBalance => {
     axtcPoolBalances,
     axtcTotalBalance,
     fiatBalance,
-    // signaBalance,
+    signaBalance,
   };
 };

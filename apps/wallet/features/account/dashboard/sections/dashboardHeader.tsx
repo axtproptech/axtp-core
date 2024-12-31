@@ -12,8 +12,12 @@ import {
 import { Fade } from "react-awesome-reveal";
 import { useAppSelector } from "@/states/hooks";
 import { selectAXTToken } from "@/app/states/tokenState";
-import { selectBrlUsdMarketData } from "@/app/states/marketState";
+import {
+  selectBrlUsdMarketData,
+  selectSignaUsdMarketData,
+} from "@/app/states/marketState";
 import { AccountHeader } from "@/features/account/components/accountHeader";
+import { formatNumber } from "@/app/formatNumber";
 
 interface Props {
   accountData: AccountData;
@@ -24,9 +28,11 @@ export const DashboardHeader: FC<Props> = ({
   accountData,
   verificationLevel,
 }) => {
-  const { axtcBalance, fiatBalance, axtcPoolBalances } = usePortfolioBalance();
+  const { axtcBalance, fiatBalance, axtcPoolBalances, signaBalance } =
+    usePortfolioBalance();
   const { name } = useAppSelector(selectAXTToken);
   const brlUsdMarket = useAppSelector(selectBrlUsdMarketData);
+  const signaUsdMarket = useAppSelector(selectSignaUsdMarketData);
   const { t } = useTranslation();
 
   const chartData = useMemo<PieChartDatum[]>(() => {
@@ -49,8 +55,17 @@ export const DashboardHeader: FC<Props> = ({
       });
     }
 
+    if (signaBalance.balance > 0) {
+      balances.unshift({
+        value: signaBalance.balance * signaUsdMarket.current_price,
+        label: t("signa"),
+        id: "axtc",
+        color: ChartColors.schema[1],
+      });
+    }
+
     return balances;
-  }, [axtcPoolBalances, axtcBalance, t]);
+  }, [axtcPoolBalances, axtcBalance, signaBalance, signaUsdMarket, t]);
 
   const loadingClassName = chartData ? "" : "blur animate-pulse";
 
@@ -72,6 +87,9 @@ export const DashboardHeader: FC<Props> = ({
               <h5 className="text-xs opacity-60 mt-1">
                 1 USD ≈ {brlUsdMarket.current_price} BRL
               </h5>
+              {/*<h5 className="text-xs opacity-60 mt-1">*/}
+              {/*  1 USD ≈ {formatNumber({ value: 1/signaUsdMarket.current_price, suffix: "SIGNA", decimals: 2 })}*/}
+              {/*</h5>*/}
             </div>
             <div className="flex flex-col">
               <VerificationBadge verificationLevel={verificationLevel} />

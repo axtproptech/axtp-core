@@ -3,6 +3,9 @@ import { FC } from "react";
 import { formatNumber } from "@/app/formatNumber";
 import { useAppSelector } from "@/states/hooks";
 import { selectAXTToken } from "@/app/states/tokenState";
+import { useAccount } from "@/app/hooks/useAccount";
+import { usePortfolioBalance } from "@/app/hooks/usePortfolioBalance";
+import { useAppContext } from "@/app/hooks/useAppContext";
 
 export const ChartColors = {
   base: "#dca54c",
@@ -17,6 +20,7 @@ export const ChartColors = {
     "#DCA54C",
   ],
 };
+
 export interface PieChartDatum extends DefaultRawDatum {
   label: string;
 }
@@ -28,6 +32,7 @@ interface PieChartsProps {
 // @ts-ignore
 const CenteredMetric = ({ dataWithArc, centerX, centerY }) => {
   const { name } = useAppSelector(selectAXTToken);
+  const { signaBalance } = usePortfolioBalance();
   // @ts-ignore
   const total = dataWithArc.reduce((sum, datum) => sum + datum.value, 0);
   const formattedTotal = formatNumber({ value: total });
@@ -37,7 +42,7 @@ const CenteredMetric = ({ dataWithArc, centerX, centerY }) => {
     <>
       <text
         x={centerX}
-        y={centerY - 8}
+        y={centerY - 16}
         textAnchor="middle"
         dominantBaseline="central"
         style={{
@@ -50,16 +55,28 @@ const CenteredMetric = ({ dataWithArc, centerX, centerY }) => {
       </text>
       <text
         x={centerX}
-        y={centerY + 16}
+        y={centerY + 10}
         textAnchor="middle"
         dominantBaseline="central"
         style={{
-          fontSize: "14px",
           fontWeight: 500,
           fill: ChartColors.base,
         }}
       >
         {name}
+      </text>
+      <text
+        x={centerX}
+        y={centerY + 28}
+        textAnchor="middle"
+        dominantBaseline="central"
+        style={{
+          fontSize: "12px",
+          fontWeight: 500,
+          fill: ChartColors.base,
+        }}
+      >
+        {signaBalance.formatted}
       </text>
     </>
   );
