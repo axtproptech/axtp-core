@@ -1,1 +1,1 @@
-export type TickerSymbol = "brl" | "url" | "btc" | "usdt";
+export type TickerSymbol = "brl" | "usd" | "btc" | "usdt";

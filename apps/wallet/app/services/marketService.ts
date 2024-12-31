@@ -54,11 +54,12 @@ export class MarketService {
 
   public getCoingeckoCrossMarket(
     from: TickerSymbol | string,
-    to: TickerSymbol | string
+    to: TickerSymbol | string,
+    apikey: string = "CG-QoMgGZi4yScFwoRcjXNhx6qB"
   ) {
     return withError<MarketData | null>(async () => {
       const { response } = await this.cryptoMarketClient.get(
-        `api/v3/coins/markets?vs_currency=${to}&ids=${from}&order=market_cap_desc&per_page=100&page=1&sparkline=false`
+        `api/v3/coins/markets?vs_currency=${to}&ids=${from}&order=market_cap_desc&per_page=100&page=1&sparkline=false&x_cg_demo_api_key=${apikey}`
       );
       if (!response) return null;
       if (!response.length) return null;

@@ -30,5 +30,20 @@ export const MarketInitializer = () => {
     swrPollingOptions
   );
 
+  useSWR(
+    "fetch/signaMarketInformation",
+    async () => {
+      const market = await marketService.getSignaMarket("usd");
+      if (market)
+        dispatch(
+          marketActions.updateMarketData({
+            ticker: "signaUsd",
+            ...market,
+          })
+        );
+    },
+    swrPollingOptions
+  );
+
   return null;
 };

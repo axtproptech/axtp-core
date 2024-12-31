@@ -29,3 +29,13 @@ export const selectBrlUsdMarketData = (
     ...state.marketState.markets[ticker],
   };
 };
+
+export const selectSignaUsdMarketData = (
+  state: RootState
+): MarketData & { ticker: string } => {
+  const ticker = "signaUsd";
+  return {
+    ticker,
+    ...state.marketState.markets[ticker],
+  };
+};
