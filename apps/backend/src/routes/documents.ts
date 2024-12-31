@@ -2,13 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import { Hono } from "hono";
 import MarkdownIt from "markdown-it";
-import puppeteer, { Browser } from "puppeteer";
-
-// Initialize browser at global scope
-let headlessBrowser: Browser;
-(async () => {
-  headlessBrowser = await puppeteer.launch({ headless: true });
-})();
+import { getHeadlessBrowserInstance } from "../lib/headlessBrowser";
 
 export const documents = new Hono().post(
   "/pdf",
@@ -56,8 +50,8 @@ export const documents = new Hono().post(
 
     // Convert markdown to HTML if needed
     const htmlContent = isMarkdown ? new MarkdownIt().render(content) : content;
-
-    const page = await headlessBrowser.newPage();
+    const browser = await getHeadlessBrowserInstance();
+    const page = await browser.newPage();
 
     // Set page options
     await page.setContent(htmlContent);

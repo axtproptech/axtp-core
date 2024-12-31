@@ -52,15 +52,17 @@ export class ServerSideFileService {
    * The returning Url requires to use HTTP PUT for upload
    *
    * @param contentType A valid mime type
+   * @param filename The filename, if not given a random value is being used (nanoid)
    * @param expirySeconds Url validity duration in seconds
    */
   async fetchSignedUploadUrl(
     contentType: string,
+    filename = nanoid(),
     expirySeconds = 5 * 60
   ): Promise<SignedUrl> {
     const params = {
       Bucket: this.bucketName,
-      Key: nanoid(),
+      Key: filename,
       ContentType: contentType,
     };
 

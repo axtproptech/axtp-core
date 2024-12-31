@@ -59,6 +59,7 @@ class JobQueue extends EventEmitter {
         this.emit("jobqueue:completed", { ...job });
       } catch (e: any) {
         const error = e instanceof Error ? e.message : String(e);
+        const canRetry = e instanceof AbortError;
         this.emit("jobqueue:failed", { ...job, error });
         await this.failJob(job.id, error);
       }
@@ -108,13 +109,14 @@ class JobQueue extends EventEmitter {
       .where(eq(jobs.id, jobId));
   }
 
-  private async failJob(jobId: string, error: string) {
+  private async failJob(jobId: string, error: string, canRetry = true) {
     await db
       .update(jobs)
       .set({
         status: "failed",
         error,
         updatedAt: new Date(),
+        attempts: canRetry ? undefined : Number.MAX_SAFE_INTEGER,
       })
       .where(eq(jobs.id, jobId));
   }
