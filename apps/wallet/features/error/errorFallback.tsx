@@ -6,13 +6,11 @@ import { FallbackProps } from "react-error-boundary";
 import { Button } from "react-daisyui";
 import { RiHome6Line, RiRestartFill, RiRestartLine } from "react-icons/ri";
 import { Container } from "@/app/components/layout/container";
-import {
-  BottomNavigation,
-  BottomNavigationItem,
-} from "@/app/components/navigation/bottomNavigation";
+import { BottomNavigation } from "@/app/components/navigation/bottomNavigation";
 import { useAppDispatch } from "@/states/hooks";
 import { accountActions } from "@/app/states/accountState";
 import { useRouter } from "next/router";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
 
 const FallbackNav: BottomNavigationItem[] = [
   {

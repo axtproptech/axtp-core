@@ -1,5 +1,5 @@
 import { useTranslation } from "next-i18next";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Divider, Input } from "react-daisyui";
 import { useFormContext } from "react-hook-form";
 import { Address } from "@signumjs/core";
@@ -8,37 +8,75 @@ import { generateMasterKeys, PassPhraseGenerator } from "@signumjs/crypto";
 import { voidFn } from "@/app/voidFn";
 import { PinInput } from "@/app/components/pinInput";
 import { AnimatedIconCoins } from "@/app/components/animatedIcons/animatedIconCoins";
-import { KycWizard } from "../validation/types";
+import { KycFormData } from "./kycFormData";
 import { StepLayout } from "../../components/StepLayout";
+import { KycFormDataStepProps } from "./kycFormDataStepProps";
+import { useBottomNavigation } from "@/app/components/navigation/bottomNavigation";
+import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
+import * as React from "react";
 
-export const BlockchainAccountSetup = () => {
+const pickRandomKeyIndex = () => {
+  const min = 1;
+  const max = 12;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const generateSeed = async () => {
+  const arr = new Uint8Array(128);
+  crypto.getRandomValues(arr);
+  const generator = new PassPhraseGenerator();
+  const words = await generator.generatePassPhrase(Array.from(arr));
+  return words.join(" ");
+};
+
+export const BlockchainAccountSetup = ({
+  formData,
+  updateFormData,
+  validation,
+  previousStep,
+  nextStep,
+}: KycFormDataStepProps) => {
   const { t } = useTranslation();
   const { Ledger } = useAppContext();
-  const { watch, setValue } = useFormContext<KycWizard>();
+  const { setNavItems } = useBottomNavigation();
+
+  const canProceed = Boolean(
+    formData.devicePin && formData.accountPublicKey && !validation.hasError
+  );
+
+  useEffect(() => {
+    setNavItems([
+      {
+        onClick: previousStep,
+        label: t("back"),
+        icon: <RiArrowLeftCircleLine />,
+        type: "button",
+      },
+      {
+        onClick: voidFn,
+        label: "",
+        icon: <div />,
+      },
+      {
+        onClick: nextStep,
+        label: t("next"),
+        icon: <RiArrowRightCircleLine />,
+        disabled: !canProceed,
+        color: "secondary",
+      },
+    ]);
+  }, [canProceed]);
+
+  const { watch, setValue } = useFormContext<KycFormData>();
 
   const devicePin = watch("devicePin");
   const accountPublicKey = watch("accountPublicKey");
-
-  const generateSeed = async () => {
-    const arr = new Uint8Array(128);
-    crypto.getRandomValues(arr);
-    const generator = new PassPhraseGenerator();
-    const words = await generator.generatePassPhrase(Array.from(arr));
-
-    return words.join(" ");
-  };
 
   const handlePinChange = (value: string) => {
     setValue("devicePin", value);
   };
 
-  const isWeak = !!devicePin.startsWith("12345");
-
-  const pickRandomKeyIndex = () => {
-    const min = 1;
-    const max = 12;
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
+  const isWeak = !!devicePin.startsWith("1234");
 
   const setupAccount = async () => {
     const accountSeedphrase = await generateSeed().then((seed) => seed);
@@ -48,17 +86,21 @@ export const BlockchainAccountSetup = () => {
     const keys = generateMasterKeys(accountSeedphrase);
     const { publicKey } = keys;
 
-    setValue("accountPublicKey", publicKey);
-    setValue("accountSeedPhrase", accountSeedphrase);
-    setValue("seedPhraseVerificationIndex", randomKey);
+    updateFormData("accountPublicKey", publicKey);
+    updateFormData("accountSeedPhrase", accountSeedphrase);
+    updateFormData("seedPhraseVerificationIndex", randomKey);
   };
 
-  const accountRS = accountPublicKey
-    ? Address.fromPublicKey(
-        accountPublicKey,
-        Ledger.AddressPrefix
-      ).getReedSolomonAddress()
-    : "";
+  const accountRS = useMemo(
+    () =>
+      accountPublicKey
+        ? Address.fromPublicKey(
+            accountPublicKey,
+            Ledger.AddressPrefix
+          ).getReedSolomonAddress()
+        : "",
+    [accountPublicKey, Ledger.AddressPrefix]
+  );
 
   // This is NOT STORED ON REDUX, THIS IS ONLY TEMPORALY STORED ON VOLATILE DATA (a.k.a React Hook Form States)
   useEffect(() => {

@@ -14,6 +14,8 @@ import {
 import { Http, HttpClientFactory } from "@signumjs/http";
 import { FileService } from "@/app/services/fileService";
 import { RewardService } from "@/app/services/rewardService";
+import { AccountIdentifier } from "@/types/accountIdentifier";
+import { preload } from "swr";
 
 type AddressPrefixType = "TS" | "S";
 type SignaPrefixType = "TSIGNA" | "SIGNA";
@@ -36,9 +38,14 @@ export interface AppContextType {
     Use: string;
     Privacy: string;
     Manual: string;
+    TermsOfRisk: string;
+    SelfDeclaration10K: string;
+    SelfDeclaration100K: string;
+    SelfDeclaration1M: string;
   };
   Accounts: {
-    Principal: string;
+    Principal: AccountIdentifier;
+    Signature: AccountIdentifier;
   };
   Ledger: {
     IsTestNet: boolean;
@@ -93,8 +100,14 @@ const config: AppContextType = {
   TrackingEventService: trackingEventService,
   Documents: {
     Use: Config.TermsOfUsefUrl,
-    Privacy: Config.PrivacyfUrl,
+    Privacy: Config.PrivacyUrl,
     Manual: Config.ManualUrl,
+    // FIXME: correct document texts...
+
+    TermsOfRisk: Config.PrivacyUrl,
+    SelfDeclaration10K: Config.PrivacyUrl,
+    SelfDeclaration100K: Config.PrivacyUrl,
+    SelfDeclaration1M: Config.PrivacyUrl,
   },
   Market: {
     BrlUsdAdjustment: Config.Market.BrlUsdAdjustment,
@@ -106,6 +119,7 @@ const config: AppContextType = {
   },
   Accounts: {
     Principal: Config.Accounts.Principal,
+    Signature: Config.Accounts.Signature,
   },
   Ledger: {
     IsTestNet: Config.Ledger.IsTestNet,

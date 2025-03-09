@@ -1,5 +1,5 @@
-import { Http, HttpError } from "@signumjs/http";
-import retry, { AbortError } from "p-retry";
+import { Http } from "@signumjs/http";
+import retry from "p-retry";
 import { CustomerSafeData } from "@/types/customerSafeData";
 import { CustomerPaymentData } from "@/types/customerPaymentData";
 import {
@@ -11,8 +11,7 @@ import {
   ThirdStep,
 } from "@/app/types/kycData";
 import { tryCall } from "@axtp/core";
-import { date, mixed, string } from "yup";
-import { SignedDocumentType } from "@/types/signedDocumentType";
+import { SignableDocumentType } from "@/types/signableDocumentType";
 import { DateTimeConstants } from "@/app/dateTimeConstants";
 
 export interface RegisterCustomerArgs
@@ -23,7 +22,6 @@ export interface RegisterCustomerArgs
     MotherDataStep,
     DocumentStep {
   publicKey: string;
-  agreeTerms: boolean;
 }
 
 export interface StoreSignedDocumentArgs {
@@ -33,7 +31,7 @@ export interface StoreSignedDocumentArgs {
   poolId?: string;
   documentHash: string;
   url: string;
-  type: SignedDocumentType;
+  type: SignableDocumentType;
 }
 
 export interface RegisterCustomerResponse {
@@ -56,6 +54,10 @@ export class KycService {
     });
   }
 
+  /**
+   * Registers the information of the signed document
+   * @param args
+   */
   storeSignedDocument(args: StoreSignedDocumentArgs) {
     return retry(async () => {
       const {
@@ -67,15 +69,18 @@ export class KycService {
         transactionId,
         customerId,
       } = args;
-      const exiryAt = args.expires
+      const expiryAt = expires
         ? new Date(
             Date.now() + 365 * DateTimeConstants.InMillies.Day
           ).toISOString()
         : undefined;
+
+      // TODO: store signed document in R2
+
       const { response } = await this.bffClient.post(
         `/customer/${customerId}/signedDocument`,
         {
-          exiryAt,
+          expiryAt,
           url,
           type,
           poolId,
@@ -154,6 +159,18 @@ export class KycService {
       return this.bffClient.post(`/mail/addressVerification`, {
         emailAddress,
         name: firstName,
+      });
+    });
+  }
+
+  async sendTermsOfRiskSignedConfirmationMail(
+    customerId: string,
+    transactionId: string
+  ) {
+    return tryCall<void>(async () => {
+      return this.bffClient.post(`/mail/signedDocuments/termsOfRisk`, {
+        cuid: customerId,
+        transactionId,
       });
     });
   }

@@ -15,15 +15,20 @@ const AccessKeySecret = getEnvVar(
   "NEXT_SERVER_CF_R2_AXTP_KYC_BUCKET_ACCESS_SECRET"
 );
 
+const BucketName = {
+  kyc: getEnvVar("NEXT_SERVER_CF_R2_AXTP_KYC_BUCKET"),
+  "signed-document": getEnvVar("NEXT_SERVER_CF_R2_AXTP_SIGNED_DOCS_BUCKET"),
+};
+
 export const createUploadURL: RouteHandlerFunction = async (req, res) => {
-  const { contentType } = req.body as CreateUploadUrlRequest;
+  const { contentType, documentCategory } = req.body as CreateUploadUrlRequest;
 
   try {
     const fileService = new ServerSideFileService({
       accessKeyId: AccessKeyId,
       accountId: AccountId,
       accessKeySecret: AccessKeySecret,
-      targetBucketName: TargetBucketName,
+      targetBucketName: BucketName[documentCategory],
     });
 
     const signedUrl = await fileService.fetchSignedUploadUrl(

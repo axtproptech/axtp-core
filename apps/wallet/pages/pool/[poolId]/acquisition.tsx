@@ -1,10 +1,12 @@
 import { Layout } from "@/app/components/layout";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation";
 import { Config } from "@/app/config";
 import { PoolShareAcquisition } from "@/features/pool";
 import { useState } from "react";
 import { OnStepChangeArgs } from "@/types/onStepChangeArgs";
+import { BottomNavigationItem } from "@/app/components/navigation/bottomNavigation/bottomNavigationItem";
+import { RiHome6Line } from "react-icons/ri";
+import { useTranslation } from "next-i18next";
 
 export async function getStaticPaths({ locales }: any) {
   const paths = Config.Contracts.PoolContractIds.flatMap((poolId) =>
@@ -32,15 +34,13 @@ export async function getStaticProps({ locale, params }: any) {
 }
 
 export default function Page({ poolId }: any) {
-  const [bottomNav, setBottomNav] = useState<BottomNavigationItem[]>([]);
-
-  const handleStepChange = (args: OnStepChangeArgs) => {
-    setBottomNav(args.bottomNav);
-  };
-
+  const { t } = useTranslation();
   return (
-    <Layout noBody bottomNav={bottomNav}>
-      <PoolShareAcquisition poolId={poolId} onStepChange={handleStepChange} />
+    <Layout
+      noBody
+      bottomNav={[{ route: "/", icon: <RiHome6Line />, label: t("home") }]}
+    >
+      <PoolShareAcquisition poolId={poolId} />
     </Layout>
   );
 }
